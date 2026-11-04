@@ -7,6 +7,10 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 
+from exercises.models import Exercise
+from exercises.picker import picker_response
+from workouts.services import recently_used_exercises
+
 from .forms import PlanDayForm, PlanExerciseForm, PlanForm
 from .models import Plan, PlanDay, PlanExercise
 
@@ -158,31 +162,80 @@ def day_move(request, pk, direction):
 # --- exercises in a day ---------------------------------------------------
 
 
+def _picked_exercise(request):
+    """The exercise chosen in the picker (?exercise=<id>), or None if not chosen yet.
+
+    Only built-in exercises and the user's own ones can be picked; anything else is 404.
+    """
+    exercise_id = request.GET.get("exercise", "")
+    if not exercise_id:
+        return None
+    if not exercise_id.isdigit():
+        raise Http404
+    return get_object_or_404(Exercise.objects.visible_to(request.user), pk=exercise_id)
+
+
+def _exercise_picker(request, day, extra_params=None):
+    # extra_params (e.g. pick=1) keep the picker open while searching; the result
+    # links leave them out, so tapping a result goes on to the sets/reps form.
+    return picker_response(
+        request,
+        title=f"Add to {day.name}" if not extra_params else "Change exercise",
+        back_url=f"{reverse('plans:plan_detail', args=[day.plan_id])}#day-{day.pk}",
+        select_base=f"{request.path}?exercise=",
+        recent=recently_used_exercises(request.user),
+        extra_params=extra_params,
+    )
+
+
 @login_required
 def plan_exercise_create(request, day_pk):
+    """Step 1: pick an exercise (picker). Step 2: sets, reps and rest for it."""
     day = _get_day(request, day_pk)
-    form = PlanExerciseForm(request.POST or None, user=request.user)
+    exercise = _picked_exercise(request)
+    if exercise is None:
+        return _exercise_picker(request, day)
+
+    form = PlanExerciseForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         item = form.save(commit=False)
         item.day = day
+        item.exercise = exercise
         item.order = _next_order(day.exercises.all())
         item.save()
-        messages.success(request, f"Added {item.exercise.name} to {day.name}.")
+        messages.success(request, f"Added {exercise.name} to {day.name}.")
         return _plan_redirect(day.plan, f"day-{day.pk}")
-    return render(request, "plans/plan_exercise_form.html", {"form": form, "day": day})
+    return render(
+        request,
+        "plans/plan_exercise_form.html",
+        {"form": form, "day": day, "exercise": exercise, "change_url": request.path},
+    )
 
 
 @login_required
 def plan_exercise_update(request, pk):
     item = _get_plan_exercise(request, pk)
-    form = PlanExerciseForm(request.POST or None, instance=item, user=request.user)
+    if request.GET.get("pick"):
+        return _exercise_picker(request, item.day, extra_params={"pick": "1"})
+
+    # A different exercise may come back from the picker as ?exercise=<id>.
+    exercise = _picked_exercise(request) or item.exercise
+    form = PlanExerciseForm(request.POST or None, instance=item)
     if request.method == "POST" and form.is_valid():
-        form.save()
+        item = form.save(commit=False)
+        item.exercise = exercise
+        item.save()
         return _plan_redirect(item.day.plan, f"day-{item.day_id}")
     return render(
         request,
         "plans/plan_exercise_form.html",
-        {"form": form, "day": item.day, "item": item},
+        {
+            "form": form,
+            "day": item.day,
+            "item": item,
+            "exercise": exercise,
+            "change_url": f"{request.path}?pick=1",
+        },
     )
 
 

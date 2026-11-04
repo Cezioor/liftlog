@@ -12,8 +12,14 @@
     <div>
       <h1>{{ workout.title }}</h1>
       <p class="muted small">Started {{ workout.started_at|time:"H:i" }} · every set is saved as soon as you log it</p>
+      <p class="muted small" id="wake-status" hidden></p>
     </div>
   </div>
+
+  {# Read by static/js/workout.js. Change these in Settings. #}
+  <div id="workout-config" hidden
+       data-keep-screen-on="{{ user_settings.keep_screen_on|yesno:'1,0' }}"
+       data-rest-sound="{{ user_settings.rest_end_sound|yesno:'1,0' }}"></div>
 
   <div class="exercise-cards">
     {% for card in cards %}
@@ -23,24 +29,15 @@
     {% endfor %}
   </div>
 
-  <form method="get" class="card add-exercise">
-    <label for="add-exercise">Add an exercise</label>
-    <div class="inline-form">
-      <select name="add" id="add-exercise" required>
-        <option value="">Choose…</option>
-        {% for exercise in exercise_choices %}
-          <option value="{{ exercise.pk }}">{{ exercise.name }}</option>
-        {% endfor %}
-      </select>
-      <button type="submit" class="button button-small">Add</button>
-    </div>
-  </form>
+  <a class="button button-big add-exercise-button" href="{% url 'workouts:add_exercise' workout.pk %}">+ Add exercise</a>
 
   <form method="post" action="{% url 'workouts:workout_finish' workout.pk %}" class="card form">
     {% csrf_token %}
     {{ finish_form }}
     <button type="submit" class="button button-primary button-big">Finish workout</button>
   </form>
+
+  <p class="form-links"><a href="{% url 'settings' %}">Rest timer settings</a></p>
 
   <form method="post" action="{% url 'workouts:workout_discard' workout.pk %}"
         onsubmit="return confirm('Discard this workout and all its sets?');" class="discard">
@@ -55,6 +52,7 @@
       <span class="rest-label" id="rest-label">Rest</span>
       <span class="rest-time" id="rest-time">0:00</span>
     </div>
+    <a class="button button-small button-primary" id="rest-shortcut" href="#" hidden>Start iPhone timer</a>
     <button type="button" class="button button-small" data-rest-add="30">+30 s</button>
     <button type="button" class="button button-small" data-rest-skip>Skip</button>
   </div>

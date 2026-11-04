@@ -90,3 +90,90 @@ PROGRESSION_STEP_OVERRIDES = {
     # Listed under "back", but it is loaded and progressed like a leg lift.
     "Deadlift": Decimal("5"),
 }
+
+# Polish names and synonyms (comma separated). Search ignores case and diacritics.
+ALIASES = {
+    # Chest
+    "Barbell Bench Press": "wyciskanie sztangi na ławce płaskiej, wyciskanie na ławce płaskiej, "
+    "wyciskanie sztangi leżąc, ławka płaska",
+    "Incline Barbell Bench Press": "wyciskanie sztangi na ławce skośnej, "
+    "wyciskanie na skosie dodatnim, ławka skośna",
+    "Dumbbell Bench Press": "wyciskanie hantli na ławce płaskiej, wyciskanie hantli leżąc",
+    "Incline Dumbbell Press": "wyciskanie hantli na ławce skośnej, wyciskanie hantli skos",
+    "Dumbbell Fly": "rozpiętki z hantlami, rozpiętki na ławce",
+    "Cable Crossover": "rozpiętki na wyciągu, krzyżowanie linek wyciągu, brama",
+    "Machine Chest Press": "wyciskanie na maszynie, maszyna do klatki",
+    "Push-up": "pompki",
+    "Dip": "pompki na poręczach, dipy",
+    # Back
+    "Deadlift": "martwy ciąg, martwy ciąg klasyczny",
+    "Barbell Row": "wiosłowanie sztangą, wiosłowanie sztangą w opadzie tułowia",
+    "Pendlay Row": "wiosłowanie pendlay, wiosłowanie sztangą z podłogi",
+    "Dumbbell Row": "wiosłowanie hantlem, wiosłowanie hantlem jednorącz",
+    "Pull-up": "podciąganie na drążku, podciąganie nachwytem",
+    "Chin-up": "podciąganie podchwytem, podciąganie na drążku podchwytem",
+    "Lat Pulldown": "ściąganie drążka wyciągu górnego, ściąganie drążka do klatki, wyciąg górny",
+    "Seated Cable Row": "wiosłowanie na wyciągu siedząc, przyciąganie linki wyciągu dolnego, "
+    "wyciąg dolny",
+    "T-Bar Row": "wiosłowanie t-bar, wiosłowanie na maszynie",
+    "Face Pull": "przyciąganie liny do twarzy",
+    "Back Extension": "wyprosty tułowia, prostowniki grzbietu, ławka rzymska",
+    # Shoulders
+    "Overhead Press": "wyciskanie żołnierskie, wyciskanie sztangi nad głowę, ohp",
+    "Seated Dumbbell Shoulder Press": "wyciskanie hantli nad głowę siedząc, "
+    "wyciskanie hantli na barki",
+    "Arnold Press": "arnoldki, wyciskanie arnolda",
+    "Lateral Raise": "wznosy bokiem z hantlami, unoszenie ramion bokiem",
+    "Cable Lateral Raise": "wznosy bokiem na wyciągu, unoszenie ramienia bokiem na wyciągu",
+    "Rear Delt Fly": "odwrotne rozpiętki, wznosy w opadzie, tylny akton barków",
+    "Machine Shoulder Press": "wyciskanie nad głowę na maszynie, maszyna na barki",
+    "Barbell Shrug": "szrugsy, wzruszanie ramion ze sztangą, kaptury",
+    # Biceps
+    "Barbell Curl": "uginanie ramion ze sztangą, zgięcia ramion ze sztangą, biceps sztangą",
+    "Dumbbell Curl": "uginanie ramion z hantlami, zgięcia ramion z hantlami, biceps hantlami",
+    "Hammer Curl": "uginanie młotkowe, młotki, zgięcia młotkowe",
+    "Incline Dumbbell Curl": "uginanie ramion na ławce skośnej, zgięcia ramion na skosie",
+    "Cable Curl": "uginanie ramion na wyciągu, zgięcia ramion na wyciągu",
+    "Preacher Curl": "uginanie na modlitewniku, modlitewnik, zgięcia na modlitewniku",
+    # Triceps
+    "Close-Grip Bench Press": "wyciskanie wąskim chwytem, wyciskanie sztangi wąsko",
+    "Skull Crusher": "wyciskanie francuskie leżąc, francuz leżąc",
+    "Triceps Pushdown": "prostowanie ramion na wyciągu górnym, prostowanie przedramion na wyciągu",
+    "Overhead Cable Triceps Extension": "prostowanie ramion nad głową na wyciągu, "
+    "francuz na wyciągu",
+    "Overhead Dumbbell Triceps Extension": "wyciskanie francuskie hantlem, "
+    "prostowanie ramion nad głową z hantlem, francuz hantlem",
+    # Forearms
+    "Wrist Curl": "uginanie nadgarstków, zgięcia nadgarstków, przedramiona",
+    "Farmer's Walk": "spacer farmera, chód farmera",
+    # Quads
+    "Back Squat": "przysiad ze sztangą, przysiad ze sztangą na plecach, przysiady",
+    "Front Squat": "przysiad przedni, przysiad ze sztangą z przodu",
+    "Leg Press": "wypychanie nogami na suwnicy, suwnica, prasa nożna",
+    "Hack Squat": "przysiad hack, przysiad na maszynie",
+    "Leg Extension": "prostowanie nóg na maszynie, wyprosty nóg siedząc",
+    "Bulgarian Split Squat": "przysiad bułgarski, bułgary",
+    "Walking Lunge": "wykroki chodzone, wykroki z hantlami",
+    "Goblet Squat": "przysiad goblet, przysiad z hantlem",
+    # Hamstrings
+    "Romanian Deadlift": "martwy ciąg rumuński, rdl",
+    "Lying Leg Curl": "uginanie nóg leżąc, zgięcia nóg leżąc, dwugłowe uda",
+    "Seated Leg Curl": "uginanie nóg siedząc, zgięcia nóg siedząc",
+    "Nordic Hamstring Curl": "uginanie nordyckie, nordic curl",
+    # Glutes
+    "Barbell Hip Thrust": "wypychanie bioder ze sztangą, hip thrust, pośladki",
+    "Glute Bridge": "mostek biodrowy, unoszenie bioder leżąc",
+    "Cable Pull-Through": "przeciąganie linki między nogami, pull through",
+    # Calves
+    "Standing Calf Raise": "wspięcia na palce stojąc, łydki stojąc",
+    "Seated Calf Raise": "wspięcia na palce siedząc, łydki siedząc",
+    # Core
+    "Plank": "deska, podpór przodem",
+    "Hanging Leg Raise": "unoszenie nóg w zwisie, wznosy nóg w zwisie",
+    "Cable Crunch": "spięcia brzucha na wyciągu, allahy, brzuszki na wyciągu",
+    "Ab Wheel Rollout": "kółko do brzucha, roller do brzucha",
+    "Pallof Press": "wyciskanie pallofa, antyrotacja",
+    # Full body
+    "Kettlebell Swing": "swing kettlebell, wymachy kettlebell",
+    "Power Clean": "zarzut siłowy, zarzut",
+}

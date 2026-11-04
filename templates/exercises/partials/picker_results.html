@@ -1,0 +1,38 @@
+{# Results of the exercise picker; re-rendered by HTMX on every search. #}
+{% if recent %}
+  <h2 class="picker-heading">Recently used</h2>
+  <ul class="picker-list">
+    {% for exercise in recent %}
+      {% include "exercises/partials/picker_item.html" %}
+    {% endfor %}
+  </ul>
+{% endif %}
+
+<h2 class="picker-heading">
+  {% if filtering %}Results{% else %}All exercises{% endif %}
+  <span class="muted">({{ results_count }})</span>
+</h2>
+<ul class="picker-list">
+  {% for exercise in results %}
+    {% include "exercises/partials/picker_item.html" %}
+  {% empty %}
+    <li class="picker-empty muted">No exercise matches{% if query %} “{{ query }}”{% endif %}.</li>
+  {% endfor %}
+</ul>
+{% if results_count > results|length %}
+  <p class="muted small">Showing {{ results|length }} of {{ results_count }}. Type more to narrow it down.</p>
+{% endif %}
+
+{% if quick_add_name %}
+  <form method="post" action="{% url 'exercises:exercise_quick_add' %}" class="picker-add-form">
+    {% csrf_token %}
+    <input type="hidden" name="name" value="{{ quick_add_name }}">
+    <input type="hidden" name="muscle" value="{{ muscle }}">
+    <input type="hidden" name="equipment" value="{{ equipment }}">
+    <input type="hidden" name="next" value="{{ select_base }}">
+    <button type="submit" class="picker-item picker-add">
+      <span class="list-title">+ Add my own: «{{ quick_add_name }}»</span>
+      <span class="list-meta">Creates the exercise and picks it right away</span>
+    </button>
+  </form>
+{% endif %}

@@ -738,3 +738,189 @@ input.num-input {
 body:has(.rest-timer:not([hidden])) .container {
   padding-bottom: 120px;
 }
+
+/* ---------------------------------------------------------------------- */
+/* Settings and exercise picker                                           */
+
+/* Elements with the hidden attribute stay hidden even if a class sets display. */
+[hidden] {
+  display: none !important;
+}
+
+code {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--surface-2);
+  font-size: 0.95em;
+}
+
+.steps,
+.info-list {
+  margin: 0;
+  padding-left: 1.3em;
+  display: grid;
+  gap: 10px;
+}
+
+details > summary {
+  min-height: var(--tap);
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.add-exercise-button {
+  margin-top: 12px;
+  border-style: dashed;
+}
+
+.rest-timer {
+  flex-wrap: wrap;
+}
+
+#rest-shortcut {
+  order: 10;
+  flex-basis: 100%;
+  min-height: var(--tap);
+}
+
+/* Picker */
+.picker-form {
+  display: grid;
+  gap: 10px;
+  margin-bottom: var(--space);
+}
+
+input.picker-search {
+  min-height: 56px;
+  font-size: 1.1rem;
+}
+
+/* Horizontally scrolling rows of filter chips (radio buttons underneath). */
+.chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin: 0 calc(var(--space) * -1);
+  padding-left: var(--space);
+  padding-right: var(--space);
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.chips::-webkit-scrollbar {
+  display: none;
+}
+
+.chip {
+  flex: none;
+  font-weight: 500;
+}
+
+.chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chip span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.chip input:checked + span {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 700;
+}
+
+.chip input:focus-visible + span {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.picker-heading {
+  margin: 20px 0 8px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.picker-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.picker-list > li + li {
+  border-top: 1px solid var(--border);
+}
+
+.picker-item {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  min-height: 60px;
+  align-content: center;
+  padding: 10px var(--space);
+  border: 0;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.picker-item:active {
+  background: var(--surface-2);
+}
+
+.picker-empty {
+  padding: 16px;
+  background: var(--surface);
+}
+
+.picker-add-form {
+  margin-top: 12px;
+}
+
+.picker-add {
+  border: 1px dashed var(--accent);
+  border-radius: var(--radius);
+}
+
+.picker-add .list-title {
+  color: var(--accent);
+}
+
+.chosen-exercise {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: var(--space);
+  padding: 12px;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.chosen-exercise > div {
+  display: grid;
+}

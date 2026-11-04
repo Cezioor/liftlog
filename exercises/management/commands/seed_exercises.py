@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from exercises.models import Exercise
-from exercises.seed_data import EXERCISES, PROGRESSION_STEP_OVERRIDES
+from exercises.seed_data import ALIASES, EXERCISES, PROGRESSION_STEP_OVERRIDES
 from exercises.services import default_progression_step
 
 
@@ -26,6 +26,7 @@ class Command(BaseCommand):
                     "equipment": equipment,
                     "is_bodyweight": is_bodyweight,
                     "progression_step_kg": step,
+                    "aliases": ALIASES.get(name, ""),
                 },
             )
             created_count += created

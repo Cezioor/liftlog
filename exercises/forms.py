@@ -1,7 +1,7 @@
 from django import forms
 
 from .models import Exercise
-from .services import default_progression_step
+from .services import default_progression_step, find_by_name
 
 
 class WeightField(forms.DecimalField):
@@ -16,9 +16,17 @@ class WeightField(forms.DecimalField):
 class ExerciseForm(forms.ModelForm):
     class Meta:
         model = Exercise
-        fields = ("name", "muscle_group", "equipment", "is_bodyweight", "progression_step_kg")
+        fields = (
+            "name",
+            "aliases",
+            "muscle_group",
+            "equipment",
+            "is_bodyweight",
+            "progression_step_kg",
+        )
         field_classes = {"progression_step_kg": WeightField}
         widgets = {
+            "aliases": forms.Textarea(attrs={"rows": 2}),
             "progression_step_kg": forms.TextInput(
                 attrs={"inputmode": "decimal", "placeholder": "Leave empty for the default"}
             ),
@@ -36,10 +44,7 @@ class ExerciseForm(forms.ModelForm):
         name = self.cleaned_data["name"].strip()
         # The DB constraint only covers the user's own exercises; also stop a
         # user from creating a copy of a built-in exercise.
-        duplicates = Exercise.objects.visible_to(self.owner).filter(name__iexact=name)
-        if self.instance.pk:
-            duplicates = duplicates.exclude(pk=self.instance.pk)
-        if duplicates.exists():
+        if find_by_name(self.owner, name, exclude_pk=self.instance.pk):
             raise forms.ValidationError("An exercise with this name already exists.")
         return name
 

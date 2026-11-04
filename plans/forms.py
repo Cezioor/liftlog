@@ -1,7 +1,5 @@
 from django import forms
 
-from exercises.models import Exercise
-
 from .models import Plan, PlanDay, PlanExercise
 
 
@@ -21,7 +19,8 @@ class PlanDayForm(forms.ModelForm):
 class PlanExerciseForm(forms.ModelForm):
     class Meta:
         model = PlanExercise
-        fields = ("exercise", "target_sets", "rep_min", "rep_max", "rest_seconds")
+        # The exercise itself is chosen first in the exercise picker (see views).
+        fields = ("target_sets", "rep_min", "rep_max", "rest_seconds")
         labels = {
             "target_sets": "Sets",
             "rep_min": "Reps from",
@@ -29,10 +28,8 @@ class PlanExerciseForm(forms.ModelForm):
             "rest_seconds": "Rest (seconds)",
         }
 
-    def __init__(self, *args, user, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Only built-in exercises and the user's own ones can be picked.
-        self.fields["exercise"].queryset = Exercise.objects.visible_to(user)
         for name in ("target_sets", "rep_min", "rep_max", "rest_seconds"):
             self.fields[name].widget.attrs["inputmode"] = "numeric"
 

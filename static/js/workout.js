@@ -21,7 +21,12 @@
   const bar = document.getElementById("rest-timer");
   const timeEl = document.getElementById("rest-time");
   const labelEl = document.getElementById("rest-label");
+  const shortcutLink = document.getElementById("rest-shortcut");
   if (!bar) return;
+
+  // Settings rendered by the server (see accounts.models.UserSettings).
+  const config = (document.getElementById("workout-config") || {}).dataset || {};
+  const soundEnabled = config.restSound === "1";
 
   let endsAt = null;
   let tick = null;
@@ -75,7 +80,8 @@
     timeEl.textContent = "Go!";
     bar.classList.add("rest-done");
     if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
-    beep();
+    // Only beep when LiftLog is actually on screen.
+    if (soundEnabled && document.visibilityState === "visible") beep();
     setTimeout(hide, 4000);
   }
 
@@ -83,6 +89,7 @@
     if (endsAt !== null) return; // a new rest started meanwhile
     bar.hidden = true;
     bar.classList.remove("rest-done");
+    if (shortcutLink) shortcutLink.hidden = true;
   }
 
   function start(untilMs) {
@@ -100,6 +107,12 @@
   document.addEventListener("restStart", function (event) {
     const seconds = (event.detail && event.detail.seconds) || 90;
     start(Date.now() + seconds * 1000);
+    // iOS only opens shortcuts:// after a tap, so this is a button, not a redirect.
+    if (shortcutLink) {
+      const url = event.detail && event.detail.shortcutUrl;
+      shortcutLink.hidden = !url;
+      if (url) shortcutLink.href = url;
+    }
   });
 
   // Sound needs a user gesture first; create the audio context on the first tap.
@@ -137,4 +150,38 @@
   }
   if (saved && saved > Date.now()) start(saved);
   else store(null);
+
+  // --- Keep the screen on (Screen Wake Lock API) ---------------------------
+  // Browsers release the lock whenever the page is hidden, so it is requested
+  // again each time the workout screen becomes visible.
+  if (config.keepScreenOn === "1") {
+    const status = document.getElementById("wake-status");
+    const say = function (text) {
+      if (!status) return;
+      status.textContent = text;
+      status.hidden = false;
+    };
+
+    if (!("wakeLock" in navigator)) {
+      // Not supported, or not HTTPS (wake lock needs a secure connection).
+      say("This browser can't keep the screen on. You can set Auto-Lock in the phone's display settings instead.");
+    } else {
+      let lock = null;
+      const acquire = async function () {
+        if (document.visibilityState !== "visible" || lock) return;
+        try {
+          lock = await navigator.wakeLock.request("screen");
+          lock.addEventListener("release", function () {
+            lock = null;
+          });
+          say("Screen stays on during this workout.");
+        } catch (e) {
+          // e.g. Low Power Mode on iPhone, or the browser refused.
+          say("Couldn't keep the screen on right now (battery saver?).");
+        }
+      };
+      document.addEventListener("visibilitychange", acquire);
+      acquire();
+    }
+  }
 })();

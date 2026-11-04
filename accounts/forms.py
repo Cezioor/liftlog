@@ -1,6 +1,7 @@
+from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import User
+from .models import User, UserSettings
 
 
 class SignUpForm(UserCreationForm):
@@ -12,3 +13,16 @@ class SignUpForm(UserCreationForm):
         super().__init__(*args, **kwargs)
         # Email is needed for password reset, so make it required at sign-up.
         self.fields["email"].required = True
+
+
+class UserSettingsForm(forms.ModelForm):
+    class Meta:
+        model = UserSettings
+        fields = ("ios_shortcut_enabled", "ios_shortcut_name", "keep_screen_on", "rest_end_sound")
+
+    def clean(self):
+        cleaned = super().clean()
+        cleaned["ios_shortcut_name"] = (cleaned.get("ios_shortcut_name") or "").strip()
+        if cleaned.get("ios_shortcut_enabled") and not cleaned["ios_shortcut_name"]:
+            self.add_error("ios_shortcut_name", "Enter the name of your shortcut.")
+        return cleaned

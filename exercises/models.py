@@ -5,6 +5,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Q
 
+from .text import normalize
+
 
 class MuscleGroup(models.TextChoices):
     CHEST = "chest", "Chest"
@@ -19,6 +21,8 @@ class MuscleGroup(models.TextChoices):
     CALVES = "calves", "Calves"
     CORE = "core", "Core"
     FULL_BODY = "full_body", "Full body"
+    # Used by "Add my own: …" in the picker when no muscle group filter is chosen.
+    OTHER = "other", "Other"
 
 
 class Equipment(models.TextChoices):
@@ -40,6 +44,15 @@ class ExerciseQuerySet(models.QuerySet):
 
 class Exercise(models.Model):
     name = models.CharField(max_length=100)
+    aliases = models.TextField(
+        "other names",
+        blank=True,
+        help_text="Polish names and synonyms, comma separated, e.g. "
+        "“wyciskanie na ławce płaskiej, wyciskanie sztangi”.",
+    )
+    # name + aliases, lowercased and without diacritics; filled in save().
+    # Searching this column works the same on SQLite and Postgres.
+    search_text = models.TextField(blank=True, editable=False)
     muscle_group = models.CharField(max_length=20, choices=MuscleGroup.choices)
     equipment = models.CharField(max_length=20, choices=Equipment.choices)
     is_bodyweight = models.BooleanField(default=False)
@@ -90,7 +103,15 @@ class Exercise(models.Model):
             from .services import default_progression_step
 
             self.progression_step_kg = default_progression_step(self.muscle_group, self.equipment)
+        self.search_text = normalize(f"{self.name}, {self.aliases}")
+        if kwargs.get("update_fields") is not None:
+            kwargs["update_fields"] = {*kwargs["update_fields"], "search_text"}
         super().save(*args, **kwargs)
+
+    @property
+    def primary_alias(self):
+        """First of the other names (the main Polish name), shown under the name."""
+        return self.aliases.split(",")[0].strip()
 
     @property
     def is_builtin(self):

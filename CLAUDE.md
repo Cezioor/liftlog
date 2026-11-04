@@ -45,7 +45,9 @@ Tasks and recurring reminders (e.g. "gym Mon/Wed/Fri", deadlines), with the plan
 ## Data model (Stage 1)
 
 ```
-Exercise(name, muscle_group, equipment, is_bodyweight, owner: User | null)   # null = built-in
+Exercise(name, aliases, muscle_group, equipment, is_bodyweight, progression_step_kg,
+         owner: User | null)   # null = built-in; search_text = normalised name + aliases
+UserSettings(user 1:1, ios_shortcut_enabled, ios_shortcut_name, keep_screen_on, rest_end_sound)
 Plan(owner, name, is_active, created_at)
 PlanDay(plan, name, order)
 PlanExercise(day, exercise, order, target_sets, rep_min, rep_max, rest_seconds)

@@ -20,6 +20,10 @@ def item(day, bench):
     return PlanExercise.objects.create(day=day, exercise=bench, order=1)
 
 
+def _pe_create_url(day, exercise):
+    return f"{reverse('plans:pe_create', args=[day.pk])}?exercise={exercise.pk}"
+
+
 @pytest.fixture
 def logged_in(client, user):
     client.force_login(user)
@@ -72,9 +76,8 @@ def test_add_days_in_order(logged_in, plan):
 @pytest.mark.django_db
 def test_add_exercise_to_day(logged_in, day, bench):
     response = logged_in.post(
-        reverse("plans:pe_create", args=[day.pk]),
+        _pe_create_url(day, bench),
         {
-            "exercise": bench.pk,
             "target_sets": 4,
             "rep_min": 6,
             "rep_max": 10,
@@ -95,8 +98,8 @@ def test_add_exercise_to_day(logged_in, day, bench):
 @pytest.mark.django_db
 def test_rep_min_above_rep_max_is_rejected(logged_in, day, bench):
     response = logged_in.post(
-        reverse("plans:pe_create", args=[day.pk]),
-        {"exercise": bench.pk, "target_sets": 3, "rep_min": 12, "rep_max": 8, "rest_seconds": 90},
+        _pe_create_url(day, bench),
+        {"target_sets": 3, "rep_min": 12, "rep_max": 8, "rest_seconds": 90},
     )
 
     assert response.status_code == 200
@@ -186,10 +189,54 @@ def test_cannot_add_another_users_exercise_to_plan(logged_in, day, other_user):
     )
 
     response = logged_in.post(
-        reverse("plans:pe_create", args=[day.pk]),
-        {"exercise": private.pk, "target_sets": 3, "rep_min": 8, "rep_max": 12, "rest_seconds": 90},
+        _pe_create_url(day, private),
+        {"target_sets": 3, "rep_min": 8, "rep_max": 12, "rest_seconds": 90},
     )
 
-    assert response.status_code == 200
-    assert response.context["form"].errors["exercise"]
+    assert response.status_code == 404
     assert not day.exercises.exists()
+
+
+# --- picking the exercise -------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_add_exercise_starts_with_the_picker(logged_in, day, bench):
+    response = logged_in.get(reverse("plans:pe_create", args=[day.pk]))
+
+    assert response.templates[0].name == "exercises/picker.html"
+    content = response.content.decode()
+    # Each result links to the next step with the exercise id.
+    assert f'href="{_pe_create_url(day, bench)}"' in content
+
+
+@pytest.mark.django_db
+def test_picked_exercise_shows_sets_form(logged_in, day, bench):
+    response = logged_in.get(_pe_create_url(day, bench))
+
+    assert response.templates[0].name == "plans/plan_exercise_form.html"
+    assert "Bench Press" in response.content.decode()
+
+
+@pytest.mark.django_db
+def test_change_exercise_of_plan_item(logged_in, item, squat):
+    url = reverse("plans:pe_update", args=[item.pk])
+
+    picker = logged_in.get(url, {"pick": "1"}).content.decode()
+    # The result links go to the form (without pick=1), not back to the picker.
+    assert f'href="{url}?exercise={squat.pk}"' in picker
+    logged_in.post(
+        f"{url}?exercise={squat.pk}",
+        {"target_sets": 3, "rep_min": 8, "rep_max": 12, "rest_seconds": 90},
+    )
+
+    item.refresh_from_db()
+    assert item.exercise == squat
+
+
+@pytest.mark.django_db
+def test_invalid_exercise_id_is_404(logged_in, day):
+    assert (
+        logged_in.get(reverse("plans:pe_create", args=[day.pk]), {"exercise": "x"}).status_code
+        == 404
+    )

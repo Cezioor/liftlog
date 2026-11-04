@@ -3,6 +3,10 @@
 from dataclasses import dataclass
 from decimal import Decimal
 
+from django.db.models import Max
+
+from exercises.models import Exercise
+
 from .models import WorkoutSet
 
 
@@ -107,3 +111,16 @@ def next_set_defaults(current_sets, previous_sets, hint, rep_min=None):
         return SetDefaults(previous_sets[0].weight_kg, previous_sets[0].reps)
 
     return SetDefaults(None, rep_min)
+
+
+def recently_used_exercises(user, limit=6):
+    """Exercises the user logged most recently, newest first (for the exercise picker)."""
+    ids = list(
+        WorkoutSet.objects.filter(workout__owner=user)
+        .values("exercise_id")
+        .annotate(last_logged=Max("created_at"))
+        .order_by("-last_logged")
+        .values_list("exercise_id", flat=True)[:limit]
+    )
+    by_id = Exercise.objects.visible_to(user).in_bulk(ids)
+    return [by_id[i] for i in ids if i in by_id]

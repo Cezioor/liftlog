@@ -4,7 +4,16 @@
 
 {% block content %}
   <div class="card narrow">
-    <h1>{% if item %}Edit exercise{% else %}Add exercise to {{ day.name }}{% endif %}</h1>
+    <h1>{% if item %}Edit exercise{% else %}Add to {{ day.name }}{% endif %}</h1>
+
+    <div class="chosen-exercise">
+      <div>
+        <span class="list-title">{{ exercise.name }}</span>
+        <span class="list-meta">{% if exercise.primary_alias %}{{ exercise.primary_alias }} · {% endif %}{{ exercise.get_muscle_group_display }}</span>
+      </div>
+      <a class="button button-small" href="{{ change_url }}">Change</a>
+    </div>
+
     <form method="post" class="form form-grid">
       {% csrf_token %}
       {{ form }}
@@ -18,7 +27,6 @@
     {% endif %}
     <p class="form-links">
       <a href="{% url 'plans:plan_detail' day.plan_id %}#day-{{ day.pk }}">Cancel</a>
-      <a href="{% url 'exercises:exercise_create' %}">Missing an exercise? Create it</a>
     </p>
   </div>
 {% endblock %}

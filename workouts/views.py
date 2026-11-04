@@ -4,12 +4,15 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.db.models import Max, Min
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
+from accounts.services import get_user_settings, ios_shortcut_url
 from exercises.models import Exercise
+from exercises.picker import picker_response
 from plans.models import Plan, PlanDay
 
 from . import services
@@ -108,12 +111,22 @@ def build_card(workout, exercise, plan_exercise=None, form=None, edit_form=None)
     }
 
 
-def _card_response(request, card, status=200, rest_seconds=None):
+def _card_response(request, card, status=200, rest=None):
     response = render(request, "workouts/partials/exercise_card.html", card, status=status)
-    if rest_seconds:
+    if rest:
         # HTMX turns this header into a "restStart" event that starts the timer.
-        response["HX-Trigger"] = json.dumps({"restStart": {"seconds": rest_seconds}})
+        response["HX-Trigger"] = json.dumps({"restStart": rest})
     return response
+
+
+def _rest_event(request, workout, exercise, seconds):
+    """Details for the rest timer; adds the iOS Shortcuts link if the user enabled it."""
+    rest = {"seconds": seconds}
+    user_settings = get_user_settings(request.user)
+    if user_settings.ios_shortcut_enabled and user_settings.ios_shortcut_name:
+        return_url = request.build_absolute_uri(_workout_url(workout, exercise))
+        rest["shortcutUrl"] = ios_shortcut_url(user_settings.ios_shortcut_name, seconds, return_url)
+    return rest
 
 
 # --- home and starting ----------------------------------------------------
@@ -183,11 +196,10 @@ def workout_detail(request, pk):
         seen.add(exercise_id)
         cards.append(build_card(workout, extra[exercise_id]))
 
-    # "Add exercise" picker: shows the chosen exercise's card until its first set is logged.
-    visible = Exercise.objects.visible_to(request.user)
+    # Chosen in the exercise picker: its card shows until the first set is logged.
     added_id = request.GET.get("add", "")
     if added_id.isdigit() and int(added_id) not in seen:
-        added = visible.filter(pk=added_id).first()
+        added = Exercise.objects.visible_to(request.user).filter(pk=added_id).first()
         if added:
             cards.append(build_card(workout, added))
 
@@ -197,9 +209,29 @@ def workout_detail(request, pk):
         {
             "workout": workout,
             "cards": cards,
-            "exercise_choices": visible.exclude(pk__in=seen),
             "finish_form": FinishWorkoutForm(instance=workout),
+            "user_settings": get_user_settings(request.user),
         },
+    )
+
+
+@login_required
+def add_exercise(request, pk):
+    """Exercise picker for an open workout; picking redirects back with ?add=<id>."""
+    workout = _get_open_workout(request, pk)
+    exercise_id = request.GET.get("exercise", "")
+    if exercise_id:
+        if not exercise_id.isdigit():
+            raise Http404
+        exercise = get_object_or_404(Exercise.objects.visible_to(request.user), pk=exercise_id)
+        url = reverse("workouts:workout_detail", args=[workout.pk])
+        return redirect(f"{url}?add={exercise.pk}#ex-{exercise.pk}")
+    return picker_response(
+        request,
+        title="Add exercise",
+        back_url=_workout_url(workout),
+        select_base=f"{request.path}?exercise=",
+        recent=services.recently_used_exercises(request.user),
     )
 
 
@@ -251,7 +283,8 @@ def set_create(request, pk, exercise_pk):
 
     if _is_htmx(request):
         card = build_card(workout, exercise, plan_exercise)
-        return _card_response(request, card, rest_seconds=card["rest_seconds"])
+        rest = _rest_event(request, workout, exercise, card["rest_seconds"])
+        return _card_response(request, card, rest=rest)
     return redirect(_workout_url(workout, exercise))
 
 
