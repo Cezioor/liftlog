@@ -47,7 +47,9 @@ class Workout(models.Model):
 
 class WorkoutSet(models.Model):
     workout = models.ForeignKey(Workout, on_delete=models.CASCADE, related_name="sets")
-    exercise = models.ForeignKey(Exercise, on_delete=models.PROTECT, related_name="+")
+    # RESTRICT (not PROTECT): an exercise with logged sets can't be deleted on its own,
+    # but deleting a whole account (exercises + workouts together) still works.
+    exercise = models.ForeignKey(Exercise, on_delete=models.RESTRICT, related_name="+")
     # Set number within this exercise in this workout (1, 2, 3, ...).
     order = models.PositiveSmallIntegerField(default=1)
     weight_kg = models.DecimalField(

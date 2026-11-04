@@ -50,8 +50,9 @@ class PlanDay(models.Model):
 
 class PlanExercise(models.Model):
     day = models.ForeignKey(PlanDay, on_delete=models.CASCADE, related_name="exercises")
-    # PROTECT: an exercise used in a plan cannot be deleted by accident.
-    exercise = models.ForeignKey(Exercise, on_delete=models.PROTECT, related_name="+")
+    # RESTRICT: an exercise used in a plan can't be deleted by accident, but deleting
+    # the whole account (its exercises and plans together) still works.
+    exercise = models.ForeignKey(Exercise, on_delete=models.RESTRICT, related_name="+")
     order = models.PositiveIntegerField(default=0)
     target_sets = models.PositiveSmallIntegerField(
         default=3, validators=[MinValueValidator(1), MaxValueValidator(20)]
