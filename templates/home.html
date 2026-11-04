@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+  <h1>Hi, {{ user.username }}</h1>
+  <p class="muted">Workout logging is coming next. For now you can browse the exercise library and add your own exercises.</p>
+
+  <div class="stack">
+    <a class="button button-primary" href="{% url 'exercises:exercise_list' %}">Exercise library</a>
+    <a class="button" href="{% url 'exercises:exercise_create' %}">Add my own exercise</a>
+  </div>
+{% endblock %}

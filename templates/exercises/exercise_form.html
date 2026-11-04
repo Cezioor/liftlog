@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Add exercise{% endblock %}
+
+{% block content %}
+  <div class="card narrow">
+    <h1>Add exercise</h1>
+    <form method="post" class="form">
+      {% csrf_token %}
+      {{ form }}
+      <button type="submit" class="button button-primary">Save</button>
+    </form>
+    <p class="form-links"><a href="{% url 'exercises:exercise_list' %}">Cancel</a></p>
+  </div>
+{% endblock %}

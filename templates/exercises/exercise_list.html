@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Exercises{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <h1>Exercises</h1>
+    <a class="button button-primary button-small" href="{% url 'exercises:exercise_create' %}">+ Add</a>
+  </div>
+
+  <form method="get" class="search" role="search">
+    <input type="search" name="q" value="{{ query }}" placeholder="Search exercises" aria-label="Search exercises">
+  </form>
+
+  <ul class="list">
+    {% for exercise in exercises %}
+      <li class="list-item">
+        <span class="list-title">{{ exercise.name }}</span>
+        <span class="list-meta">
+          {{ exercise.get_muscle_group_display }} · {{ exercise.get_equipment_display }}
+          {% if not exercise.is_builtin %}<span class="badge">Mine</span>{% endif %}
+        </span>
+      </li>
+    {% empty %}
+      <li class="list-item muted">No exercises found.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
