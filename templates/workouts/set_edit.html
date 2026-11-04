@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{# Fallback page for editing a set when JavaScript/HTMX is not available. #}
+
+{% block title %}Edit set{% endblock %}
+
+{% block content %}
+  {% include "workouts/partials/exercise_card.html" %}
+  <p class="form-links"><a href="{% url 'workouts:workout_detail' workout.pk %}">← Back to workout</a></p>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load workout_tags %}
+
+{% block title %}{{ workout.title }}{% endblock %}
+
+{% block content %}
+  <h1>{{ workout.title }}</h1>
+  <p class="muted">
+    {{ workout.started_at|date:"l j F Y" }} · {{ workout.started_at|time:"H:i" }}–{{ workout.finished_at|time:"H:i" }}
+  </p>
+
+  {% if workout.note %}
+    <p class="card note">{{ workout.note|linebreaksbr }}</p>
+  {% endif %}
+
+  {% for exercise, sets in groups %}
+    <section class="card">
+      <h2>{{ exercise.name }}</h2>
+      <ol class="summary-sets">
+        {% for s in sets %}
+          <li>{{ s.weight_kg|kg }} kg × {{ s.reps }}{% if s.is_warmup %} <span class="badge">Warm-up</span>{% endif %}</li>
+        {% endfor %}
+      </ol>
+    </section>
+  {% empty %}
+    <p class="muted">No sets were logged in this workout.</p>
+  {% endfor %}
+
+  <a class="button" href="{% url 'home' %}">Back home</a>
+{% endblock %}

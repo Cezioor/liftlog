@@ -1,5 +1,4 @@
 from django.contrib.auth import login
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
 from .forms import SignUpForm
@@ -17,8 +16,3 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, "registration/signup.html", {"form": form})
-
-
-@login_required
-def home(request):
-    return render(request, "home.html")

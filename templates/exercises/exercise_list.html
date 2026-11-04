@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load workout_tags %}
 
 {% block title %}Exercises{% endblock %}
 
@@ -14,12 +15,17 @@
 
   <ul class="list">
     {% for exercise in exercises %}
-      <li class="list-item">
-        <span class="list-title">{{ exercise.name }}</span>
-        <span class="list-meta">
-          {{ exercise.get_muscle_group_display }} · {{ exercise.get_equipment_display }}
-          {% if not exercise.is_builtin %}<span class="badge">Mine</span>{% endif %}
-        </span>
+      <li>
+        {% if exercise.is_builtin %}
+          <div class="list-item">
+        {% else %}
+          <a class="list-item list-link" href="{% url 'exercises:exercise_update' exercise.pk %}">
+        {% endif %}
+          <span class="list-title">{{ exercise.name }}{% if not exercise.is_builtin %} <span class="badge">Mine</span>{% endif %}</span>
+          <span class="list-meta">
+            {{ exercise.get_muscle_group_display }} · {{ exercise.get_equipment_display }} · +{{ exercise.progression_step_kg|kg }} kg
+          </span>
+        {% if exercise.is_builtin %}</div>{% else %}</a>{% endif %}
       </li>
     {% empty %}
       <li class="list-item muted">No exercises found.</li>

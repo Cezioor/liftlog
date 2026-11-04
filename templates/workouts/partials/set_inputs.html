@@ -1,0 +1,27 @@
+{# Weight and reps inputs with big −/+ buttons (handled in static/js/workout.js). #}
+{% if form.non_field_errors or form.weight_kg.errors or form.reps.errors %}
+  <ul class="errorlist">
+    {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
+    {% for error in form.weight_kg.errors %}<li>Weight: {{ error }}</li>{% endfor %}
+    {% for error in form.reps.errors %}<li>Reps: {{ error }}</li>{% endfor %}
+  </ul>
+{% endif %}
+<div class="set-inputs">
+  <div class="stepper">
+    <label for="{{ form.weight_kg.id_for_label }}">kg</label>
+    <div class="stepper-row">
+      <button type="button" class="step" data-step="-2.5" data-for="{{ form.weight_kg.id_for_label }}" aria-label="Weight minus 2.5">−</button>
+      {{ form.weight_kg }}
+      <button type="button" class="step" data-step="2.5" data-for="{{ form.weight_kg.id_for_label }}" aria-label="Weight plus 2.5">+</button>
+    </div>
+  </div>
+  <div class="stepper">
+    <label for="{{ form.reps.id_for_label }}">Reps</label>
+    <div class="stepper-row">
+      <button type="button" class="step" data-step="-1" data-for="{{ form.reps.id_for_label }}" aria-label="Reps minus 1">−</button>
+      {{ form.reps }}
+      <button type="button" class="step" data-step="1" data-for="{{ form.reps.id_for_label }}" aria-label="Reps plus 1">+</button>
+    </div>
+  </div>
+</div>
+<label class="warmup-toggle" for="{{ form.is_warmup.id_for_label }}">{{ form.is_warmup }} Warm-up set</label>

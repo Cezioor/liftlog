@@ -1,4 +1,7 @@
+from decimal import Decimal
+
 from django.conf import settings
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Q
 
@@ -40,6 +43,16 @@ class Exercise(models.Model):
     muscle_group = models.CharField(max_length=20, choices=MuscleGroup.choices)
     equipment = models.CharField(max_length=20, choices=Equipment.choices)
     is_bodyweight = models.BooleanField(default=False)
+    # kg added by the progression hint. Left empty, it is filled in save() from
+    # exercises.services.default_progression_step.
+    progression_step_kg = models.DecimalField(
+        "progression step (kg)",
+        max_digits=5,
+        decimal_places=2,
+        blank=True,
+        validators=[MinValueValidator(Decimal("0.25")), MaxValueValidator(Decimal("50"))],
+        help_text="How much weight to add when you hit the top of the rep range on every set.",
+    )
     # null = built-in exercise shared by everyone; otherwise a user's own exercise.
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -70,6 +83,14 @@ class Exercise(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if self.progression_step_kg is None:
+            # Imported here to avoid a circular import (services imports models).
+            from .services import default_progression_step
+
+            self.progression_step_kg = default_progression_step(self.muscle_group, self.equipment)
+        super().save(*args, **kwargs)
 
     @property
     def is_builtin(self):

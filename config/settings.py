@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     # Local apps
     "accounts",
     "exercises",
+    "plans",
+    "workouts",
 ]
 
 MIDDLEWARE = [

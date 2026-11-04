@@ -6,17 +6,6 @@ from django.urls import reverse
 from exercises.models import Exercise
 from exercises.seed_data import EXERCISES
 
-
-@pytest.fixture
-def user(django_user_model):
-    return django_user_model.objects.create_user(username="ania", password="pass")
-
-
-@pytest.fixture
-def other_user(django_user_model):
-    return django_user_model.objects.create_user(username="bartek", password="pass")
-
-
 # --- Seed command ---------------------------------------------------------
 
 

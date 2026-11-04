@@ -1,0 +1,318 @@
+import json
+
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.db import transaction
+from django.db.models import Max, Min
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+from django.utils import timezone
+from django.views.decorators.http import require_POST
+
+from exercises.models import Exercise
+from plans.models import Plan, PlanDay
+
+from . import services
+from .forms import FinishWorkoutForm, WorkoutSetForm
+from .models import Workout, WorkoutSet
+
+DEFAULT_REST_SECONDS = 90
+
+
+# --- helpers --------------------------------------------------------------
+
+
+def _is_htmx(request):
+    return request.headers.get("HX-Request") == "true"
+
+
+def _get_open_workout(request, pk):
+    """A workout of this user that is still in progress (sets can only change there)."""
+    return get_object_or_404(Workout, pk=pk, owner=request.user, finished_at__isnull=True)
+
+
+def _get_own_set(request, pk):
+    return get_object_or_404(
+        WorkoutSet.objects.select_related("workout", "exercise"),
+        pk=pk,
+        workout__owner=request.user,
+        workout__finished_at__isnull=True,
+    )
+
+
+def _plan_exercise_for(workout, exercise):
+    if workout.plan_day is None:
+        return None
+    return workout.plan_day.exercises.filter(exercise=exercise).first()
+
+
+def _workout_url(workout, exercise=None):
+    url = reverse("workouts:workout_detail", args=[workout.pk])
+    return f"{url}#ex-{exercise.pk}" if exercise else url
+
+
+def _add_set_form(exercise, data=None, initial=None):
+    # Unique HTML ids per card, because one page shows many of these forms.
+    return WorkoutSetForm(data, initial=initial, auto_id=f"ex{exercise.pk}_%s")
+
+
+def _edit_set_form(workout_set, data=None):
+    return WorkoutSetForm(
+        data,
+        instance=workout_set,
+        initial={"weight_kg": services.format_kg(workout_set.weight_kg)},
+        auto_id=f"set{workout_set.pk}_%s",
+    )
+
+
+def build_card(workout, exercise, plan_exercise=None, form=None, edit_form=None):
+    """Everything the exercise card template needs."""
+    current = list(workout.sets.filter(exercise=exercise))
+    previous = services.last_sets(workout.owner, exercise, exclude_workout=workout)
+    rep_min = plan_exercise.rep_min if plan_exercise else None
+    rep_max = plan_exercise.rep_max if plan_exercise else None
+    hint = services.progression_hint(exercise, previous, rep_max)
+    defaults = services.next_set_defaults(current, previous, hint, rep_min)
+
+    if form is None:
+        form = _add_set_form(
+            exercise,
+            initial={"weight_kg": services.format_kg(defaults.weight_kg), "reps": defaults.reps},
+        )
+
+    # One row per set number: last time's set next to today's.
+    target = plan_exercise.target_sets if plan_exercise else 0
+    row_count = max(target, len(previous), len(current))
+    rows = [
+        {
+            "number": i + 1,
+            "previous": previous[i] if i < len(previous) else None,
+            "current": current[i] if i < len(current) else None,
+        }
+        for i in range(row_count)
+    ]
+
+    return {
+        "workout": workout,
+        "exercise": exercise,
+        "plan_exercise": plan_exercise,
+        "rows": rows,
+        "has_previous": bool(previous),
+        "hint": hint,
+        "form": form,
+        "edit_form": edit_form,
+        "editing_id": edit_form.instance.pk if edit_form else None,
+        "rest_seconds": plan_exercise.rest_seconds if plan_exercise else DEFAULT_REST_SECONDS,
+        "done": len(current),
+        "target": target,
+    }
+
+
+def _card_response(request, card, status=200, rest_seconds=None):
+    response = render(request, "workouts/partials/exercise_card.html", card, status=status)
+    if rest_seconds:
+        # HTMX turns this header into a "restStart" event that starts the timer.
+        response["HX-Trigger"] = json.dumps({"restStart": {"seconds": rest_seconds}})
+    return response
+
+
+# --- home and starting ----------------------------------------------------
+
+
+@login_required
+def home(request):
+    active_plan = (
+        Plan.objects.filter(owner=request.user, is_active=True).prefetch_related("days").first()
+    )
+    context = {
+        "open_workout": Workout.objects.filter(
+            owner=request.user, finished_at__isnull=True
+        ).first(),
+        "active_plan": active_plan,
+        "recent_workouts": Workout.objects.filter(
+            owner=request.user, finished_at__isnull=False
+        ).select_related("plan_day")[:5],
+    }
+    return render(request, "home.html", context)
+
+
+@login_required
+@require_POST
+def workout_start(request):
+    existing = Workout.objects.filter(owner=request.user, finished_at__isnull=True).first()
+    if existing:
+        messages.info(request, "You already have a workout in progress.")
+        return redirect("workouts:workout_detail", pk=existing.pk)
+
+    plan_day = None
+    if request.POST.get("plan_day"):
+        plan_day = get_object_or_404(PlanDay, pk=request.POST["plan_day"], plan__owner=request.user)
+    workout = Workout.objects.create(owner=request.user, plan_day=plan_day)
+    return redirect("workouts:workout_detail", pk=workout.pk)
+
+
+# --- the workout screen ---------------------------------------------------
+
+
+@login_required
+def workout_detail(request, pk):
+    workout = get_object_or_404(
+        Workout.objects.select_related("plan_day"), pk=pk, owner=request.user
+    )
+    if workout.is_finished:
+        return _workout_summary(request, workout)
+
+    cards = []
+    seen = set()
+    if workout.plan_day:
+        for item in workout.plan_day.exercises.select_related("exercise"):
+            if item.exercise_id not in seen:
+                seen.add(item.exercise_id)
+                cards.append(build_card(workout, item.exercise, item))
+
+    # Exercises added during the workout (not in the plan day), in the order first logged.
+    extra_ids = list(
+        workout.sets.exclude(exercise_id__in=seen)
+        .values("exercise_id")
+        .annotate(first=Min("pk"))
+        .order_by("first")
+        .values_list("exercise_id", flat=True)
+    )
+    extra = Exercise.objects.in_bulk(extra_ids)
+    for exercise_id in extra_ids:
+        seen.add(exercise_id)
+        cards.append(build_card(workout, extra[exercise_id]))
+
+    # "Add exercise" picker: shows the chosen exercise's card until its first set is logged.
+    visible = Exercise.objects.visible_to(request.user)
+    added_id = request.GET.get("add", "")
+    if added_id.isdigit() and int(added_id) not in seen:
+        added = visible.filter(pk=added_id).first()
+        if added:
+            cards.append(build_card(workout, added))
+
+    return render(
+        request,
+        "workouts/workout_detail.html",
+        {
+            "workout": workout,
+            "cards": cards,
+            "exercise_choices": visible.exclude(pk__in=seen),
+            "finish_form": FinishWorkoutForm(instance=workout),
+        },
+    )
+
+
+def _workout_summary(request, workout):
+    sets = workout.sets.select_related("exercise").order_by("pk")
+    groups = {}
+    for workout_set in sets:
+        groups.setdefault(workout_set.exercise, []).append(workout_set)
+    return render(
+        request,
+        "workouts/workout_summary.html",
+        {"workout": workout, "groups": groups.items()},
+    )
+
+
+@login_required
+def exercise_card(request, pk, exercise_pk):
+    """One exercise card on its own; HTMX uses it to cancel editing a set."""
+    workout = _get_open_workout(request, pk)
+    exercise = get_object_or_404(Exercise.objects.visible_to(request.user), pk=exercise_pk)
+    if not _is_htmx(request):
+        return redirect(_workout_url(workout, exercise))
+    return _card_response(
+        request, build_card(workout, exercise, _plan_exercise_for(workout, exercise))
+    )
+
+
+@login_required
+@require_POST
+def set_create(request, pk, exercise_pk):
+    workout = _get_open_workout(request, pk)
+    exercise = get_object_or_404(Exercise.objects.visible_to(request.user), pk=exercise_pk)
+    plan_exercise = _plan_exercise_for(workout, exercise)
+    form = _add_set_form(exercise, request.POST)
+
+    if not form.is_valid():
+        if _is_htmx(request):
+            return _card_response(request, build_card(workout, exercise, plan_exercise, form))
+        messages.error(request, "Check the weight and reps.")
+        return redirect(_workout_url(workout, exercise))
+
+    with transaction.atomic():
+        workout_set = form.save(commit=False)
+        workout_set.workout = workout
+        workout_set.exercise = exercise
+        last_order = workout.sets.filter(exercise=exercise).aggregate(m=Max("order"))["m"]
+        workout_set.order = (last_order or 0) + 1
+        workout_set.save()
+
+    if _is_htmx(request):
+        card = build_card(workout, exercise, plan_exercise)
+        return _card_response(request, card, rest_seconds=card["rest_seconds"])
+    return redirect(_workout_url(workout, exercise))
+
+
+@login_required
+def set_update(request, pk):
+    workout_set = _get_own_set(request, pk)
+    workout, exercise = workout_set.workout, workout_set.exercise
+    plan_exercise = _plan_exercise_for(workout, exercise)
+
+    if request.method == "POST":
+        form = _edit_set_form(workout_set, request.POST)
+        if form.is_valid():
+            form.save()
+            if _is_htmx(request):
+                return _card_response(request, build_card(workout, exercise, plan_exercise))
+            return redirect(_workout_url(workout, exercise))
+    else:
+        form = _edit_set_form(workout_set)
+
+    card = build_card(workout, exercise, plan_exercise, edit_form=form)
+    if _is_htmx(request):
+        return _card_response(request, card)
+    return render(request, "workouts/set_edit.html", card)
+
+
+@login_required
+@require_POST
+def set_delete(request, pk):
+    workout_set = _get_own_set(request, pk)
+    workout, exercise = workout_set.workout, workout_set.exercise
+    with transaction.atomic():
+        workout_set.delete()
+        # Renumber the remaining sets so they stay 1, 2, 3, ...
+        for number, remaining in enumerate(workout.sets.filter(exercise=exercise), start=1):
+            if remaining.order != number:
+                remaining.order = number
+                remaining.save(update_fields=["order"])
+
+    if _is_htmx(request):
+        plan_exercise = _plan_exercise_for(workout, exercise)
+        return _card_response(request, build_card(workout, exercise, plan_exercise))
+    return redirect(_workout_url(workout, exercise))
+
+
+@login_required
+@require_POST
+def workout_finish(request, pk):
+    workout = _get_open_workout(request, pk)
+    form = FinishWorkoutForm(request.POST, instance=workout)
+    if form.is_valid():
+        workout = form.save(commit=False)
+        workout.finished_at = timezone.now()
+        workout.save()
+        messages.success(request, "Workout saved. Nice work!")
+    return redirect("workouts:workout_detail", pk=workout.pk)
+
+
+@login_required
+@require_POST
+def workout_discard(request, pk):
+    workout = _get_open_workout(request, pk)
+    workout.delete()
+    messages.info(request, "Workout discarded.")
+    return redirect("home")

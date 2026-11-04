@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}{% if item %}Edit exercise{% else %}Add exercise{% endif %}{% endblock %}
+
+{% block content %}
+  <div class="card narrow">
+    <h1>{% if item %}Edit exercise{% else %}Add exercise to {{ day.name }}{% endif %}</h1>
+    <form method="post" class="form form-grid">
+      {% csrf_token %}
+      {{ form }}
+      <button type="submit" class="button button-primary">Save</button>
+    </form>
+    {% if item %}
+      <form method="post" action="{% url 'plans:pe_delete' item.pk %}" class="danger-zone">
+        {% csrf_token %}
+        <button type="submit" class="button button-danger">Remove from {{ day.name }}</button>
+      </form>
+    {% endif %}
+    <p class="form-links">
+      <a href="{% url 'plans:plan_detail' day.plan_id %}#day-{{ day.pk }}">Cancel</a>
+      <a href="{% url 'exercises:exercise_create' %}">Missing an exercise? Create it</a>
+    </p>
+  </div>
+{% endblock %}

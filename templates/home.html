@@ -3,11 +3,53 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-  <h1>Hi, {{ user.username }}</h1>
-  <p class="muted">Workout logging is coming next. For now you can browse the exercise library and add your own exercises.</p>
+  {% if open_workout %}
+    <section class="card card-highlight">
+      <h1>Workout in progress</h1>
+      <p class="muted">{{ open_workout.title }} · started {{ open_workout.started_at|time:"H:i" }}</p>
+      <a class="button button-primary button-big" href="{% url 'workouts:workout_detail' open_workout.pk %}">Resume workout</a>
+    </section>
+  {% else %}
+    <h1>Start a workout</h1>
+    <div class="stack">
+      {% if active_plan %}
+        {% for day in active_plan.days.all %}
+          <form method="post" action="{% url 'workouts:workout_start' %}">
+            {% csrf_token %}
+            <input type="hidden" name="plan_day" value="{{ day.pk }}">
+            <button type="submit" class="button button-primary button-big">{{ day.name }}</button>
+          </form>
+        {% empty %}
+          <p class="muted">Your active plan “{{ active_plan.name }}” has no days yet. <a href="{% url 'plans:plan_detail' active_plan.pk %}">Add days</a></p>
+        {% endfor %}
+      {% else %}
+        <p class="muted"><a href="{% url 'plans:plan_create' %}">Create a plan</a> to start workouts from it, or just log a free workout.</p>
+      {% endif %}
+      <form method="post" action="{% url 'workouts:workout_start' %}">
+        {% csrf_token %}
+        <button type="submit" class="button">Empty workout</button>
+      </form>
+    </div>
+    {% if active_plan %}<p class="muted small">From plan: <a href="{% url 'plans:plan_detail' active_plan.pk %}">{{ active_plan.name }}</a></p>{% endif %}
+  {% endif %}
 
-  <div class="stack">
-    <a class="button button-primary" href="{% url 'exercises:exercise_list' %}">Exercise library</a>
-    <a class="button" href="{% url 'exercises:exercise_create' %}">Add my own exercise</a>
-  </div>
+  {% if recent_workouts %}
+    <h2>Recent workouts</h2>
+    <ul class="list">
+      {% for workout in recent_workouts %}
+        <li>
+          <a class="list-item list-link" href="{% url 'workouts:workout_detail' workout.pk %}">
+            <span class="list-title">{{ workout.title }}</span>
+            <span class="list-meta">{{ workout.started_at|date:"D j M, H:i" }}</span>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <form method="post" action="{% url 'logout' %}" class="logout">
+    {% csrf_token %}
+    <span class="muted small">Logged in as {{ user.username }}</span>
+    <button type="submit" class="link-button">Log out</button>
+  </form>
 {% endblock %}

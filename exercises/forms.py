@@ -1,28 +1,55 @@
 from django import forms
 
 from .models import Exercise
+from .services import default_progression_step
+
+
+class WeightField(forms.DecimalField):
+    """Accepts both "62.5" and "62,5" (Polish phone keyboards type a comma)."""
+
+    def to_python(self, value):
+        if isinstance(value, str):
+            value = value.strip().replace(",", ".")
+        return super().to_python(value)
 
 
 class ExerciseForm(forms.ModelForm):
     class Meta:
         model = Exercise
-        fields = ("name", "muscle_group", "equipment", "is_bodyweight")
+        fields = ("name", "muscle_group", "equipment", "is_bodyweight", "progression_step_kg")
+        field_classes = {"progression_step_kg": WeightField}
+        widgets = {
+            "progression_step_kg": forms.TextInput(
+                attrs={"inputmode": "decimal", "placeholder": "Leave empty for the default"}
+            ),
+        }
 
     def __init__(self, *args, owner, **kwargs):
         super().__init__(*args, **kwargs)
         self.owner = owner
+        self.fields["progression_step_kg"].help_text = (
+            "kg added when every set hits the top of the rep range. "
+            "Empty = default: dumbbells 2, legs 5, upper body 2.5."
+        )
 
     def clean_name(self):
         name = self.cleaned_data["name"].strip()
         # The DB constraint only covers the user's own exercises; also stop a
         # user from creating a copy of a built-in exercise.
-        if Exercise.objects.visible_to(self.owner).filter(name__iexact=name).exists():
+        duplicates = Exercise.objects.visible_to(self.owner).filter(name__iexact=name)
+        if self.instance.pk:
+            duplicates = duplicates.exclude(pk=self.instance.pk)
+        if duplicates.exists():
             raise forms.ValidationError("An exercise with this name already exists.")
         return name
 
     def save(self, commit=True):
         exercise = super().save(commit=False)
         exercise.owner = self.owner
+        if self.cleaned_data.get("progression_step_kg") is None:
+            exercise.progression_step_kg = default_progression_step(
+                exercise.muscle_group, exercise.equipment
+            )
         if commit:
             exercise.save()
         return exercise

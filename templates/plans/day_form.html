@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Edit {{ day.name }}{% endblock %}
+
+{% block content %}
+  <div class="card narrow">
+    <h1>Edit day</h1>
+    <form method="post" class="form">
+      {% csrf_token %}
+      {{ form }}
+      <button type="submit" class="button button-primary">Save</button>
+    </form>
+    <form method="post" action="{% url 'plans:day_delete' day.pk %}" class="danger-zone"
+          onsubmit="return confirm('Delete {{ day.name|escapejs }} and its exercises?');">
+      {% csrf_token %}
+      <button type="submit" class="button button-danger">Delete day</button>
+    </form>
+    <p class="form-links"><a href="{% url 'plans:plan_detail' day.plan_id %}#day-{{ day.pk }}">Cancel</a></p>
+  </div>
+{% endblock %}

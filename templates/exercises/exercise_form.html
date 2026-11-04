@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}Add exercise{% endblock %}
+{% block title %}{% if exercise %}Edit exercise{% else %}Add exercise{% endif %}{% endblock %}
 
 {% block content %}
   <div class="card narrow">
-    <h1>Add exercise</h1>
+    <h1>{% if exercise %}Edit {{ exercise.name }}{% else %}Add exercise{% endif %}</h1>
     <form method="post" class="form">
       {% csrf_token %}
       {{ form }}

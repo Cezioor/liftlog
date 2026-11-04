@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}{{ plan.name }}{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <h1>{{ plan.name }}</h1>
+    {% if plan.is_active %}
+      <span class="badge badge-large">Active</span>
+    {% else %}
+      <form method="post" action="{% url 'plans:plan_activate' plan.pk %}">
+        {% csrf_token %}
+        <button type="submit" class="button button-small">Set active</button>
+      </form>
+    {% endif %}
+  </div>
+
+  {% for day in days %}
+    <section class="card day" id="day-{{ day.pk }}">
+      <div class="day-header">
+        <h2>{{ day.name }}</h2>
+        <div class="icon-buttons">
+          {% include "plans/_move_buttons.html" with url_name="plans:day_move" pk=day.pk first=forloop.first last=forloop.last label=day.name %}
+          <a class="icon-button" href="{% url 'plans:day_update' day.pk %}" aria-label="Rename {{ day.name }}">✎</a>
+        </div>
+      </div>
+
+      {% if day.exercises.all %}
+        <ol class="plan-exercises">
+          {% for item in day.exercises.all %}
+            <li class="plan-exercise">
+              <a class="plan-exercise-main" href="{% url 'plans:pe_update' item.pk %}">
+                <span class="list-title">{{ item.exercise.name }}</span>
+                <span class="list-meta">{{ item.target_sets }} × {{ item.rep_range }} · rest {{ item.rest_seconds }} s</span>
+              </a>
+              <div class="icon-buttons">
+                {% include "plans/_move_buttons.html" with url_name="plans:pe_move" pk=item.pk first=forloop.first last=forloop.last label=item.exercise.name %}
+              </div>
+            </li>
+          {% endfor %}
+        </ol>
+      {% else %}
+        <p class="muted">No exercises yet.</p>
+      {% endif %}
+
+      <a class="button" href="{% url 'plans:pe_create' day.pk %}">+ Add exercise</a>
+    </section>
+  {% empty %}
+    <p class="muted">Add the first training day below, e.g. “Push”, “Upper A” or “Full body”.</p>
+  {% endfor %}
+
+  <section class="card">
+    <h2>Add a day</h2>
+    <form method="post" action="{% url 'plans:day_create' plan.pk %}" class="inline-form">
+      {% csrf_token %}
+      {{ day_form.name }}
+      <button type="submit" class="button button-primary button-small">Add</button>
+    </form>
+  </section>
+
+  <details class="card">
+    <summary>Plan settings</summary>
+    <form method="post" class="form">
+      {% csrf_token %}
+      {{ rename_form }}
+      <button type="submit" class="button">Rename plan</button>
+    </form>
+    <form method="post" action="{% url 'plans:plan_delete' plan.pk %}" class="danger-zone"
+          onsubmit="return confirm('Delete this plan with all its days? Logged workouts are kept.');">
+      {% csrf_token %}
+      <button type="submit" class="button button-danger">Delete plan</button>
+    </form>
+  </details>
+
+  <p class="form-links"><a href="{% url 'plans:plan_list' %}">← All plans</a></p>
+{% endblock %}

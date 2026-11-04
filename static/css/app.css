@@ -321,3 +321,420 @@ input[type="checkbox"] {
   font-size: 0.75rem;
   font-weight: 600;
 }
+
+/* ---------------------------------------------------------------------- */
+/* Shared helpers added with plans and workouts                           */
+
+h2 {
+  font-size: 1.2rem;
+  line-height: 1.25;
+  margin: 0 0 12px;
+}
+
+main > h2 {
+  margin-top: 28px;
+}
+
+.small {
+  font-size: 0.85rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.card + .card,
+.card + form,
+form + .card,
+.exercise-cards + .card {
+  margin-top: 12px;
+}
+
+.card-highlight {
+  border-color: var(--accent);
+}
+
+.button-big {
+  min-height: 56px;
+  font-size: 1.1rem;
+}
+
+.button-danger {
+  background: transparent;
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.button:disabled {
+  opacity: 0.6;
+}
+
+.danger-text {
+  color: var(--danger);
+}
+
+.danger-zone {
+  margin-top: 12px;
+}
+
+.badge-large {
+  font-size: 0.9rem;
+  padding: 4px 12px;
+}
+
+.list-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.list > li + li .list-link {
+  border-top: 1px solid var(--border);
+}
+
+.icon-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.icon-buttons form {
+  margin: 0;
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-size: 1.1rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.icon-button:disabled {
+  opacity: 0.3;
+}
+
+.inline-form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.inline-form > input,
+.inline-form > select {
+  flex: 1;
+  min-width: 0;
+}
+
+details.card > summary {
+  min-height: var(--tap);
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+details.card[open] > summary {
+  margin-bottom: 12px;
+}
+
+.logout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 32px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+/* Plan editor */
+.day-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.day-header h2 {
+  margin: 0;
+}
+
+.plan-exercises {
+  margin: 0 0 12px;
+  padding: 0;
+  list-style: none;
+}
+
+.plan-exercise {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+}
+
+.plan-exercise-main {
+  flex: 1;
+  display: grid;
+  min-height: var(--tap);
+  align-content: center;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Workout screen */
+.page-header p {
+  margin: 4px 0 0;
+}
+
+.exercise-cards {
+  display: grid;
+  gap: 12px;
+}
+
+.exercise-card {
+  scroll-margin-top: 72px; /* keep #ex-123 anchors below the sticky top bar */
+}
+
+.ex-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ex-header h2 {
+  margin: 0;
+}
+
+.ex-progress {
+  color: var(--muted);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.ex-progress-done {
+  color: var(--accent);
+}
+
+.hint {
+  margin: 8px 0 0;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  font-size: 0.95rem;
+}
+
+.hint-up {
+  color: var(--accent);
+}
+
+.hint-new {
+  color: var(--muted);
+}
+
+.sets {
+  width: 100%;
+  margin-top: 12px;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.sets th {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0 4px 4px;
+}
+
+.sets td {
+  padding: 4px;
+  border-top: 1px solid var(--border);
+  height: 52px;
+}
+
+.set-number {
+  width: 2.5em;
+  color: var(--muted);
+}
+
+.set-prev {
+  color: var(--muted);
+}
+
+.set-today {
+  font-weight: 700;
+}
+
+.set-edit {
+  width: 48px;
+  text-align: right;
+}
+
+.set-done .set-number {
+  color: var(--accent);
+}
+
+.set-next {
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.set-editing td {
+  padding: 12px 0;
+}
+
+.set-form {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.set-form-actions {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 8px;
+}
+
+.set-editing form + form {
+  margin-top: 8px;
+}
+
+.set-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stepper {
+  display: grid;
+  gap: 4px;
+}
+
+.stepper label {
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.stepper-row {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  gap: 4px;
+}
+
+.step {
+  min-height: 52px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-size: 1.4rem;
+  cursor: pointer;
+  touch-action: manipulation; /* no double-tap zoom on fast taps */
+}
+
+input.num-input {
+  min-height: 52px;
+  padding: 8px 4px;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.warmup-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.add-exercise label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.discard {
+  margin-top: 12px;
+  text-align: center;
+}
+
+.summary-sets {
+  margin: 0;
+  padding-left: 1.5em;
+  font-variant-numeric: tabular-nums;
+}
+
+.note {
+  white-space: normal;
+}
+
+/* Rest timer bar, fixed to the bottom, reachable with the thumb. */
+.rest-timer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px var(--space);
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  background: var(--surface);
+  border-top: 2px solid var(--accent);
+  box-shadow: 0 -8px 24px rgb(0 0 0 / 0.4);
+}
+
+.rest-timer[hidden] {
+  display: none;
+}
+
+.rest-info {
+  flex: 1;
+  display: grid;
+}
+
+.rest-label {
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.rest-time {
+  font-size: 1.8rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.rest-done {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.rest-done .rest-label {
+  color: var(--accent-text);
+}
+
+body:has(.rest-timer:not([hidden])) .container {
+  padding-bottom: 120px;
+}

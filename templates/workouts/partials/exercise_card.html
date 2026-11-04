@@ -1,0 +1,84 @@
+{% load workout_tags %}
+{# One exercise in an open workout. HTMX replaces this whole <section> after every change. #}
+<section class="card exercise-card" id="ex-{{ exercise.pk }}">
+  <header class="ex-header">
+    <h2>{{ exercise.name }}</h2>
+    <span class="ex-progress{% if target and done >= target %} ex-progress-done{% endif %}">
+      {% if target %}{{ done }}/{{ target }} sets · {{ plan_exercise.rep_range }} reps{% else %}{{ done }} set{{ done|pluralize }}{% endif %}
+    </span>
+  </header>
+
+  {% if hint %}
+    <p class="hint{% if hint.increase %} hint-up{% endif %}">{% if hint.increase %}▲ {% endif %}{{ hint.message }}</p>
+  {% elif not has_previous %}
+    <p class="hint hint-new">First time logging this. Pick a weight you could do for a few more reps.</p>
+  {% endif %}
+
+  {% if rows %}
+    <table class="sets">
+      <thead>
+        <tr><th scope="col">Set</th><th scope="col">Last time</th><th scope="col">Today</th><th scope="col"><span class="visually-hidden">Edit</span></th></tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+          {% if row.current and row.current.pk == editing_id %}
+            <tr class="set-editing">
+              <td colspan="4">
+                <form method="post" action="{% url 'workouts:set_update' row.current.pk %}"
+                      hx-post="{% url 'workouts:set_update' row.current.pk %}"
+                      hx-target="closest .exercise-card" hx-swap="outerHTML"
+                      class="set-form">
+                  {% csrf_token %}
+                  {% include "workouts/partials/set_inputs.html" with form=edit_form %}
+                  <div class="set-form-actions">
+                    <button type="submit" class="button button-primary">Save set {{ row.number }}</button>
+                    <a class="button" href="{% url 'workouts:workout_detail' workout.pk %}#ex-{{ exercise.pk }}"
+                       hx-get="{% url 'workouts:exercise_card' workout.pk exercise.pk %}"
+                       hx-target="closest .exercise-card" hx-swap="outerHTML">Cancel</a>
+                  </div>
+                </form>
+                <form method="post" action="{% url 'workouts:set_delete' row.current.pk %}"
+                      hx-post="{% url 'workouts:set_delete' row.current.pk %}"
+                      hx-target="closest .exercise-card" hx-swap="outerHTML"
+                      hx-confirm="Delete set {{ row.number }}?">
+                  {% csrf_token %}
+                  <button type="submit" class="button button-danger">Delete set {{ row.number }}</button>
+                </form>
+              </td>
+            </tr>
+          {% else %}
+            <tr class="{% if row.current %}set-done{% elif forloop.counter == done|add:1 %}set-next{% endif %}">
+              <td class="set-number">{{ row.number }}</td>
+              <td class="set-prev">{% if row.previous %}{{ row.previous.weight_kg|kg }} × {{ row.previous.reps }}{% else %}–{% endif %}</td>
+              <td class="set-today">
+                {% if row.current %}
+                  {{ row.current.weight_kg|kg }} × {{ row.current.reps }}{% if row.current.is_warmup %} <span class="badge">W</span>{% endif %}
+                {% else %}–{% endif %}
+              </td>
+              <td class="set-edit">
+                {% if row.current %}
+                  <a class="icon-button" href="{% url 'workouts:set_update' row.current.pk %}"
+                     hx-get="{% url 'workouts:set_update' row.current.pk %}"
+                     hx-target="closest .exercise-card" hx-swap="outerHTML"
+                     aria-label="Edit set {{ row.number }}">✎</a>
+                {% endif %}
+              </td>
+            </tr>
+          {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+
+  {% if not editing_id %}
+    <form method="post" action="{% url 'workouts:set_create' workout.pk exercise.pk %}"
+          hx-post="{% url 'workouts:set_create' workout.pk exercise.pk %}"
+          hx-target="closest .exercise-card" hx-swap="outerHTML"
+          hx-disabled-elt="find button[type='submit']"
+          class="set-form" data-rest="{{ rest_seconds }}">
+      {% csrf_token %}
+      {% include "workouts/partials/set_inputs.html" %}
+      <button type="submit" class="button button-primary button-big">Log set {{ done|add:1 }}</button>
+    </form>
+  {% endif %}
+</section>

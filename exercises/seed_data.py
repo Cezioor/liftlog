@@ -3,6 +3,8 @@
 Each tuple: (name, muscle_group, equipment, is_bodyweight).
 """
 
+from decimal import Decimal
+
 EXERCISES = [
     # Chest
     ("Barbell Bench Press", "chest", "barbell", False),
@@ -82,3 +84,9 @@ EXERCISES = [
     ("Kettlebell Swing", "full_body", "kettlebell", False),
     ("Power Clean", "full_body", "barbell", False),
 ]
+
+# Exceptions to exercises.services.default_progression_step.
+PROGRESSION_STEP_OVERRIDES = {
+    # Listed under "back", but it is loaded and progressed like a leg lift.
+    "Deadlift": Decimal("5"),
+}

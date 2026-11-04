@@ -2,7 +2,8 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from exercises.models import Exercise
-from exercises.seed_data import EXERCISES
+from exercises.seed_data import EXERCISES, PROGRESSION_STEP_OVERRIDES
+from exercises.services import default_progression_step
 
 
 class Command(BaseCommand):
@@ -12,6 +13,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         created_count = 0
         for name, muscle_group, equipment, is_bodyweight in EXERCISES:
+            step = PROGRESSION_STEP_OVERRIDES.get(
+                name, default_progression_step(muscle_group, equipment)
+            )
             # update_or_create makes the command idempotent: running it again
             # updates existing built-ins instead of creating duplicates.
             _, created = Exercise.objects.update_or_create(
@@ -21,6 +25,7 @@ class Command(BaseCommand):
                     "muscle_group": muscle_group,
                     "equipment": equipment,
                     "is_bodyweight": is_bodyweight,
+                    "progression_step_kg": step,
                 },
             )
             created_count += created

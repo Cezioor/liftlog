@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}New plan{% endblock %}
+
+{% block content %}
+  <div class="card narrow">
+    <h1>New plan</h1>
+    <form method="post" class="form">
+      {% csrf_token %}
+      {{ form }}
+      <button type="submit" class="button button-primary">Create plan</button>
+    </form>
+    <p class="form-links"><a href="{% url 'plans:plan_list' %}">Cancel</a></p>
+  </div>
+{% endblock %}

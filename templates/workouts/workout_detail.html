@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static workout_tags %}
+
+{% block title %}{{ workout.title }}{% endblock %}
+
+{% block extra_head %}
+  <script src="{% static 'js/workout.js' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <div>
+      <h1>{{ workout.title }}</h1>
+      <p class="muted small">Started {{ workout.started_at|time:"H:i" }} · every set is saved as soon as you log it</p>
+    </div>
+  </div>
+
+  <div class="exercise-cards">
+    {% for card in cards %}
+      {% exercise_card card %}
+    {% empty %}
+      <p class="muted">No exercises yet. Add the first one below.</p>
+    {% endfor %}
+  </div>
+
+  <form method="get" class="card add-exercise">
+    <label for="add-exercise">Add an exercise</label>
+    <div class="inline-form">
+      <select name="add" id="add-exercise" required>
+        <option value="">Choose…</option>
+        {% for exercise in exercise_choices %}
+          <option value="{{ exercise.pk }}">{{ exercise.name }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="button button-small">Add</button>
+    </div>
+  </form>
+
+  <form method="post" action="{% url 'workouts:workout_finish' workout.pk %}" class="card form">
+    {% csrf_token %}
+    {{ finish_form }}
+    <button type="submit" class="button button-primary button-big">Finish workout</button>
+  </form>
+
+  <form method="post" action="{% url 'workouts:workout_discard' workout.pk %}"
+        onsubmit="return confirm('Discard this workout and all its sets?');" class="discard">
+    {% csrf_token %}
+    <button type="submit" class="link-button danger-text">Discard workout</button>
+  </form>
+{% endblock %}
+
+{% block after_main %}
+  <div class="rest-timer" id="rest-timer" hidden role="timer" aria-live="polite">
+    <div class="rest-info">
+      <span class="rest-label" id="rest-label">Rest</span>
+      <span class="rest-time" id="rest-time">0:00</span>
+    </div>
+    <button type="button" class="button button-small" data-rest-add="30">+30 s</button>
+    <button type="button" class="button button-small" data-rest-skip>Skip</button>
+  </div>
+{% endblock %}

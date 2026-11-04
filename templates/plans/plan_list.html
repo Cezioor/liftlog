@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Plans{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <h1>Plans</h1>
+    <a class="button button-primary button-small" href="{% url 'plans:plan_create' %}">+ New</a>
+  </div>
+
+  {% if plans %}
+    <ul class="list">
+      {% for plan in plans %}
+        <li>
+          <a class="list-item list-link" href="{% url 'plans:plan_detail' plan.pk %}">
+            <span class="list-title">{{ plan.name }}{% if plan.is_active %} <span class="badge">Active</span>{% endif %}</span>
+            <span class="list-meta">Created {{ plan.created_at|date:"j M Y" }}</span>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="card">
+      <p class="muted">No plans yet. A plan has days (e.g. Push / Pull / Legs), and each day has exercises with sets, a rep range and rest time.</p>
+      <a class="button button-primary" href="{% url 'plans:plan_create' %}">Create your first plan</a>
+    </div>
+  {% endif %}
+{% endblock %}
