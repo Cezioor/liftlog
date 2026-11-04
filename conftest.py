@@ -10,6 +10,16 @@ from exercises.models import Exercise
 from workouts.models import Workout, WorkoutSet
 
 
+@pytest.fixture(autouse=True)
+def _test_settings(settings):
+    """Tests run with DEBUG off (like production), minus the parts that need a real deploy."""
+    settings.SECURE_SSL_REDIRECT = False
+    settings.STORAGES = {
+        **settings.STORAGES,
+        "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+    }
+
+
 @pytest.fixture
 def user(django_user_model):
     return django_user_model.objects.create_user(username="ania", password="pass")

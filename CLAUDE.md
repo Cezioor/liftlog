@@ -40,7 +40,7 @@ Tasks and recurring reminders (e.g. "gym Mon/Wed/Fri", deadlines), with the plan
 - Charts: Chart.js from a CDN with a pinned version.
 - Settings from environment variables (`DJANGO_SECRET_KEY`, `DATABASE_URL`, `ANTHROPIC_API_KEY`, `DEBUG`).
 - Tests with **pytest + pytest-django**; GitHub Actions runs tests and `ruff` on every push.
-- Deploy target: decided at the end of Stage 1 (a free/low-cost host with Postgres).
+- Deploy: Render free web service (`render.yaml`, `build.sh` runs migrate, collectstatic and seed_exercises; gunicorn + WhiteNoise) with a Neon Postgres database (`DATABASE_URL`). CI runs the tests on Postgres.
 
 ## Data model (Stage 1)
 

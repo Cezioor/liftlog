@@ -1,0 +1,22 @@
+# Render Blueprint: Render reads this file when you create the service with
+# "New > Blueprint". Secrets are NOT stored here: DJANGO_SECRET_KEY is generated
+# by Render and DATABASE_URL is typed into the dashboard (sync: false).
+services:
+  - type: web
+    name: liftlog
+    runtime: python
+    plan: free
+    region: frankfurt # same region as the Neon database (AWS eu-central-1)
+    branch: main
+    buildCommand: bash build.sh
+    startCommand: gunicorn config.wsgi:application
+    healthCheckPath: /healthz/
+    envVars:
+      - key: DEBUG
+        value: "0"
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false
+      - key: WEB_CONCURRENCY
+        value: "2"
