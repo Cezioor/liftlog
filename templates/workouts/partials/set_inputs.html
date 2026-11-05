@@ -68,4 +68,15 @@
     </div>
   {% endif %}
 </div>
+{% if form.rir %}
+  {# Optional rating; tapping the selected button again clears it (workout.js). #}
+  <fieldset class="effort">
+    <legend>{{ form.rir.label }} <span class="muted">(optional)</span></legend>
+    <div class="effort-chips">
+      {% for radio in form.rir %}
+        <label class="chip">{{ radio.tag }}<span>{{ radio.choice_label }}</span></label>
+      {% endfor %}
+    </div>
+  </fieldset>
+{% endif %}
 <label class="warmup-toggle" for="{{ form.is_warmup.id_for_label }}">{{ form.is_warmup }} Warm-up set</label>

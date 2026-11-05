@@ -24,6 +24,22 @@
     input.value = String(next);
   });
 
+  // --- Set rating ---------------------------------------------------------
+  // The rating is optional: tapping the selected button again clears it.
+  let ratingWasChecked = false;
+  document.addEventListener("pointerdown", function (event) {
+    const radio = event.target.closest(".effort-chips .chip");
+    ratingWasChecked = Boolean(radio && radio.querySelector("input").checked);
+  });
+  document.addEventListener("click", function (event) {
+    const chip = event.target.closest(".effort-chips .chip");
+    if (!chip || event.target.tagName !== "INPUT") return;
+    if (ratingWasChecked) {
+      event.target.checked = false;
+      ratingWasChecked = false;
+    }
+  });
+
   // --- Hold timer (exercises logged as time) ------------------------------
   // Counts up from a stored start time, so it survives the phone locking or a
   // reload. "Stop & save" writes the seconds into the form and logs the set.

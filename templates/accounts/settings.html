@@ -7,10 +7,23 @@
 
   <form method="post" class="card form">
     {% csrf_token %}
+    <h2>Rating your sets</h2>
+    <p class="muted small">After a set you can say how hard it was. It helps LiftLog suggest when to add weight. Saved ratings stay the same when you switch.</p>
+    {{ form.effort_scale.as_field_group }}
+
     <h2>Rest timer</h2>
-    {{ form }}
+    {% for field in form %}{% if field.name != "effort_scale" %}{{ field.as_field_group }}{% endif %}{% endfor %}
     <button type="submit" class="button button-primary">Save settings</button>
   </form>
+
+  <section class="card">
+    <h2>What the set ratings mean</h2>
+    <ul class="info-list">
+      <li><strong>Simple.</strong> <em>Easy</em>: you could do 4 or more extra reps. <em>Medium</em>: about 3. <em>Hard</em>: 1–2. <em>Max effort</em>: not one more clean rep.</li>
+      <li><strong>RIR</strong> (reps in reserve): how many more good reps you could have done. 0 = none, 4+ = four or more.</li>
+      <li><strong>RPE</strong> (rate of perceived exertion): 10 = nothing left, 9 = one rep left, 8 = two, and so on. 8.5 means “two, maybe one”.</li>
+    </ul>
+  </section>
 
   <section class="card">
     <h2>How the rest timer options work</h2>

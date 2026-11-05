@@ -53,10 +53,10 @@
           {% else %}
             <tr class="{% if row.current %}set-done{% elif forloop.counter == done|add:1 %}set-next{% endif %}">
               <td class="set-number">{{ row.number }}</td>
-              <td class="set-prev">{% if row.previous %}{{ row.previous|set_text:measurement }}{% else %}–{% endif %}</td>
+              <td class="set-prev">{% if row.previous %}{% set_label row.previous measurement effort_scale %}{% else %}–{% endif %}</td>
               <td class="set-today">
                 {% if row.current %}
-                  {{ row.current|set_text:measurement }}{% if row.current.is_warmup %} <span class="badge">W</span>{% endif %}
+                  {% set_label row.current measurement effort_scale %}{% if row.current.is_warmup %} <span class="badge">W</span>{% endif %}
                 {% else %}–{% endif %}
               </td>
               <td class="set-edit">

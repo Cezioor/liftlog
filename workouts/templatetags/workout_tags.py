@@ -29,6 +29,12 @@ def set_text_long(workout_set, measurement):
     return set_text(workout_set, measurement, long=True)
 
 
+@register.simple_tag
+def set_label(workout_set, measurement, scale="", long=False):
+    """{% set_label s measurement effort_scale %} -> "60 × 8 @RIR 2" or "60 × 8 · Hard"."""
+    return set_text(workout_set, measurement, long=long, scale=scale or None)
+
+
 @register.inclusion_tag("workouts/partials/exercise_card.html", takes_context=True)
 def exercise_card(context, card):
     """{% exercise_card card %} renders one card from the dict built in views.build_card."""

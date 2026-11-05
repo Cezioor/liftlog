@@ -338,8 +338,8 @@ def test_detail_page_shows_records(client, user, make_workout, plank):
 @pytest.mark.parametrize(
     "measurement, unilateral, fields",
     [
-        ("weight_reps", False, {"weight_kg", "reps", "is_warmup"}),
-        ("reps", False, {"reps", "weight_kg", "is_warmup"}),
+        ("weight_reps", False, {"weight_kg", "reps", "rir", "is_warmup"}),
+        ("reps", False, {"reps", "weight_kg", "rir", "is_warmup"}),
         ("time", False, {"duration_seconds", "weight_kg", "is_warmup"}),
         ("distance_time", False, {"distance_m", "duration_seconds", "is_warmup"}),
         ("time", True, {"duration_seconds", "weight_kg", "side", "is_warmup"}),

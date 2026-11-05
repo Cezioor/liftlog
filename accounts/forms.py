@@ -18,7 +18,22 @@ class SignUpForm(UserCreationForm):
 class UserSettingsForm(forms.ModelForm):
     class Meta:
         model = UserSettings
-        fields = ("ios_shortcut_enabled", "ios_shortcut_name", "keep_screen_on", "rest_end_sound")
+        fields = (
+            "effort_scale",
+            "ios_shortcut_enabled",
+            "ios_shortcut_name",
+            "keep_screen_on",
+            "rest_end_sound",
+        )
+        widgets = {"effort_scale": forms.RadioSelect}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Optional so that a form sent without it (e.g. opened before the update) still saves.
+        self.fields["effort_scale"].required = False
+
+    def clean_effort_scale(self):
+        return self.cleaned_data.get("effort_scale") or self.instance.effort_scale
 
     def clean(self):
         cleaned = super().clean()

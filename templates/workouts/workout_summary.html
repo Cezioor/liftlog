@@ -18,7 +18,7 @@
       <h2>{{ exercise.name }}</h2>
       <ol class="summary-sets">
         {% for s in sets %}
-          <li>{{ s|set_text_long:exercise.measurement }}{% if s.is_warmup %} <span class="badge">Warm-up</span>{% endif %}</li>
+          <li>{% set_label s exercise.measurement effort_scale long=True %}{% if s.is_warmup %} <span class="badge">Warm-up</span>{% endif %}</li>
         {% endfor %}
       </ol>
     </section>

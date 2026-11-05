@@ -11,6 +11,14 @@ class User(AbstractUser):
     """
 
 
+class EffortScale(models.TextChoices):
+    """How the user rates a set. Every scale is stored as RIR (see WorkoutSet.rir)."""
+
+    SIMPLE = "simple", "Simple: Easy / Medium / Hard / Max effort"
+    RIR = "rir", "RIR: reps left in the tank (0, 1, 2, 3, 4+)"
+    RPE = "rpe", "RPE: effort from 6 to 10 (RPE = 10 − RIR)"
+
+
 class UserSettings(models.Model):
     """Per-user preferences. Created on first use by accounts.services.get_user_settings."""
 
@@ -37,6 +45,14 @@ class UserSettings(models.Model):
         "beep when the rest is over",
         default=True,
         help_text="Only while LiftLog is on screen; a locked phone can't play it.",
+    )
+
+    effort_scale = models.CharField(
+        "how to rate sets",
+        max_length=6,
+        choices=EffortScale.choices,
+        default=EffortScale.SIMPLE,
+        help_text="Changing it only changes how ratings look; saved ratings stay the same.",
     )
 
     class Meta:

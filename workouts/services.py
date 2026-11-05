@@ -8,6 +8,9 @@ Stage 1.6: every exercise has a measurement type and these functions handle all 
   distance_time   metres + seconds           hint: beat last time (no automatic number)
 
 Sets logged before Stage 1.6 are weight × reps; they keep showing as such.
+
+Set rating: every set can carry how hard it felt, stored as RIR (reps in reserve).
+The user picks how it is entered and shown: simple words, RIR numbers or RPE.
 """
 
 from dataclasses import dataclass
@@ -20,6 +23,9 @@ from exercises.models import Exercise, Measurement
 from .models import Side, WorkoutSet
 
 HOLD_STEP_SECONDS = 5
+
+# A set at the top of the rep range with this many reps to spare means: clearly add weight.
+EASY_RIR = Decimal("3")
 
 
 # --- formatting -----------------------------------------------------------
@@ -46,12 +52,24 @@ def format_duration(seconds):
     return f"{minutes}:{secs:02d}"
 
 
-def set_text(workout_set, measurement, long=False):
+def set_text(workout_set, measurement, long=False, scale=None):
     """How a set reads on screen, based on the fields it actually has.
 
     Old weight × reps sets therefore look the same even after their exercise
     changed type. `long` adds the "kg" unit for weight × reps (summaries, history).
+    With `scale` (the user's EffortScale) the rating is added: "60 × 8 @RIR 2",
+    "60 × 8 · Hard".
     """
+    text = _set_values_text(workout_set, measurement, long)
+    rating = effort_text(workout_set.rir, scale) if scale else ""
+    if not rating:
+        return text
+    if rating.startswith("@"):
+        return f"{text} {rating}"
+    return f"{text} · {rating}"
+
+
+def _set_values_text(workout_set, measurement, long):
     s = workout_set
     weight = s.weight_kg or Decimal("0")
     added = f" +{format_kg(weight)} kg" if weight > 0 else ""
@@ -71,6 +89,84 @@ def set_text(workout_set, measurement, long=False):
     # weight × reps, including old-style sets of exercises that changed type later
     unit = " kg" if long else ""
     return f"{side}{format_kg(weight)}{unit} × {s.reps}"
+
+
+# --- set rating (stored as RIR) -------------------------------------------
+
+# Simple scale: (stored RIR, label). "Hard" means 1–2 reps left, stored as the middle, 1.5.
+SIMPLE_EFFORT = [
+    (Decimal("4"), "Easy"),
+    (Decimal("3"), "Medium"),
+    (Decimal("1.5"), "Hard"),
+    (Decimal("0"), "Max effort"),
+]
+RIR_CHOICES = [Decimal(n) for n in range(5)]  # 0, 1, 2, 3, 4 (= 4 or more)
+RPE_CHOICES = [Decimal(n) / 2 for n in range(12, 21)]  # 6, 6.5 ... 10
+
+
+def rpe_from_rir(rir):
+    """RPE = 10 − RIR (RIR 2 = RPE 8). Also works the other way round."""
+    return Decimal("10") - rir
+
+
+def _simple_label(rir):
+    if rir >= 4:
+        return "Easy"
+    if rir >= Decimal("2.5"):
+        return "Medium"
+    if rir >= 1:
+        return "Hard"
+    return "Max effort"
+
+
+def effort_label(rir, scale):
+    """The rating alone, as its button shows it: "Hard", "4+", "8.5"."""
+    from accounts.models import EffortScale
+
+    if scale == EffortScale.RIR:
+        return "4+" if rir >= 4 else format_kg(rir)
+    if scale == EffortScale.RPE:
+        return format_kg(rpe_from_rir(rir))
+    return _simple_label(rir)
+
+
+def effort_text(rir, scale):
+    """The rating next to a set: "@RIR 2", "@RIR 4+", "@RPE 8", "Hard"; "" when not rated."""
+    from accounts.models import EffortScale
+
+    if rir is None:
+        return ""
+    label = effort_label(rir, scale)
+    if scale == EffortScale.RIR:
+        return f"@RIR {label}"
+    if scale == EffortScale.RPE:
+        return f"@RPE {label}"
+    return label
+
+
+def effort_choices(scale, current=None):
+    """[(stored RIR as text, button label)] for the rating buttons of `scale`.
+
+    `current`, an already saved rating the scale has no button for (e.g. RIR 1.5 on
+    the RIR scale), is added so that editing a set never loses its rating.
+    """
+    from accounts.models import EffortScale
+
+    if scale == EffortScale.RIR:
+        values = list(RIR_CHOICES)
+    elif scale == EffortScale.RPE:
+        values = [rpe_from_rir(rpe) for rpe in RPE_CHOICES]
+    else:
+        values = [rir for rir, _ in SIMPLE_EFFORT]
+    if current is not None and current not in values:
+        values = sorted([*values, current], reverse=scale != EffortScale.RIR)
+    if scale == EffortScale.SIMPLE:
+        labels = dict(SIMPLE_EFFORT)
+        return [
+            (format_kg(v), labels.get(v) or f"{_simple_label(v)} (RIR {format_kg(v)})")
+            for v in values
+        ]
+    return [(format_kg(v), effort_label(v, scale)) for v in values]
 
 
 # --- "last time" ----------------------------------------------------------
@@ -118,31 +214,54 @@ class ProgressionHint:
     duration_seconds: int | None = None
 
 
-def progression_hint(exercise, previous_sets, rep_max=None, hold_max=None):
+def progression_hint(exercise, previous_sets, rep_max=None, hold_max=None, rep_min=None):
     """Suggest today's target from last time's sets, according to the exercise's type.
 
     Returns None when there is nothing to base a hint on. A hint is a suggestion,
     never forced: the form only gets pre-filled with it.
+
+    Set ratings (RIR) sharpen it for weight × reps and reps:
+    a set at the top of the range with 3+ reps to spare -> add weight;
+    a set at the bottom of the range with nothing left (RIR 0) -> stay where you are.
     """
     measurement = exercise.measurement
     sets = _measured(previous_sets, measurement)
     if not sets:
         return None
     if measurement == Measurement.REPS:
-        return _reps_hint(exercise, sets, rep_max)
+        return _reps_hint(exercise, sets, rep_max, rep_min)
     if measurement == Measurement.TIME:
         return _time_hint(sets, hold_max)
     if measurement == Measurement.DISTANCE_TIME:
         return _distance_hint(sets)
-    return _weight_hint(exercise, sets, rep_max)
+    return _weight_hint(exercise, sets, rep_max, rep_min)
 
 
-def _weight_hint(exercise, sets, rep_max):
-    """+ progression step when every set reached the top of the rep range."""
+def _easy_at_top(sets, rep_max):
+    """Some set reached the top of the range with 3+ reps to spare."""
+    return any(s.reps >= rep_max and s.rir is not None and s.rir >= EASY_RIR for s in sets)
+
+
+def _limit_at_bottom(sets, rep_min):
+    """Some set at (or below) the bottom of the range left nothing in the tank."""
+    return bool(rep_min) and any(s.reps <= rep_min and s.rir == 0 for s in sets)
+
+
+def _weight_hint(exercise, sets, rep_max, rep_min=None):
+    """+ progression step when every set reached the top of the rep range, or one did
+    with 3+ reps to spare; stay when a set at the bottom of the range was a max effort."""
     if not rep_max:
         return None
     top_weight = max(s.weight_kg for s in sets)
-    if not all(s.reps >= rep_max for s in sets):
+    if _limit_at_bottom(sets, rep_min):
+        return ProgressionHint(
+            weight_kg=top_weight,
+            increase=False,
+            message=f"Last time {rep_min} reps took everything you had. "
+            f"Stay at {format_kg(top_weight)} kg and add reps first.",
+        )
+    easy = _easy_at_top(sets, rep_max)
+    if not easy and not all(s.reps >= rep_max for s in sets):
         return ProgressionHint(
             weight_kg=top_weight,
             increase=False,
@@ -156,18 +275,21 @@ def _weight_hint(exercise, sets, rep_max):
             message=f"All sets hit {rep_max} reps. Add weight or a harder variation.",
         )
     new_weight = top_weight + exercise.progression_step_kg
-    return ProgressionHint(
-        weight_kg=new_weight,
-        increase=True,
-        message=f"All sets hit {rep_max} reps last time. Try {format_kg(new_weight)} kg.",
-    )
+    if easy:
+        message = (
+            f"{rep_max} reps with 3+ more in the tank: too light. Try {format_kg(new_weight)} kg."
+        )
+    else:
+        message = f"All sets hit {rep_max} reps last time. Try {format_kg(new_weight)} kg."
+    return ProgressionHint(weight_kg=new_weight, increase=True, message=message)
 
 
-def _reps_hint(exercise, sets, rep_max):
-    """One more rep than last time's best; once every set tops the range, add weight."""
+def _reps_hint(exercise, sets, rep_max, rep_min=None):
+    """One more rep than last time's best; once every set tops the range (or one did with
+    3+ reps to spare), add weight. After a max-effort set at the bottom: same reps again."""
     best = max(s.reps for s in sets)
     added = max(s.weight_kg or Decimal("0") for s in sets)
-    if rep_max and all(s.reps >= rep_max for s in sets):
+    if rep_max and (all(s.reps >= rep_max for s in sets) or _easy_at_top(sets, rep_max)):
         new_weight = added + exercise.progression_step_kg
         return ProgressionHint(
             weight_kg=new_weight,
@@ -175,6 +297,14 @@ def _reps_hint(exercise, sets, rep_max):
             reps=None,
             message=f"All sets hit {rep_max} reps. "
             f"Try +{format_kg(new_weight)} kg added weight or a harder variation.",
+        )
+    if _limit_at_bottom(sets, rep_min):
+        return ProgressionHint(
+            weight_kg=added,
+            increase=False,
+            reps=best,
+            message=f"Last time {rep_min} reps took everything you had. "
+            f"Aim for {best} again with clean reps.",
         )
     target = best + 1
     if rep_max:

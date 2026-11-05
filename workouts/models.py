@@ -78,6 +78,17 @@ class WorkoutSet(models.Model):
     )
     # For one-side exercises: "left" / "right"; empty for everything else.
     side = models.CharField(max_length=5, choices=Side.choices, blank=True)
+    # How hard the set felt, always stored as RIR = reps in reserve (how many more reps
+    # were possible): 0 = nothing left ... 4 = four or more. Halves come from RPE (8.5 = 1.5).
+    # The user's settings only change how it is shown and entered, never the stored value.
+    rir = models.DecimalField(
+        "reps in reserve",
+        max_digits=2,
+        decimal_places=1,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(Decimal("0")), MaxValueValidator(Decimal("4"))],
+    )
     is_warmup = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 

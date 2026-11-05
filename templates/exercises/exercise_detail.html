@@ -75,7 +75,7 @@
     {% if last_sets %}
       <p class="muted small">Last time ({{ last_sets.0.workout.finished_at|date:"j M Y" }}):</p>
       <ol class="summary-sets">
-        {% for s in last_sets %}<li>{{ s|set_text_long:exercise.measurement }}</li>{% endfor %}
+        {% for s in last_sets %}<li>{% set_label s exercise.measurement effort_scale long=True %}</li>{% endfor %}
       </ol>
     {% else %}
       <p class="muted">You haven't logged this exercise yet.</p>

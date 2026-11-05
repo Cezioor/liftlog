@@ -2,10 +2,20 @@ from decimal import Decimal
 
 from django import forms
 
+from accounts.models import EffortScale
 from exercises.forms import WeightField
 from exercises.models import Measurement
 
 from .models import Side, Workout, WorkoutSet
+from .services import effort_choices, format_kg
+
+# Rating a set ("how many more reps could you do?") only makes sense for reps.
+RATED_MEASUREMENTS = {Measurement.WEIGHT_REPS, Measurement.REPS}
+RATING_LABELS = {
+    EffortScale.SIMPLE: "How hard was it?",
+    EffortScale.RIR: "Reps left in the tank (RIR)",
+    EffortScale.RPE: "Effort, 6–10 (RPE)",
+}
 
 
 class DurationField(forms.IntegerField):
@@ -37,6 +47,7 @@ class WorkoutSetForm(forms.ModelForm):
 
     weight_reps: kg + reps · reps: reps + optional kg · time: seconds + optional kg ·
     distance_time: metres + optional seconds. One-side exercises also get left/right.
+    Weight × reps and reps also get an optional rating, saved as RIR whatever the scale.
     """
 
     FIELDS_BY_MEASUREMENT = {
@@ -60,6 +71,7 @@ class WorkoutSetForm(forms.ModelForm):
             "duration_seconds",
             "distance_m",
             "side",
+            "rir",
             "is_warmup",
         )
         field_classes = {"weight_kg": WeightField, "duration_seconds": DurationField}
@@ -81,12 +93,22 @@ class WorkoutSetForm(forms.ModelForm):
             "side": forms.RadioSelect(attrs={"class": "side-radio"}),
         }
 
-    def __init__(self, *args, measurement=Measurement.WEIGHT_REPS, unilateral=False, **kwargs):
+    def __init__(
+        self,
+        *args,
+        measurement=Measurement.WEIGHT_REPS,
+        unilateral=False,
+        effort_scale=EffortScale.SIMPLE,
+        **kwargs,
+    ):
         super().__init__(*args, **kwargs)
         self.measurement = measurement
         keep = set(self.FIELDS_BY_MEASUREMENT[measurement]) | {"is_warmup"}
         if unilateral:
             keep.add("side")
+        if measurement in RATED_MEASUREMENTS:
+            keep.add("rir")
+            self._set_up_rating(effort_scale)
         for name in list(self.fields):
             if name not in keep:
                 del self.fields[name]
@@ -98,6 +120,21 @@ class WorkoutSetForm(forms.ModelForm):
         if "side" in self.fields:
             # Only left / right, without Django's empty "---------" choice.
             self.fields["side"].choices = Side.choices
+
+    def _set_up_rating(self, scale):
+        """Buttons of the user's scale; each button's value is the RIR that gets saved."""
+        current = self.instance.rir
+        self.fields["rir"] = forms.TypedChoiceField(
+            label=RATING_LABELS.get(scale, RATING_LABELS[EffortScale.SIMPLE]),
+            choices=effort_choices(scale, current),
+            coerce=Decimal,
+            empty_value=None,
+            required=False,
+            widget=forms.RadioSelect(attrs={"class": "effort-radio"}),
+        )
+        if current is not None:
+            # "4" rather than "4.0", so the matching button is shown as selected.
+            self.initial["rir"] = format_kg(current)
 
     def clean(self):
         cleaned = super().clean()

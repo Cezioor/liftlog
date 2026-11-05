@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
+from accounts.services import get_user_settings
 from workouts.services import last_sets, personal_records, recently_used_exercises
 
 from .forms import ExerciseForm
@@ -45,6 +46,7 @@ def exercise_detail(request, pk):
             "last_sets": last_sets(request.user, exercise),
             "records": personal_records(request.user, exercise),
             "can_edit": exercise.owner_id == request.user.pk,
+            "effort_scale": get_user_settings(request.user).effort_scale,
         },
     )
 

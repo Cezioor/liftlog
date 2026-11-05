@@ -54,38 +54,50 @@ def _workout_url(workout, exercise=None):
     return f"{url}#ex-{exercise.pk}" if exercise else url
 
 
-def _form_kwargs(exercise):
+def _effort_scale(user):
+    """How this user rates sets (simple / RIR / RPE); ratings are stored as RIR either way."""
+    return get_user_settings(user).effort_scale
+
+
+def _form_kwargs(exercise, scale):
     """The set form shows only the inputs that fit the exercise's type (Stage 1.6)."""
-    return {"measurement": exercise.measurement, "unilateral": exercise.is_unilateral}
+    return {
+        "measurement": exercise.measurement,
+        "unilateral": exercise.is_unilateral,
+        "effort_scale": scale,
+    }
 
 
-def _add_set_form(exercise, data=None, initial=None):
+def _add_set_form(exercise, scale, data=None, initial=None):
     # Unique HTML ids per card, because one page shows many of these forms.
     return WorkoutSetForm(
-        data, initial=initial, auto_id=f"ex{exercise.pk}_%s", **_form_kwargs(exercise)
+        data, initial=initial, auto_id=f"ex{exercise.pk}_%s", **_form_kwargs(exercise, scale)
     )
 
 
-def _edit_set_form(workout_set, data=None):
+def _edit_set_form(workout_set, scale, data=None):
     weight = workout_set.weight_kg
     return WorkoutSetForm(
         data,
         instance=workout_set,
         initial={"weight_kg": services.format_kg(weight) if weight else ""},
         auto_id=f"set{workout_set.pk}_%s",
-        **_form_kwargs(workout_set.exercise),
+        **_form_kwargs(workout_set.exercise, scale),
     )
 
 
-def build_card(workout, exercise, plan_exercise=None, form=None, edit_form=None):
+def build_card(workout, exercise, plan_exercise=None, form=None, edit_form=None, scale=None):
     """Everything the exercise card template needs."""
+    scale = scale or _effort_scale(workout.owner)
     current = list(workout.sets.filter(exercise=exercise))
     previous = services.last_sets(workout.owner, exercise, exclude_workout=workout)
     rep_min = plan_exercise.rep_min if plan_exercise else None
     rep_max = plan_exercise.rep_max if plan_exercise else None
     hold_min = plan_exercise.hold_min_s if plan_exercise else None
     hold_max = plan_exercise.hold_max_s if plan_exercise else None
-    hint = services.progression_hint(exercise, previous, rep_max=rep_max, hold_max=hold_max)
+    hint = services.progression_hint(
+        exercise, previous, rep_max=rep_max, hold_max=hold_max, rep_min=rep_min
+    )
     defaults = services.next_set_defaults(
         current,
         previous,
@@ -99,6 +111,7 @@ def build_card(workout, exercise, plan_exercise=None, form=None, edit_form=None)
     if form is None:
         form = _add_set_form(
             exercise,
+            scale,
             initial={
                 "weight_kg": services.format_kg(defaults.weight_kg),
                 "reps": defaults.reps,
@@ -134,6 +147,7 @@ def build_card(workout, exercise, plan_exercise=None, form=None, edit_form=None)
         "done": len(current),
         "target": target,
         "measurement": exercise.measurement,
+        "effort_scale": scale,
     }
 
 
@@ -203,11 +217,12 @@ def workout_detail(request, pk):
 
     cards = []
     seen = set()
+    scale = _effort_scale(request.user)
     if workout.plan_day:
         for item in workout.plan_day.exercises.select_related("exercise"):
             if item.exercise_id not in seen:
                 seen.add(item.exercise_id)
-                cards.append(build_card(workout, item.exercise, item))
+                cards.append(build_card(workout, item.exercise, item, scale=scale))
 
     # Exercises added during the workout (not in the plan day), in the order first logged.
     extra_ids = list(
@@ -220,14 +235,14 @@ def workout_detail(request, pk):
     extra = Exercise.objects.in_bulk(extra_ids)
     for exercise_id in extra_ids:
         seen.add(exercise_id)
-        cards.append(build_card(workout, extra[exercise_id]))
+        cards.append(build_card(workout, extra[exercise_id], scale=scale))
 
     # Chosen in the exercise picker: its card shows until the first set is logged.
     added_id = request.GET.get("add", "")
     if added_id.isdigit() and int(added_id) not in seen:
         added = Exercise.objects.visible_to(request.user).filter(pk=added_id).first()
         if added:
-            cards.append(build_card(workout, added))
+            cards.append(build_card(workout, added, scale=scale))
 
     return render(
         request,
@@ -269,7 +284,11 @@ def _workout_summary(request, workout):
     return render(
         request,
         "workouts/workout_summary.html",
-        {"workout": workout, "groups": groups.items()},
+        {
+            "workout": workout,
+            "groups": groups.items(),
+            "effort_scale": _effort_scale(request.user),
+        },
     )
 
 
@@ -291,7 +310,7 @@ def set_create(request, pk, exercise_pk):
     workout = _get_open_workout(request, pk)
     exercise = get_object_or_404(Exercise.objects.visible_to(request.user), pk=exercise_pk)
     plan_exercise = _plan_exercise_for(workout, exercise)
-    form = _add_set_form(exercise, request.POST)
+    form = _add_set_form(exercise, _effort_scale(request.user), request.POST)
 
     if not form.is_valid():
         if _is_htmx(request):
@@ -321,14 +340,14 @@ def set_update(request, pk):
     plan_exercise = _plan_exercise_for(workout, exercise)
 
     if request.method == "POST":
-        form = _edit_set_form(workout_set, request.POST)
+        form = _edit_set_form(workout_set, _effort_scale(request.user), request.POST)
         if form.is_valid():
             form.save()
             if _is_htmx(request):
                 return _card_response(request, build_card(workout, exercise, plan_exercise))
             return redirect(_workout_url(workout, exercise))
     else:
-        form = _edit_set_form(workout_set)
+        form = _edit_set_form(workout_set, _effort_scale(request.user))
 
     card = build_card(workout, exercise, plan_exercise, edit_form=form)
     if _is_htmx(request):
