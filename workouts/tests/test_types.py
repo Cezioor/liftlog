@@ -420,7 +420,8 @@ def test_time_card_shows_hold_timer_and_only_time_inputs(logged_in, user, make_w
 
     assert "data-hold-timer" in content and "Start hold" in content
     assert "0/3 sets · 30–45 s" in content
-    assert 'name="duration_seconds"' in content and 'value="30"' in content
+    # First time: a test hold, so no seconds are pre-filled (see test_calibration.py).
+    assert 'name="duration_seconds"' in content
     assert 'name="reps"' not in content
     assert ">Added kg<" in content
 
@@ -637,9 +638,9 @@ def test_fingerprint_detects_a_changed_set(user, make_workout, bench, capsys):
     "fixture, text",
     [
         ("plank", "Hold as long as your form stays good"),
-        ("pull_ups", "Do good reps"),
+        ("pull_ups", "Do as many clean reps as you can"),
         ("farmers_walk", "Pick a distance"),
-        ("bench", "Pick a weight"),
+        ("bench", "find your working weight, no max test"),
     ],
 )
 def test_first_time_message_fits_the_type(logged_in, user, make_workout, request, fixture, text):

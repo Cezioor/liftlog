@@ -107,6 +107,14 @@ def build_card(workout, exercise, plan_exercise=None, form=None, edit_form=None,
         hold_min=hold_min,
         unilateral=exercise.is_unilateral,
     )
+    # First time with this exercise: find the starting point (test hold / set, test weights).
+    calibration = None
+    if not previous:
+        calibration = services.calibration(
+            exercise, current, rep_min, rep_max, hold_min=hold_min, hold_max=hold_max
+        )
+        if calibration and calibration.defaults:
+            defaults = calibration.defaults
 
     if form is None:
         form = _add_set_form(
@@ -118,6 +126,7 @@ def build_card(workout, exercise, plan_exercise=None, form=None, edit_form=None,
                 "duration_seconds": defaults.duration_seconds,
                 "distance_m": defaults.distance_m,
                 "side": defaults.side,
+                "is_warmup": defaults.is_warmup,
             },
         )
 
@@ -140,6 +149,7 @@ def build_card(workout, exercise, plan_exercise=None, form=None, edit_form=None,
         "rows": rows,
         "has_previous": bool(previous),
         "hint": hint,
+        "calibration": calibration,
         "form": form,
         "edit_form": edit_form,
         "editing_id": edit_form.instance.pk if edit_form else None,

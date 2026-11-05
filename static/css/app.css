@@ -1196,3 +1196,13 @@ div:has(> label > input.muscle-checkboxes) label {
   padding: 0 12px;
   justify-content: center;
 }
+
+.calibration-note {
+  margin: -4px 0 12px;
+}
+
+.calibration-note summary {
+  color: var(--muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+}

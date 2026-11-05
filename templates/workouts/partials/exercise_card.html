@@ -10,12 +10,17 @@
 
   {% if hint %}
     <p class="hint{% if hint.increase %} hint-up{% endif %}">{% if hint.increase %}▲ {% endif %}{{ hint.message }}</p>
+  {% elif calibration %}
+    {# First time with this exercise: services.calibration explains each step. #}
+    <p class="hint hint-new">{{ calibration.message }}</p>
+    {% if calibration.note %}
+      <details class="calibration-note">
+        <summary>Why no max test?</summary>
+        <p class="muted small">{{ calibration.note }}</p>
+      </details>
+    {% endif %}
   {% elif not has_previous %}
-    <p class="hint hint-new">First time logging this.
-      {% if measurement == "time" %}Hold as long as your form stays good, then stop.
-      {% elif measurement == "reps" %}Do good reps and stop one or two before you can't.
-      {% elif measurement == "distance_time" %}Pick a distance you can cover at a steady pace.
-      {% else %}Pick a weight you could do for a few more reps.{% endif %}</p>
+    <p class="hint hint-new">First time logging this. Pick a distance you can cover at a steady pace.</p>
   {% endif %}
 
   {% if rows %}

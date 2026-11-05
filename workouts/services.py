@@ -11,14 +11,17 @@ Sets logged before Stage 1.6 are weight × reps; they keep showing as such.
 
 Set rating: every set can carry how hard it felt, stored as RIR (reps in reserve).
 The user picks how it is entered and shown: simple words, RIR numbers or RPE.
+
+First time with an exercise (no history yet): `calibration` finds the starting point,
+a test hold / test set for time and reps, light rated test sets for weights.
 """
 
 from dataclasses import dataclass
-from decimal import ROUND_HALF_UP, Decimal
+from decimal import ROUND_FLOOR, ROUND_HALF_UP, Decimal
 
 from django.db.models import Max
 
-from exercises.models import Exercise, Measurement
+from exercises.models import Equipment, Exercise, Measurement
 
 from .models import Side, WorkoutSet
 
@@ -361,6 +364,7 @@ class SetDefaults:
     duration_seconds: int | None = None
     distance_m: int | None = None
     side: str = ""
+    is_warmup: bool = False
 
 
 def _other_side(side):
@@ -444,6 +448,199 @@ def _optional_kg(weight, measurement):
     if measurement != Measurement.WEIGHT_REPS and not weight:
         return None
     return weight
+
+
+# --- first time: calibration -------------------------------------------------
+
+HOLD_WORKING_SHARE = Decimal("0.75")  # working holds: about 75% of the test hold
+REPS_WORKING_SHARE = Decimal("0.7")  # working sets: about 70% of the test set
+CALIBRATED_AT_RIR = Decimal("2")  # the first test set rated RIR <= 2 gives the estimate
+WORKING_RIR = 2  # working weight: the top of the rep range with about 2 reps to spare
+DEFAULT_REP_RANGE = (8, 12)
+# Light first test sets; for a barbell that's the empty bar.
+START_WEIGHT_KG = {
+    Equipment.BARBELL: Decimal("20"),
+    Equipment.DUMBBELL: Decimal("5"),
+    Equipment.KETTLEBELL: Decimal("8"),
+    Equipment.CABLE: Decimal("10"),
+    Equipment.MACHINE: Decimal("10"),
+}
+NO_MAX_TEST_NOTE = (
+    "Why no max test with weights? The last reps before failure are where form breaks "
+    "down and injuries happen. A few light test sets and how hard they felt are enough "
+    "to estimate your working weight. Test sets are saved as warm-ups, so they don't "
+    "count towards your records."
+)
+
+
+@dataclass(frozen=True)
+class Calibration:
+    """What to tell the user and pre-fill while finding the starting point.
+
+    `defaults` is None once working sets are under way: then the form simply repeats
+    the last set, as usual.
+    """
+
+    message: str
+    defaults: SetDefaults | None
+    note: str = ""
+    estimated_1rm: Decimal | None = None
+
+
+def calibration(exercise, current_sets, rep_min=None, rep_max=None, hold_min=None, hold_max=None):
+    """Guide the first session with an exercise, from the sets logged so far today.
+
+    time:          one hold for as long as form is good, then working holds of ~75%
+                   (within the plan's range when that's possible);
+    reps:          one set to the technical max (until form slips), then ~70% of it;
+    weight × reps: no max test. Light test sets (empty bar for a barbell), each rated;
+                   the first one rated RIR <= 2 gives an Epley estimate with the reps
+                   left in reserve counted in, and from it a working weight for the
+                   plan's rep range, rounded down to the exercise's weight step.
+    distance:      None (the card keeps its simple first-time tip).
+    """
+    measurement = exercise.measurement
+    side = _next_side(current_sets, exercise.is_unilateral)
+    if measurement == Measurement.TIME:
+        return _hold_calibration(exercise, current_sets, side, hold_min, hold_max)
+    if measurement == Measurement.REPS:
+        return _reps_calibration(exercise, current_sets, side)
+    if measurement == Measurement.WEIGHT_REPS:
+        return _weight_calibration(exercise, current_sets, side, rep_min, rep_max)
+    return None
+
+
+def _next_side(current_sets, unilateral):
+    if not unilateral:
+        return ""
+    return _other_side(current_sets[-1].side) if current_sets else Side.LEFT
+
+
+def _test_result(sets, value, unilateral):
+    """The first set is the test; for one-side exercises, the first set on each side.
+
+    Returns (result, number of test sets). The result is None until every side has
+    been tested; with two sides the weaker one counts, so both train at the same level.
+    """
+    if not unilateral:
+        return (value(sets[0]), 1) if sets else (None, 0)
+    firsts = {}
+    for workout_set in sets:
+        firsts.setdefault(workout_set.side, value(workout_set))
+    if Side.LEFT in firsts and Side.RIGHT in firsts:
+        return min(firsts[Side.LEFT], firsts[Side.RIGHT]), 2
+    return None, len(firsts)
+
+
+def _share(value, share):
+    return max(1, int((Decimal(value) * share).to_integral_value(rounding=ROUND_HALF_UP)))
+
+
+def _hold_calibration(exercise, current_sets, side, hold_min, hold_max):
+    sets = [s for s in _measured(current_sets, Measurement.TIME) if not s.is_warmup]
+    best, tests = _test_result(sets, lambda s: s.duration_seconds, exercise.is_unilateral)
+    if best is None:
+        if sets:
+            message = "Now the same test hold on the other side."
+        else:
+            message = (
+                "First time: test hold. Hold as long as your form stays good, then stop. "
+                "Your working holds are based on it."
+            )
+        return Calibration(message, SetDefaults(None, None, None, side=side))
+
+    target = _share(best, HOLD_WORKING_SHARE)
+    # Stay within the plan's range, but never above what the test showed you can hold.
+    if hold_min and hold_min <= best:
+        target = max(target, hold_min)
+    if hold_max:
+        target = min(target, hold_max)
+    message = (
+        f"Test hold: {format_duration(best)}. Working holds: {format_duration(target)} (about 75%"
+    )
+    if hold_min and hold_max:
+        message += f", within your plan's {hold_min}–{hold_max} s"
+    message += ")."
+    defaults = SetDefaults(None, None, target, side=side) if len(sets) == tests else None
+    return Calibration(message, defaults)
+
+
+def _reps_calibration(exercise, current_sets, side):
+    sets = [s for s in _measured(current_sets, Measurement.REPS) if not s.is_warmup]
+    best, tests = _test_result(sets, lambda s: s.reps, exercise.is_unilateral)
+    if best is None:
+        if sets:
+            message = "Now the same test set on the other side."
+        else:
+            message = (
+                "First time: test set. Do as many clean reps as you can and stop when "
+                "your form starts to slip. Your working sets are based on it."
+            )
+        return Calibration(message, SetDefaults(None, None, side=side))
+
+    target = _share(best, REPS_WORKING_SHARE)
+    message = f"Test set: {best} reps. Working sets: {target} reps (about 70%)."
+    defaults = SetDefaults(None, target, side=side) if len(sets) == tests else None
+    return Calibration(message, defaults)
+
+
+def round_down_to_step(weight, step):
+    """62.9 with a 2.5 kg step -> 62.5. Never rounds up, so the suggestion stays safe."""
+    step = step or Decimal("2.5")
+    return (Decimal(weight) / step).to_integral_value(rounding=ROUND_FLOOR) * step
+
+
+def working_weight(estimated_1rm, rep_max, step):
+    """The weight for `rep_max` reps with about 2 to spare (Epley solved for weight)."""
+    weight = estimated_1rm / (1 + Decimal(rep_max + WORKING_RIR) / 30)
+    return round_down_to_step(weight, step)
+
+
+def _next_test_weight(weight, rir, step):
+    """After an easy test set: +25% when 4+ reps were left, +10% when 3 were left."""
+    step = step or Decimal("2.5")
+    factor = Decimal("1.25") if rir >= 4 else Decimal("1.1")
+    return max(round_down_to_step(weight * factor, step), weight + step)
+
+
+def _weight_calibration(exercise, current_sets, side, rep_min, rep_max):
+    low, high = rep_min or DEFAULT_REP_RANGE[0], rep_max or DEFAULT_REP_RANGE[1]
+    step = exercise.progression_step_kg
+    start = START_WEIGHT_KG.get(exercise.equipment)
+    sets = [s for s in current_sets if s.reps and s.weight_kg]
+
+    calibrating = next((s for s in sets if s.rir is not None and s.rir <= CALIBRATED_AT_RIR), None)
+    if calibrating:
+        e1rm = epley_1rm(calibrating.weight_kg, calibrating.reps + calibrating.rir)
+        working = max(working_weight(e1rm, high, step), start or Decimal("0"))
+        message = (
+            f"Estimated max: about {format_kg(e1rm)} kg. Working sets: "
+            f"{format_kg(working)} kg × {low}–{high}, stopping with 1–2 reps left."
+        )
+        started = any(s.order > calibrating.order and not s.is_warmup for s in current_sets)
+        defaults = None if started else SetDefaults(working, low, side=side)
+        return Calibration(message, defaults, estimated_1rm=e1rm)
+
+    if not current_sets:
+        weight = start
+        what = "empty bar, 20 kg" if exercise.equipment == Equipment.BARBELL else "a light weight"
+        message = (
+            f"First time: find your working weight, no max test. "
+            f"Do a test set ({what}, {low} reps), then rate how hard it was."
+        )
+    else:
+        last = current_sets[-1]
+        weight = last.weight_kg
+        if last.rir is None:
+            message = "Rate your test set (tap ✎ to add it) so LiftLog can suggest the next weight."
+        else:
+            weight = _next_test_weight(last.weight_kg, last.rir, step)
+            message = f"Still light. Next test set: {format_kg(weight)} kg × {low}, then rate it."
+    return Calibration(
+        message,
+        SetDefaults(weight, low, side=side, is_warmup=True),
+        note=NO_MAX_TEST_NOTE,
+    )
 
 
 # --- records --------------------------------------------------------------
