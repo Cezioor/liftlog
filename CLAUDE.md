@@ -59,6 +59,23 @@ add a small set of built-in isometric, mobility and balance exercises the databa
 Plans store targets per type (e.g. 3 × 30–45 s). Progression hints per type: more time for holds (+5 s), more reps for `reps`, as now for weights.
 For `time` exercises the logging screen shows a hold timer that counts up and saves the duration in one tap.
 "Last time", records and charts work for every type (longest hold, most reps, best e1RM).
+Old time-exercise sets logged as "0 × N" were converted to N seconds (migration workouts/0004; the deploy's
+`data_fingerprint --compare` allows only that change).
+
+**Set rating (RIR).** Optional on every weight × reps and reps set, always stored as RIR (reps in reserve, 0–4, halves allowed;
+4 = "4+"). Settings choose how it is entered and shown: **simple** (default: Easy = 4+, Medium = 3, Hard = 1–2 stored as 1.5,
+Max effort = 0), **RIR** (buttons 0, 1, 2, 3, 4+) or **RPE** (6–10 in 0.5 steps; RPE = 10 − RIR). Switching never changes stored data.
+History and "Last time" show it in the chosen scale ("60 × 8 @RIR 2", "60 × 8 · Hard").
+In the progression hint, a set at the top of the rep range with RIR ≥ 3 is a clear signal to add weight;
+RIR 0 at the bottom of the range means stay at that weight.
+
+**Calibration (first time with an exercise, i.e. no history for this user):**
+- `time`: "hold as long as your form stays good" (test hold), then working holds of ~75% of it, within the plan's range;
+- `reps`: one set to the technical max (stop when form slips), then working sets of ~70% of it;
+- `weight_reps`: no test to failure. Light test sets (barbell: the empty 20 kg bar), each rated; after the first set with RIR ≤ 2,
+  estimate 1RM with Epley counting the reserve (`w × (1 + (reps + RIR)/30)`) and suggest a working weight for the plan's rep range
+  (top of the range with ~2 reps to spare), rounded down to `progression_step_kg`. Test sets are marked as warm-ups so they never
+  count as records. A short note explains why weights are not tested to failure (technique and safety).
 
 ### Stage 1.7 – Activities and body weight
 
@@ -125,6 +142,8 @@ The answers are saved as the user's rehab profile and shown back as a short summ
 **3. Safety built into every rehab plan:**
 - **Start at the lower bound:** smallest range of motion, lowest load or bodyweight, shortest hold, fewest sets;
   isometrics, unloaded mobility and balance/motor control before loaded movements.
+- **No max calibration for rehab areas:** for exercises that load an area covered by rehab mode, the Stage 1.6 calibration
+  (test hold, set to technical max, test sets towards RIR ≤ 2) is switched off; they start at the lower bound above instead.
 - **Progress only after the user confirms:** after a session, a quick check-in per affected area – pain during / next day:
   none – mild – worse than before. "Fine" unlocks a small step (range, load, hold time or volume), one variable at a time;
   "worse" steps back a level and suggests rest. Never automatic by date. Check-ins are stored so the user and their physio can review them.
@@ -166,14 +185,15 @@ Exercise(name, aliases, muscle_group, equipment, is_bodyweight, progression_step
          measurement: weight_reps | reps | time | distance_time, category, is_unilateral,
          owner: User | null)   # null = built-in; search_text = normalised name + aliases
          # + free-exercise-db data: source_id, source_name, source_category, muscles, level, …
-UserSettings(user 1:1, ios_shortcut_enabled, ios_shortcut_name, keep_screen_on, rest_end_sound)
+UserSettings(user 1:1, effort_scale: simple | rir | rpe, ios_shortcut_enabled, ios_shortcut_name,
+             keep_screen_on, rest_end_sound)
 Plan(owner, name, is_active, created_at)
 PlanDay(plan, name, order)
 PlanExercise(day, exercise, order, target_sets, rep_min, rep_max, hold_min_s, hold_max_s,
              target_distance_m, rest_seconds)
 Workout(owner, plan_day | null, started_at, finished_at | null, note)
 WorkoutSet(workout, exercise, order, weight_kg, reps | null, duration_seconds | null,
-           distance_m | null, side: left | right | "", is_warmup)
+           distance_m | null, side: left | right | "", rir | null, is_warmup)
 ```
 "Last time" for an exercise = the sets of that exercise from the user's most recent finished workout that contains it.
 
