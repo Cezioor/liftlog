@@ -12,7 +12,7 @@ from workouts.services import last_sets, personal_records, recently_used_exercis
 from .forms import ExerciseForm
 from .models import Equipment, Exercise, Muscle, MuscleGroup
 from .picker import picker_response
-from .services import find_by_name, muscles_for_map
+from .services import create_variant, find_by_name, muscles_for_map
 
 
 @login_required
@@ -46,6 +46,8 @@ def exercise_detail(request, pk):
             "last_sets": last_sets(request.user, exercise),
             "records": personal_records(request.user, exercise),
             "can_edit": exercise.owner_id == request.user.pk,
+            # Other equipment, same movement: built-in ones and the user's own.
+            "variants": Exercise.objects.visible_to(request.user).filter(variant_of=exercise),
             "effort_scale": get_user_settings(request.user).effort_scale,
         },
     )
@@ -76,6 +78,35 @@ def exercise_update(request, pk):
     return render(request, "exercises/exercise_form.html", {"form": form, "exercise": exercise})
 
 
+def _picker_return_url(request):
+    """The picker's return address from the form, or None if it isn't on this site."""
+    next_url = request.POST.get("next", "")
+    is_local = next_url.startswith("/") and url_has_allowed_host_and_scheme(
+        next_url, allowed_hosts={request.get_host()}, require_https=request.is_secure()
+    )
+    return next_url if is_local else None
+
+
+def _select(request, next_url, exercise):
+    # Only "" or "/" may follow the id, so the redirect stays on the path checked above.
+    suffix = "/" if request.POST.get("suffix") == "/" else ""
+    return redirect(f"{next_url}{exercise.pk}{suffix}")
+
+
+@login_required
+@require_POST
+def exercise_variant_create(request, pk):
+    """The picker's "Add variant: «Step-up» — Smith machine": create it and select it."""
+    base = get_object_or_404(Exercise.objects.visible_to(request.user), pk=pk)
+    equipment = request.POST.get("equipment", "")
+    next_url = _picker_return_url(request)
+    if equipment not in Equipment.values or next_url is None:
+        return HttpResponseBadRequest("Invalid equipment or return address.")
+    variant = create_variant(request.user, base, equipment)
+    messages.success(request, f"Created “{variant.name}”, with its own history and records.")
+    return _select(request, next_url, variant)
+
+
 @login_required
 @require_POST
 def exercise_quick_add(request):
@@ -85,11 +116,8 @@ def exercise_quick_add(request):
     "Other"; the user can fill in details later in the library.
     """
     name = request.POST.get("name", "").strip()[:100]
-    next_url = request.POST.get("next", "")
-    is_local = next_url.startswith("/") and url_has_allowed_host_and_scheme(
-        next_url, allowed_hosts={request.get_host()}, require_https=request.is_secure()
-    )
-    if not name or not is_local:
+    next_url = _picker_return_url(request)
+    if not name or next_url is None:
         return HttpResponseBadRequest("Invalid exercise name or return address.")
 
     exercise = find_by_name(request.user, name)
@@ -107,6 +135,4 @@ def exercise_quick_add(request):
             request,
             f"Created “{exercise.name}”. You can set its details later in Exercises.",
         )
-    # Only "" or "/" may follow the id, so the redirect stays on the path chosen above.
-    suffix = "/" if request.POST.get("suffix") == "/" else ""
-    return redirect(f"{next_url}{exercise.pk}{suffix}")
+    return _select(request, next_url, exercise)

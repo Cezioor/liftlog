@@ -1,4 +1,23 @@
 {# Results of the exercise picker; re-rendered by HTMX on every search. #}
+{% if variant %}
+  {# The movement exists, but not with the equipment typed: offer the user's own variant. #}
+  <form method="post" action="{% url 'exercises:exercise_variant_create' variant.base.pk %}" class="picker-add-form picker-variant-form">
+    {% csrf_token %}
+    <input type="hidden" name="equipment" value="{{ variant.equipment }}">
+    <input type="hidden" name="next" value="{{ select_base }}">
+    <input type="hidden" name="suffix" value="{{ select_suffix }}">
+    <button type="submit" class="picker-item picker-add picker-variant">
+      <span class="list-title">+ Add variant: «{{ variant.movement }}» — {{ variant.equipment_label }}</span>
+      <span class="list-meta">Same muscles and instructions, its own history and records</span>
+    </button>
+  </form>
+{% endif %}
+
+{% if quick_add_name and not results_count %}
+  {# Nothing found: the way out comes first, big and clear. #}
+  {% include "exercises/partials/picker_add_own.html" with prominent=True %}
+{% endif %}
+
 {% if recent %}
   <h2 class="picker-heading">Recently used</h2>
   <ul class="picker-list">
@@ -23,17 +42,6 @@
   <p class="muted small">Showing {{ results|length }} of {{ results_count }}. Type more to narrow it down.</p>
 {% endif %}
 
-{% if quick_add_name %}
-  <form method="post" action="{% url 'exercises:exercise_quick_add' %}" class="picker-add-form">
-    {% csrf_token %}
-    <input type="hidden" name="name" value="{{ quick_add_name }}">
-    <input type="hidden" name="muscle" value="{{ muscle }}">
-    <input type="hidden" name="equipment" value="{{ equipment }}">
-    <input type="hidden" name="next" value="{{ select_base }}">
-    <input type="hidden" name="suffix" value="{{ select_suffix }}">
-    <button type="submit" class="picker-item picker-add">
-      <span class="list-title">+ Add my own: «{{ quick_add_name }}»</span>
-      <span class="list-meta">Creates the exercise and picks it right away</span>
-    </button>
-  </form>
+{% if quick_add_name and results_count %}
+  {% include "exercises/partials/picker_add_own.html" %}
 {% endif %}

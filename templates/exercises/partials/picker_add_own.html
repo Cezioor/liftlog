@@ -1,0 +1,13 @@
+{# "+ Add my own: «typed text»": creates the user's exercise and picks it. #}
+<form method="post" action="{% url 'exercises:exercise_quick_add' %}" class="picker-add-form{% if prominent %} picker-add-prominent{% endif %}">
+  {% csrf_token %}
+  <input type="hidden" name="name" value="{{ quick_add_name }}">
+  <input type="hidden" name="muscle" value="{{ muscle }}">
+  <input type="hidden" name="equipment" value="{{ quick_add_equipment }}">
+  <input type="hidden" name="next" value="{{ select_base }}">
+  <input type="hidden" name="suffix" value="{{ select_suffix }}">
+  <button type="submit" class="picker-item picker-add">
+    <span class="list-title">+ Add my own exercise: «{{ quick_add_name }}»</span>
+    <span class="list-meta">Creates it and picks it right away; add details later</span>
+  </button>
+</form>

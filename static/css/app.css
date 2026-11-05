@@ -1229,3 +1229,29 @@ button[disabled] {
   opacity: 0.7;
   cursor: progress;
 }
+
+/* Picker: "Add variant" on top of the results; "Add my own" first when nothing matched. */
+.picker-variant-form {
+  margin: 0 0 12px;
+}
+
+.picker-add-prominent {
+  margin: 0 0 12px;
+}
+
+.picker-add-prominent .picker-add {
+  border-style: solid;
+  background: var(--surface-2);
+}
+
+.picker-add-prominent .list-title {
+  font-size: 1.05rem;
+}
+
+.variant-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

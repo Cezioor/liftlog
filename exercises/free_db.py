@@ -133,6 +133,10 @@ def muscle_group_for(record):
 
 
 def equipment_for(record):
+    # free-exercise-db files Smith machine exercises under "machine" (one under
+    # "barbell"); the name is the reliable sign.
+    if "smith" in record.get("name", "").lower():
+        return Equipment.SMITH
     return EQUIPMENT_MAP.get(record.get("equipment") or "", Equipment.OTHER)
 
 

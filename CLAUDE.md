@@ -42,6 +42,15 @@ and keep each change small enough to review.
 3. **Thumbnails** in the exercise picker and library, and a difficulty filter.
 4. Tests for the import (re-runs, legacy matching, no duplicates) and the detail view; data source credited in the README
    and the page footer.
+5. **Search and variants.** Search ignores case, Polish diacritics, hyphens, spaces and English plurals
+   ("step up" = "step-up" = "stepup" = "step ups"). Equipment words in the query, Polish or English (smith, suwnica,
+   hantle, sztanga, kettlebell, wyciąg, linka, gumy, maszyna…), filter by equipment (or match that word in a name).
+   Equipment includes **Smith machine**: the 20 free-exercise-db Smith exercises use it, plus 30 built-in Smith variants
+   (`exercises/smith_variants.py`, command `seed_smith_variants`) linked to their free-weight base.
+   When the movement exists but not with the typed equipment, the picker shows "+ Add variant: «Step Ups» — Kettlebell"
+   on top: one tap creates the user's own exercise with `variant_of` = base, copying muscles, measurement, category,
+   instructions and photos, with the new equipment. A variant has its own history and records; the base's page lists its
+   variants. "+ Add my own exercise" is shown first and prominently when nothing matched.
 
 ### Stage 1.6 – Exercise types (do this first: it changes the core data model)
 
@@ -183,13 +192,14 @@ nutrition via Apple Health (parked), partner rewards using the points ledger.
   free plan blocks SMTP ports; without the key emails go to the console (local development). Rate limits use the database cache
   (`createcachetable` in `build.sh`), shared by all gunicorn workers.
 - Tests with **pytest + pytest-django**; GitHub Actions runs tests and `ruff` on every push.
-- Deploy: Render free web service (`render.yaml`, `build.sh` runs migrate, createcachetable, collectstatic, seed_exercises and import_free_exercise_db, and fails if `data_fingerprint --compare` finds unexpected changes to users/workouts/sets/plans; gunicorn + WhiteNoise) with a Neon Postgres database (`DATABASE_URL`). CI runs the tests on Postgres.
+- Deploy: Render free web service (`render.yaml`, `build.sh` runs migrate, createcachetable, collectstatic, seed_exercises, import_free_exercise_db and seed_smith_variants, and fails if `data_fingerprint --compare` finds unexpected changes to users/workouts/sets/plans; gunicorn + WhiteNoise) with a Neon Postgres database (`DATABASE_URL`). CI runs the tests on Postgres.
 
 ## Data model (Stages 1–1.6)
 
 ```
 Exercise(name, aliases, muscle_group, equipment, is_bodyweight, progression_step_kg,
          measurement: weight_reps | reps | time | distance_time, category, is_unilateral,
+         variant_of: Exercise | null,   # same movement, other equipment
          owner: User | null)   # null = built-in; search_text = normalised name + aliases
          # + free-exercise-db data: source_id, source_name, source_category, muscles, level, …
 UserSettings(user 1:1, effort_scale: simple | rir | rpe, ios_shortcut_enabled, ios_shortcut_name,

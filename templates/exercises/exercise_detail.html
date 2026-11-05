@@ -12,6 +12,7 @@
     <div>
       <h1>{{ exercise.name }}</h1>
       {% if exercise.primary_alias %}<p class="muted">{{ exercise.primary_alias }}</p>{% endif %}
+      {% if exercise.variant_of %}<p class="muted small">Variant of <a href="{% url 'exercises:exercise_detail' exercise.variant_of.pk %}">{{ exercise.variant_of.name }}</a></p>{% endif %}
       {% if exercise.source_name and exercise.source_name != exercise.name %}<p class="muted small">In free-exercise-db: {{ exercise.source_name }}</p>{% endif %}
     </div>
   </div>
@@ -43,6 +44,18 @@
         {% endif %}
       </figcaption>
     </figure>
+  {% endif %}
+
+  {% if variants %}
+    <section class="card">
+      <h2>Variants</h2>
+      <p class="muted small">The same movement with other equipment. Each has its own history and records.</p>
+      <ul class="variant-list">
+        {% for variant in variants %}
+          <li><a href="{% url 'exercises:exercise_detail' variant.pk %}">{{ variant.name }}</a> <span class="muted small">{{ variant.get_equipment_display }}{% if not variant.is_builtin %} · mine{% endif %}</span></li>
+        {% endfor %}
+      </ul>
+    </section>
   {% endif %}
 
   <section class="card">

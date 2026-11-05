@@ -19,6 +19,8 @@ python manage.py migrate --no-input
 python manage.py createcachetable
 python manage.py seed_exercises
 python manage.py import_free_exercise_db
+# Built-in Smith machine variants; their base exercises come from the import above.
+python manage.py seed_smith_variants
 
 echo "Training data after:"
 python manage.py data_fingerprint --compare "$SNAPSHOT"

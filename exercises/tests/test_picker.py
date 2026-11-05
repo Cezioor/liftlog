@@ -98,7 +98,7 @@ def test_add_my_own_is_offered_for_new_names_only(logged_in, picker_url, library
     new = logged_in.get(picker_url, {"q": "Wiosłowanie Meadowsa"}, **HTMX_RESULTS)
     existing = logged_in.get(picker_url, {"q": "back squat"}, **HTMX_RESULTS)
 
-    assert "Add my own: «Wiosłowanie Meadowsa»" in new.content.decode()
+    assert "Add my own exercise: «Wiosłowanie Meadowsa»" in new.content.decode()
     assert "Add my own" not in existing.content.decode()
 
 

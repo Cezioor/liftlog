@@ -27,6 +27,7 @@ class MuscleGroup(models.TextChoices):
 
 class Equipment(models.TextChoices):
     BARBELL = "barbell", "Barbell"
+    SMITH = "smith", "Smith machine"
     DUMBBELL = "dumbbell", "Dumbbell"
     MACHINE = "machine", "Machine"
     CABLE = "cable", "Cable"
@@ -140,6 +141,16 @@ class Exercise(models.Model):
     mechanic = models.CharField(max_length=20, blank=True)  # compound / isolation
     instructions = models.JSONField(default=list, blank=True)  # list of steps
     images = models.JSONField(default=list, blank=True)  # paths like "Barbell_Squat/0.jpg"
+    # The same movement with other equipment, e.g. "Step-up (Smith machine)" -> "Step-up".
+    # A variant has its own history and records; the base's page links to its variants.
+    # SET_NULL: deleting a user's own base exercise keeps the variant and its history.
+    variant_of = models.ForeignKey(
+        "self",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="variants",
+    )
     # null = built-in exercise shared by everyone; otherwise a user's own exercise.
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
