@@ -1,6 +1,12 @@
 from django.core.management.base import BaseCommand, CommandError
 
-from exercises.free_db import DATA_FILE, PENDING_MATCHES, import_dataset, load_dataset
+from exercises.free_db import (
+    DATA_FILE,
+    PENDING_MATCHES,
+    UNMATCHED_ORIGINALS,
+    import_dataset,
+    load_dataset,
+)
 from workouts.models import Workout, WorkoutSet
 
 
@@ -32,6 +38,8 @@ class Command(BaseCommand):
         pending = [name for name, candidates in PENDING_MATCHES.items() if candidates]
         if pending:
             self.stdout.write(f"Waiting for confirmation: {', '.join(pending)}.")
+        if UNMATCHED_ORIGINALS:
+            self.stdout.write(f"Kept without a match: {', '.join(UNMATCHED_ORIGINALS)}.")
         for name in report.legacy_missing:
             self.stdout.write(self.style.WARNING(f"Original exercise not found: {name}"))
         for source_id, reason in report.conflicts:

@@ -12,6 +12,7 @@
     <div>
       <h1>{{ exercise.name }}</h1>
       {% if exercise.primary_alias %}<p class="muted">{{ exercise.primary_alias }}</p>{% endif %}
+      {% if exercise.source_name and exercise.source_name != exercise.name %}<p class="muted small">In free-exercise-db: {{ exercise.source_name }}</p>{% endif %}
     </div>
   </div>
 

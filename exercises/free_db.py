@@ -97,6 +97,7 @@ def detail_fields(record):
         "mechanic": record.get("mechanic") or "",
         "instructions": [step.strip() for step in record.get("instructions") or [] if step.strip()],
         "images": list(record.get("images") or []),
+        "source_name": record["name"].strip()[:120],
     }
 
 
@@ -156,32 +157,31 @@ LEGACY_MATCHES = {
     "Ab Wheel Rollout": "Ab_Roller",
     "Pallof Press": "Pallof_Press",
     "Power Clean": "Power_Clean",
+    # Ambiguous ones, confirmed by the owner on 2026-11-05 (the other candidates are
+    # imported as separate exercises).
+    "Dip": "Dips_-_Chest_Version",
+    "T-Bar Row": "Lying_T-Bar_Row",
+    "Seated Dumbbell Shoulder Press": "Dumbbell_Shoulder_Press",
+    "Cable Lateral Raise": "Cable_Seated_Lateral_Raise",
+    "Rear Delt Fly": "Seated_Bent-Over_Rear_Delt_Raise",
+    "Skull Crusher": "EZ-Bar_Skullcrusher",
+    "Overhead Dumbbell Triceps Extension": "Standing_Dumbbell_Triceps_Extension",
+    "Wrist Curl": "Seated_Dumbbell_Palms-Up_Wrist_Curl",
+    "Walking Lunge": "Dumbbell_Lunges",
+    "Nordic Hamstring Curl": "Natural_Glute_Ham_Raise",
+    "Glute Bridge": "Butt_Lift_Bridge",
+    "Kettlebell Swing": "One-Arm_Kettlebell_Swings",
+}
+
+# Originals with no counterpart in free-exercise-db; they stay exactly as they are.
+UNMATCHED_ORIGINALS = {
+    "Pendlay Row": "no counterpart; Bent_Over_Barbell_Row is already “Barbell Row”",
 }
 
 # Waiting for the owner's confirmation: original name -> candidate ids (proposal first).
-# Candidates are NOT imported while listed here. To confirm, move the chosen id to
-# LEGACY_MATCHES (or delete the entry to keep the original unmatched) and re-run the import.
-PENDING_MATCHES = {
-    "Dip": ["Dips_-_Chest_Version", "Dips_-_Triceps_Version"],
-    "Pendlay Row": [],  # no counterpart; Bent_Over_Barbell_Row is already "Barbell Row"
-    "T-Bar Row": ["Lying_T-Bar_Row", "T-Bar_Row_with_Handle"],
-    "Seated Dumbbell Shoulder Press": ["Dumbbell_Shoulder_Press", "Seated_Dumbbell_Press"],
-    "Cable Lateral Raise": ["Cable_Seated_Lateral_Raise"],
-    "Rear Delt Fly": ["Seated_Bent-Over_Rear_Delt_Raise", "Reverse_Flyes", "Reverse_Machine_Flyes"],
-    "Skull Crusher": ["EZ-Bar_Skullcrusher", "Lying_Triceps_Press"],
-    "Overhead Dumbbell Triceps Extension": [
-        "Standing_Dumbbell_Triceps_Extension",
-        "Seated_Triceps_Press",
-    ],
-    "Wrist Curl": [
-        "Seated_Dumbbell_Palms-Up_Wrist_Curl",
-        "Palms-Up_Dumbbell_Wrist_Curl_Over_A_Bench",
-    ],
-    "Walking Lunge": ["Dumbbell_Lunges", "Bodyweight_Walking_Lunge", "Barbell_Walking_Lunge"],
-    "Nordic Hamstring Curl": ["Natural_Glute_Ham_Raise"],
-    "Glute Bridge": ["Butt_Lift_Bridge", "Single_Leg_Glute_Bridge"],
-    "Kettlebell Swing": ["One-Arm_Kettlebell_Swings"],
-}
+# Candidates are NOT imported while listed here, so confirming later can't create a
+# duplicate. To confirm, move the chosen id to LEGACY_MATCHES and re-run the import.
+PENDING_MATCHES = {}
 
 
 def withheld_ids():

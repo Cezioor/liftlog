@@ -4,10 +4,12 @@ from decimal import Decimal
 import pytest
 from django.core.management import call_command
 
+from exercises import free_db
 from exercises.free_db import (
     IMAGE_BASE_URL,
     LEGACY_MATCHES,
     PENDING_MATCHES,
+    UNMATCHED_ORIGINALS,
     equipment_for,
     import_dataset,
     load_dataset,
@@ -42,8 +44,10 @@ def record(source_id, name, **extra):
 SAMPLE = [
     # Counterpart of the original "Back Squat".
     record("Barbell_Squat", "Barbell Squat"),
-    # Candidate of a pending match ("Dip"): must not be imported yet.
+    # Confirmed counterpart of the original "Dip" ...
     record("Dips_-_Chest_Version", "Dips - Chest Version", primaryMuscles=["chest"]),
+    # ... and the other candidate, now imported as a separate exercise.
+    record("Dips_-_Triceps_Version", "Dips - Triceps Version", primaryMuscles=["triceps"]),
     # New exercise with Polish names.
     record("Sumo_Deadlift", "Sumo Deadlift", primaryMuscles=["hamstrings"], level="expert"),
     # New exercise without photos, equipment or level.
@@ -127,16 +131,34 @@ def test_new_exercises_are_created_as_builtins(originals):
     assert sumo.progression_step_kg == Decimal("5")
     bike = Exercise.objects.get(source_id="Air_Bike")
     assert (bike.equipment, bike.level, bike.images, bike.thumbnail_url) == ("other", "", [], "")
-    assert report.created == 2
+    assert report.created == 3
 
 
 @pytest.mark.django_db
-def test_pending_candidates_are_not_imported(originals):
+def test_confirmed_match_enriches_original_and_imports_the_alternative(originals):
+    import_dataset(SAMPLE)
+
+    dip = Exercise.objects.get(pk=originals["Dip"])
+    assert (dip.name, dip.source_id, dip.source_name) == (
+        "Dip",
+        "Dips_-_Chest_Version",
+        "Dips - Chest Version",
+    )
+    assert dip.aliases == ALIASES["Dip"]
+    triceps = Exercise.objects.get(source_id="Dips_-_Triceps_Version")
+    assert triceps.pk != dip.pk and triceps.name == "Dips - Triceps Version"
+
+
+@pytest.mark.django_db
+def test_pending_candidates_are_not_imported(originals, monkeypatch):
+    # No match is pending right now; the safety net must still work for future ones.
+    monkeypatch.setattr(free_db, "PENDING_MATCHES", {"Pendlay Row": ["Sumo_Deadlift"]})
+
     report = import_dataset(SAMPLE)
 
-    assert not Exercise.objects.filter(source_id="Dips_-_Chest_Version").exists()
+    assert not Exercise.objects.filter(source_id="Sumo_Deadlift").exists()
     assert report.withheld == 1
-    assert Exercise.objects.get(name="Dip").source_id is None  # unchanged
+    assert Exercise.objects.get(name="Pendlay Row").source_id is None  # unchanged
 
 
 @pytest.mark.django_db
@@ -155,8 +177,8 @@ def test_running_twice_changes_nothing(originals):
     report = import_dataset(SAMPLE)
 
     assert list(Exercise.objects.order_by("pk").values()) == snapshot
-    assert (report.created, report.updated) == (0, 2)
-    assert Exercise.objects.count() == len(EXERCISES) + 2
+    assert (report.created, report.updated) == (0, 3)
+    assert Exercise.objects.count() == len(EXERCISES) + 3
 
 
 @pytest.mark.django_db
@@ -183,6 +205,22 @@ def test_imported_polish_names_are_searchable(originals, user):
 
 
 @pytest.mark.django_db
+@pytest.mark.parametrize(
+    "query, expected",
+    [
+        ("Dip", "Dip"),  # the owner's own name
+        ("pompki na poręczach", "Dip"),  # the owner's Polish name
+        ("dips chest version", "Dip"),  # the free-exercise-db name
+        ("Barbell Squat", "Back Squat"),
+    ],
+)
+def test_matched_original_is_found_by_every_name(originals, user, query, expected):
+    import_dataset(SAMPLE)
+
+    assert [e.name for e in search_exercises(user, query)][0] == expected
+
+
+@pytest.mark.django_db
 def test_command_reports_and_checks_workouts(originals, tmp_path, capsys):
     data_file = tmp_path / "exercises.json"
     data_file.write_text(json.dumps(SAMPLE), encoding="utf-8")
@@ -191,9 +229,10 @@ def test_command_reports_and_checks_workouts(originals, tmp_path, capsys):
     call_command("import_free_exercise_db", file=str(data_file))
 
     out = capsys.readouterr().out
-    assert "2 created" in out and "0 created, 2 updated" in out
+    assert "3 created" in out and "0 created, 3 updated" in out
     assert "Workouts unchanged: 0 workouts, 0 sets." in out
-    assert "Waiting for confirmation: Dip" in out
+    assert "Waiting for confirmation" not in out
+    assert "Kept without a match: Pendlay Row." in out
 
 
 # --- the real dataset -----------------------------------------------------
@@ -203,9 +242,10 @@ def test_reviewed_mapping_matches_the_dataset():
     ids = {r["id"] for r in load_dataset()}
     originals = {name for name, *_ in EXERCISES}
 
-    # Every original is either matched or waiting for confirmation, never both.
-    assert set(LEGACY_MATCHES) | set(PENDING_MATCHES) == originals
-    assert not set(LEGACY_MATCHES) & set(PENDING_MATCHES)
+    # Every original is matched, waiting for confirmation or kept unmatched: exactly one.
+    groups = [set(LEGACY_MATCHES), set(PENDING_MATCHES), set(UNMATCHED_ORIGINALS)]
+    assert set.union(*groups) == originals
+    assert sum(len(g) for g in groups) == len(originals)
     # Every id exists and is used at most once.
     assert set(LEGACY_MATCHES.values()) <= ids
     assert len(set(LEGACY_MATCHES.values())) == len(LEGACY_MATCHES)
@@ -227,6 +267,7 @@ def test_full_import_of_the_real_dataset(originals):
     assert len(report.legacy_matched) == len(LEGACY_MATCHES)
     assert report.conflicts == [] and report.legacy_missing == []
     assert report.created + len(LEGACY_MATCHES) + report.withheld == len(data)
+    assert len(LEGACY_MATCHES) == 64 and report.withheld == 0
     assert again.created == 0
     # The originals are all still there, with their ids, and nothing is duplicated.
     assert dict(Exercise.objects.filter(name__in=originals).values_list("name", "pk")) == originals

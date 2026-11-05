@@ -97,6 +97,9 @@ class Exercise(models.Model):
     # --- From free-exercise-db (empty for user exercises and unmatched originals) ---
     # Stable id in free-exercise-db, e.g. "Barbell_Squat". The importer matches on it.
     source_id = models.CharField(max_length=120, unique=True, null=True, blank=True, editable=False)
+    # The exercise's name in free-exercise-db. Matched originals keep their own name,
+    # so this one is added to the search text: "EZ-Bar Skullcrusher" finds "Skull Crusher".
+    source_name = models.CharField(max_length=120, blank=True, editable=False)
     primary_muscles = models.JSONField("main muscles", default=list, blank=True)
     secondary_muscles = models.JSONField("helping muscles", default=list, blank=True)
     level = models.CharField(max_length=20, choices=Level.choices, blank=True)
@@ -141,7 +144,7 @@ class Exercise(models.Model):
             from .services import default_progression_step
 
             self.progression_step_kg = default_progression_step(self.muscle_group, self.equipment)
-        self.search_text = normalize(f"{self.name}, {self.aliases}")
+        self.search_text = normalize(f"{self.name}, {self.aliases}, {self.source_name}")
         if kwargs.get("update_fields") is not None:
             kwargs["update_fields"] = {*kwargs["update_fields"], "search_text"}
         super().save(*args, **kwargs)
