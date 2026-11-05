@@ -1,15 +1,23 @@
-"""Print a fingerprint of the user's training data: workouts, sets and plans.
+"""Fingerprint of the user's training data: workouts, sets and plans.
 
-build.sh runs it before the migrations and again after the exercise import and fails the
-deploy if the two differ, which proves a deploy left existing data untouched.
+build.sh uses it to prove a deploy left existing data untouched:
 
-Only columns that existed before Stage 1.6 are read, so the command also works on a
+    python manage.py data_fingerprint --save snapshot.json     # before the migrations
+    python manage.py data_fingerprint --compare snapshot.json  # after migrate/seed/import
+
+`--compare` lists every row that changed and fails unless each change is an expected one.
+The only expected change so far is migration workouts/0004: an old time set "0 × 60"
+becoming "60 s" (reps moved into duration_seconds). Rows added or removed always fail.
+
+Only columns that existed before Stage 1.6 are snapshotted, so the command also works on a
 database whose migrations haven't run yet.
 """
 
 import hashlib
+import json
+from pathlib import Path
 
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 from django.db import DatabaseError
 
 from plans.models import Plan, PlanDay, PlanExercise
@@ -34,31 +42,119 @@ FIELDS = {
 
 
 def _normalise(value):
-    # Decimal('60.00') and Decimal('60') must hash the same.
+    # Decimal('60.00') and Decimal('60') must compare the same; JSON-friendly values.
     if hasattr(value, "normalize"):
         return format(value.normalize(), "f")
+    if hasattr(value, "isoformat"):
+        return value.isoformat()
     return value
 
 
-def fingerprint():
-    digest = hashlib.sha256()
-    counts = []
+def snapshot():
+    """{model name: {id: [column values]}} of every fingerprinted row."""
+    data = {}
     for model, fields in FIELDS.items():
         rows = model.objects.order_by("pk").values_list(*fields)
-        count = 0
-        for row in rows.iterator(chunk_size=2000):
-            digest.update(repr(tuple(_normalise(v) for v in row)).encode())
-            count += 1
-        counts.append(f"{model.__name__}={count}")
+        data[model.__name__] = {
+            str(row[0]): [_normalise(v) for v in row] for row in rows.iterator(chunk_size=2000)
+        }
+    return data
+
+
+def summary(data):
+    """One line: row counts plus a short SHA-256 of all rows."""
+    digest = hashlib.sha256()
+    counts = []
+    for name, rows in data.items():
+        for key in sorted(rows, key=int):
+            digest.update(repr(tuple(rows[key])).encode())
+        counts.append(f"{name}={len(rows)}")
     return " ".join(counts) + " sha256=" + digest.hexdigest()[:16]
+
+
+def fingerprint():
+    return summary(snapshot())
+
+
+def _is_time_conversion(before_row, after_row, duration_seconds):
+    """Migration 0004: same set, reps N -> empty, duration_seconds = N, no weight."""
+    columns = FIELDS[WorkoutSet]
+    before = dict(zip(columns, before_row, strict=True))
+    after = dict(zip(columns, after_row, strict=True))
+    unchanged = all(before[c] == after[c] for c in columns if c != "reps")
+    return (
+        unchanged
+        and before["weight_kg"] == "0"
+        and before["reps"] is not None
+        and after["reps"] is None
+        and duration_seconds == before["reps"]
+    )
+
+
+def compare(before, after):
+    """(expected changes, unexpected changes) between two snapshots, as readable lines."""
+    expected, unexpected = [], []
+    for name, old_rows in before.items():
+        new_rows = after.get(name, {})
+        for key in sorted(old_rows.keys() - new_rows.keys(), key=int):
+            unexpected.append(f"{name} {key} removed")
+        for key in sorted(new_rows.keys() - old_rows.keys(), key=int):
+            unexpected.append(f"{name} {key} added")
+        changed = [k for k in old_rows.keys() & new_rows.keys() if old_rows[k] != new_rows[k]]
+        durations = {}
+        if name == "WorkoutSet" and changed:
+            durations = dict(
+                WorkoutSet.objects.filter(pk__in=[int(k) for k in changed]).values_list(
+                    "pk", "duration_seconds"
+                )
+            )
+        for key in sorted(changed, key=int):
+            old, new = old_rows[key], new_rows[key]
+            if name == "WorkoutSet" and _is_time_conversion(old, new, durations.get(int(key))):
+                expected.append(f"WorkoutSet {key}: 0 × {old[5]} -> {old[5]} s")
+            else:
+                unexpected.append(f"{name} {key} changed: {old} -> {new}")
+    return expected, unexpected
 
 
 class Command(BaseCommand):
     help = "Print a fingerprint of workouts, sets and plans (to prove a deploy changed nothing)."
 
-    def handle(self, *args, **options):
+    def add_arguments(self, parser):
+        parser.add_argument("--save", metavar="FILE", help="Also save the rows to FILE.")
+        parser.add_argument(
+            "--compare", metavar="FILE", help="Compare with rows saved earlier by --save."
+        )
+
+    def handle(self, *args, save=None, compare=None, **options):
         try:
-            self.stdout.write(fingerprint())
+            data = snapshot()
         except DatabaseError:
             # Brand-new database: the tables don't exist yet.
             self.stdout.write("empty")
+            if save:
+                Path(save).write_text("null")
+            return
+        self.stdout.write(summary(data))
+
+        if save:
+            Path(save).write_text(json.dumps(data))
+        if compare:
+            self._compare(json.loads(Path(compare).read_text()), data)
+
+    def _compare(self, before, after):
+        if before is None:
+            self.stdout.write("New database: nothing to compare.")
+            return
+        expected, unexpected = compare(before, after)
+        for line in expected:
+            self.stdout.write(f"  expected change: {line}")
+        for line in unexpected:
+            self.stdout.write(f"  UNEXPECTED: {line}")
+        if unexpected:
+            raise CommandError("Existing workouts, sets or plans changed during the deploy.")
+        self.stdout.write(
+            f"Only expected changes ({len(expected)} old time sets now in seconds)."
+            if expected
+            else "No changes to existing training data."
+        )
