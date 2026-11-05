@@ -815,6 +815,7 @@ input.picker-search {
 }
 
 .chip {
+  position: relative; /* keeps the hidden radio inside the chip, not off-page */
   flex: none;
   font-weight: 500;
 }
