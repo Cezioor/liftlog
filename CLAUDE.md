@@ -39,14 +39,115 @@ and keep each change small enough to review.
 4. Tests for the import (re-runs, legacy matching, no duplicates) and the detail view; data source credited in the README
    and the page footer.
 
-### Stage 2 – AI plan builder
-- A guided interview (form steps, then a short chat for follow-up questions) collecting: goal, experience, days per week, session length, equipment available, injuries/pain points, exercises liked and disliked.
-- The Claude API returns a plan as **structured JSON validated against a schema** before it is saved as a normal Plan the user can edit. Exercises are mapped to the library; unknown ones are created as user exercises.
-- **Safety rules in the system prompt**: no medical diagnosis; avoid loading reported painful areas; for acute pain, recent injury or post-surgery, recommend consulting a physiotherapist or doctor; prefer conservative volume for beginners. Show a short disclaimer on the page.
-- Cost control: API key only in an environment variable; per-user limit (e.g. 3 generated plans per day); log token usage.
+### Stage 1.6 – Exercise types (do this first: it changes the core data model)
 
-### Stage 3 – Schedule (later)
-Tasks and recurring reminders (e.g. "gym Mon/Wed/Fri", deadlines), with the planned workouts shown on the same calendar.
+Not every exercise is weight × reps. Each exercise gets a `measurement` type that decides which inputs the logging screen shows:
+
+| measurement | logged as | examples |
+|---|---|---|
+| `weight_reps` | kg × reps | bench press, squat |
+| `reps` | reps (optional added kg) | pull-ups, push-ups, box jumps |
+| `time` | seconds (optional added kg) | plank, wall sit, isometric holds, dead hang |
+| `distance_time` | metres + seconds | farmer's walk, sled push, rowing sprint |
+
+Plus `is_unilateral` (log left/right separately, e.g. single-leg RDL, stretches per side) and a `category`:
+strength, isometric, stretching / mobility, plyometric, motor / coordination / balance, cardio, rehab.
+Map free-exercise-db categories (strength, stretching, plyometrics, powerlifting, olympic weightlifting, strongman, cardio) onto these;
+add a small set of built-in isometric, mobility and balance exercises the database lacks (e.g. Spanish squat hold, Copenhagen plank, single-leg balance).
+
+`WorkoutSet` gets nullable `duration_seconds`, `distance_m` and `side` (left/right/null); existing sets stay `weight_reps`.
+Plans store targets per type (e.g. 3 × 30–45 s). Progression hints per type: more time for holds (+5 s), more reps for `reps`, as now for weights.
+For `time` exercises the logging screen shows a hold timer that counts up and saves the duration in one tap.
+"Last time", records and charts work for every type (longest hold, most reps, best e1RM).
+
+### Stage 1.7 – Activities and body weight
+
+- **Activities** outside the gym plan: sauna, running, cycling, swimming, walking, stretching session, team sport, custom.
+  Fields: type, start, duration, intensity (light / moderate / vigorous), optional distance, note.
+- **Estimated kcal** = MET × body weight (kg) × hours, using MET values from the Compendium of Physical Activities
+  (store the source per activity type). Always labelled "estimated". Sauna gets a low MET; the app explains that weight lost in a sauna is mostly water.
+- **Body weight and measurements** (waist, chest, arm, thigh…) with a chart. The latest weight feeds the kcal estimate.
+- Home screen timeline shows workouts and activities together.
+
+### Stage 1.8 – Consistency and rewards
+
+- **Weekly goal** (e.g. 3 sessions per week; the user chooses what counts: workouts, cardio, mobility, sauna).
+  Streak = consecutive weeks meeting the goal. No daily streaks: rest days are part of training.
+- **Calendar heatmap** of activity (GitHub-style) and a weekly summary.
+- **Badges/milestones**: first workout, 10/50/100 workouts, new personal records, 4/12/26-week streaks, first full mobility week.
+- **Points ledger**: every reward is a row (`user, event_type, points, created_at, source_object`), never just a counter,
+  so partner rewards, redemptions or rankings can be added later without migrations of history.
+- **Live PR detection**: "New record!" on the logging screen the moment a set beats a previous best.
+- Never reward eating less or a calorie deficit; reward showing up and logging.
+
+### Stage 1.9 – Training insights (data analysis)
+
+- **Weekly sets per muscle** from primary/secondary muscles (secondary counts as half a set), shown on the body map
+  against a typical 10–20 hard sets per muscle per week, with a note that needs vary per person.
+- **Plateau detection**: if best e1RM (or longest hold / most reps) for an exercise has not improved over ~3 weeks of regular training,
+  suggest a deload week or an exercise variation. Explain the rule in the UI.
+
+### Stage 2 – AI plan builder and coach
+
+Guided interview (form steps + short chat): goal, experience, days per week, session length, equipment, exercises liked/disliked,
+**injuries, pain and surgeries**. The Claude API returns a plan as JSON validated against a schema, then saved as a normal editable Plan
+built from the library (all categories and measurement types, not only weights).
+
+**Rehab / post-injury mode.** Not a yes/no gate. When the user mentions a surgery, injury or pain, the assistant runs a short
+consultation, then adapts the plan to what it learned. The user is treated as an adult who knows their own situation; how cautious
+the plan is depends on the whole picture, not on one answer.
+
+**1. Consultation (gather as much as is useful, conversationally, a few questions at a time):**
+- what happened: type of surgery or injury, which side, date;
+- where they are in recovery: still in formal rehab, finished it, returning to the gym on their own;
+- professional involvement: are they seeing (or did they see) an orthopaedic surgeon / physiotherapist, how recently,
+  and **what exactly they were told** – focus areas, exercises they were given, movements or ranges to avoid, load limits, next check-up;
+- current state: pain at rest / during / after training (0–10), trend (better, same, worse), swelling, stiffness, range of motion, confidence;
+- what they can already do comfortably, and their goal (back to sport, strength, everyday function).
+The answers are saved as the user's rehab profile and shown back as a short summary the user can correct before the plan is built.
+
+**2. How the plan adapts (a sliding scale, not fixed categories):**
+- **Clear professional guidance, recent or older** (e.g. "7 months after surgery, physio 2 months ago told me to focus on X and Y")
+  → the plan is built around that guidance: the physio's exercises are included as given, and the assistant adds complementary,
+  low-risk work that fits it. No push to go back to the physio; a light "mention it at your next visit" only where something is new.
+- **Early phase with a physio involved but only partial guidance** → the physio's exercises plus unaffected areas; for the affected
+  area only very conservative additions (isometric holds, unloaded range of motion, balance), each marked "check with your physio",
+  and the assistant suggests confirming them at the next appointment.
+- **Early phase with no orthopaedic surgeon or physiotherapist involved** → the assistant clearly recommends that this stage is
+  supervised by an orthopaedic surgeon and a physiotherapist and explains why. It trains unaffected areas and keeps the affected
+  area to what the user reports doing comfortably in daily life, until they have guidance. As soon as the user shares guidance,
+  the plan moves up the scale.
+- The supervision recommendation fades as recovery progresses: it is prominent in the early phase, becomes an occasional reminder
+  later, and disappears once the user reports being back to normal training.
+- **Red flags at any point** (new or increasing swelling, numbness or tingling, instability / giving way, night pain, fever, pain that
+  keeps getting worse) → pause progression for that area and recommend getting it checked soon. Repeated whenever they are reported.
+
+**3. Safety built into every rehab plan:**
+- **Start at the lower bound:** smallest range of motion, lowest load or bodyweight, shortest hold, fewest sets;
+  isometrics, unloaded mobility and balance/motor control before loaded movements.
+- **Progress only after the user confirms:** after a session, a quick check-in per affected area – pain during / next day:
+  none – mild – worse than before. "Fine" unlocks a small step (range, load, hold time or volume), one variable at a time;
+  "worse" steps back a level and suggests rest. Never automatic by date. Check-ins are stored so the user and their physio can review them.
+- Every rehab exercise shows "stop if pain increases". The assistant never diagnoses and never presents a plan as a medical protocol;
+  a short disclaimer is shown once when rehab mode starts.
+
+**AI coach (later)**: a weekly review of the user's logged data (consistency, volume per muscle, PRs, plateaus) with suggestions.
+
+Cost control as before: key in an environment variable, per-user daily limit, token usage logged.
+
+### Stage 3 – Schedule
+
+Tasks and recurring reminders (gym days, deadlines) on one calendar with planned workouts and activities.
+
+### Before opening the app to other people (GDPR/RODO)
+
+Body weight, measurements, injuries and surgeries are health data. Before public sign-ups: privacy policy, explicit consent for health data,
+"export my data" (CSV/JSON) and "delete my account and data", and no health data in logs or AI prompts beyond what the feature needs.
+
+### Later ideas
+
+Share a plan or workout with friends by link, friends and following, Strava import (official API, Standard Tier up to 10 users),
+nutrition via Apple Health (parked), partner rewards using the points ledger.
 
 ## Technical decisions
 
