@@ -7,32 +7,52 @@ with or without JavaScript.
 
 from django.shortcuts import render
 
-from .models import Equipment, MuscleGroup
+from .models import Equipment, Level, MuscleGroup
 from .services import find_by_name, search_exercises
 from .text import normalize
 
 RESULTS_LIMIT = 50
 
 
-def picker_response(request, *, select_base, title, back_url, recent=(), extra_params=None):
+def picker_response(
+    request,
+    *,
+    select_base,
+    title,
+    back_url,
+    recent=(),
+    extra_params=None,
+    select_suffix="",
+    header_action=None,
+):
+    """Render the picker. A result links to f"{select_base}{exercise.pk}{select_suffix}".
+
+    header_action: optional (label, url) shown as a button next to the title.
+    """
     query = request.GET.get("q", "").strip()[:100]
     muscle = request.GET.get("muscle", "")
     equipment = request.GET.get("equipment", "")
+    level = request.GET.get("level", "")
     muscle = muscle if muscle in MuscleGroup.values else ""
     equipment = equipment if equipment in Equipment.values else ""
+    level = level if level in Level.values else ""
 
-    results = search_exercises(request.user, query, muscle, equipment)
-    filtering = bool(normalize(query) or muscle or equipment)
+    results = search_exercises(request.user, query, muscle, equipment, level)
+    filtering = bool(normalize(query) or muscle or equipment or level)
     context = {
         "title": title,
         "back_url": back_url,
         "select_base": select_base,
+        "select_suffix": select_suffix,
+        "header_action": header_action,
         "extra_params": extra_params or {},
         "query": query,
         "muscle": muscle,
         "equipment": equipment,
         "muscle_choices": [c for c in MuscleGroup.choices if c[0] != MuscleGroup.OTHER],
         "equipment_choices": Equipment.choices,
+        "level": level,
+        "level_choices": Level.choices,
         "results": results[:RESULTS_LIMIT],
         "results_count": results.count(),
         "filtering": filtering,

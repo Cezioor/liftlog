@@ -1,8 +1,11 @@
 <li>
-  <a class="picker-item" href="{{ select_base }}{{ exercise.pk }}">
-    <span class="list-title">{{ exercise.name }}{% if not exercise.is_builtin %} <span class="badge">Mine</span>{% endif %}</span>
-    <span class="list-meta">
-      {% if exercise.primary_alias %}{{ exercise.primary_alias }} · {% endif %}{{ exercise.get_muscle_group_display }} · {{ exercise.get_equipment_display }}
+  <a class="picker-item" href="{{ select_base }}{{ exercise.pk }}{{ select_suffix }}">
+    {% include "exercises/partials/thumbnail.html" %}
+    <span class="picker-text">
+      <span class="list-title">{{ exercise.name }}{% if not exercise.is_builtin %} <span class="badge">Mine</span>{% endif %}</span>
+      <span class="list-meta">
+        {% if exercise.primary_alias %}{{ exercise.primary_alias }} · {% endif %}{{ exercise.get_muscle_group_display }} · {{ exercise.get_equipment_display }}{% if exercise.level %} · {{ exercise.get_level_display }}{% endif %}
+      </span>
     </span>
   </a>
 </li>

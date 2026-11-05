@@ -925,3 +925,185 @@ input.picker-search {
 .chosen-exercise > div {
   display: grid;
 }
+
+/* ---------------------------------------------------------------------- */
+/* Exercise library: thumbnails, detail page, muscle map                  */
+
+:root {
+  --muscle-idle: #2c343e;
+  --muscle-secondary: color-mix(in srgb, var(--accent) 38%, var(--surface));
+}
+
+.picker-item {
+  grid-template-columns: 56px 1fr;
+  align-items: center;
+  column-gap: 12px;
+}
+
+.picker-add {
+  grid-template-columns: 1fr;
+}
+
+.picker-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: var(--surface-2); /* dark placeholder until the lazy photo arrives */
+}
+
+.thumb-empty {
+  display: grid;
+  place-items: center;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 var(--space);
+  padding: 0;
+  list-style: none;
+}
+
+.tags li {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.tags .tag-accent {
+  color: var(--accent);
+}
+
+.ex-photos {
+  margin: 0 0 12px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.ex-photo-stage {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: #fff;
+  cursor: pointer;
+}
+
+.ex-photo-stage img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+}
+
+.ex-photo-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.muscle-map {
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.muscle-map .b {
+  fill: var(--surface-2);
+}
+
+.muscle-map .m {
+  fill: var(--muscle-idle);
+  stroke: var(--surface);
+  stroke-width: 1.5;
+}
+
+.muscle-map .m-secondary {
+  fill: var(--muscle-secondary);
+}
+
+.muscle-map .m-primary {
+  fill: var(--accent);
+}
+
+.muscle-map .map-label {
+  fill: var(--muted);
+  font-size: 13px;
+}
+
+.map-legend {
+  display: grid;
+  gap: 6px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.95rem;
+}
+
+.swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 6px;
+  border-radius: 4px;
+  vertical-align: -2px;
+}
+
+.swatch-primary {
+  background: var(--accent);
+}
+
+.swatch-secondary {
+  background: var(--muscle-secondary);
+}
+
+/* Muscle checkboxes in the exercise form: two columns of large targets.
+   Django puts the class on each <input>, so the list is found with :has(). */
+div:has(> div > label > input.muscle-checkboxes) {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 12px;
+}
+
+div:has(> label > input.muscle-checkboxes) label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  font-weight: 400;
+}
+
+.site-footer {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 var(--space) calc(var(--space) * 2 + env(safe-area-inset-bottom));
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.site-footer a {
+  color: var(--muted);
+}

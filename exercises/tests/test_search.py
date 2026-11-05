@@ -148,4 +148,4 @@ def test_library_page_uses_the_same_search(client, library, user):
 
     response = client.get(reverse("exercises:exercise_list"), {"q": "zgiecia"})
 
-    assert "Barbell Curl" in _names(response.context["exercises"])
+    assert "Barbell Curl" in _names(response.context["results"])

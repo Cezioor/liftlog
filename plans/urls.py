@@ -7,6 +7,7 @@ app_name = "plans"
 urlpatterns = [
     path("", views.plan_list, name="plan_list"),
     path("new/", views.plan_create, name="plan_create"),
+    path("add-exercise/<int:exercise_pk>/", views.add_to_plan, name="add_to_plan"),
     path("<int:pk>/", views.plan_detail, name="plan_detail"),
     path("<int:pk>/activate/", views.plan_activate, name="plan_activate"),
     path("<int:pk>/delete/", views.plan_delete, name="plan_delete"),

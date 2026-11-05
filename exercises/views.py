@@ -2,22 +2,49 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
+from workouts.services import last_sets, recently_used_exercises
+
 from .forms import ExerciseForm
-from .models import Equipment, Exercise, MuscleGroup
-from .services import find_by_name, search_exercises
+from .models import Equipment, Exercise, Muscle, MuscleGroup
+from .picker import picker_response
+from .services import find_by_name, muscles_for_map
 
 
 @login_required
 def exercise_list(request):
-    query = request.GET.get("q", "").strip()
-    exercises = search_exercises(request.user, query)
+    """The exercise library: the same picker as in plans and workouts, linking to details."""
+    return picker_response(
+        request,
+        title="Exercises",
+        back_url=reverse("home"),
+        select_base=reverse("exercises:exercise_list"),
+        select_suffix="/",
+        recent=recently_used_exercises(request.user),
+        header_action=("+ Add", reverse("exercises:exercise_create")),
+    )
+
+
+@login_required
+def exercise_detail(request, pk):
+    exercise = get_object_or_404(Exercise.objects.visible_to(request.user), pk=pk)
+    primary, secondary = muscles_for_map(exercise)
+    labels = dict(Muscle.choices)
     return render(
         request,
-        "exercises/exercise_list.html",
-        {"exercises": exercises, "query": query},
+        "exercises/exercise_detail.html",
+        {
+            "exercise": exercise,
+            "primary_muscles": primary,
+            "secondary_muscles": secondary,
+            "primary_labels": [labels[m] for m in primary],
+            "secondary_labels": [labels[m] for m in secondary],
+            "last_sets": last_sets(request.user, exercise),
+            "can_edit": exercise.owner_id == request.user.pk,
+        },
     )
 
 
@@ -77,4 +104,6 @@ def exercise_quick_add(request):
             request,
             f"Created “{exercise.name}”. You can set its details later in Exercises.",
         )
-    return redirect(f"{next_url}{exercise.pk}")
+    # Only "" or "/" may follow the id, so the redirect stays on the path chosen above.
+    suffix = "/" if request.POST.get("suffix") == "/" else ""
+    return redirect(f"{next_url}{exercise.pk}{suffix}")

@@ -7,3 +7,4 @@ pip install -r requirements.txt
 python manage.py collectstatic --no-input
 python manage.py migrate --no-input
 python manage.py seed_exercises
+python manage.py import_free_exercise_db

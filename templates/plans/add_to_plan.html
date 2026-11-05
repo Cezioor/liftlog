@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Add to plan{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <h1>Add {{ exercise.name }}</h1>
+    <a class="button button-small" href="{% url 'exercises:exercise_detail' exercise.pk %}">Cancel</a>
+  </div>
+
+  {% for plan in plans %}
+    <section class="card">
+      <h2>{{ plan.name }}{% if plan.is_active %} <span class="badge">Active</span>{% endif %}</h2>
+      <div class="stack">
+        {% for day in plan.days.all %}
+          <a class="button" href="{% url 'plans:pe_create' day.pk %}?exercise={{ exercise.pk }}">{{ day.name }}</a>
+        {% empty %}
+          <p class="muted">No days yet. <a href="{% url 'plans:plan_detail' plan.pk %}">Add a day</a></p>
+        {% endfor %}
+      </div>
+    </section>
+  {% empty %}
+    <div class="card">
+      <p class="muted">You don't have a plan yet.</p>
+      <a class="button button-primary" href="{% url 'plans:plan_create' %}">Create a plan</a>
+    </div>
+  {% endfor %}
+{% endblock %}

@@ -1,0 +1,6 @@
+{# 56×56 photo from jsDelivr, or the first letter when the exercise has no photo. #}
+{% if exercise.thumbnail_url %}
+  <img class="thumb" src="{{ exercise.thumbnail_url }}" alt="" width="56" height="56" loading="lazy" decoding="async">
+{% else %}
+  <span class="thumb thumb-empty" aria-hidden="true">{{ exercise.name|slice:":1"|upper }}</span>
+{% endif %}

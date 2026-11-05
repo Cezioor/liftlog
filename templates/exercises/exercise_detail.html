@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static exercise_tags workout_tags %}
+
+{% block title %}{{ exercise.name }}{% endblock %}
+
+{% block extra_head %}
+  <script src="{% static 'js/exercise.js' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <div>
+      <h1>{{ exercise.name }}</h1>
+      {% if exercise.primary_alias %}<p class="muted">{{ exercise.primary_alias }}</p>{% endif %}
+    </div>
+  </div>
+
+  <ul class="tags">
+    <li>{{ exercise.get_muscle_group_display }}</li>
+    <li>{{ exercise.get_equipment_display }}</li>
+    {% if exercise.level %}<li>{{ exercise.get_level_display }}</li>{% endif %}
+    {% if exercise.mechanic %}<li>{{ exercise.mechanic|capfirst }}</li>{% endif %}
+    {% if not exercise.is_builtin %}<li class="tag-accent">Mine</li>{% endif %}
+  </ul>
+
+  {% if exercise.image_urls %}
+    {# Tap to switch between start and end position; "Animate" alternates every second. #}
+    <figure class="ex-photos" data-photos>
+      <button type="button" class="ex-photo-stage" data-photo-toggle aria-label="Show the other position">
+        {% for url in exercise.image_urls|slice:":2" %}
+          <img src="{{ url }}" alt="{{ exercise.name }}, {% if forloop.first %}start{% else %}end{% endif %} position"
+               loading="lazy" decoding="async" width="850" height="567"{% if not forloop.first %} hidden{% endif %}>
+        {% endfor %}
+      </button>
+      <figcaption class="ex-photo-bar">
+        <span data-photo-caption>Start position</span>
+        {% if exercise.image_urls|length > 1 %}
+          <button type="button" class="button button-small" data-photo-play aria-pressed="false">Animate</button>
+        {% endif %}
+      </figcaption>
+    </figure>
+  {% endif %}
+
+  <section class="card">
+    <h2>Muscles</h2>
+    {% muscle_map primary_muscles secondary_muscles %}
+    <ul class="map-legend">
+      <li><span class="swatch swatch-primary"></span> Main: {{ primary_labels|join:", "|default:"–" }}</li>
+      {% if secondary_labels %}<li><span class="swatch swatch-secondary"></span> Helping: {{ secondary_labels|join:", " }}</li>{% endif %}
+    </ul>
+  </section>
+
+  {% if exercise.instructions %}
+    <section class="card">
+      <h2>How to do it</h2>
+      <ol class="steps">
+        {% for step in exercise.instructions %}<li>{{ step }}</li>{% endfor %}
+      </ol>
+    </section>
+  {% endif %}
+
+  <section class="card">
+    <h2>My history</h2>
+    {% if last_sets %}
+      <p class="muted small">Last time ({{ last_sets.0.workout.finished_at|date:"j M Y" }}):</p>
+      <ol class="summary-sets">
+        {% for s in last_sets %}<li>{{ s.weight_kg|kg }} kg × {{ s.reps }}</li>{% endfor %}
+      </ol>
+    {% else %}
+      <p class="muted">You haven't logged this exercise yet.</p>
+    {% endif %}
+  </section>
+
+  <div class="stack">
+    <a class="button button-primary button-big" href="{% url 'plans:add_to_plan' exercise.pk %}">+ Add to plan</a>
+    {% if can_edit %}<a class="button" href="{% url 'exercises:exercise_update' exercise.pk %}">Edit exercise</a>{% endif %}
+  </div>
+  <p class="form-links"><a href="{% url 'exercises:exercise_list' %}">← All exercises</a></p>
+{% endblock %}

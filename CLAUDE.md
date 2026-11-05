@@ -23,6 +23,22 @@ and keep each change small enough to review.
 6. **History and progress**: list of past workouts; per-exercise page with a chart of best estimated 1RM per session (Epley: `w × (1 + reps/30)`) and of total volume.
 7. **PWA**: manifest + service worker so it can be installed on the home screen; mobile-first layout.
 
+### Stage 1.5 – Bigger exercise library
+1. **Import free-exercise-db** (github.com/yuhonas/free-exercise-db, The Unlicense, 876 exercises) with an idempotent
+   `import_free_exercise_db` command keyed on a stable `source_id`. Exercise gains primary/secondary muscles, level,
+   category, mechanic, instructions and image paths; database muscle names map onto our muscle groups.
+   The 65 original exercises are never deleted or duplicated (plans and workouts point at them): each is matched to its
+   free-exercise-db counterpart by a reviewed mapping and enriched, keeping its ID, Polish names and progression step.
+   Ambiguous matches wait for the owner's confirmation; their candidates are not imported until then.
+   ~150 popular imported exercises get Polish names and synonyms.
+   Images are not stored in the repo: they come from jsDelivr pinned to one free-exercise-db commit, `loading="lazy"`.
+2. **Exercise detail page**: start/end photos (tap to switch, or auto-alternate), front/back muscle map in SVG (primary
+   strong, secondary lighter; works for user exercises too), step-by-step instructions, equipment, level, the user's
+   last sets, "Add to plan".
+3. **Thumbnails** in the exercise picker and library, and a difficulty filter.
+4. Tests for the import (re-runs, legacy matching, no duplicates) and the detail view; data source credited in the README
+   and the page footer.
+
 ### Stage 2 – AI plan builder
 - A guided interview (form steps, then a short chat for follow-up questions) collecting: goal, experience, days per week, session length, equipment available, injuries/pain points, exercises liked and disliked.
 - The Claude API returns a plan as **structured JSON validated against a schema** before it is saved as a normal Plan the user can edit. Exercises are mapped to the library; unknown ones are created as user exercises.

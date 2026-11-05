@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Exercise
+from .models import Exercise, Muscle
 from .services import default_progression_step, find_by_name
 
 
@@ -14,6 +14,20 @@ class WeightField(forms.DecimalField):
 
 
 class ExerciseForm(forms.ModelForm):
+    primary_muscles = forms.MultipleChoiceField(
+        label="Main muscles",
+        choices=Muscle.choices,
+        required=False,
+        widget=forms.CheckboxSelectMultiple(attrs={"class": "muscle-checkboxes"}),
+        help_text="Shown on the muscle map. Empty = based on the muscle group.",
+    )
+    secondary_muscles = forms.MultipleChoiceField(
+        label="Helping muscles",
+        choices=Muscle.choices,
+        required=False,
+        widget=forms.CheckboxSelectMultiple(attrs={"class": "muscle-checkboxes"}),
+    )
+
     class Meta:
         model = Exercise
         fields = (
@@ -23,6 +37,8 @@ class ExerciseForm(forms.ModelForm):
             "equipment",
             "is_bodyweight",
             "progression_step_kg",
+            "primary_muscles",
+            "secondary_muscles",
         )
         field_classes = {"progression_step_kg": WeightField}
         widgets = {

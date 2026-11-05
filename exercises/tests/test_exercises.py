@@ -82,7 +82,7 @@ def test_list_hides_other_users_exercises(client, user, other_user):
 
     response = client.get(reverse("exercises:exercise_list"))
 
-    names = [e.name for e in response.context["exercises"]]
+    names = [e.name for e in response.context["results"]]
     assert names == ["Mine", "Plank"]
     assert "Theirs" not in response.content.decode()
 
@@ -94,7 +94,7 @@ def test_list_search(client, user):
 
     response = client.get(reverse("exercises:exercise_list"), {"q": "squat"})
 
-    names = [e.name for e in response.context["exercises"]]
+    names = [e.name for e in response.context["results"]]
     assert "Back Squat" in names
     assert all("squat" in n.lower() for n in names)
 

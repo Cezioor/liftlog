@@ -2,9 +2,9 @@
 
 from decimal import Decimal
 
-from django.db.models import Case, IntegerField, Value, When
+from django.db.models import Case, IntegerField, Q, Value, When
 
-from .models import Equipment, Exercise, MuscleGroup
+from .models import Equipment, Exercise, Level, Muscle, MuscleGroup
 from .text import normalize
 
 LOWER_BODY_GROUPS = {
@@ -32,22 +32,27 @@ def default_progression_step(muscle_group, equipment):
     return UPPER_BODY_STEP
 
 
-def search_exercises(user, query="", muscle_group="", equipment=""):
+def search_exercises(user, query="", muscle_group="", equipment="", level=""):
     """Exercises visible to `user` matching the query and filters.
 
     Case and Polish diacritics are ignored ("zgiecia" finds "zgięcia"), and every
     word of the query must appear somewhere in the name or the other names.
-    Exercises whose name starts with the query come first.
+    Order: name starts with the query, then exercises with Polish names (the common
+    ones and the user's own), then alphabetical.
     """
     results = Exercise.objects.visible_to(user)
     if muscle_group in MuscleGroup.values:
         results = results.filter(muscle_group=muscle_group)
     if equipment in Equipment.values:
         results = results.filter(equipment=equipment)
+    if level in Level.values:
+        results = results.filter(level=level)
 
     normalized = normalize(query)
     for word in normalized.split():
         results = results.filter(search_text__contains=word)
+
+    ordering = []
     if normalized:
         results = results.annotate(
             name_first=Case(
@@ -55,8 +60,49 @@ def search_exercises(user, query="", muscle_group="", equipment=""):
                 default=Value(1),
                 output_field=IntegerField(),
             )
-        ).order_by("name_first", "name")
-    return results
+        )
+        ordering.append("name_first")
+    results = results.annotate(
+        familiar_first=Case(
+            When(Q(owner__isnull=False) | ~Q(aliases=""), then=Value(0)),
+            default=Value(1),
+            output_field=IntegerField(),
+        )
+    )
+    return results.order_by(*ordering, "familiar_first", "name")
+
+
+# Muscles shown on the map for exercises without their own list (user exercises,
+# unmatched originals), derived from the muscle group.
+GROUP_MUSCLES = {
+    MuscleGroup.CHEST: [Muscle.CHEST],
+    MuscleGroup.BACK: [Muscle.LATS, Muscle.MIDDLE_BACK],
+    MuscleGroup.SHOULDERS: [Muscle.SHOULDERS],
+    MuscleGroup.BICEPS: [Muscle.BICEPS],
+    MuscleGroup.TRICEPS: [Muscle.TRICEPS],
+    MuscleGroup.FOREARMS: [Muscle.FOREARMS],
+    MuscleGroup.QUADS: [Muscle.QUADRICEPS],
+    MuscleGroup.HAMSTRINGS: [Muscle.HAMSTRINGS],
+    MuscleGroup.GLUTES: [Muscle.GLUTES],
+    MuscleGroup.CALVES: [Muscle.CALVES],
+    MuscleGroup.CORE: [Muscle.ABDOMINALS],
+    MuscleGroup.FULL_BODY: [
+        Muscle.QUADRICEPS,
+        Muscle.GLUTES,
+        Muscle.HAMSTRINGS,
+        Muscle.LOWER_BACK,
+        Muscle.SHOULDERS,
+    ],
+}
+
+
+def muscles_for_map(exercise):
+    """(primary, secondary) muscle lists for the muscle map; works for every exercise."""
+    primary = [m for m in exercise.primary_muscles if m in Muscle.values]
+    if not primary:
+        primary = [str(m) for m in GROUP_MUSCLES.get(exercise.muscle_group, [])]
+    secondary = [m for m in exercise.secondary_muscles if m in Muscle.values and m not in primary]
+    return primary, secondary
 
 
 def find_by_name(user, name, exclude_pk=None):

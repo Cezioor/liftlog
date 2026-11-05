@@ -5,7 +5,11 @@
 {% block content %}
   <div class="page-header">
     <h1>{{ title }}</h1>
-    <a class="button button-small" href="{{ back_url }}">Cancel</a>
+    {% if header_action %}
+      <a class="button button-primary button-small" href="{{ header_action.1 }}">{{ header_action.0 }}</a>
+    {% else %}
+      <a class="button button-small" href="{{ back_url }}">Cancel</a>
+    {% endif %}
   </div>
 
   {# Every keystroke or filter tap reloads only #picker-results (250 ms after typing stops). #}
@@ -30,6 +34,12 @@
       <label class="chip"><input type="radio" name="equipment" value=""{% if not equipment %} checked{% endif %}><span>All equipment</span></label>
       {% for value, label in equipment_choices %}
         <label class="chip"><input type="radio" name="equipment" value="{{ value }}"{% if equipment == value %} checked{% endif %}><span>{{ label }}</span></label>
+      {% endfor %}
+    </div>
+    <div class="chips" role="radiogroup" aria-label="Difficulty">
+      <label class="chip"><input type="radio" name="level" value=""{% if not level %} checked{% endif %}><span>Any level</span></label>
+      {% for value, label in level_choices %}
+        <label class="chip"><input type="radio" name="level" value="{{ value }}"{% if level == value %} checked{% endif %}><span>{{ label }}</span></label>
       {% endfor %}
     </div>
     <noscript><button type="submit" class="button">Search</button></noscript>

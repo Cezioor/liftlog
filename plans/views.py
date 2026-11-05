@@ -254,3 +254,11 @@ def plan_exercise_move(request, pk, direction):
     item = _get_plan_exercise(request, pk)
     _move(item, item.day.exercises.all(), direction)
     return _plan_redirect(item.day.plan, f"day-{item.day_id}")
+
+
+@login_required
+def add_to_plan(request, exercise_pk):
+    """From an exercise's page: choose the plan day, then the usual sets/reps form."""
+    exercise = get_object_or_404(Exercise.objects.visible_to(request.user), pk=exercise_pk)
+    plans = Plan.objects.filter(owner=request.user).prefetch_related("days")
+    return render(request, "plans/add_to_plan.html", {"exercise": exercise, "plans": plans})
