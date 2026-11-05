@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Sign up{% endblock %}
+
+{% block content %}
+  <div class="card narrow">
+    <h1>Create an account</h1>
+    <form method="post" action="{% url 'account_signup' %}" class="form" data-submit-once novalidate>
+      {% csrf_token %}
+      {{ redirect_field }}
+      {% if form.non_field_errors %}
+        <ul class="errorlist">{% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}</ul>
+      {% endif %}
+      {% include "account/snippets/field.html" with field=form.email %}
+      {% if form.email_taken %}
+        <p class="field-note">
+          <a href="{% url 'account_login' %}">Log in</a> or
+          <a href="{% url 'account_reset_password' %}">reset your password</a>.
+        </p>
+      {% endif %}
+      {% include "account/snippets/field.html" with field=form.password1 show_help=True %}
+      {% include "account/snippets/field.html" with field=form.password2 %}
+      <button type="submit" class="button button-primary" data-busy-text="Creating your account…">Sign up</button>
+    </form>
+    <p class="form-links">
+      <a href="{% url 'account_login' %}">I already have an account</a>
+    </p>
+  </div>
+{% endblock %}

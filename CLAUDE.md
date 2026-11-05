@@ -10,7 +10,11 @@ and keep each change small enough to review.
 ## Product, in priority order
 
 ### Stage 1 – Tracker (MVP)
-1. **Accounts**: sign-up, login, logout, password reset (Django auth). Every object belongs to a user; a user never sees another user's data.
+1. **Accounts** (django-allauth): sign-up with email + password, log-in by email, **mandatory email verification** (link by email,
+   "Account created! We sent a link to …" page with "send it again"), password reset, rate-limited attempts. Field errors sit next to
+   their fields; an already registered email says so with links to log in / reset the password. Auth forms disable their button
+   after the first tap (a double submit on the slow free server used to fail with "user already exists").
+   Every object belongs to a user; a user never sees another user's data.
 2. **Exercise library**: seeded with ~60 common exercises (name, primary muscle group, equipment, `is_bodyweight`). Users can add their own.
 3. **Plans**: a plan has days (e.g. Push / Pull / Legs); each day has ordered exercises with target sets, a rep range (e.g. 8–12) and rest time.
 4. **Logging a workout** (the core screen, must be fast one-handed on a phone):
@@ -175,8 +179,11 @@ nutrition via Apple Health (parked), partner rewards using the points ledger.
 - Styling: one small hand-written CSS file with CSS variables, dark mode, large tap targets. No CSS framework.
 - Charts: Chart.js from a CDN with a pinned version.
 - Settings from environment variables (`DJANGO_SECRET_KEY`, `DATABASE_URL`, `ANTHROPIC_API_KEY`, `DEBUG`).
+- Email: django-anymail with **Brevo's HTTP API** (`BREVO_API_KEY`, `DEFAULT_FROM_EMAIL` = a sender verified in Brevo), because Render's
+  free plan blocks SMTP ports; without the key emails go to the console (local development). Rate limits use the database cache
+  (`createcachetable` in `build.sh`), shared by all gunicorn workers.
 - Tests with **pytest + pytest-django**; GitHub Actions runs tests and `ruff` on every push.
-- Deploy: Render free web service (`render.yaml`, `build.sh` runs migrate, collectstatic, seed_exercises and import_free_exercise_db, and fails if `data_fingerprint` of workouts/sets/plans changes; gunicorn + WhiteNoise) with a Neon Postgres database (`DATABASE_URL`). CI runs the tests on Postgres.
+- Deploy: Render free web service (`render.yaml`, `build.sh` runs migrate, createcachetable, collectstatic, seed_exercises and import_free_exercise_db, and fails if `data_fingerprint --compare` finds unexpected changes to users/workouts/sets/plans; gunicorn + WhiteNoise) with a Neon Postgres database (`DATABASE_URL`). CI runs the tests on Postgres.
 
 ## Data model (Stages 1–1.6)
 

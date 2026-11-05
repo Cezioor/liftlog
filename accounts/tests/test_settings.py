@@ -62,7 +62,7 @@ def test_settings_page_requires_login(client):
     response = client.get(reverse("settings"))
 
     assert response.status_code == 302
-    assert response.url.startswith(reverse("login"))
+    assert response.url.startswith(reverse("account_login"))
 
 
 @pytest.mark.django_db

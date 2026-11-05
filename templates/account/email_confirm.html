@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Confirm your email{% endblock %}
+
+{% block content %}
+  <div class="card narrow">
+    {% if confirmation and can_confirm %}
+      <h1>Activate your account</h1>
+      <p>Confirm that <strong>{{ confirmation.email_address.email }}</strong> is your email address.</p>
+      {# A button, not automatic: email scanners that open links must not confirm accounts. #}
+      <form method="post" action="{% url 'account_confirm_email' confirmation.key %}" class="form" data-submit-once>
+        {% csrf_token %}
+        {{ redirect_field }}
+        <button type="submit" class="button button-primary button-big" data-busy-text="Activating…">Activate my account</button>
+      </form>
+    {% elif confirmation %}
+      <h1>Already in use</h1>
+      <p>This address is already confirmed by a different account.</p>
+    {% else %}
+      <h1>Link expired</h1>
+      <p>This link has expired or was already used. Try logging in: if your address isn't confirmed yet, we'll send you a new link.</p>
+      <a class="button button-primary" href="{% url 'account_login' %}">Log in</a>
+    {% endif %}
+  </div>
+{% endblock %}

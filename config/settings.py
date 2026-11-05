@@ -56,6 +56,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Sign-up with email verification, login, password reset (django-allauth)
+    "allauth",
+    "allauth.account",
+    # Sends email through a provider's HTTP API (Render's free plan blocks SMTP ports)
+    "anymail",
     # Local apps
     "accounts",
     "exercises",
@@ -74,6 +79,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
@@ -124,12 +130,60 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = "home"
-LOGOUT_REDIRECT_URL = "login"
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",  # admin login by username
+    "allauth.account.auth_backends.AuthenticationBackend",  # app login by email
+]
 
-# Password-reset emails are printed to the console until a real mail service is set up.
-EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
+LOGIN_URL = "account_login"
+LOGIN_REDIRECT_URL = "home"
+
+# django-allauth: log in with email; an account works only after its email is confirmed.
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]  # username is generated
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+ACCOUNT_LOGOUT_REDIRECT_URL = "account_login"
+# Say clearly that an email is already registered (with links to log in / reset the
+# password) instead of pretending the sign-up worked. Fine for a small personal app.
+ACCOUNT_PREVENT_ENUMERATION = False
+ACCOUNT_FORMS = {"signup": "accounts.forms.SignupForm"}
+ACCOUNT_ADAPTER = "accounts.adapter.AccountAdapter"
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "LiftLog: "
+# Attempts per time window, counted in the shared cache below (m = minute, s = seconds).
+ACCOUNT_RATE_LIMITS = {
+    "login": "30/m/ip",
+    "login_failed": "10/m/ip,5/300s/key",  # 5 wrong passwords per email in 5 minutes
+    "signup": "10/m/ip",
+    "confirm_email": "1/180s/key",  # one verification email per address every 3 minutes
+    "reset_password": "20/m/ip,5/m/key",
+    "reset_password_from_key": "20/m/ip",
+    "change_password": "5/m/user",
+    "manage_email": "10/m/user",
+    "reauthenticate": "10/m/user",
+}
+
+# Rate limits live in the cache. A database table (created by build.sh with
+# createcachetable) is shared by all gunicorn workers, unlike per-process memory.
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "django_cache",
+    }
+}
+
+# Email: printed to the console locally; sent through Brevo's HTTP API when
+# BREVO_API_KEY is set (Render). The key lives only in the environment.
+BREVO_API_KEY = os.environ.get("BREVO_API_KEY", "")
+if BREVO_API_KEY:
+    EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
+    ANYMAIL = {"BREVO_API_KEY": BREVO_API_KEY}
+else:
+    EMAIL_BACKEND = os.environ.get(
+        "EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend"
+    )
+# Must be a sender verified in Brevo (Senders, domains & dedicated IPs).
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "LiftLog <noreply@liftlog.local>")
 
 

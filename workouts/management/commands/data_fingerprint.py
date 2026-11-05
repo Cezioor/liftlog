@@ -1,4 +1,4 @@
-"""Fingerprint of the user's training data: workouts, sets and plans.
+"""Fingerprint of the user's data: accounts, workouts, sets and plans.
 
 build.sh uses it to prove a deploy left existing data untouched:
 
@@ -17,6 +17,7 @@ import hashlib
 import json
 from pathlib import Path
 
+from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand, CommandError
 from django.db import DatabaseError
 
@@ -24,6 +25,9 @@ from plans.models import Plan, PlanDay, PlanExercise
 from workouts.models import Workout, WorkoutSet
 
 FIELDS = {
+    # Accounts (no password hashes): proves e.g. the email-verification migration
+    # (accounts/0004) added allauth addresses without touching the users themselves.
+    get_user_model(): ["id", "username", "email", "is_active", "is_staff", "date_joined"],
     Workout: ["id", "owner_id", "plan_day_id", "started_at", "finished_at", "note"],
     WorkoutSet: ["id", "workout_id", "exercise_id", "order", "weight_kg", "reps", "is_warmup"],
     Plan: ["id", "owner_id", "name", "is_active"],

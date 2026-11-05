@@ -1,6 +1,7 @@
 # Render Blueprint: Render reads this file when you create the service with
 # "New > Blueprint". Secrets are NOT stored here: DJANGO_SECRET_KEY is generated
-# by Render and DATABASE_URL is typed into the dashboard (sync: false).
+# by Render and DATABASE_URL, BREVO_API_KEY and DEFAULT_FROM_EMAIL are typed into
+# the dashboard (sync: false).
 services:
   - type: web
     name: liftlog
@@ -17,6 +18,12 @@ services:
       - key: DJANGO_SECRET_KEY
         generateValue: true
       - key: DATABASE_URL
+        sync: false
+      # Brevo API key (emails: sign-up links, password reset) and the sender, e.g.
+      # "LiftLog <you@example.com>"; the address must be a verified sender in Brevo.
+      - key: BREVO_API_KEY
+        sync: false
+      - key: DEFAULT_FROM_EMAIL
         sync: false
       - key: WEB_CONCURRENCY
         value: "2"

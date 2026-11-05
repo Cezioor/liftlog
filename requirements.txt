@@ -1,6 +1,11 @@
 Django>=5.2,<6.0
 dj-database-url>=3.0
 python-dotenv>=1.0
+# Accounts: sign-up with email verification. Pinned below 66: accounts/views.py uses
+# one internal allauth function (resending the verification email).
+django-allauth>=65.21,<66
+# Email through Brevo's HTTP API
+django-anymail[brevo]>=15.0
 # Production
 gunicorn>=23.0
 whitenoise>=6.9

@@ -1,18 +1,17 @@
+from allauth.account.forms import SignupForm as AllauthSignupForm
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
 
-from .models import User, UserSettings
+from .models import UserSettings
 
 
-class SignUpForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
-        model = User
-        fields = ("username", "email")
+class SignupForm(AllauthSignupForm):
+    """allauth's sign-up form (email + password twice), plus a flag for the template."""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Email is needed for password reset, so make it required at sign-up.
-        self.fields["email"].required = True
+    @property
+    def email_taken(self):
+        """True when the email belongs to an existing account: the page then shows
+        links to log in or reset the password."""
+        return any(e.code == "email_taken" for e in self.errors.as_data().get("email", []))
 
 
 class UserSettingsForm(forms.ModelForm):

@@ -47,7 +47,7 @@
     </ul>
   {% endif %}
 
-  <form method="post" action="{% url 'logout' %}" class="logout">
+  <form method="post" action="{% url 'account_logout' %}" class="logout">
     {% csrf_token %}
     <span class="muted small">Logged in as {{ user.username }} · <a href="{% url 'settings' %}">Settings</a></span>
     <button type="submit" class="link-button">Log out</button>

@@ -14,6 +14,12 @@ from workouts.models import Workout, WorkoutSet
 def _test_settings(settings):
     """Tests run with DEBUG off (like production), minus the parts that need a real deploy."""
     settings.SECURE_SSL_REDIRECT = False
+    # Rate limits are counted in the cache: per-test memory instead of the DB table
+    # that build.sh creates, emptied so one test's attempts don't limit the next.
+    settings.CACHES = {"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"}}
+    from django.core.cache import cache
+
+    cache.clear()
     settings.STORAGES = {
         **settings.STORAGES,
         "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
