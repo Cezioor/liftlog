@@ -31,7 +31,7 @@
             <li class="plan-exercise">
               <a class="plan-exercise-main" href="{% url 'plans:pe_update' item.pk %}">
                 <span class="list-title">{{ item.exercise.name }}</span>
-                <span class="list-meta">{{ item.target_sets }} × {{ item.rep_range }} · rest {{ item.rest_seconds }} s</span>
+                <span class="list-meta">{{ item.target_sets }} × {{ item.target_label }} · rest {{ item.rest_seconds }} s</span>
               </a>
               <div class="icon-buttons">
                 {% include "plans/_move_buttons.html" with url_name="plans:pe_move" pk=item.pk first=forloop.first last=forloop.last label=item.exercise.name %}

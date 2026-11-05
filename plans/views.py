@@ -196,7 +196,7 @@ def plan_exercise_create(request, day_pk):
     if exercise is None:
         return _exercise_picker(request, day)
 
-    form = PlanExerciseForm(request.POST or None)
+    form = PlanExerciseForm(request.POST or None, measurement=exercise.measurement)
     if request.method == "POST" and form.is_valid():
         item = form.save(commit=False)
         item.day = day
@@ -220,7 +220,7 @@ def plan_exercise_update(request, pk):
 
     # A different exercise may come back from the picker as ?exercise=<id>.
     exercise = _picked_exercise(request) or item.exercise
-    form = PlanExerciseForm(request.POST or None, instance=item)
+    form = PlanExerciseForm(request.POST or None, instance=item, measurement=exercise.measurement)
     if request.method == "POST" and form.is_valid():
         item = form.save(commit=False)
         item.exercise = exercise

@@ -54,17 +54,26 @@ def _workout_url(workout, exercise=None):
     return f"{url}#ex-{exercise.pk}" if exercise else url
 
 
+def _form_kwargs(exercise):
+    """The set form shows only the inputs that fit the exercise's type (Stage 1.6)."""
+    return {"measurement": exercise.measurement, "unilateral": exercise.is_unilateral}
+
+
 def _add_set_form(exercise, data=None, initial=None):
     # Unique HTML ids per card, because one page shows many of these forms.
-    return WorkoutSetForm(data, initial=initial, auto_id=f"ex{exercise.pk}_%s")
+    return WorkoutSetForm(
+        data, initial=initial, auto_id=f"ex{exercise.pk}_%s", **_form_kwargs(exercise)
+    )
 
 
 def _edit_set_form(workout_set, data=None):
+    weight = workout_set.weight_kg
     return WorkoutSetForm(
         data,
         instance=workout_set,
-        initial={"weight_kg": services.format_kg(workout_set.weight_kg)},
+        initial={"weight_kg": services.format_kg(weight) if weight else ""},
         auto_id=f"set{workout_set.pk}_%s",
+        **_form_kwargs(workout_set.exercise),
     )
 
 
@@ -74,13 +83,29 @@ def build_card(workout, exercise, plan_exercise=None, form=None, edit_form=None)
     previous = services.last_sets(workout.owner, exercise, exclude_workout=workout)
     rep_min = plan_exercise.rep_min if plan_exercise else None
     rep_max = plan_exercise.rep_max if plan_exercise else None
-    hint = services.progression_hint(exercise, previous, rep_max)
-    defaults = services.next_set_defaults(current, previous, hint, rep_min)
+    hold_min = plan_exercise.hold_min_s if plan_exercise else None
+    hold_max = plan_exercise.hold_max_s if plan_exercise else None
+    hint = services.progression_hint(exercise, previous, rep_max=rep_max, hold_max=hold_max)
+    defaults = services.next_set_defaults(
+        current,
+        previous,
+        hint,
+        rep_min,
+        measurement=exercise.measurement,
+        hold_min=hold_min,
+        unilateral=exercise.is_unilateral,
+    )
 
     if form is None:
         form = _add_set_form(
             exercise,
-            initial={"weight_kg": services.format_kg(defaults.weight_kg), "reps": defaults.reps},
+            initial={
+                "weight_kg": services.format_kg(defaults.weight_kg),
+                "reps": defaults.reps,
+                "duration_seconds": defaults.duration_seconds,
+                "distance_m": defaults.distance_m,
+                "side": defaults.side,
+            },
         )
 
     # One row per set number: last time's set next to today's.
@@ -108,6 +133,7 @@ def build_card(workout, exercise, plan_exercise=None, form=None, edit_form=None)
         "rest_seconds": plan_exercise.rest_seconds if plan_exercise else DEFAULT_REST_SECONDS,
         "done": len(current),
         "target": target,
+        "measurement": exercise.measurement,
     }
 
 

@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Exercise, Muscle
+from .models import Category, Exercise, Measurement, Muscle
 from .services import default_progression_step, find_by_name
 
 
@@ -35,6 +35,9 @@ class ExerciseForm(forms.ModelForm):
             "aliases",
             "muscle_group",
             "equipment",
+            "measurement",
+            "category",
+            "is_unilateral",
             "is_bodyweight",
             "progression_step_kg",
             "primary_muscles",
@@ -55,6 +58,15 @@ class ExerciseForm(forms.ModelForm):
             "kg added when every set hits the top of the rep range. "
             "Empty = default: dumbbells 2, legs 5, upper body 2.5."
         )
+        # Optional with sensible defaults, so forms opened before Stage 1.6 still save.
+        for name in ("measurement", "category"):
+            self.fields[name].required = False
+
+    def clean_measurement(self):
+        return self.cleaned_data.get("measurement") or Measurement.WEIGHT_REPS
+
+    def clean_category(self):
+        return self.cleaned_data.get("category") or Category.STRENGTH
 
     def clean_name(self):
         name = self.cleaned_data["name"].strip()

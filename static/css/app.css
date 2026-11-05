@@ -1107,3 +1107,66 @@ div:has(> label > input.muscle-checkboxes) label {
 .site-footer a {
   color: var(--muted);
 }
+
+/* ---------------------------------------------------------------------- */
+/* Stage 1.6: hold timer and left/right toggle                            */
+
+.hold-timer {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  padding: 12px;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.hold-timer .button {
+  width: 100%;
+}
+
+.hold-time {
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.hold-running .hold-time {
+  color: var(--accent);
+}
+
+.side-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.side-toggle .chip span {
+  justify-content: center;
+  width: 100%;
+}
+
+/* Django renders RadioSelect inside <div>s; flatten them for the toggle. */
+.side-toggle .chip {
+  display: flex;
+}
+
+.records {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.records li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.records .record-value {
+  font-weight: 700;
+  text-align: right;
+}

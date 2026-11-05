@@ -1,6 +1,17 @@
-// Workout screen: −/+ steppers and the rest timer.
+// Workout screen: −/+ steppers, the hold timer and the rest timer.
 (function () {
   "use strict";
+
+  // Seconds may be typed as "90" or "1:30".
+  function parseNumber(text) {
+    text = (text || "0").replace(",", ".");
+    if (text.indexOf(":") !== -1) {
+      return text.split(":").reduce(function (total, part) {
+        return total * 60 + (parseInt(part, 10) || 0);
+      }, 0);
+    }
+    return parseFloat(text) || 0;
+  }
 
   // --- Steppers -----------------------------------------------------------
   document.addEventListener("click", function (event) {
@@ -9,10 +20,74 @@
     const input = document.getElementById(button.dataset.for);
     if (!input) return;
     const step = parseFloat(button.dataset.step);
-    const current = parseFloat((input.value || "0").replace(",", ".")) || 0;
-    const next = Math.max(0, Math.round((current + step) * 100) / 100);
+    const next = Math.max(0, Math.round((parseNumber(input.value) + step) * 100) / 100);
     input.value = String(next);
   });
+
+  // --- Hold timer (exercises logged as time) ------------------------------
+  // Counts up from a stored start time, so it survives the phone locking or a
+  // reload. "Stop & save" writes the seconds into the form and logs the set.
+  const memory = {}; // fallback when localStorage is unavailable (private mode)
+  function getStart(key) {
+    try {
+      const value = localStorage.getItem(key);
+      return value ? parseInt(value, 10) : null;
+    } catch (e) {
+      return memory[key] || null;
+    }
+  }
+  function setStart(key, value) {
+    try {
+      if (value) localStorage.setItem(key, String(value));
+      else localStorage.removeItem(key);
+    } catch (e) {
+      /* use the in-memory copy below */
+    }
+    if (value) memory[key] = value;
+    else delete memory[key];
+  }
+  function clock(seconds) {
+    const m = Math.floor(seconds / 60);
+    return m + ":" + String(seconds % 60).padStart(2, "0");
+  }
+  function renderHold(timer) {
+    const start = getStart(timer.dataset.key);
+    const running = start !== null;
+    timer.classList.toggle("hold-running", running);
+    timer.querySelector("[data-hold-start]").hidden = running;
+    timer.querySelector("[data-hold-stop]").hidden = !running;
+    timer.querySelector("[data-hold-cancel]").hidden = !running;
+    const seconds = running ? Math.max(0, Math.floor((Date.now() - start) / 1000)) : 0;
+    timer.querySelector("[data-hold-display]").textContent = clock(seconds);
+  }
+  function renderAllHolds() {
+    document.querySelectorAll("[data-hold-timer]").forEach(renderHold);
+  }
+
+  document.addEventListener("click", function (event) {
+    const timer = event.target.closest("[data-hold-timer]");
+    if (!timer) return;
+    const key = timer.dataset.key;
+    if (event.target.closest("[data-hold-start]")) {
+      setStart(key, Date.now());
+    } else if (event.target.closest("[data-hold-cancel]")) {
+      setStart(key, null);
+    } else if (event.target.closest("[data-hold-stop]")) {
+      const start = getStart(key);
+      if (start === null) return;
+      const input = document.getElementById(timer.dataset.input);
+      if (input) input.value = String(Math.max(1, Math.round((Date.now() - start) / 1000)));
+      setStart(key, null);
+      const form = timer.closest("form");
+      // requestSubmit fires the submit event, so HTMX saves the set without a reload.
+      if (form && form.requestSubmit) form.requestSubmit();
+      else if (form) form.submit();
+    }
+    renderHold(timer);
+  });
+  setInterval(renderAllHolds, 250);
+  document.addEventListener("htmx:afterSwap", renderAllHolds);
+  renderAllHolds();
 
   // --- Rest timer ---------------------------------------------------------
   // The end time is stored (not a countdown), so the timer stays correct after

@@ -4,14 +4,18 @@
   <header class="ex-header">
     <h2>{{ exercise.name }}</h2>
     <span class="ex-progress{% if target and done >= target %} ex-progress-done{% endif %}">
-      {% if target %}{{ done }}/{{ target }} sets · {{ plan_exercise.rep_range }} reps{% else %}{{ done }} set{{ done|pluralize }}{% endif %}
+      {% if target %}{{ done }}/{{ target }} sets{% if plan_exercise.target_label %} · {{ plan_exercise.target_label }}{% endif %}{% else %}{{ done }} set{{ done|pluralize }}{% endif %}
     </span>
   </header>
 
   {% if hint %}
     <p class="hint{% if hint.increase %} hint-up{% endif %}">{% if hint.increase %}▲ {% endif %}{{ hint.message }}</p>
   {% elif not has_previous %}
-    <p class="hint hint-new">First time logging this. Pick a weight you could do for a few more reps.</p>
+    <p class="hint hint-new">First time logging this.
+      {% if measurement == "time" %}Hold as long as your form stays good, then stop.
+      {% elif measurement == "reps" %}Do good reps and stop one or two before you can't.
+      {% elif measurement == "distance_time" %}Pick a distance you can cover at a steady pace.
+      {% else %}Pick a weight you could do for a few more reps.{% endif %}</p>
   {% endif %}
 
   {% if rows %}
@@ -49,10 +53,10 @@
           {% else %}
             <tr class="{% if row.current %}set-done{% elif forloop.counter == done|add:1 %}set-next{% endif %}">
               <td class="set-number">{{ row.number }}</td>
-              <td class="set-prev">{% if row.previous %}{{ row.previous.weight_kg|kg }} × {{ row.previous.reps }}{% else %}–{% endif %}</td>
+              <td class="set-prev">{% if row.previous %}{{ row.previous|set_text:measurement }}{% else %}–{% endif %}</td>
               <td class="set-today">
                 {% if row.current %}
-                  {{ row.current.weight_kg|kg }} × {{ row.current.reps }}{% if row.current.is_warmup %} <span class="badge">W</span>{% endif %}
+                  {{ row.current|set_text:measurement }}{% if row.current.is_warmup %} <span class="badge">W</span>{% endif %}
                 {% else %}–{% endif %}
               </td>
               <td class="set-edit">
@@ -77,7 +81,7 @@
           hx-disabled-elt="find button[type='submit']"
           class="set-form" data-rest="{{ rest_seconds }}">
       {% csrf_token %}
-      {% include "workouts/partials/set_inputs.html" %}
+      {% include "workouts/partials/set_inputs.html" with hold_timer=True %}
       <button type="submit" class="button button-primary button-big">Log set {{ done|add:1 }}</button>
     </form>
   {% endif %}

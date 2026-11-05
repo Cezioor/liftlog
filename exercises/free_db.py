@@ -14,13 +14,14 @@ Rules (see CLAUDE.md, Stage 1.5):
 """
 
 import json
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
 from django.db import transaction
 
 from .free_db_polish import POLISH_NAMES
-from .models import Equipment, Exercise, Muscle, MuscleGroup
+from .models import Category, Equipment, Exercise, Measurement, Muscle, MuscleGroup
 from .services import default_progression_step
 
 FREE_DB_COMMIT = "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5"
@@ -69,6 +70,58 @@ EQUIPMENT_MAP = {
 
 LEVELS = {"beginner", "intermediate", "expert"}
 
+CATEGORY_MAP = {
+    "strength": Category.STRENGTH,
+    "powerlifting": Category.STRENGTH,
+    "olympic weightlifting": Category.STRENGTH,
+    "strongman": Category.STRENGTH,
+    "stretching": Category.MOBILITY,
+    "plyometrics": Category.PLYOMETRIC,
+    "cardio": Category.CARDIO,
+}
+
+# Cardio machines where the time matters more than the distance.
+TIME_ONLY_CARDIO = {"Rope_Jumping", "Stairmaster", "Step_Mill", "Elliptical_Trainer"}
+# Strongman events and sled work that are carried / pushed over a distance.
+DISTANCE_WORDS = ("walk", "carry", "drag", "sled push", "prowler")
+UNILATERAL_PATTERN = re.compile(
+    r"\b(one[- ]arm|one[- ]leg|one[- ]legged|one[- ]handed|single[- ]arm|single[- ]leg)\b"
+)
+
+
+def type_fields(record):
+    """measurement, category and is_unilateral for an imported exercise (Stage 1.6).
+
+    Only used for exercises created by the import; the original 65 get theirs from
+    seed_data.EXERCISE_TYPES and the import never overwrites them.
+    """
+    source_category = record.get("category") or ""
+    name = record["name"].lower()
+    static = record.get("force") == "static"
+
+    if source_category == "stretching":
+        measurement = Measurement.TIME
+    elif source_category == "cardio":
+        is_time_only = record["id"] in TIME_ONLY_CARDIO
+        measurement = Measurement.TIME if is_time_only else Measurement.DISTANCE_TIME
+    elif static:
+        measurement = Measurement.TIME
+    elif source_category == "strongman" and any(w in name for w in DISTANCE_WORDS):
+        measurement = Measurement.DISTANCE_TIME
+    elif source_category == "plyometrics" or record.get("equipment") == "body only":
+        measurement = Measurement.REPS
+    else:
+        measurement = Measurement.WEIGHT_REPS
+
+    category = CATEGORY_MAP.get(source_category, Category.STRENGTH)
+    if static and category == Category.STRENGTH:
+        category = Category.ISOMETRIC
+    return {
+        "measurement": measurement,
+        "category": category,
+        "is_unilateral": bool(UNILATERAL_PATTERN.search(name)),
+    }
+
 
 def muscle_group_for(record):
     if record.get("category") == "olympic weightlifting":
@@ -93,7 +146,7 @@ def detail_fields(record):
         "primary_muscles": _known_muscles(record.get("primaryMuscles")),
         "secondary_muscles": _known_muscles(record.get("secondaryMuscles")),
         "level": record.get("level") if record.get("level") in LEVELS else "",
-        "category": record.get("category") or "",
+        "source_category": record.get("category") or "",
         "mechanic": record.get("mechanic") or "",
         "instructions": [step.strip() for step in record.get("instructions") or [] if step.strip()],
         "images": list(record.get("images") or []),
@@ -265,6 +318,7 @@ def import_dataset(records):
                 "is_bodyweight": equipment == Equipment.BODYWEIGHT,
                 "progression_step_kg": default_progression_step(muscle_group, equipment),
                 **detail_fields(record),
+                **type_fields(record),
             },
         )
         builtin_names[name.lower()] = source_id

@@ -58,6 +58,25 @@ class Muscle(models.TextChoices):
     TRICEPS = "triceps", "Triceps"
 
 
+class Measurement(models.TextChoices):
+    """What a set of this exercise records; decides which inputs the workout screen shows."""
+
+    WEIGHT_REPS = "weight_reps", "Weight × reps"
+    REPS = "reps", "Reps"
+    TIME = "time", "Time"
+    DISTANCE_TIME = "distance_time", "Distance + time"
+
+
+class Category(models.TextChoices):
+    STRENGTH = "strength", "Strength"
+    ISOMETRIC = "isometric", "Isometric"
+    MOBILITY = "mobility", "Stretching / mobility"
+    PLYOMETRIC = "plyometric", "Plyometric"
+    MOTOR = "motor", "Motor control / balance"
+    CARDIO = "cardio", "Cardio"
+    REHAB = "rehab", "Rehab"
+
+
 class Level(models.TextChoices):
     BEGINNER = "beginner", "Beginner"
     INTERMEDIATE = "intermediate", "Intermediate"
@@ -84,6 +103,19 @@ class Exercise(models.Model):
     muscle_group = models.CharField(max_length=20, choices=MuscleGroup.choices)
     equipment = models.CharField(max_length=20, choices=Equipment.choices)
     is_bodyweight = models.BooleanField(default=False)
+    measurement = models.CharField(
+        "logged as",
+        max_length=20,
+        choices=Measurement.choices,
+        default=Measurement.WEIGHT_REPS,
+        help_text="Which fields a set has: kg × reps, reps, time, or distance + time.",
+    )
+    category = models.CharField(max_length=20, choices=Category.choices, default=Category.STRENGTH)
+    is_unilateral = models.BooleanField(
+        "one side at a time",
+        default=False,
+        help_text="Log left and right separately (e.g. single-leg exercises).",
+    )
     # kg added by the progression hint. Left empty, it is filled in save() from
     # exercises.services.default_progression_step.
     progression_step_kg = models.DecimalField(
@@ -103,7 +135,8 @@ class Exercise(models.Model):
     primary_muscles = models.JSONField("main muscles", default=list, blank=True)
     secondary_muscles = models.JSONField("helping muscles", default=list, blank=True)
     level = models.CharField(max_length=20, choices=Level.choices, blank=True)
-    category = models.CharField(max_length=30, blank=True)  # strength, stretching, cardio, ...
+    # free-exercise-db's own category (strength, stretching, olympic weightlifting, ...).
+    source_category = models.CharField(max_length=30, blank=True, editable=False)
     mechanic = models.CharField(max_length=20, blank=True)  # compound / isolation
     instructions = models.JSONField(default=list, blank=True)  # list of steps
     images = models.JSONField(default=list, blank=True)  # paths like "Barbell_Squat/0.jpg"

@@ -18,7 +18,7 @@ from exercises.free_db import (
 )
 from exercises.free_db_polish import POLISH_NAMES
 from exercises.models import Exercise
-from exercises.seed_data import ALIASES, EXERCISES
+from exercises.seed_data import ALIASES, EXERCISES, EXTRA_EXERCISES
 from exercises.services import search_exercises
 from plans.models import Plan, PlanDay, PlanExercise
 from workouts.models import WorkoutSet
@@ -178,7 +178,7 @@ def test_running_twice_changes_nothing(originals):
 
     assert list(Exercise.objects.order_by("pk").values()) == snapshot
     assert (report.created, report.updated) == (0, 3)
-    assert Exercise.objects.count() == len(EXERCISES) + 3
+    assert Exercise.objects.count() == len(EXERCISES) + len(EXTRA_EXERCISES) + 3
 
 
 @pytest.mark.django_db
@@ -271,4 +271,4 @@ def test_full_import_of_the_real_dataset(originals):
     assert again.created == 0
     # The originals are all still there, with their ids, and nothing is duplicated.
     assert dict(Exercise.objects.filter(name__in=originals).values_list("name", "pk")) == originals
-    assert Exercise.objects.count() == len(EXERCISES) + report.created
+    assert Exercise.objects.count() == len(EXERCISES) + len(EXTRA_EXERCISES) + report.created

@@ -4,7 +4,7 @@ from django.db import IntegrityError
 from django.urls import reverse
 
 from exercises.models import Exercise
-from exercises.seed_data import EXERCISES
+from exercises.seed_data import EXERCISES, EXTRA_EXERCISES
 
 # --- Seed command ---------------------------------------------------------
 
@@ -13,7 +13,8 @@ from exercises.seed_data import EXERCISES
 def test_seed_creates_builtin_exercises():
     call_command("seed_exercises")
 
-    assert Exercise.objects.filter(owner__isnull=True).count() == len(EXERCISES)
+    builtins = Exercise.objects.filter(owner__isnull=True)
+    assert builtins.count() == len(EXERCISES) + len(EXTRA_EXERCISES)
     assert len(EXERCISES) >= 60
 
 
@@ -22,7 +23,7 @@ def test_seed_is_idempotent():
     call_command("seed_exercises")
     call_command("seed_exercises")
 
-    assert Exercise.objects.count() == len(EXERCISES)
+    assert Exercise.objects.count() == len(EXERCISES) + len(EXTRA_EXERCISES)
 
 
 def test_seed_data_has_unique_names_and_valid_choices():

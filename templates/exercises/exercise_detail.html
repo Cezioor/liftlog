@@ -19,6 +19,9 @@
   <ul class="tags">
     <li>{{ exercise.get_muscle_group_display }}</li>
     <li>{{ exercise.get_equipment_display }}</li>
+    <li>{{ exercise.get_category_display }}</li>
+    {% if exercise.measurement != "weight_reps" %}<li>Logged as {{ exercise.get_measurement_display|lower }}</li>{% endif %}
+    {% if exercise.is_unilateral %}<li>One side at a time</li>{% endif %}
     {% if exercise.level %}<li>{{ exercise.get_level_display }}</li>{% endif %}
     {% if exercise.mechanic %}<li>{{ exercise.mechanic|capfirst }}</li>{% endif %}
     {% if not exercise.is_builtin %}<li class="tag-accent">Mine</li>{% endif %}
@@ -62,10 +65,17 @@
 
   <section class="card">
     <h2>My history</h2>
+    {% if records %}
+      <ul class="records">
+        {% for record in records %}
+          <li><span>{{ record.label }}</span><span class="record-value">{{ record.value_text }}<br><span class="muted small">{{ record.workout_set.workout.finished_at|date:"j M Y" }}</span></span></li>
+        {% endfor %}
+      </ul>
+    {% endif %}
     {% if last_sets %}
       <p class="muted small">Last time ({{ last_sets.0.workout.finished_at|date:"j M Y" }}):</p>
       <ol class="summary-sets">
-        {% for s in last_sets %}<li>{{ s.weight_kg|kg }} kg × {{ s.reps }}</li>{% endfor %}
+        {% for s in last_sets %}<li>{{ s|set_text_long:exercise.measurement }}</li>{% endfor %}
       </ol>
     {% else %}
       <p class="muted">You haven't logged this exercise yet.</p>

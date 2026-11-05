@@ -64,6 +64,17 @@ class PlanExercise(models.Model):
         default=12, validators=[MinValueValidator(1), MaxValueValidator(100)]
     )
     rest_seconds = models.PositiveSmallIntegerField(default=90, validators=[MaxValueValidator(900)])
+    # Targets for other measurement types (Stage 1.6); rep_min/rep_max are used for
+    # weight_reps and reps exercises.
+    hold_min_s = models.PositiveSmallIntegerField(
+        "hold from (s)", null=True, blank=True, validators=[MinValueValidator(1)]
+    )
+    hold_max_s = models.PositiveSmallIntegerField(
+        "hold to (s)", null=True, blank=True, validators=[MinValueValidator(1)]
+    )
+    target_distance_m = models.PositiveIntegerField(
+        "distance (m)", null=True, blank=True, validators=[MinValueValidator(1)]
+    )
 
     class Meta:
         ordering = ["order", "pk"]
@@ -82,3 +93,17 @@ class PlanExercise(models.Model):
         if self.rep_min == self.rep_max:
             return str(self.rep_min)
         return f"{self.rep_min}–{self.rep_max}"
+
+    @property
+    def target_label(self):
+        """The per-set target in the exercise's own unit: "8–12 reps", "30–45 s", "40 m"."""
+        measurement = self.exercise.measurement
+        if measurement == "time":
+            if not self.hold_min_s:
+                return ""
+            if not self.hold_max_s or self.hold_max_s == self.hold_min_s:
+                return f"{self.hold_min_s} s"
+            return f"{self.hold_min_s}–{self.hold_max_s} s"
+        if measurement == "distance_time":
+            return f"{self.target_distance_m} m" if self.target_distance_m else ""
+        return f"{self.rep_range} reps"

@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
-from workouts.services import last_sets, recently_used_exercises
+from workouts.services import last_sets, personal_records, recently_used_exercises
 
 from .forms import ExerciseForm
 from .models import Equipment, Exercise, Muscle, MuscleGroup
@@ -43,6 +43,7 @@ def exercise_detail(request, pk):
             "primary_labels": [labels[m] for m in primary],
             "secondary_labels": [labels[m] for m in secondary],
             "last_sets": last_sets(request.user, exercise),
+            "records": personal_records(request.user, exercise),
             "can_edit": exercise.owner_id == request.user.pk,
         },
     )

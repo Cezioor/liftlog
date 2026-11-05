@@ -66,7 +66,7 @@ def test_filter_chips(logged_in, picker_url, library):
     response = logged_in.get(picker_url, {"muscle": "calves"}, **HTMX_RESULTS)
 
     names = [e.name for e in response.context["results"]]
-    assert names == ["Seated Calf Raise", "Standing Calf Raise"]
+    assert names == ["Seated Calf Raise", "Single-Leg Balance", "Standing Calf Raise"]
 
 
 @pytest.mark.django_db

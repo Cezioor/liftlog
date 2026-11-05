@@ -177,3 +177,129 @@ ALIASES = {
     "Kettlebell Swing": "swing kettlebell, wymachy kettlebell",
     "Power Clean": "zarzut siłowy, zarzut",
 }
+
+# Stage 1.6: how the original exercises are logged. Anything not listed is
+# ("weight_reps", "strength", False). Old sets keep their weight × reps either way.
+EXERCISE_TYPES = {
+    # name: (measurement, category, is_unilateral)
+    "Push-up": ("reps", "strength", False),
+    "Dip": ("reps", "strength", False),
+    "Pull-up": ("reps", "strength", False),
+    "Chin-up": ("reps", "strength", False),
+    "Back Extension": ("reps", "strength", False),
+    "Nordic Hamstring Curl": ("reps", "strength", False),
+    "Glute Bridge": ("reps", "strength", False),
+    "Hanging Leg Raise": ("reps", "strength", False),
+    "Ab Wheel Rollout": ("reps", "strength", False),
+    "Plank": ("time", "isometric", False),
+    "Farmer's Walk": ("distance_time", "strength", False),
+    "Dumbbell Row": ("weight_reps", "strength", True),
+    "Bulgarian Split Squat": ("weight_reps", "strength", True),
+}
+
+# Built-in exercises that free-exercise-db lacks: isometric holds, balance, rehab basics.
+# Each: name, muscle_group, equipment, measurement, category, is_unilateral,
+#       primary muscles, secondary muscles, Polish names, instructions.
+EXTRA_EXERCISES = [
+    {
+        "name": "Spanish Squat Hold",
+        "muscle_group": "quads",
+        "equipment": "band",
+        "measurement": "time",
+        "category": "isometric",
+        "is_unilateral": False,
+        "primary_muscles": ["quadriceps"],
+        "secondary_muscles": ["glutes"],
+        "aliases": "przysiad hiszpański, izometria przysiadu z gumą, spanish squat",
+        "instructions": [
+            "Loop a heavy band around a rack at knee height and step into it so it sits "
+            "behind your knees.",
+            "Lean back against the band and sit down until your shins are vertical and "
+            "your knees are bent about 60–90°.",
+            "Keep your chest up and hold the position, breathing normally.",
+        ],
+    },
+    {
+        "name": "Copenhagen Plank",
+        "muscle_group": "glutes",
+        "equipment": "bodyweight",
+        "measurement": "time",
+        "category": "isometric",
+        "is_unilateral": True,
+        "primary_muscles": ["adductors"],
+        "secondary_muscles": ["abdominals"],
+        "aliases": "deska kopenhaska, plank kopenhaski, przywodziciele",
+        "instructions": [
+            "Lie on your side next to a bench and place your top leg on it "
+            "(knee for the easier version, ankle for the harder one).",
+            "Lift your hips so your body forms a straight line, supported on your forearm "
+            "and the top leg.",
+            "Hold, then switch sides.",
+        ],
+    },
+    {
+        "name": "Single-Leg Balance",
+        "muscle_group": "calves",
+        "equipment": "bodyweight",
+        "measurement": "time",
+        "category": "motor",
+        "is_unilateral": True,
+        "primary_muscles": ["calves"],
+        "secondary_muscles": ["glutes", "abdominals"],
+        "aliases": "stanie na jednej nodze, równowaga na jednej nodze, balans",
+        "instructions": [
+            "Stand on one leg with a slightly bent knee, near a wall or rack for safety.",
+            "Keep your hips level and your eyes on a fixed point.",
+            "Hold, then switch legs. Close your eyes or stand on a cushion to make it harder.",
+        ],
+    },
+    {
+        "name": "Wall Sit",
+        "muscle_group": "quads",
+        "equipment": "bodyweight",
+        "measurement": "time",
+        "category": "isometric",
+        "is_unilateral": False,
+        "primary_muscles": ["quadriceps"],
+        "secondary_muscles": ["glutes"],
+        "aliases": "krzesełko, siad przy ścianie, wall sit",
+        "instructions": [
+            "Lean your back against a wall and slide down until your thighs are about "
+            "parallel to the floor.",
+            "Keep your knees above your ankles and your back flat on the wall.",
+            "Hold the position.",
+        ],
+    },
+    {
+        "name": "Dead Hang",
+        "muscle_group": "forearms",
+        "equipment": "bodyweight",
+        "measurement": "time",
+        "category": "isometric",
+        "is_unilateral": False,
+        "primary_muscles": ["forearms"],
+        "secondary_muscles": ["lats", "shoulders"],
+        "aliases": "zwis na drążku, zwis",
+        "instructions": [
+            "Grab a pull-up bar with a shoulder-width overhand grip.",
+            "Hang with straight arms and relaxed legs.",
+            "Hold as long as you can keep a firm grip.",
+        ],
+    },
+    {
+        "name": "Hollow Body Hold",
+        "muscle_group": "core",
+        "equipment": "bodyweight",
+        "measurement": "time",
+        "category": "isometric",
+        "is_unilateral": False,
+        "primary_muscles": ["abdominals"],
+        "secondary_muscles": [],
+        "aliases": "łódka, hollow hold, trzymanie łódki",
+        "instructions": [
+            "Lie on your back, press your lower back into the floor.",
+            "Lift your shoulders and legs a few centimetres off the floor, arms by your ears.",
+            "Hold without letting your lower back lift. Bend your knees to make it easier.",
+        ],
+    },
+]

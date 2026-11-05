@@ -3,7 +3,7 @@ from django.core.management import call_command
 from django.urls import reverse
 
 from exercises.models import Exercise
-from exercises.seed_data import ALIASES, EXERCISES
+from exercises.seed_data import ALIASES, EXERCISES, EXTRA_EXERCISES
 from exercises.services import find_by_name, search_exercises
 from exercises.text import normalize
 
@@ -95,7 +95,8 @@ def test_filters_by_muscle_group_and_equipment(library, user):
 
 @pytest.mark.django_db
 def test_invalid_filter_values_are_ignored(library, user):
-    assert search_exercises(user, muscle_group="nope").count() == len(EXERCISES)
+    expected = len(EXERCISES) + len(EXTRA_EXERCISES)
+    assert search_exercises(user, muscle_group="nope").count() == expected
 
 
 @pytest.mark.django_db

@@ -157,19 +157,23 @@ nutrition via Apple Health (parked), partner rewards using the points ledger.
 - Charts: Chart.js from a CDN with a pinned version.
 - Settings from environment variables (`DJANGO_SECRET_KEY`, `DATABASE_URL`, `ANTHROPIC_API_KEY`, `DEBUG`).
 - Tests with **pytest + pytest-django**; GitHub Actions runs tests and `ruff` on every push.
-- Deploy: Render free web service (`render.yaml`, `build.sh` runs migrate, collectstatic and seed_exercises; gunicorn + WhiteNoise) with a Neon Postgres database (`DATABASE_URL`). CI runs the tests on Postgres.
+- Deploy: Render free web service (`render.yaml`, `build.sh` runs migrate, collectstatic, seed_exercises and import_free_exercise_db, and fails if `data_fingerprint` of workouts/sets/plans changes; gunicorn + WhiteNoise) with a Neon Postgres database (`DATABASE_URL`). CI runs the tests on Postgres.
 
-## Data model (Stage 1)
+## Data model (Stages 1–1.6)
 
 ```
 Exercise(name, aliases, muscle_group, equipment, is_bodyweight, progression_step_kg,
+         measurement: weight_reps | reps | time | distance_time, category, is_unilateral,
          owner: User | null)   # null = built-in; search_text = normalised name + aliases
+         # + free-exercise-db data: source_id, source_name, source_category, muscles, level, …
 UserSettings(user 1:1, ios_shortcut_enabled, ios_shortcut_name, keep_screen_on, rest_end_sound)
 Plan(owner, name, is_active, created_at)
 PlanDay(plan, name, order)
-PlanExercise(day, exercise, order, target_sets, rep_min, rep_max, rest_seconds)
+PlanExercise(day, exercise, order, target_sets, rep_min, rep_max, hold_min_s, hold_max_s,
+             target_distance_m, rest_seconds)
 Workout(owner, plan_day | null, started_at, finished_at | null, note)
-WorkoutSet(workout, exercise, order, weight_kg, reps, is_warmup)
+WorkoutSet(workout, exercise, order, weight_kg, reps | null, duration_seconds | null,
+           distance_m | null, side: left | right | "", is_warmup)
 ```
 "Last time" for an exercise = the sets of that exercise from the user's most recent finished workout that contains it.
 
