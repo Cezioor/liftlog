@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "exercises",
     "plans",
     "workouts",
+    "feedback",
 ]
 
 MIDDLEWARE = [
@@ -95,6 +96,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "feedback.context_processors.feedback_form",
             ],
         },
     },
@@ -192,6 +194,8 @@ else:
     EMAIL_BACKEND = os.environ.get(
         "EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend"
     )
+# Where feedback reports are emailed (feedback app); empty = only saved, not emailed.
+FEEDBACK_EMAIL = os.environ.get("FEEDBACK_EMAIL", "").strip()
 # Must be a sender verified in Brevo (Senders, domains & dedicated IPs).
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "LiftLog <noreply@liftlog.local>")
 

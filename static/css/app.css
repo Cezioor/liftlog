@@ -1294,3 +1294,52 @@ button[disabled] {
 .ex-change {
   order: 3;
 }
+
+/* "Zgłoś": a quiet link in the top bar and a dialog over the current page. */
+.nav-report {
+  font-size: 0.9rem;
+}
+
+.feedback-dialog {
+  width: min(480px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.feedback-dialog::backdrop {
+  background: rgb(0 0 0 / 60%);
+}
+
+.feedback-dialog-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.feedback-dialog-head h2 {
+  margin: 0;
+}
+
+.feedback-kinds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 12px;
+  padding: 0;
+  border: 0;
+}
+
+.feedback-form textarea {
+  width: 100%;
+}
+
+.feedback-thanks {
+  display: grid;
+  gap: 12px;
+  font-size: 1.1rem;
+}

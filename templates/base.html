@@ -11,6 +11,7 @@
           integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+"
           crossorigin="anonymous" defer></script>
   <script src="{% static 'js/forms.js' %}" defer></script>
+  <script src="{% static 'js/feedback.js' %}" defer></script>
   {% block extra_head %}{% endblock %}
 </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
@@ -21,6 +22,8 @@
         <nav class="nav">
           <a href="{% url 'plans:plan_list' %}"{% if section == 'plans' %} aria-current="page"{% endif %}>Plans</a>
           <a href="{% url 'exercises:exercise_list' %}"{% if section == 'exercises' %} aria-current="page"{% endif %}>Exercises</a>
+          {# Opens the dialog (feedback.js); without JavaScript it is the feedback page. #}
+          <a href="{% url 'feedback:feedback' %}?page={{ request.get_full_path|urlencode }}" class="nav-report" data-feedback-open>Zgłoś</a>
         </nav>
       {% endwith %}
     {% endif %}
@@ -41,5 +44,8 @@
     Exercise data and photos: <a href="https://github.com/yuhonas/free-exercise-db" rel="noopener">free-exercise-db</a> by yuhonas, public domain (The Unlicense).
   </footer>
   {% block after_main %}{% endblock %}
+  {% if user.is_authenticated and request.resolver_match.app_name != "feedback" %}
+    {% include "feedback/partials/dialog.html" %}
+  {% endif %}
 </body>
 </html>

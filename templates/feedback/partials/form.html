@@ -1,0 +1,27 @@
+{# The "Zgłoś" form. Sent with HTMX: only this form is replaced (by itself with errors, or #}
+{# by the thanks message), so the page underneath, e.g. a workout, is never reloaded.    #}
+<form method="post" action="{% url 'feedback:feedback' %}" class="form feedback-form"
+      hx-post="{% url 'feedback:feedback' %}" hx-target="this" hx-swap="outerHTML"
+      hx-disabled-elt="find button[type='submit']">
+  {% csrf_token %}
+  {{ feedback_form.page }}
+  {% if feedback_form.non_field_errors %}
+    <ul class="errorlist">{% for error in feedback_form.non_field_errors %}<li>{{ error }}</li>{% endfor %}</ul>
+  {% endif %}
+  {% if feedback_form.kind.errors %}
+    <ul class="errorlist">{% for error in feedback_form.kind.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+  {% endif %}
+  <fieldset class="feedback-kinds">
+    <legend class="visually-hidden">{{ feedback_form.kind.label }}</legend>
+    {% for radio in feedback_form.kind %}
+      <label class="chip">{{ radio.tag }}<span>{{ radio.choice_label }}</span></label>
+    {% endfor %}
+  </fieldset>
+  <label for="{{ feedback_form.message.id_for_label }}">{{ feedback_form.message.label }}</label>
+  {% if feedback_form.message.errors %}
+    <ul class="errorlist">{% for error in feedback_form.message.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+  {% endif %}
+  {{ feedback_form.message }}
+  <p class="muted small">Dołączymy adres tej strony i typ urządzenia, żeby łatwiej znaleźć problem.</p>
+  <button type="submit" class="button button-primary">Wyślij</button>
+</form>

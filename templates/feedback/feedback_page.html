@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{# The same form as a page, for browsers without JavaScript. #}
+
+{% block title %}Zgłoś{% endblock %}
+
+{% block content %}
+  <div class="card narrow">
+    <h1>Zgłoś</h1>
+    {% include "feedback/partials/form.html" %}
+  </div>
+{% endblock %}

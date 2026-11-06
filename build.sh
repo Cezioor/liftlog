@@ -29,3 +29,7 @@ python manage.py merge_exercises
 
 echo "Training data after:"
 python manage.py data_fingerprint --compare "$SNAPSHOT"
+
+# Admin access for the owner's account (ADMIN_EMAILS on Render). After the data check
+# on purpose: it is an intended change to a user row.
+python manage.py grant_admin

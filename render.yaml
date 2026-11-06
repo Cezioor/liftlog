@@ -29,5 +29,11 @@ services:
       # after sign-up while the confirmation link is still sent.
       - key: ACCOUNT_EMAIL_VERIFICATION
         sync: false
+      # Where "Zgłoś" reports are emailed, and who gets the Django admin (comma separated,
+      # accounts with a confirmed address).
+      - key: FEEDBACK_EMAIL
+        sync: false
+      - key: ADMIN_EMAILS
+        sync: false
       - key: WEB_CONCURRENCY
         value: "2"

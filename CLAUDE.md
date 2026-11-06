@@ -69,6 +69,23 @@ and keep each change small enough to review.
    workout a plan exercise asks **"Only today"** (`WorkoutSwap`, the plan stays) or **"Change in the plan too"**
    (PlanExercise.exercise changes, targets kept). Sets already logged always stay with the variant they were done with.
 
+### Feedback from users (done)
+
+- **"Zgłoś"** link in the top bar of every screen for logged-in users opens a dialog: kind ("Błąd", "Sugestia zmiany",
+  "Opinia"), "Opisz, co się wydarzyło albo co proponujesz" (required, max 2000 characters), "Wyślij". Sent with HTMX,
+  so a workout in progress is never reloaded; "Dzięki! Zgłoszenie dotarło." and the dialog closes. Without JavaScript
+  it is the page /feedback/ that returns to where you were.
+- Saved automatically: the page it was sent from, the user, the time and the device type (from User-Agent).
+  At most 5 reports per user per hour.
+- Each report is emailed to `FEEDBACK_EMAIL` (Brevo, like account emails); if the email fails the report is still saved
+  and the error is logged (report id only).
+- Admin (`/admin/`, login through the app's own email login): list with filters by kind, status (Nowe / W trakcie /
+  Załatwione) and device, status editable from the list. Admin access: `grant_admin` (emails from `ADMIN_EMAILS`, only
+  confirmed addresses; run by `build.sh` after the data check).
+- **Working rule:** at every checkpoint (before planning the next piece of work) run
+  `python manage.py feedback_report` against production data, read the open reports grouped by kind and propose fixes;
+  mark handled ones in the admin.
+
 ### Stage 1.6 – Exercise types (do this first: it changes the core data model)
 
 Not every exercise is weight × reps. Each exercise gets a `measurement` type that decides which inputs the logging screen shows:
@@ -231,12 +248,14 @@ Workout(owner, plan_day | null, started_at, finished_at | null, note)
 WorkoutSwap(workout, plan_exercise, exercise)   # "only today": another variant this workout
 WorkoutSet(workout, exercise, order, weight_kg, reps | null, duration_seconds | null,
            distance_m | null, side: left | right | "", rir | null, is_warmup)
+Feedback(user | null, kind: bug | suggestion | opinion, message, page, device, user_agent,
+         status: new | in_progress | done, created_at)
 ```
 "Last time" for an exercise = the sets of that exercise from the user's most recent finished workout that contains it.
 
 ## Conventions
 
-- Apps: `accounts`, `exercises`, `plans`, `workouts` (Stage 2 adds `planner`).
+- Apps: `accounts`, `exercises`, `plans`, `workouts`, `feedback` (Stage 2 adds `planner`).
 - Every view that touches user data filters by `request.user`; write a test for this for each model.
 - Business logic (progression hint, 1RM, "last time" query) lives in plain functions in `services.py`, tested without views.
 - Times stored in UTC, shown in Europe/Warsaw.

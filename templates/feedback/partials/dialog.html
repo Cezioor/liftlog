@@ -1,0 +1,10 @@
+{# On every page for logged-in users; opened by the "Zgłoś" link in the top bar. #}
+<dialog class="feedback-dialog" id="feedback-dialog" aria-labelledby="feedback-title">
+  <div class="feedback-dialog-head">
+    <h2 id="feedback-title">Zgłoś</h2>
+    <button type="button" class="icon-button" data-feedback-close aria-label="Zamknij">✕</button>
+  </div>
+  <div data-feedback-body>
+    {% include "feedback/partials/form.html" %}
+  </div>
+</dialog>
