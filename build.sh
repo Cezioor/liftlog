@@ -8,7 +8,8 @@ python manage.py collectstatic --no-input
 
 # Fingerprint of accounts, workouts, sets and plans before and after the database changes.
 # --compare lists every changed row and fails the deploy unless it is an expected change
-# (so far only: old "0 × 60" plank sets becoming "60 s", migration workouts/0004).
+# (old "0 × 60" plank sets becoming "60 s", migration workouts/0004; sets moved by
+# merge_exercises from a user's own exercise to the built-in one).
 SNAPSHOT=$(mktemp)
 trap 'rm -f "$SNAPSHOT"' EXIT
 BEFORE=$(python manage.py data_fingerprint --save "$SNAPSHOT")
@@ -23,6 +24,8 @@ python manage.py import_free_exercise_db
 python manage.py seed_smith_variants
 # Families of variants (same movement, other equipment); doubtful ones wait for approval.
 python manage.py group_movements
+# Users' own copies of built-in exercises -> the built-in (exercises/merges.py).
+python manage.py merge_exercises
 
 echo "Training data after:"
 python manage.py data_fingerprint --compare "$SNAPSHOT"

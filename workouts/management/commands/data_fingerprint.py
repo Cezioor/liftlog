@@ -5,9 +5,13 @@ build.sh uses it to prove a deploy left existing data untouched:
     python manage.py data_fingerprint --save snapshot.json     # before the migrations
     python manage.py data_fingerprint --compare snapshot.json  # after migrate/seed/import
 
-`--compare` lists every row that changed and fails unless each change is an expected one.
-The only expected change so far is migration workouts/0004: an old time set "0 × 60"
-becoming "60 s" (reps moved into duration_seconds). Rows added or removed always fail.
+`--compare` lists every row that changed and fails unless each change is an expected one:
+- migration workouts/0004: an old time set "0 × 60" becoming "60 s" (reps moved into
+  duration_seconds);
+- merge_exercises (exercises/merges.py): a user's own exercise listed there disappears,
+  and sets / plan entries that pointed at it point at the built-in instead, with every
+  other column unchanged.
+Any other row added, removed or changed fails the deploy.
 
 Only columns that existed before Stage 1.6 are snapshotted, so the command also works on a
 database whose migrations haven't run yet.
@@ -100,13 +104,36 @@ def _is_time_conversion(before_row, after_row, duration_seconds):
     )
 
 
+def _exercise_column(model_name):
+    """Position of exercise_id in a snapshot row, or None if the model has none."""
+    for model, columns in FIELDS.items():
+        if model.__name__ == model_name and "exercise_id" in columns:
+            return columns.index("exercise_id")
+    return None
+
+
+def _is_reassignment(model_name, old, new, merged):
+    """Only exercise_id differs, and it moved from a merged exercise to its built-in."""
+    i = _exercise_column(model_name)
+    if i is None:
+        return False
+    others_same = all(a == b for j, (a, b) in enumerate(zip(old, new, strict=True)) if j != i)
+    return others_same and merged.get(old[i]) == new[i]
+
+
 def compare(before, after):
     """(expected changes, unexpected changes) between two snapshots, as readable lines."""
+    from exercises.merges import merged_ids
+
+    merged = merged_ids(before.get("Exercise", {}), after.get("Exercise", {}))
     expected, unexpected = [], []
     for name, old_rows in before.items():
         new_rows = after.get(name, {})
         for key in sorted(old_rows.keys() - new_rows.keys(), key=int):
-            unexpected.append(f"{name} {key} removed")
+            if name == "Exercise" and int(key) in merged:
+                expected.append(f"Exercise {key} merged into {merged[int(key)]}")
+            else:
+                unexpected.append(f"{name} {key} removed")
         for key in sorted(new_rows.keys() - old_rows.keys(), key=int):
             unexpected.append(f"{name} {key} added")
         changed = [k for k in old_rows.keys() & new_rows.keys() if old_rows[k] != new_rows[k]]
@@ -121,6 +148,9 @@ def compare(before, after):
             old, new = old_rows[key], new_rows[key]
             if name == "WorkoutSet" and _is_time_conversion(old, new, durations.get(int(key))):
                 expected.append(f"WorkoutSet {key}: 0 × {old[5]} -> {old[5]} s")
+            elif _is_reassignment(name, old, new, merged):
+                i = _exercise_column(name)
+                expected.append(f"{name} {key}: exercise {old[i]} -> {new[i]} (merge)")
             else:
                 unexpected.append(f"{name} {key} changed: {old} -> {new}")
     return expected, unexpected
@@ -163,7 +193,7 @@ class Command(BaseCommand):
         if unexpected:
             raise CommandError("Existing workouts, sets or plans changed during the deploy.")
         self.stdout.write(
-            f"Only expected changes ({len(expected)} old time sets now in seconds)."
+            f"Only expected changes ({len(expected)} rows, listed above)."
             if expected
             else "No changes to existing training data."
         )

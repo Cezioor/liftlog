@@ -278,9 +278,14 @@ def test_decisions_on_the_real_library(library):
     }  # fmt: skip
     assert family("Dumbbell Row") == set()  # one-arm row: not with the two-arm ones
     assert family("Kettlebell Windmill") == family("Cable Iron Cross") == set()
-    # Still waiting for the owner, with exactly these members:
-    pending = {g.key: {e.name for e in g.exercises} for g in report.pending}
-    assert pending == {
-        "dip": {"Dip", "Dip Machine"},
-        "deadlift": {"Deadlift", "Cable Deadlifts", "Smith Machine Deadlift"},
-    }
+    assert family("Dip") == {
+        "Dip", "Dip Machine", "Parallel Bar Dip", "Dips - Triceps Version", "Ring Dips"
+    }  # fmt: skip
+    assert family("Bench Dips") == family("Jerk Dip Squat") == set()
+    assert family("Deadlift") == {
+        "Deadlift", "Cable Deadlifts", "Smith Machine Deadlift", "Trap Bar Deadlift",
+        "Axle Deadlift", "Leverage Deadlift",
+    }  # fmt: skip
+    for separate in ("Romanian Deadlift", "Sumo Deadlift", "Deadlift with Bands"):
+        assert "Deadlift" not in family(separate), separate
+    assert report.pending == []  # every doubtful group decided

@@ -60,7 +60,9 @@ and keep each change small enough to review.
    ("Barbell Step Ups" + "Dumbbell Step Ups") plus the hand-made Smith links; doubtful groups (same equipment twice,
    different muscle group or category, one side vs both) wait in `exercises/movement_groups.py` for the owner's
    CONFIRMED/REJECTED decision (`group_movements --pending` lists them); MANUAL_GROUPS joins differently named exercises
-   (e.g. two-arm bent-over rows). Merging families keeps users' own variants.
+   (e.g. two-arm bent-over rows, parallel-bar dips, deadlift with other bars). Merging families keeps users' own
+   variants. `merge_exercises` (`exercises/merges.py`) folds a user's own copy into the matching built-in: sets, plan
+   entries and swaps move to the built-in, the copy is deleted.
    **"⇄ Change variant"** on the plan editor, the workout card and the exercise page: the family's variants first, then
    equipment without a variant (Smith, dumbbell, barbell, kettlebell, weight plate, pull-up bar, cable, machine, band,
    landmine, TRX, bodyweight, "Other…" with a typed name), which creates the user's variant in one tap. During a
@@ -208,7 +210,7 @@ nutrition via Apple Health (parked), partner rewards using the points ledger.
   free plan blocks SMTP ports; without the key emails go to the console (local development). Rate limits use the database cache
   (`createcachetable` in `build.sh`), shared by all gunicorn workers.
 - Tests with **pytest + pytest-django**; GitHub Actions runs tests and `ruff` on every push.
-- Deploy: Render free web service (`render.yaml`, `build.sh` runs migrate, createcachetable, collectstatic, seed_exercises, import_free_exercise_db, seed_smith_variants and group_movements, and fails if `data_fingerprint --compare` finds unexpected changes to users, users' own exercises, workouts, sets or plans; gunicorn + WhiteNoise) with a Neon Postgres database (`DATABASE_URL`). CI runs the tests on Postgres.
+- Deploy: Render free web service (`render.yaml`, `build.sh` runs migrate, createcachetable, collectstatic, seed_exercises, import_free_exercise_db, seed_smith_variants, group_movements and merge_exercises, and fails if `data_fingerprint --compare` finds unexpected changes to users, users' own exercises, workouts, sets or plans; gunicorn + WhiteNoise) with a Neon Postgres database (`DATABASE_URL`). CI runs the tests on Postgres.
 
 ## Data model (Stages 1–1.6)
 

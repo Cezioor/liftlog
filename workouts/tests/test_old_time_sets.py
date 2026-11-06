@@ -128,7 +128,7 @@ def test_compare_command_fails_the_deploy_on_unexpected_changes(old_sets, tmp_pa
     call_command("data_fingerprint", compare=str(path))
     out = capsys.readouterr().out
     assert out.count("expected change:") == 2
-    assert "Only expected changes (2 old time sets now in seconds)." in out
+    assert "Only expected changes (2 rows, listed above)." in out
 
     WorkoutSet.objects.filter(reps=12).update(reps=11)
     with pytest.raises(CommandError):

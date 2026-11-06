@@ -23,6 +23,8 @@ CONFIRMED_GROUPS: set[str] = {
     "hip adduction",
     "preacher curl",
     "decline press",
+    "dip",  # 2026-11-06, with the parallel-bar dips below
+    "deadlift",  # 2026-11-06, with the bar/machine versions below
 }
 
 REJECTED_GROUPS: set[str] = {
@@ -39,5 +41,23 @@ MANUAL_GROUPS: dict[str, list[str]] = {
         "Bent Over Two-Dumbbell Row",
         "Two-Arm Kettlebell Row",
         "Smith Machine Bent Over Row",
+    ],
+    # Dips on parallel bars (and the machine many people use); bench dips stay separate.
+    "Dip": [
+        "Dip",
+        "Dip Machine",
+        "Parallel Bar Dip",
+        "Dips - Triceps Version",
+        "Ring Dips",
+    ],
+    # The classic deadlift with other bars or a machine. Not: Romanian, sumo, stiff-legged,
+    # or bands/chains (a way of loading, not a piece of equipment).
+    "Deadlift": [
+        "Deadlift",
+        "Cable Deadlifts",
+        "Smith Machine Deadlift",
+        "Trap Bar Deadlift",
+        "Axle Deadlift",
+        "Leverage Deadlift",
     ],
 }
