@@ -7,6 +7,74 @@ and it can build a personalised plan from a short interview (goals, equipment, i
 The owner is learning: explain decisions briefly, prefer clear, conventional Django over clever code,
 and keep each change small enough to review.
 
+## Status (checked in the code on 2026-11-06)
+
+| Stage | Status |
+|---|---|
+| **1 – Tracker (MVP)** | in progress (items 6–7 left) |
+| 1.1 Accounts (allauth, email verification, rate limits) | done |
+| 1.2 Exercise library | done |
+| 1.3 Plans (incl. "⇄ Change variant") | done |
+| 1.4 Logging a workout (rest/hold timers, sides, set rating, first-time calibration) | done |
+| 1.5 Progression hint (`progression_step_kg`, RIR) | done |
+| 1.6 History and progress | in progress: last 5 workouts on the home screen, workout summary page, exercise page with last sets and records (best e1RM, heaviest set, most reps, longest hold). Missing: a full workout history list and the Chart.js charts (best e1RM and volume per session) – no chart code exists yet |
+| 1.7 PWA | to do: no manifest, no service worker |
+| **1.5 – Bigger exercise library** (free-exercise-db, detail page, muscle map, Smith machine, search, movement families and variants) | done |
+| **1.6 – Exercise types** (+ set rating RIR, calibration, old plank sets converted) | done |
+| Feedback ("Zgłoś", admin, `feedback_report`) | done (commit 1f73565); `FEEDBACK_EMAIL` and `ADMIN_EMAILS` still to be set on Render |
+| **1.7 – Activities and body weight** | to do |
+| **1.8 – Consistency and rewards** | to do |
+| **1.9 – Training insights** | to do |
+| **2 – AI plan builder and coach** | to do |
+| **3 – Schedule** | to do |
+| Before opening to other people (GDPR, own domain, keep-alive) | to do |
+
+## Next up (in this order)
+
+1. **Feedback system** ("Zgłoś": bug / suggestion / opinion, email to `FEEDBACK_EMAIL`, admin panel, `feedback_report`):
+   built and deployed; left: set `FEEDBACK_EMAIL` and `ADMIN_EMAILS` on Render and test it on the phone.
+2. **PL/EN language switcher** (the UI is English with some Polish texts; Polish testers are coming).
+3. **Stage 1.7** – activities and body weight.
+4. **Checkpoint A**: a test at the gym and by a second (female) user; then `feedback_report`.
+5. **Stages 1.8, 1.9 and 2.**
+6. **Checkpoint B**: a week of training on a plan built by the AI.
+
+Stage 1 items 6 (history list, charts) and 7 (PWA) are not scheduled yet: ask the owner where they fit.
+
+## How we work
+
+- We work in stages; tests at the gym happen only at checkpoints. After every checkpoint we read the reports with
+  `python manage.py feedback_report` and group them into bugs, convenience and ideas.
+- While working, run only the tests of the app being changed (`pytest <app>/ -q`); run everything once at the end
+  of the task (`pytest -q --tb=short`), plus `ruff check .` and `ruff format --check .`.
+- The summary at the end of a task: at most 10 points, in Polish.
+- Every change to users' data goes through `data_fingerprint` (`build.sh` fails the deploy on unexpected changes;
+  expected ones are listed explicitly in `--compare`). Uncertain data decisions (matches, groups, merges) wait for
+  the owner's approval before they are applied.
+- Commit and push only when asked; commit messages in English, imperative mood. After pushing, check GitHub Actions
+  and the Render deployment status (Render reports deployments to the GitHub API: `/repos/Cezioor/liftlog/deployments`).
+
+## Local environment (owner's Windows PC)
+
+- Python 3.12 in `.venv`, created with uv (the system Python is 3.11). Always use `.venv\Scripts\python`
+  (`.venv/Scripts/python.exe` in Git Bash).
+- Avast Web Shield intercepts HTTPS, so certificate checks fail. Never turn SSL verification off; point the tools at
+  Avast's certificate instead:
+  - pip: `python -m pip install --cert "C:/ProgramData/Avast Software/Avast/wscert.pem" …`
+  - uv: `uv … --native-tls` (uses the Windows certificate store, which trusts Avast)
+  - requests / other Python HTTP clients: `REQUESTS_CA_BUNDLE` (or `SSL_CERT_FILE`) pointing at a bundle made of
+    certifi's `cacert.pem` plus `wscert.pem`
+  - git: this repo has `http.sslBackend=schannel` (Windows certificate store).
+- No `gh` CLI; use the GitHub REST API with curl for read-only checks.
+- Run the app: `.venv/Scripts/python.exe manage.py runserver 0.0.0.0:8000` with `DEBUG=1` in `.env` (DEBUG accepts any
+  host). On the phone, on the same Wi-Fi (or the phone's hotspot), open `http://<the PC's LAN IP>:8000`
+  (`ipconfig` → IPv4 address); allow Python through the Windows firewall if asked. Wake lock and some browser
+  features need HTTPS, so test those on Render.
+- Emails locally: without `BREVO_API_KEY` they are printed in the runserver console (sign-up links, password reset,
+  "Zgłoś" reports).
+- Local database: SQLite `db.sqlite3`; rehearse risky migrations on a copy (e.g. in the scratchpad) with
+  `DATABASE_URL=sqlite:///<copy>` and run the `build.sh` steps with `data_fingerprint --save/--compare`.
+
 ## Product, in priority order
 
 ### Stage 1 – Tracker (MVP)
@@ -27,7 +95,10 @@ and keep each change small enough to review.
    - add a set in one tap, pre-filled with last time's weight; edit or delete sets;
    - a simple rest timer after logging a set;
    - finish the workout with an optional note.
-5. **Progression hint**: if the user hit the top of the rep range on all sets last time, suggest +2.5 kg (upper body) / +5 kg (lower body); otherwise suggest the same weight. Show it as a hint, never force it.
+5. **Progression hint**: if the user hit the top of the rep range on all sets last time, suggest the exercise's
+   `progression_step_kg` more (default: dumbbells 2 kg, lower body 5 kg, upper body 2.5 kg; editable per exercise);
+   otherwise suggest the same weight. Set ratings sharpen it: a set at the top of the range with RIR ≥ 3 means add
+   weight, RIR 0 at the bottom of the range means stay. Show it as a hint, never force it.
 6. **History and progress**: list of past workouts; per-exercise page with a chart of best estimated 1RM per session (Epley: `w × (1 + reps/30)`) and of total volume.
 7. **PWA**: manifest + service worker so it can be installed on the home screen; mobile-first layout.
 
@@ -209,7 +280,12 @@ Tasks and recurring reminders (gym days, deadlines) on one calendar with planned
 
 Body weight, measurements, injuries and surgeries are health data. Before public sign-ups: privacy policy, explicit consent for health data,
 "export my data" (CSV/JSON) and "delete my account and data", and no health data in logs or AI prompts beyond what the feature needs.
-własna domena (nazwa do ustalenia), uwierzytelnienie jej w Brevo (SPF, DKIM, DMARC), nadawca noreply@<domena>, podpięcie domeny pod Render, potem ACCOUNT_EMAIL_VERIFICATION=mandatory. Powód: maile z adresu Gmail przez Brevo mają wynik 5,6/10 w mail-tester i WP.pl odrzuca je jako spam.
+To do:
+- Own domain (name to be decided), authenticated in Brevo (SPF, DKIM, DMARC), sender noreply@<domain>, the domain
+  connected to Render, then `ACCOUNT_EMAIL_VERIFICATION=mandatory`. Reason: emails from a Gmail address sent through
+  Brevo score 5.6/10 on mail-tester and WP.pl rejects them as spam.
+- A cron-job.org task that opens the app every 10 minutes, so Render's free plan doesn't put it to sleep (the first
+  visit after sleeping takes about a minute).
 
 ### Later ideas
 
