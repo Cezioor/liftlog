@@ -10,9 +10,13 @@ and keep each change small enough to review.
 ## Product, in priority order
 
 ### Stage 1 – Tracker (MVP)
-1. **Accounts** (django-allauth): sign-up with email + password, log-in by email, **mandatory email verification** (link by email,
+1. **Accounts** (django-allauth): sign-up with email + password, log-in by email, **email verification** (link by email; `ACCOUNT_EMAIL_VERIFICATION` env: `mandatory` by default, `optional` lets people
+   in right away with "Konto założone. Wysłaliśmy też link do potwierdzenia adresu e-mail" and a resend button in Settings;
    "Account created! We sent a link to …" page with "send it again"), password reset, rate-limited attempts. Field errors sit next to
-   their fields; an already registered email says so with links to log in / reset the password. Auth forms disable their button
+   their fields; an already registered email says so with links to log in / reset the password. Account emails are Polish,
+   HTML + plain text, written to pass spam filters (no images, scripts or tracking, links only to the app, link also as text;
+   checked with SpamAssassin: score 0). A failing mail service never breaks sign-up: it is logged (without the address)
+   and the user is told. Auth forms disable their button
    after the first tap (a double submit on the slow free server used to fail with "user already exists").
    Every object belongs to a user; a user never sees another user's data.
 2. **Exercise library**: seeded with ~60 common exercises (name, primary muscle group, equipment, `is_bodyweight`). Users can add their own.

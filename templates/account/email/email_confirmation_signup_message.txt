@@ -1,6 +1,9 @@
 {% extends "account/email/base_message.txt" %}
-{% block content %}{% autoescape off %}Thanks for signing up for LiftLog. Open this link to activate your account:
+{% block content %}{% autoescape off %}dziękujemy za założenie konta w LiftLog. Zostało jeszcze potwierdzenie, że ten adres e-mail należy do Ciebie.
 
+Aby potwierdzić adres e-mail, otwórz ten link:
 {{ activate_url }}
 
-If you didn't sign up, ignore this email: without a click nothing happens.{% endautoescape %}{% endblock content %}
+Link jest ważny przez 3 dni.
+
+Jeśli to nie Ty zakładasz konto, po prostu zignoruj tę wiadomość. Bez potwierdzenia adres nie zostanie użyty.{% endautoescape %}{% endblock content %}

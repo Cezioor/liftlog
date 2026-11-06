@@ -48,7 +48,7 @@ def test_signup_sends_a_link_and_shows_check_your_email(client, mailoutbox):
     assert "_auth_user_id" not in client.session  # no access before confirming
     assert len(mailoutbox) == 1
     assert mailoutbox[0].to == ["ania@example.com"]
-    assert mailoutbox[0].subject == "LiftLog: Activate your account"
+    assert mailoutbox[0].subject == "Potwierdź adres e-mail w LiftLog"
     assert "/accounts/confirm-email/" in _link(mailoutbox[0])
 
     page = client.get(response.url).content.decode()
@@ -229,7 +229,7 @@ def test_password_reset_by_email(client, verified_user, mailoutbox):
     response = client.post(reverse("account_reset_password"), {"email": "ania@example.com"})
     assert response.status_code == 302
     assert len(mailoutbox) == 1
-    assert mailoutbox[0].subject == "LiftLog: Reset your password"
+    assert mailoutbox[0].subject == "Ustaw nowe hasło w LiftLog"
 
     # allauth moves the key from the link into the session, then shows the form.
     page = client.get(_link(mailoutbox[0]), follow=True)

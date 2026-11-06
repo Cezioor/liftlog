@@ -1,1 +1,1 @@
-{% autoescape off %}Activate your account{% endautoescape %}
+Potwierdź adres e-mail w LiftLog

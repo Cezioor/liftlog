@@ -5,6 +5,22 @@
 {% block content %}
   <h1>Settings</h1>
 
+  {% if email_address %}
+    <section class="card">
+      <h2>Account</h2>
+      <p>{{ email_address.email }}
+        {% if email_address.verified %}<span class="badge">confirmed</span>{% else %}<span class="badge badge-warn">not confirmed yet</span>{% endif %}</p>
+      {% if not email_address.verified %}
+        <p class="muted small">Confirm it so you can always reset your password.</p>
+        <form method="post" action="{% url 'account_email' %}" class="form" data-submit-once>
+          {% csrf_token %}
+          <input type="hidden" name="email" value="{{ email_address.email }}">
+          <button type="submit" name="action_send" class="button" data-busy-text="Sending…">Send the confirmation link again</button>
+        </form>
+      {% endif %}
+    </section>
+  {% endif %}
+
   <form method="post" class="card form">
     {% csrf_token %}
     <h2>Rating your sets</h2>

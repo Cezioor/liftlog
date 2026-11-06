@@ -141,16 +141,25 @@ LOGIN_REDIRECT_URL = "home"
 # django-allauth: log in with email; an account works only after its email is confirmed.
 ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]  # username is generated
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+# "mandatory": no access until the emailed link is clicked (default).
+# "optional": logged in right after sign-up; the link is still sent (a temporary
+# switch while email delivery is being set up). Set on Render, no code change needed.
+ACCOUNT_EMAIL_VERIFICATION = os.environ.get("ACCOUNT_EMAIL_VERIFICATION", "mandatory").strip()
+if ACCOUNT_EMAIL_VERIFICATION not in {"mandatory", "optional"}:
+    raise ImproperlyConfigured(
+        f'ACCOUNT_EMAIL_VERIFICATION must be "mandatory" or "optional", '
+        f'not "{ACCOUNT_EMAIL_VERIFICATION}".'
+    )
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3  # the email says "ważny przez 3 dni"
 ACCOUNT_LOGOUT_REDIRECT_URL = "account_login"
 # Say clearly that an email is already registered (with links to log in / reset the
 # password) instead of pretending the sign-up worked. Fine for a small personal app.
 ACCOUNT_PREVENT_ENUMERATION = False
 ACCOUNT_FORMS = {"signup": "accounts.forms.SignupForm"}
 ACCOUNT_ADAPTER = "accounts.adapter.AccountAdapter"
-ACCOUNT_EMAIL_SUBJECT_PREFIX = "LiftLog: "
+ACCOUNT_EMAIL_SUBJECT_PREFIX = ""  # the subjects name LiftLog themselves
 # Attempts per time window, counted in the shared cache below (m = minute, s = seconds).
 ACCOUNT_RATE_LIMITS = {
     "login": "30/m/ip",

@@ -1,0 +1,16 @@
+{% extends "account/email/base_message.html" %}
+{% block title %}Potwierdź adres e-mail w LiftLog{% endblock %}
+{% block content %}
+              <p style="margin:0 0 16px;">Dziękujemy za założenie konta w LiftLog. Zostało jeszcze potwierdzenie, że ten adres e-mail należy do Ciebie.</p>
+              <table role="presentation" cellpadding="0" cellspacing="0" style="margin:24px 0;">
+                <tr>
+                  <td style="border:2px solid #1f7a3f;border-radius:6px;">
+                    <a href="{{ activate_url }}" style="display:inline-block;color:#1f7a3f;text-decoration:none;font-weight:bold;padding:12px 20px;">Potwierdź adres e-mail</a>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin:0 0 16px;font-size:14px;color:#59636e;">Jeśli przycisk nie działa, skopiuj ten adres do przeglądarki:<br>
+                <a href="{{ activate_url }}" style="color:#1f7a3f;word-break:break-all;">{{ activate_url }}</a></p>
+              <p style="margin:0 0 16px;">Link jest ważny przez 3 dni.</p>
+              <p style="margin:0;">Jeśli to nie Ty zakładasz konto, po prostu zignoruj tę wiadomość. Bez potwierdzenia adres nie zostanie użyty.</p>
+{% endblock %}

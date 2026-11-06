@@ -45,12 +45,12 @@ def resend_verification(request):
     if address is None:
         messages.info(request, "This address is already confirmed. You can log in.")
         return redirect("account_login")
-    if send_verification_email_to_address(request, address):
-        messages.success(request, "Sent! Check your inbox (and the spam folder).")
-    else:
+    if not send_verification_email_to_address(request, address):
         messages.warning(
             request, "We sent a link a moment ago. Wait 3 minutes before asking for another."
         )
+    elif not getattr(request, "confirmation_mail_failed", False):  # see AccountAdapter
+        messages.success(request, "Sent! Check your inbox (and the spam folder).")
     return redirect("account_email_verification_sent")
 
 
@@ -62,4 +62,5 @@ def settings_view(request):
         form.save()
         messages.success(request, "Settings saved.")
         return redirect("settings")
-    return render(request, "accounts/settings.html", {"form": form})
+    address = EmailAddress.objects.filter(user=request.user, primary=True).first()
+    return render(request, "accounts/settings.html", {"form": form, "email_address": address})

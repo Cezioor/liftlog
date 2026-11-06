@@ -1,6 +1,9 @@
-{% autoescape off %}Hi!
+{% autoescape off %}Cześć,
 
 {% block content %}{% endblock content %}
 
-LiftLog
+--
+LiftLog, dziennik treningowy
+{{ request.scheme }}://{{ current_site.domain }}/
+Ta wiadomość została wysłana automatycznie w związku z kontem w LiftLog.
 {% endautoescape %}

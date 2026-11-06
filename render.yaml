@@ -25,5 +25,9 @@ services:
         sync: false
       - key: DEFAULT_FROM_EMAIL
         sync: false
+      # "mandatory" (default when unset) or "optional": optional lets people in right
+      # after sign-up while the confirmation link is still sent.
+      - key: ACCOUNT_EMAIL_VERIFICATION
+        sync: false
       - key: WEB_CONCURRENCY
         value: "2"

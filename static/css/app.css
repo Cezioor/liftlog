@@ -1255,3 +1255,8 @@ button[disabled] {
   padding: 0;
   list-style: none;
 }
+
+.badge-warn {
+  background: var(--danger);
+  color: #111418;
+}
