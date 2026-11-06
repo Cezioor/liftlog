@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Change variant{% endblock %}
+
+{% block content %}
+  {# Every option POSTs to `action`; the page that sent us here decides what "change" means. #}
+  <div class="page-header">
+    <div>
+      <h1>Change variant</h1>
+      <p class="muted">{{ choices.current.name }} · {{ choices.current.get_equipment_display }}</p>
+    </div>
+  </div>
+
+  {% if choices.variants|length > 1 %}
+    <h2 class="picker-heading">Variants of this movement</h2>
+    <ul class="picker-list">
+      {% for variant in choices.variants %}
+        <li>
+          {% if variant.pk == choices.current.pk %}
+            <div class="picker-item picker-current">
+              <span class="list-title">{{ variant.name }}</span>
+              <span class="list-meta">{{ variant.get_equipment_display }} · current</span>
+            </div>
+          {% else %}
+            <form method="post" action="{{ action }}" data-submit-once>
+              {% csrf_token %}
+              <input type="hidden" name="exercise" value="{{ variant.pk }}">
+              <button type="submit" class="picker-item">
+                <span class="list-title">{{ variant.name }}</span>
+                <span class="list-meta">{{ variant.get_equipment_display }}{% if variant.owner_id %} · mine{% endif %}</span>
+              </button>
+            </form>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <h2 class="picker-heading">Other equipment</h2>
+  <p class="muted small">Creates a variant with its own history and records. Muscles, instructions and photos are copied.</p>
+  <ul class="picker-list equipment-list">
+    {% for value, label in choices.equipment %}
+      <li>
+        <form method="post" action="{{ action }}" data-submit-once>
+          {% csrf_token %}
+          <input type="hidden" name="equipment" value="{{ value }}">
+          <button type="submit" class="picker-item"><span class="list-title">{{ label }}</span></button>
+        </form>
+      </li>
+    {% endfor %}
+    <li>
+      <details class="picker-item other-equipment">
+        <summary class="list-title">Other…</summary>
+        <form method="post" action="{{ action }}" class="form" data-submit-once>
+          {% csrf_token %}
+          <input type="hidden" name="equipment" value="other">
+          <label for="other_name">What do you use?</label>
+          <input type="text" id="other_name" name="other_name" maxlength="60" required placeholder="e.g. weighted vest, sandbag">
+          <button type="submit" class="button button-primary">Create variant</button>
+        </form>
+      </details>
+    </li>
+  </ul>
+
+  <a class="button" href="{{ back }}">Cancel</a>
+{% endblock %}

@@ -1260,3 +1260,37 @@ button[disabled] {
   background: var(--danger);
   color: #111418;
 }
+
+/* "Change variant" screen */
+.picker-current {
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+}
+
+.picker-list form {
+  margin: 0;
+}
+
+.picker-list form .picker-item {
+  width: 100%;
+  text-align: left;
+}
+
+.other-equipment summary {
+  cursor: pointer;
+}
+
+.other-equipment .form {
+  margin-top: 12px;
+}
+
+/* No thumbnails on this screen: one column. */
+.picker-list form .picker-item,
+.picker-current,
+.other-equipment {
+  grid-template-columns: 1fr;
+}
+
+.ex-change {
+  order: 3;
+}

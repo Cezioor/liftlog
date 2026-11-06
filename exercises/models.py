@@ -33,6 +33,10 @@ class Equipment(models.TextChoices):
     CABLE = "cable", "Cable"
     KETTLEBELL = "kettlebell", "Kettlebell"
     BAND = "band", "Resistance band"
+    PLATE = "plate", "Weight plate"
+    PULLUP_BAR = "pullup_bar", "Pull-up bar"
+    LANDMINE = "landmine", "Landmine"
+    SUSPENSION = "suspension", "TRX / suspension"
     BODYWEIGHT = "bodyweight", "Bodyweight"
     OTHER = "other", "Other"
 
@@ -90,6 +94,30 @@ class ExerciseQuerySet(models.QuerySet):
         return self.filter(Q(owner__isnull=True) | Q(owner=user))
 
 
+class Movement(models.Model):
+    """A family of variants of one movement: step-ups with a barbell, dumbbells, on the
+    Smith machine… Each variant is its own Exercise with its own history and records.
+
+    Built-in families (owner = null) come from `group_movements`; a user's variant of
+    their own exercise starts a family owned by that user.
+    """
+
+    name = models.CharField(max_length=100)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="movements",
+    )
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+
 class Exercise(models.Model):
     name = models.CharField(max_length=100)
     aliases = models.TextField(
@@ -141,15 +169,14 @@ class Exercise(models.Model):
     mechanic = models.CharField(max_length=20, blank=True)  # compound / isolation
     instructions = models.JSONField(default=list, blank=True)  # list of steps
     images = models.JSONField(default=list, blank=True)  # paths like "Barbell_Squat/0.jpg"
-    # The same movement with other equipment, e.g. "Step-up (Smith machine)" -> "Step-up".
-    # A variant has its own history and records; the base's page links to its variants.
-    # SET_NULL: deleting a user's own base exercise keeps the variant and its history.
-    variant_of = models.ForeignKey(
-        "self",
+    # The family of variants this exercise belongs to (same movement, other equipment).
+    # SET_NULL: removing a family never touches the exercises or their history.
+    movement = models.ForeignKey(
+        Movement,
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name="variants",
+        related_name="exercises",
     )
     # null = built-in exercise shared by everyone; otherwise a user's own exercise.
     owner = models.ForeignKey(

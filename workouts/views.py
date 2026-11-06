@@ -13,7 +13,8 @@ from django.views.decorators.http import require_POST
 from accounts.services import get_user_settings, ios_shortcut_url
 from exercises.models import Exercise
 from exercises.picker import picker_response
-from plans.models import Plan, PlanDay
+from exercises.views import change_variant_url, chosen_variant
+from plans.models import Plan, PlanDay, PlanExercise
 
 from . import services
 from .forms import FinishWorkoutForm, WorkoutSetForm
@@ -44,9 +45,7 @@ def _get_own_set(request, pk):
 
 
 def _plan_exercise_for(workout, exercise):
-    if workout.plan_day is None:
-        return None
-    return workout.plan_day.exercises.filter(exercise=exercise).first()
+    return services.plan_exercise_for(workout, exercise)
 
 
 def _workout_url(workout, exercise=None):
@@ -158,6 +157,11 @@ def build_card(workout, exercise, plan_exercise=None, form=None, edit_form=None,
         "target": target,
         "measurement": exercise.measurement,
         "effort_scale": scale,
+        "change_variant_url": change_variant_url(
+            exercise,
+            action=reverse("workouts:change_variant", args=[workout.pk, exercise.pk]),
+            back=_workout_url(workout, exercise),
+        ),
     }
 
 
@@ -229,10 +233,13 @@ def workout_detail(request, pk):
     seen = set()
     scale = _effort_scale(request.user)
     if workout.plan_day:
+        # "Only today" changes replace the plan's exercise for this workout.
+        swaps = services.swapped_exercises(workout)
         for item in workout.plan_day.exercises.select_related("exercise"):
-            if item.exercise_id not in seen:
-                seen.add(item.exercise_id)
-                cards.append(build_card(workout, item.exercise, item, scale=scale))
+            exercise = swaps.get(item.pk, item.exercise)
+            if exercise.pk not in seen:
+                seen.add(exercise.pk)
+                cards.append(build_card(workout, exercise, item, scale=scale))
 
     # Exercises added during the workout (not in the plan day), in the order first logged.
     extra_ids = list(
@@ -382,6 +389,61 @@ def set_delete(request, pk):
         plan_exercise = _plan_exercise_for(workout, exercise)
         return _card_response(request, build_card(workout, exercise, plan_exercise))
     return redirect(_workout_url(workout, exercise))
+
+
+@login_required
+@require_POST
+def change_variant(request, pk, exercise_pk):
+    """The choice from "Change variant" on a card.
+
+    A plan exercise: ask "Only today" or "Change in the plan too". An exercise added
+    during the workout: just show the chosen variant's card. Logged sets stay put.
+    """
+    workout = _get_open_workout(request, pk)
+    exercise = get_object_or_404(Exercise.objects.visible_to(request.user), pk=exercise_pk)
+    chosen = chosen_variant(request, exercise)
+    item = _plan_exercise_for(workout, exercise)
+    if chosen == exercise:
+        return redirect(_workout_url(workout, exercise))
+    if item is None:
+        url = reverse("workouts:workout_detail", args=[workout.pk])
+        return redirect(f"{url}?add={chosen.pk}#ex-{chosen.pk}")
+    return render(
+        request,
+        "workouts/change_variant_scope.html",
+        {
+            "workout": workout,
+            "item": item,
+            "current": exercise,
+            "chosen": chosen,
+            "logged": workout.sets.filter(exercise=exercise).count(),
+        },
+    )
+
+
+@login_required
+@require_POST
+def apply_variant(request, pk, plan_exercise_pk):
+    """ "Only today" / "Change in the plan too" for a plan exercise in this workout."""
+    workout = _get_open_workout(request, pk)
+    item = get_object_or_404(PlanExercise, pk=plan_exercise_pk, day_id=workout.plan_day_id)
+    chosen = get_object_or_404(
+        Exercise.objects.visible_to(request.user), pk=request.POST.get("exercise", "")
+    )
+    scope = request.POST.get("scope", "")
+    same_movement = chosen.movement_id and chosen.movement_id == item.exercise.movement_id
+    if scope not in (services.ONLY_TODAY, services.IN_PLAN_TOO) or not (
+        same_movement or chosen.pk == item.exercise_id
+    ):
+        raise Http404("Not a variant of this plan exercise.")
+
+    old_name = item.exercise.name
+    services.change_variant_in_workout(workout, item, chosen, scope)
+    if scope == services.IN_PLAN_TOO:
+        messages.success(request, f"{chosen.name} replaces {old_name} in the plan too.")
+    else:
+        messages.success(request, f"Only today: {chosen.name}. The plan stays as it was.")
+    return redirect(_workout_url(workout, chosen))
 
 
 @login_required

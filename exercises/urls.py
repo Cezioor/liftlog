@@ -12,4 +12,6 @@ urlpatterns = [
     path("<int:pk>/edit/", views.exercise_update, name="exercise_update"),
     path("quick-add/", views.exercise_quick_add, name="exercise_quick_add"),
     path("<int:pk>/variant/", views.exercise_variant_create, name="exercise_variant_create"),
+    path("<int:pk>/change-variant/", views.change_variant, name="change_variant"),
+    path("<int:pk>/change-variant/open/", views.variant_open, name="variant_open"),
 ]

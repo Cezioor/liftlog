@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load exercise_tags %}
 
 {% block title %}{{ plan.name }}{% endblock %}
 
@@ -34,6 +35,8 @@
                 <span class="list-meta">{{ item.target_sets }} × {{ item.target_label }} · rest {{ item.rest_seconds }} s</span>
               </a>
               <div class="icon-buttons">
+                {% url 'plans:pe_change_variant' item.pk as change_action %}
+                <a class="icon-button" href="{% change_variant_link item.exercise change_action request.path %}" aria-label="Change variant of {{ item.exercise.name }}" title="Change variant">⇄</a>
                 {% include "plans/_move_buttons.html" with url_name="plans:pe_move" pk=item.pk first=forloop.first last=forloop.last label=item.exercise.name %}
               </div>
             </li>

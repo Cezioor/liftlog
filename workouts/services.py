@@ -23,7 +23,7 @@ from django.db.models import Max
 
 from exercises.models import Equipment, Exercise, Measurement
 
-from .models import Side, WorkoutSet
+from .models import Side, WorkoutSet, WorkoutSwap
 
 HOLD_STEP_SECONDS = 5
 
@@ -710,6 +710,52 @@ def personal_records(user, exercise):
                 Record("Heaviest set", set_text(heaviest, measurement, long=True), heaviest)
             )
     return records
+
+
+# --- changing the variant during a workout ---------------------------------
+
+ONLY_TODAY = "today"
+IN_PLAN_TOO = "plan"
+
+
+def swapped_exercises(workout):
+    """{plan exercise id: exercise done instead today} for "only today" changes."""
+    return {
+        swap.plan_exercise_id: swap.exercise for swap in workout.swaps.select_related("exercise")
+    }
+
+
+def plan_exercise_for(workout, exercise):
+    """The plan entry (targets, rest) behind `exercise` in this workout, if any.
+
+    An exercise swapped in "only today" takes over its plan entry; a plan exercise
+    swapped out today has none (its leftover sets show as an extra card).
+    """
+    if workout.plan_day_id is None:
+        return None
+    swap = workout.swaps.filter(exercise=exercise).select_related("plan_exercise").first()
+    if swap is not None:
+        return swap.plan_exercise
+    swapped_out = workout.swaps.values_list("plan_exercise_id", flat=True)
+    return workout.plan_day.exercises.filter(exercise=exercise).exclude(pk__in=swapped_out).first()
+
+
+def change_variant_in_workout(workout, plan_exercise, exercise, scope):
+    """Do `exercise` instead of the plan's exercise: only today, or in the plan too.
+
+    Sets already logged are never moved: they stay with the variant they were done with.
+    """
+    if scope == IN_PLAN_TOO:
+        plan_exercise.exercise = exercise
+        plan_exercise.save(update_fields=["exercise"])
+        WorkoutSwap.objects.filter(workout=workout, plan_exercise=plan_exercise).delete()
+    elif exercise.pk == plan_exercise.exercise_id:
+        # Back to the plan's own exercise: nothing to remember.
+        WorkoutSwap.objects.filter(workout=workout, plan_exercise=plan_exercise).delete()
+    else:
+        WorkoutSwap.objects.update_or_create(
+            workout=workout, plan_exercise=plan_exercise, defaults={"exercise": exercise}
+        )
 
 
 # --- picker ---------------------------------------------------------------

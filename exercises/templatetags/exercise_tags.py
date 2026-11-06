@@ -25,3 +25,12 @@ def muscle_map(primary, secondary):
     if secondary:
         description += ". Helping: " + ", ".join(labels[m] for m in secondary)
     return {"c": classes, "description": description}
+
+
+@register.simple_tag
+def change_variant_link(exercise, action, back):
+    """{% change_variant_link exercise action_url back_url %}: the "Change variant" screen,
+    which POSTs the choice to action_url; Cancel goes to back_url."""
+    from exercises.views import change_variant_url
+
+    return change_variant_url(exercise, action=action, back=back)

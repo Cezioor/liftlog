@@ -21,6 +21,7 @@ from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand, CommandError
 from django.db import DatabaseError
 
+from exercises.models import Exercise
 from plans.models import Plan, PlanDay, PlanExercise
 from workouts.models import Workout, WorkoutSet
 
@@ -28,6 +29,8 @@ FIELDS = {
     # Accounts (no password hashes): proves e.g. the email-verification migration
     # (accounts/0004) added allauth addresses without touching the users themselves.
     get_user_model(): ["id", "username", "email", "is_active", "is_staff", "date_joined"],
+    # Users' own exercises (incl. their variants); built-ins are rewritten by every import.
+    Exercise: ["id", "owner_id", "name", "equipment", "measurement"],
     Workout: ["id", "owner_id", "plan_day_id", "started_at", "finished_at", "note"],
     WorkoutSet: ["id", "workout_id", "exercise_id", "order", "weight_kg", "reps", "is_warmup"],
     Plan: ["id", "owner_id", "name", "is_active"],
@@ -59,6 +62,8 @@ def snapshot():
     data = {}
     for model, fields in FIELDS.items():
         rows = model.objects.order_by("pk").values_list(*fields)
+        if model is Exercise:
+            rows = rows.filter(owner__isnull=False)
         data[model.__name__] = {
             str(row[0]): [_normalise(v) for v in row] for row in rows.iterator(chunk_size=2000)
         }

@@ -21,6 +21,8 @@ python manage.py seed_exercises
 python manage.py import_free_exercise_db
 # Built-in Smith machine variants; their base exercises come from the import above.
 python manage.py seed_smith_variants
+# Families of variants (same movement, other equipment); doubtful ones wait for approval.
+python manage.py group_movements
 
 echo "Training data after:"
 python manage.py data_fingerprint --compare "$SNAPSHOT"

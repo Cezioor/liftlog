@@ -18,5 +18,10 @@ urlpatterns = [
     path("days/<int:day_pk>/exercises/new/", views.plan_exercise_create, name="pe_create"),
     path("exercises/<int:pk>/edit/", views.plan_exercise_update, name="pe_update"),
     path("exercises/<int:pk>/delete/", views.plan_exercise_delete, name="pe_delete"),
+    path(
+        "exercises/<int:pk>/change-variant/",
+        views.plan_exercise_change_variant,
+        name="pe_change_variant",
+    ),
     path("exercises/<int:pk>/move/<str:direction>/", views.plan_exercise_move, name="pe_move"),
 ]

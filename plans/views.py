@@ -9,6 +9,7 @@ from django.views.decorators.http import require_POST
 
 from exercises.models import Exercise
 from exercises.picker import picker_response
+from exercises.views import chosen_variant
 from workouts.services import recently_used_exercises
 
 from .forms import PlanDayForm, PlanExerciseForm, PlanForm
@@ -237,6 +238,19 @@ def plan_exercise_update(request, pk):
             "change_url": f"{request.path}?pick=1",
         },
     )
+
+
+@login_required
+@require_POST
+def plan_exercise_change_variant(request, pk):
+    """ "Change variant" in the plan editor: same targets, other variant of the movement."""
+    item = _get_plan_exercise(request, pk)
+    old = item.exercise
+    item.exercise = chosen_variant(request, old)
+    item.save(update_fields=["exercise"])
+    if item.exercise != old:
+        messages.success(request, f"{old.name} → {item.exercise.name} in the plan.")
+    return _plan_redirect(item.day.plan, f"day-{item.day_id}")
 
 
 @login_required

@@ -99,3 +99,27 @@ class WorkoutSet(models.Model):
         from .services import set_text
 
         return f"{self.exercise.name}: {set_text(self, self.exercise.measurement, long=True)}"
+
+
+class WorkoutSwap(models.Model):
+    """ "Only today": in this workout a plan exercise is done as another variant.
+
+    The plan stays as it is; next time the plan's exercise is back. Sets logged before
+    the swap stay with the exercise they were logged with.
+    """
+
+    workout = models.ForeignKey(Workout, on_delete=models.CASCADE, related_name="swaps")
+    plan_exercise = models.ForeignKey(
+        "plans.PlanExercise", on_delete=models.CASCADE, related_name="+"
+    )
+    exercise = models.ForeignKey(Exercise, on_delete=models.RESTRICT, related_name="+")
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["workout", "plan_exercise"], name="one_swap_per_plan_exercise"
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.workout}: {self.plan_exercise.exercise} -> {self.exercise}"

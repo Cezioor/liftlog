@@ -1,7 +1,7 @@
 """Built-in Smith machine variants that free-exercise-db doesn't have.
 
-Each one is linked (variant_of) to the free-weight exercise it comes from, so the base
-exercise's page lists it and it borrows the base's photos. Seeded by the
+Each one names the free-weight exercise it comes from: `group_movements` puts the two in
+one movement family, and the variant borrows the base's photos. Seeded by the
 `seed_smith_variants` command, which build.sh runs after the free-exercise-db import
 (the bases come from that import).
 

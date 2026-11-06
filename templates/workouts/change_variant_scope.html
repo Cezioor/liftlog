@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Change variant{% endblock %}
+
+{% block content %}
+  <div class="card narrow">
+    <h1>{{ chosen.name }}</h1>
+    <p>instead of <strong>{{ current.name }}</strong>.</p>
+    {% if logged %}
+      <p class="muted small">The {{ logged }} set{{ logged|pluralize }} you already logged stay{{ logged|pluralize:"s," }} with {{ current.name }}.</p>
+    {% endif %}
+    <form method="post" action="{% url 'workouts:apply_variant' workout.pk item.pk %}" class="form" data-submit-once>
+      {% csrf_token %}
+      <input type="hidden" name="exercise" value="{{ chosen.pk }}">
+      <button type="submit" name="scope" value="today" class="button button-primary button-big">Only today</button>
+      <p class="muted small">Next time the plan has {{ item.exercise.name }} again.</p>
+      <button type="submit" name="scope" value="plan" class="button button-big">Change in the plan too</button>
+      <p class="muted small">From now on the plan uses {{ chosen.name }}, with the same sets and reps.</p>
+    </form>
+    <p class="form-links"><a href="{% url 'workouts:workout_detail' workout.pk %}#ex-{{ current.pk }}">Cancel</a></p>
+  </div>
+{% endblock %}

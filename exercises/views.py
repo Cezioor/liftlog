@@ -1,6 +1,8 @@
+from urllib.parse import urlencode
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseBadRequest
+from django.http import Http404, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
@@ -12,7 +14,15 @@ from workouts.services import last_sets, personal_records, recently_used_exercis
 from .forms import ExerciseForm
 from .models import Equipment, Exercise, Muscle, MuscleGroup
 from .picker import picker_response
-from .services import create_variant, find_by_name, muscles_for_map
+from .services import (
+    InvalidVariantChoice,
+    choose_variant,
+    create_variant,
+    family,
+    find_by_name,
+    muscles_for_map,
+    variant_choices,
+)
 
 
 @login_required
@@ -47,7 +57,12 @@ def exercise_detail(request, pk):
             "records": personal_records(request.user, exercise),
             "can_edit": exercise.owner_id == request.user.pk,
             # Other equipment, same movement: built-in ones and the user's own.
-            "variants": Exercise.objects.visible_to(request.user).filter(variant_of=exercise),
+            "variants": family(request.user, exercise).exclude(pk=exercise.pk),
+            "change_variant_url": change_variant_url(
+                exercise,
+                action=reverse("exercises:variant_open", args=[exercise.pk]),
+                back=request.path,
+            ),
             "effort_scale": get_user_settings(request.user).effort_scale,
         },
     )
@@ -78,13 +93,72 @@ def exercise_update(request, pk):
     return render(request, "exercises/exercise_form.html", {"form": form, "exercise": exercise})
 
 
+def change_variant_url(exercise, *, action, back):
+    """Link to the "Change variant" screen; the choice is POSTed to `action`."""
+    query = urlencode({"action": action, "back": back})
+    return f"{reverse('exercises:change_variant', args=[exercise.pk])}?{query}"
+
+
+def _local_url(request, url):
+    """`url` if it points at this site (never elsewhere), else None."""
+    is_local = url.startswith("/") and url_has_allowed_host_and_scheme(
+        url, allowed_hosts={request.get_host()}, require_https=request.is_secure()
+    )
+    return url if is_local else None
+
+
+@login_required
+def change_variant(request, pk):
+    """ "Change variant": the movement's variants first, then equipment without one.
+
+    Shared by the plan editor, the workout screen and the exercise page. Each option is
+    a small form POSTing `exercise` (an existing variant) or `equipment` (+ `other_name`
+    for "Other…") to `action`, which decides what changing means there.
+    """
+    exercise = get_object_or_404(Exercise.objects.visible_to(request.user), pk=pk)
+    action = _local_url(request, request.GET.get("action", ""))
+    back = _local_url(request, request.GET.get("back", "")) or reverse(
+        "exercises:exercise_detail", args=[exercise.pk]
+    )
+    if action is None:
+        return HttpResponseBadRequest("Invalid action address.")
+    return render(
+        request,
+        "exercises/change_variant.html",
+        {"choices": variant_choices(request.user, exercise), "action": action, "back": back},
+    )
+
+
+def chosen_variant(request, exercise):
+    """The exercise picked on the "Change variant" screen (a POST to an `action`).
+
+    Creates the variant when new equipment was picked. Raises Http404 for anything
+    that isn't a valid choice for this user.
+    """
+    try:
+        return choose_variant(
+            request.user,
+            exercise,
+            exercise_id=request.POST.get("exercise", ""),
+            equipment=request.POST.get("equipment", ""),
+            other_name=request.POST.get("other_name", "")[:60],
+        )
+    except InvalidVariantChoice as error:
+        raise Http404(str(error)) from error
+
+
+@login_required
+@require_POST
+def variant_open(request, pk):
+    """ "Change variant" from the exercise page: open the chosen variant's page."""
+    exercise = get_object_or_404(Exercise.objects.visible_to(request.user), pk=pk)
+    chosen = chosen_variant(request, exercise)
+    return redirect("exercises:exercise_detail", pk=chosen.pk)
+
+
 def _picker_return_url(request):
     """The picker's return address from the form, or None if it isn't on this site."""
-    next_url = request.POST.get("next", "")
-    is_local = next_url.startswith("/") and url_has_allowed_host_and_scheme(
-        next_url, allowed_hosts={request.get_host()}, require_https=request.is_secure()
-    )
-    return next_url if is_local else None
+    return _local_url(request, request.POST.get("next", ""))
 
 
 def _select(request, next_url, exercise):

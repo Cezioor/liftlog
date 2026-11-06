@@ -3,6 +3,7 @@
 <section class="card exercise-card" id="ex-{{ exercise.pk }}">
   <header class="ex-header">
     <h2>{{ exercise.name }}</h2>
+    <a class="icon-button ex-change" href="{{ change_variant_url }}" aria-label="Change variant of {{ exercise.name }}" title="Change variant">⇄</a>
     <span class="ex-progress{% if target and done >= target %} ex-progress-done{% endif %}">
       {% if target %}{{ done }}/{{ target }} sets{% if plan_exercise.target_label %} · {{ plan_exercise.target_label }}{% endif %}{% else %}{{ done }} set{{ done|pluralize }}{% endif %}
     </span>

@@ -143,11 +143,12 @@ def test_no_suggestion_without_both_movement_and_equipment(user, step_up, query)
 
 
 @pytest.mark.django_db
-def test_suggestion_points_to_the_original_not_to_a_variant(user, step_up):
-    kettlebell = create_variant(user, step_up, "kettlebell")
-    Exercise.objects.filter(pk=step_up.pk).update(name="Zz Step-up")  # variant sorts first
+def test_no_suggestion_when_the_family_already_has_that_equipment(user, step_up):
+    # The family's Smith variant has a name the search wouldn't find ("Machine thing").
+    smith = create_variant(user, step_up, "smith")
+    Exercise.objects.filter(pk=smith.pk).update(name="Machine thing", search_text="machine thing")
 
-    assert variant_suggestion(user, "step up smith").base.pk == kettlebell.variant_of_id
+    assert variant_suggestion(user, "step up smith") is None
 
 
 # --- creating a variant -------------------------------------------------------------------
@@ -158,7 +159,9 @@ def test_variant_copies_the_movement_and_changes_the_equipment(user, step_up):
     variant = create_variant(user, step_up, "smith")
 
     assert variant.name == "Step-up (Smith machine)"
-    assert (variant.owner, variant.variant_of, variant.equipment) == (user, step_up, "smith")
+    step_up.refresh_from_db()
+    assert (variant.owner, variant.equipment) == (user, "smith")
+    assert variant.movement == step_up.movement is not None  # one family
     for field in ("muscle_group", "measurement", "category", "is_unilateral", "level",
                   "mechanic", "primary_muscles", "secondary_muscles", "instructions",
                   "images", "aliases"):  # fmt: skip
@@ -170,7 +173,7 @@ def test_variant_copies_the_movement_and_changes_the_equipment(user, step_up):
 @pytest.mark.django_db
 def test_creating_the_same_variant_twice_reuses_it(user, step_up):
     assert create_variant(user, step_up, "smith") == create_variant(user, step_up, "smith")
-    assert Exercise.objects.filter(variant_of=step_up).count() == 1
+    assert Exercise.objects.filter(owner=user, equipment="smith").count() == 1
 
 
 @pytest.mark.django_db
@@ -212,7 +215,7 @@ def test_tapping_add_variant_creates_and_picks_it(logged_in, user, picker_url, s
         {"equipment": "smith", "next": f"{picker_url}?exercise="},
     )
 
-    variant = Exercise.objects.get(variant_of=step_up)
+    variant = Exercise.objects.get(owner=user, equipment="smith")
     assert variant.owner == user
     assert response.url == f"{picker_url}?exercise={variant.pk}"
     final = logged_in.get(response.url)
@@ -229,7 +232,7 @@ def test_add_variant_rejects_bad_input(logged_in, picker_url, step_up, data):
     response = logged_in.post(reverse("exercises:exercise_variant_create", args=[step_up.pk]), data)
 
     assert response.status_code == 400
-    assert not Exercise.objects.filter(variant_of=step_up).exists()
+    assert not Exercise.objects.filter(owner__isnull=False).exists()
 
 
 @pytest.mark.django_db
@@ -269,7 +272,8 @@ def test_detail_pages_link_base_and_variants(logged_in, user, other_user, step_u
 
     assert list(base_page.context["variants"]) == [mine]  # not the other user's
     assert "Step-up (Smith machine)" in base_page.content.decode()
-    assert "Variant of" in variant_page.content.decode()
+    assert list(variant_page.context["variants"]) == [step_up]  # the family, both ways
+    assert "⇄ Change variant" in variant_page.content.decode()
 
 
 # --- data: Smith exercises from the import and the built-in variants ----------------------
@@ -296,16 +300,18 @@ def test_seed_smith_variants_links_them_to_their_bases():
     import_dataset(load_dataset())
     call_command("seed_smith_variants")
     call_command("seed_smith_variants")  # safe to run again
+    call_command("group_movements")
 
     variants = Exercise.objects.filter(name__in=[v[0] for v in SMITH_VARIANTS], owner=None)
     assert len(SMITH_VARIANTS) == variants.count() == 30
     assert all(v.equipment == "smith" for v in variants)
-    linked = variants.exclude(variant_of=None)
-    expected_links = sum(1 for v in SMITH_VARIANTS if v[1])
-    assert linked.count() == expected_links
+    for name, base_name, *_ in SMITH_VARIANTS:
+        if base_name:
+            variant = variants.get(name=name)
+            base = Exercise.objects.get(name=base_name, owner=None)
+            assert variant.movement_id == base.movement_id is not None, name
+            assert variant.images == base.images, name
     step = Exercise.objects.get(name="Smith Machine Step-up")
-    assert step.variant_of.name == "Barbell Step Ups"
-    assert step.images == step.variant_of.images
     assert step.is_unilateral
     # And "step up smith" now finds it instead of offering a new variant.
     from accounts.models import User

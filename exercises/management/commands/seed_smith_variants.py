@@ -25,7 +25,6 @@ class Command(BaseCommand):
                 name=name,
                 owner=None,
                 defaults={
-                    "variant_of": base,
                     "aliases": aliases,
                     "muscle_group": muscle_group,
                     "equipment": Equipment.SMITH,
