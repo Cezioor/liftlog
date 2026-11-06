@@ -23,6 +23,8 @@ class Command(BaseCommand):
                 f"{report.created} new)."
             )
         )
+        if report.missing:
+            self.stdout.write(f"Not in the library (MANUAL_GROUPS): {', '.join(report.missing)}")
         if report.pending:
             self.stdout.write(
                 f"Waiting for confirmation: {len(report.pending)} doubtful groups "

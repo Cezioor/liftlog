@@ -7,7 +7,7 @@ waits for the owner's confirmation in movement_groups.py, like the free-exercise
 matches in Stage 1.5.
 
 The 30 built-in Smith variants are linked to their base by hand (smith_variants.py),
-so those links are always applied.
+and MANUAL_GROUPS joins exercises with different names; both are always applied.
 """
 
 from collections import defaultdict
@@ -16,7 +16,7 @@ from dataclasses import dataclass, field
 from django.db import transaction
 
 from .models import Exercise, Movement
-from .movement_groups import CONFIRMED_GROUPS, REJECTED_GROUPS
+from .movement_groups import CONFIRMED_GROUPS, MANUAL_GROUPS, REJECTED_GROUPS
 from .services import movement_name, stem
 from .smith_variants import SMITH_VARIANTS
 from .text import normalize
@@ -95,6 +95,7 @@ class GroupingReport:
     exercises: int = 0
     created: int = 0
     pending: list = field(default_factory=list)
+    missing: list = field(default_factory=list)  # names in MANUAL_GROUPS not in the library
 
 
 @transaction.atomic
@@ -111,6 +112,13 @@ def group_movements():
     for name, base_name, *_ in SMITH_VARIANTS:
         if base_name and name in by_name and base_name in by_name:
             links.union(by_name[name].pk, by_name[base_name].pk)
+    missing = []
+    for names in MANUAL_GROUPS.values():
+        found = [by_name[n].pk for n in names if n in by_name]
+        missing += [n for n in names if n not in by_name]
+        for pk in found[1:]:
+            links.union(found[0], pk)
+    manual_names = {frozenset(names): family_name for family_name, names in MANUAL_GROUPS.items()}
     for group in name_groups(sorted(builtins.values(), key=lambda e: e.name)):
         if group.key in REJECTED_GROUPS:
             continue
@@ -124,7 +132,7 @@ def group_movements():
     for pk in list(links.parent):
         components[links.find(pk)].append(builtins[pk])
 
-    report = GroupingReport()
+    report = GroupingReport(missing=missing)
     for members in components.values():
         if len(members) < 2:
             continue
@@ -136,7 +144,10 @@ def group_movements():
                 target.save(update_fields=["owner"])
         else:
             plainest = min(members, key=lambda e: len(movement_name(e.name)))
-            target = Movement.objects.create(name=movement_name(plainest.name))
+            name = manual_names.get(
+                frozenset(e.name for e in members), movement_name(plainest.name)
+            )
+            target = Movement.objects.create(name=name)
             report.created += 1
         # Members, plus users' variants that were in a family being merged away.
         Exercise.objects.filter(pk__in=[e.pk for e in members]).update(movement=target)

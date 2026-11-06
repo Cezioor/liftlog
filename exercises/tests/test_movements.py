@@ -7,10 +7,20 @@ from django.db.migrations.executor import MigrationExecutor
 
 from exercises import movements
 from exercises.models import Exercise, Movement
-from exercises.movements import group_movements, movement_key, pending_groups
+from exercises.movements import group_movements, movement_key, name_groups, pending_groups
 from exercises.services import create_variant
 from workouts.management.commands.data_fingerprint import compare, snapshot
 from workouts.models import WorkoutSet
+
+
+@pytest.fixture(autouse=True)
+def _no_decisions(request, monkeypatch):
+    """Unit tests start without the owner's decisions; tests marked real_decisions keep them."""
+    if request.node.get_closest_marker("real_decisions"):
+        return
+    monkeypatch.setattr(movements, "CONFIRMED_GROUPS", set())
+    monkeypatch.setattr(movements, "REJECTED_GROUPS", set())
+    monkeypatch.setattr(movements, "MANUAL_GROUPS", {})
 
 
 def _builtin(name, equipment, muscle_group="quads", unilateral=False, category="strength"):
@@ -202,3 +212,75 @@ def test_existing_variants_and_history_survive_the_migration():
     assert base_now.movement.owner is None  # family of a built-in is built-in
     assert (variant_now.name, variant_now.owner_id) == ("Step Ups (Smith machine)", user.pk)
     assert Exercise.objects.get(pk=loner.pk).movement_id is None
+
+
+@pytest.mark.django_db
+def test_manual_group_joins_different_names_under_its_own_name(monkeypatch):
+    monkeypatch.setattr(
+        movements, "MANUAL_GROUPS", {"Two-arm row": ["Barbell Row", "Two-Arm DB Row"]}
+    )
+    barbell = _builtin("Barbell Row", "barbell", muscle_group="back")
+    dumbbell = _builtin("Two-Arm DB Row", "dumbbell", muscle_group="back")
+
+    report = group_movements()
+
+    barbell.refresh_from_db()
+    dumbbell.refresh_from_db()
+    assert barbell.movement_id == dumbbell.movement_id is not None
+    assert barbell.movement.name == "Two-arm row"
+    assert report.missing == []
+
+
+# --- the owner's decisions against the real library ----------------------------------
+
+
+@pytest.fixture
+def library(db):
+    from exercises.free_db import import_dataset, load_dataset
+
+    call_command("seed_exercises")
+    import_dataset(load_dataset())
+    call_command("seed_smith_variants")
+
+
+@pytest.mark.real_decisions
+@pytest.mark.django_db
+def test_every_decision_names_a_real_group_or_exercise(library):
+    from exercises.movement_groups import CONFIRMED_GROUPS, MANUAL_GROUPS, REJECTED_GROUPS
+
+    doubtful = {g.key for g in name_groups() if g.doubts}
+    assert CONFIRMED_GROUPS <= doubtful, CONFIRMED_GROUPS - doubtful  # catches typos
+    assert REJECTED_GROUPS <= {g.key for g in name_groups()}
+    names = set(Exercise.objects.filter(owner=None).values_list("name", flat=True))
+    for family_name, members in MANUAL_GROUPS.items():
+        assert set(members) <= names, (family_name, set(members) - names)
+
+
+@pytest.mark.real_decisions
+@pytest.mark.django_db
+def test_decisions_on_the_real_library(library):
+    report = group_movements()
+
+    def family(name):
+        exercise = Exercise.objects.get(owner=None, name=name)
+        if exercise.movement_id is None:
+            return set()
+        return set(
+            Exercise.objects.filter(movement=exercise.movement).values_list("name", flat=True)
+        )
+
+    assert family("Dumbbell Step Ups") == {
+        "Barbell Step Ups", "Dumbbell Step Ups", "Smith Machine Step-up"
+    }  # fmt: skip
+    assert family("Barbell Row") == {
+        "Barbell Row", "Bent Over Two-Dumbbell Row", "Two-Arm Kettlebell Row",
+        "Smith Machine Bent Over Row",
+    }  # fmt: skip
+    assert family("Dumbbell Row") == set()  # one-arm row: not with the two-arm ones
+    assert family("Kettlebell Windmill") == family("Cable Iron Cross") == set()
+    # Still waiting for the owner, with exactly these members:
+    pending = {g.key: {e.name for e in g.exercises} for g in report.pending}
+    assert pending == {
+        "dip": {"Dip", "Dip Machine"},
+        "deadlift": {"Deadlift", "Cable Deadlifts", "Smith Machine Deadlift"},
+    }

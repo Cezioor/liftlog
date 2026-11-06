@@ -59,7 +59,8 @@ and keep each change small enough to review.
    exercises/0009). `group_movements` (run by `build.sh`) joins built-ins whose names differ only by equipment words
    ("Barbell Step Ups" + "Dumbbell Step Ups") plus the hand-made Smith links; doubtful groups (same equipment twice,
    different muscle group or category, one side vs both) wait in `exercises/movement_groups.py` for the owner's
-   CONFIRMED/REJECTED decision (`group_movements --pending` lists them). Merging families keeps users' own variants.
+   CONFIRMED/REJECTED decision (`group_movements --pending` lists them); MANUAL_GROUPS joins differently named exercises
+   (e.g. two-arm bent-over rows). Merging families keeps users' own variants.
    **"⇄ Change variant"** on the plan editor, the workout card and the exercise page: the family's variants first, then
    equipment without a variant (Smith, dumbbell, barbell, kettlebell, weight plate, pull-up bar, cable, machine, band,
    landmine, TRX, bodyweight, "Other…" with a typed name), which creates the user's variant in one tap. During a

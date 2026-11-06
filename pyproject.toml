@@ -8,6 +8,9 @@ requires-python = ">=3.12"
 DJANGO_SETTINGS_MODULE = "config.settings"
 python_files = ["test_*.py"]
 addopts = "--strict-markers"
+markers = [
+    "real_decisions: use the owner's movement-group decisions (exercises/movement_groups.py)",
+]
 filterwarnings = [
     # WhiteNoise warns that collectstatic hasn't been run; tests don't need it.
     "ignore:No directory at:UserWarning",
