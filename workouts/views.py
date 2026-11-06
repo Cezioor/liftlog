@@ -8,6 +8,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
 from accounts.services import get_user_settings, ios_shortcut_url
@@ -208,7 +209,7 @@ def home(request):
 def workout_start(request):
     existing = Workout.objects.filter(owner=request.user, finished_at__isnull=True).first()
     if existing:
-        messages.info(request, "You already have a workout in progress.")
+        messages.info(request, _("You already have a workout in progress."))
         return redirect("workouts:workout_detail", pk=existing.pk)
 
     plan_day = None
@@ -286,7 +287,7 @@ def add_exercise(request, pk):
         return redirect(f"{url}?add={exercise.pk}#ex-{exercise.pk}")
     return picker_response(
         request,
-        title="Add exercise",
+        title=_("Add exercise"),
         back_url=_workout_url(workout),
         select_base=f"{request.path}?exercise=",
         recent=services.recently_used_exercises(request.user),
@@ -332,7 +333,7 @@ def set_create(request, pk, exercise_pk):
     if not form.is_valid():
         if _is_htmx(request):
             return _card_response(request, build_card(workout, exercise, plan_exercise, form))
-        messages.error(request, "Check the weight and reps.")
+        messages.error(request, _("Check the weight and reps."))
         return redirect(_workout_url(workout, exercise))
 
     with transaction.atomic():
@@ -440,9 +441,15 @@ def apply_variant(request, pk, plan_exercise_pk):
     old_name = item.exercise.name
     services.change_variant_in_workout(workout, item, chosen, scope)
     if scope == services.IN_PLAN_TOO:
-        messages.success(request, f"{chosen.name} replaces {old_name} in the plan too.")
+        messages.success(
+            request,
+            _("%(new)s replaces %(old)s in the plan too.") % {"new": chosen.name, "old": old_name},
+        )
     else:
-        messages.success(request, f"Only today: {chosen.name}. The plan stays as it was.")
+        messages.success(
+            request,
+            _("Only today: %(exercise)s. The plan stays as it was.") % {"exercise": chosen.name},
+        )
     return redirect(_workout_url(workout, chosen))
 
 
@@ -455,7 +462,7 @@ def workout_finish(request, pk):
         workout = form.save(commit=False)
         workout.finished_at = timezone.now()
         workout.save()
-        messages.success(request, "Workout saved. Nice work!")
+        messages.success(request, _("Workout saved. Nice work!"))
     return redirect("workouts:workout_detail", pk=workout.pk)
 
 
@@ -464,5 +471,5 @@ def workout_finish(request, pk):
 def workout_discard(request, pk):
     workout = _get_open_workout(request, pk)
     workout.delete()
-    messages.info(request, "Workout discarded.")
+    messages.info(request, _("Workout discarded."))
     return redirect("home")

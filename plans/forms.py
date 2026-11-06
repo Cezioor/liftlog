@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from exercises.models import Measurement
 
@@ -15,7 +16,7 @@ class PlanDayForm(forms.ModelForm):
     class Meta:
         model = PlanDay
         fields = ("name",)
-        widgets = {"name": forms.TextInput(attrs={"placeholder": "e.g. Push"})}
+        widgets = {"name": forms.TextInput(attrs={"placeholder": _("e.g. Push")})}
 
 
 class PlanExerciseForm(forms.ModelForm):
@@ -45,13 +46,13 @@ class PlanExerciseForm(forms.ModelForm):
             "rest_seconds",
         )
         labels = {
-            "target_sets": "Sets",
-            "rep_min": "Reps from",
-            "rep_max": "Reps to",
-            "hold_min_s": "Hold from (seconds)",
-            "hold_max_s": "Hold to (seconds)",
-            "target_distance_m": "Distance (metres, optional)",
-            "rest_seconds": "Rest (seconds)",
+            "target_sets": _("Sets"),
+            "rep_min": _("Reps from"),
+            "rep_max": _("Reps to"),
+            "hold_min_s": _("Hold from (seconds)"),
+            "hold_max_s": _("Hold to (seconds)"),
+            "target_distance_m": _("Distance (metres, optional)"),
+            "rest_seconds": _("Rest (seconds)"),
         }
 
     def __init__(self, *args, measurement=Measurement.WEIGHT_REPS, **kwargs):
@@ -71,10 +72,10 @@ class PlanExerciseForm(forms.ModelForm):
     def clean(self):
         cleaned = super().clean()
         for low, high, label in (
-            ("rep_min", "rep_max", "Reps from"),
-            ("hold_min_s", "hold_max_s", "Hold from"),
+            ("rep_min", "rep_max", _("Reps from")),
+            ("hold_min_s", "hold_max_s", _("Hold from")),
         ):
             low_value, high_value = cleaned.get(low), cleaned.get(high)
             if low_value and high_value and low_value > high_value:
-                self.add_error(high, f"Must be at least “{label}”.")
+                self.add_error(high, _("Must be at least “%(field)s”.") % {"field": label})
         return cleaned

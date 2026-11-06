@@ -1,5 +1,5 @@
-{% load static %}<!doctype html>
-<html lang="en">
+{% load static i18n %}<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -20,10 +20,10 @@
     {% if user.is_authenticated %}
       {% with section=request.resolver_match.app_name %}
         <nav class="nav">
-          <a href="{% url 'plans:plan_list' %}"{% if section == 'plans' %} aria-current="page"{% endif %}>Plans</a>
-          <a href="{% url 'exercises:exercise_list' %}"{% if section == 'exercises' %} aria-current="page"{% endif %}>Exercises</a>
+          <a href="{% url 'plans:plan_list' %}"{% if section == 'plans' %} aria-current="page"{% endif %}>{% translate "Plans" %}</a>
+          <a href="{% url 'exercises:exercise_list' %}"{% if section == 'exercises' %} aria-current="page"{% endif %}>{% translate "Exercises" %}</a>
           {# Opens the dialog (feedback.js); without JavaScript it is the feedback page. #}
-          <a href="{% url 'feedback:feedback' %}?page={{ request.get_full_path|urlencode }}" class="nav-report" data-feedback-open>Zgłoś</a>
+          <a href="{% url 'feedback:feedback' %}?page={{ request.get_full_path|urlencode }}" class="nav-report" data-feedback-open>{% translate "Report" context "send feedback" %}</a>
         </nav>
       {% endwith %}
     {% endif %}
@@ -41,7 +41,20 @@
     {% block content %}{% endblock %}
   </main>
   <footer class="site-footer">
-    Exercise data and photos: <a href="https://github.com/yuhonas/free-exercise-db" rel="noopener">free-exercise-db</a> by yuhonas, public domain (The Unlicense).
+    {# Hidden on the workout screen: switching reloads the page (unsent inputs are lost). #}
+    {% block language_switcher %}
+      <form method="post" action="{% url 'set_language' %}" class="language-switcher">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <span class="visually-hidden">{% translate "Language" %}:</span>
+        <button type="submit" name="language" value="pl" lang="pl" class="link-button"{% if LANGUAGE_CODE == "pl" %} aria-current="true"{% endif %}>PL</button>
+        ·
+        <button type="submit" name="language" value="en" lang="en" class="link-button"{% if LANGUAGE_CODE == "en" %} aria-current="true"{% endif %}>EN</button>
+      </form>
+    {% endblock %}
+    <p>{% blocktranslate trimmed with url="https://github.com/yuhonas/free-exercise-db" %}
+      Exercise data and photos: <a href="{{ url }}" rel="noopener">free-exercise-db</a> by yuhonas, public domain (The Unlicense).
+    {% endblocktranslate %}</p>
   </footer>
   {% block after_main %}{% endblock %}
   {% if user.is_authenticated and request.resolver_match.app_name != "feedback" %}

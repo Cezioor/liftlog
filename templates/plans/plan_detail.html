@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load exercise_tags %}
+{% load i18n exercise_tags %}
 
 {% block title %}{{ plan.name }}{% endblock %}
 
@@ -7,11 +7,11 @@
   <div class="page-header">
     <h1>{{ plan.name }}</h1>
     {% if plan.is_active %}
-      <span class="badge badge-large">Active</span>
+      <span class="badge badge-large">{% translate "Active" context "plan" %}</span>
     {% else %}
       <form method="post" action="{% url 'plans:plan_activate' plan.pk %}">
         {% csrf_token %}
-        <button type="submit" class="button button-small">Set active</button>
+        <button type="submit" class="button button-small">{% translate "Set active" %}</button>
       </form>
     {% endif %}
   </div>
@@ -22,7 +22,7 @@
         <h2>{{ day.name }}</h2>
         <div class="icon-buttons">
           {% include "plans/_move_buttons.html" with url_name="plans:day_move" pk=day.pk first=forloop.first last=forloop.last label=day.name %}
-          <a class="icon-button" href="{% url 'plans:day_update' day.pk %}" aria-label="Rename {{ day.name }}">✎</a>
+          <a class="icon-button" href="{% url 'plans:day_update' day.pk %}" aria-label="{% blocktranslate with name=day.name %}Rename {{ name }}{% endblocktranslate %}">✎</a>
         </div>
       </div>
 
@@ -32,48 +32,49 @@
             <li class="plan-exercise">
               <a class="plan-exercise-main" href="{% url 'plans:pe_update' item.pk %}">
                 <span class="list-title">{{ item.exercise.name }}</span>
-                <span class="list-meta">{{ item.target_sets }} × {{ item.target_label }} · rest {{ item.rest_seconds }} s</span>
+                <span class="list-meta">{% blocktranslate with sets=item.target_sets target=item.target_label rest=item.rest_seconds %}{{ sets }} × {{ target }} · rest {{ rest }} s{% endblocktranslate %}</span>
               </a>
               <div class="icon-buttons">
                 {% url 'plans:pe_change_variant' item.pk as change_action %}
-                <a class="icon-button" href="{% change_variant_link item.exercise change_action request.path %}" aria-label="Change variant of {{ item.exercise.name }}" title="Change variant">⇄</a>
+                <a class="icon-button" href="{% change_variant_link item.exercise change_action request.path %}" aria-label="{% blocktranslate with name=item.exercise.name %}Change variant of {{ name }}{% endblocktranslate %}" title="{% translate "Change variant" %}">⇄</a>
                 {% include "plans/_move_buttons.html" with url_name="plans:pe_move" pk=item.pk first=forloop.first last=forloop.last label=item.exercise.name %}
               </div>
             </li>
           {% endfor %}
         </ol>
       {% else %}
-        <p class="muted">No exercises yet.</p>
+        <p class="muted">{% translate "No exercises yet." %}</p>
       {% endif %}
 
-      <a class="button" href="{% url 'plans:pe_create' day.pk %}">+ Add exercise</a>
+      <a class="button" href="{% url 'plans:pe_create' day.pk %}">+ {% translate "Add exercise" %}</a>
     </section>
   {% empty %}
-    <p class="muted">Add the first training day below, e.g. “Push”, “Upper A” or “Full body”.</p>
+    <p class="muted">{% translate "Add the first training day below, e.g. “Push”, “Upper A” or “Full body”." %}</p>
   {% endfor %}
 
   <section class="card">
-    <h2>Add a day</h2>
+    <h2>{% translate "Add a day" %}</h2>
     <form method="post" action="{% url 'plans:day_create' plan.pk %}" class="inline-form">
       {% csrf_token %}
       {{ day_form.name }}
-      <button type="submit" class="button button-primary button-small">Add</button>
+      <button type="submit" class="button button-primary button-small">{% translate "Add" %}</button>
     </form>
   </section>
 
   <details class="card">
-    <summary>Plan settings</summary>
+    <summary>{% translate "Plan settings" %}</summary>
     <form method="post" class="form">
       {% csrf_token %}
       {{ rename_form }}
-      <button type="submit" class="button">Rename plan</button>
+      <button type="submit" class="button">{% translate "Rename plan" %}</button>
     </form>
+    {% translate "Delete this plan with all its days? Logged workouts are kept." as delete_question %}
     <form method="post" action="{% url 'plans:plan_delete' plan.pk %}" class="danger-zone"
-          onsubmit="return confirm('Delete this plan with all its days? Logged workouts are kept.');">
+          onsubmit="return confirm('{{ delete_question|escapejs }}');">
       {% csrf_token %}
-      <button type="submit" class="button button-danger">Delete plan</button>
+      <button type="submit" class="button button-danger">{% translate "Delete plan" %}</button>
     </form>
   </details>
 
-  <p class="form-links"><a href="{% url 'plans:plan_list' %}">← All plans</a></p>
+  <p class="form-links"><a href="{% url 'plans:plan_list' %}">← {% translate "All plans" %}</a></p>
 {% endblock %}

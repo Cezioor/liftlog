@@ -20,6 +20,9 @@ from dataclasses import dataclass
 from decimal import ROUND_FLOOR, ROUND_HALF_UP, Decimal
 
 from django.db.models import Max
+from django.utils import formats
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy, ngettext, pgettext
 
 from exercises.models import Equipment, Exercise, Measurement
 
@@ -35,10 +38,19 @@ EASY_RIR = Decimal("3")
 
 
 def format_kg(value):
-    """Decimal('62.50') -> '62.5', Decimal('60.00') -> '60'."""
+    """Decimal('62.50') -> '62.5', Decimal('60.00') -> '60'.
+
+    Always with a dot: for input values, data-* attributes, URLs and JS.
+    Text people read uses display_kg.
+    """
     if value is None:
         return ""
     return f"{value.normalize():f}"
+
+
+def display_kg(value):
+    """Like format_kg, with the page language's decimal separator: '62,5' in Polish."""
+    return format_kg(value).replace(".", formats.get_format("DECIMAL_SEPARATOR"))
 
 
 def format_duration(seconds):
@@ -75,33 +87,52 @@ def set_text(workout_set, measurement, long=False, scale=None):
 def _set_values_text(workout_set, measurement, long):
     s = workout_set
     weight = s.weight_kg or Decimal("0")
-    added = f" +{format_kg(weight)} kg" if weight > 0 else ""
-    side = {Side.LEFT: "L ", Side.RIGHT: "R "}.get(s.side, "")
+    added = f" +{display_kg(weight)} kg" if weight > 0 else ""
+    side = {
+        Side.LEFT: pgettext("left side, one letter", "L") + " ",
+        Side.RIGHT: pgettext("right side, one letter", "R") + " ",
+    }.get(s.side, "")
 
     if s.distance_m is not None:
-        text = f"{s.distance_m} m"
-        if s.duration_seconds:
-            text += f" in {format_duration(s.duration_seconds)}"
-        return side + text + added
+        return side + distance_text(s.distance_m, s.duration_seconds) + added
     if s.duration_seconds is not None:
         return side + format_duration(s.duration_seconds) + added
     if s.reps is None:
         return side + "–"
     if measurement == Measurement.REPS:
-        return f"{side}{s.reps} reps{added}"
+        return side + reps_text(s.reps) + added
     # weight × reps, including old-style sets of exercises that changed type later
     unit = " kg" if long else ""
-    return f"{side}{format_kg(weight)}{unit} × {s.reps}"
+    return f"{side}{display_kg(weight)}{unit} × {s.reps}"
+
+
+def reps_text(reps):
+    """12 -> "12 reps" ("12 powtórzeń")."""
+    return ngettext("%(reps)s rep", "%(reps)s reps", reps) % {"reps": reps}
+
+
+def distance_text(distance_m, duration_seconds=None):
+    """ "40 m", or "40 m in 0:35" when the time was logged too."""
+    if not duration_seconds:
+        return f"{distance_m} m"
+    return _("%(distance)s m in %(time)s") % {
+        "distance": distance_m,
+        "time": format_duration(duration_seconds),
+    }
 
 
 # --- set rating (stored as RIR) -------------------------------------------
 
 # Simple scale: (stored RIR, label). "Hard" means 1–2 reps left, stored as the middle, 1.5.
+EASY = gettext_lazy("Easy")
+MEDIUM = gettext_lazy("Medium")
+HARD = gettext_lazy("Hard")
+MAX_EFFORT = gettext_lazy("Max effort")
 SIMPLE_EFFORT = [
-    (Decimal("4"), "Easy"),
-    (Decimal("3"), "Medium"),
-    (Decimal("1.5"), "Hard"),
-    (Decimal("0"), "Max effort"),
+    (Decimal("4"), EASY),
+    (Decimal("3"), MEDIUM),
+    (Decimal("1.5"), HARD),
+    (Decimal("0"), MAX_EFFORT),
 ]
 RIR_CHOICES = [Decimal(n) for n in range(5)]  # 0, 1, 2, 3, 4 (= 4 or more)
 RPE_CHOICES = [Decimal(n) / 2 for n in range(12, 21)]  # 6, 6.5 ... 10
@@ -114,22 +145,22 @@ def rpe_from_rir(rir):
 
 def _simple_label(rir):
     if rir >= 4:
-        return "Easy"
+        return str(EASY)
     if rir >= Decimal("2.5"):
-        return "Medium"
+        return str(MEDIUM)
     if rir >= 1:
-        return "Hard"
-    return "Max effort"
+        return str(HARD)
+    return str(MAX_EFFORT)
 
 
 def effort_label(rir, scale):
-    """The rating alone, as its button shows it: "Hard", "4+", "8.5"."""
+    """The rating alone, as its button shows it: "Hard", "4+", "8.5" ("8,5" in Polish)."""
     from accounts.models import EffortScale
 
     if scale == EffortScale.RIR:
-        return "4+" if rir >= 4 else format_kg(rir)
+        return "4+" if rir >= 4 else display_kg(rir)
     if scale == EffortScale.RPE:
-        return format_kg(rpe_from_rir(rir))
+        return display_kg(rpe_from_rir(rir))
     return _simple_label(rir)
 
 
@@ -166,7 +197,7 @@ def effort_choices(scale, current=None):
     if scale == EffortScale.SIMPLE:
         labels = dict(SIMPLE_EFFORT)
         return [
-            (format_kg(v), labels.get(v) or f"{_simple_label(v)} (RIR {format_kg(v)})")
+            (format_kg(v), labels.get(v) or f"{_simple_label(v)} (RIR {display_kg(v)})")
             for v in values
         ]
     return [(format_kg(v), effort_label(v, scale)) for v in values]
@@ -257,34 +288,50 @@ def _weight_hint(exercise, sets, rep_max, rep_min=None):
         return None
     top_weight = max(s.weight_kg for s in sets)
     if _limit_at_bottom(sets, rep_min):
+        stay = _("Stay at %(weight)s kg and add reps first.") % {"weight": display_kg(top_weight)}
         return ProgressionHint(
-            weight_kg=top_weight,
-            increase=False,
-            message=f"Last time {rep_min} reps took everything you had. "
-            f"Stay at {format_kg(top_weight)} kg and add reps first.",
+            weight_kg=top_weight, increase=False, message=f"{_limit_text(rep_min)} {stay}"
         )
     easy = _easy_at_top(sets, rep_max)
     if not easy and not all(s.reps >= rep_max for s in sets):
-        return ProgressionHint(
-            weight_kg=top_weight,
-            increase=False,
-            message=f"Stay at {format_kg(top_weight)} kg until every set reaches {rep_max} reps.",
-        )
+        message = ngettext(
+            "Stay at %(weight)s kg until every set reaches %(reps)s rep.",
+            "Stay at %(weight)s kg until every set reaches %(reps)s reps.",
+            rep_max,
+        ) % {"weight": display_kg(top_weight), "reps": rep_max}
+        return ProgressionHint(weight_kg=top_weight, increase=False, message=message)
     if exercise.is_bodyweight and top_weight == 0:
         # No external load to increase; suggest progressing in another way.
-        return ProgressionHint(
-            weight_kg=top_weight,
-            increase=False,
-            message=f"All sets hit {rep_max} reps. Add weight or a harder variation.",
-        )
+        message = ngettext(
+            "All sets hit %(reps)s rep. Add weight or a harder variation.",
+            "All sets hit %(reps)s reps. Add weight or a harder variation.",
+            rep_max,
+        ) % {"reps": rep_max}
+        return ProgressionHint(weight_kg=top_weight, increase=False, message=message)
     new_weight = top_weight + exercise.progression_step_kg
     if easy:
-        message = (
-            f"{rep_max} reps with 3+ more in the tank: too light. Try {format_kg(new_weight)} kg."
+        message = ngettext(
+            "%(reps)s rep with 3+ more in the tank: too light. Try %(weight)s kg.",
+            "%(reps)s reps with 3+ more in the tank: too light. Try %(weight)s kg.",
+            rep_max,
         )
     else:
-        message = f"All sets hit {rep_max} reps last time. Try {format_kg(new_weight)} kg."
+        message = ngettext(
+            "All sets hit %(reps)s rep last time. Try %(weight)s kg.",
+            "All sets hit %(reps)s reps last time. Try %(weight)s kg.",
+            rep_max,
+        )
+    message %= {"reps": rep_max, "weight": display_kg(new_weight)}
     return ProgressionHint(weight_kg=new_weight, increase=True, message=message)
+
+
+def _limit_text(rep_min):
+    """ "Last time 8 reps took everything you had." """
+    return ngettext(
+        "Last time %(reps)s rep took everything you had.",
+        "Last time %(reps)s reps took everything you had.",
+        rep_min,
+    ) % {"reps": rep_min}
 
 
 def _reps_hint(exercise, sets, rep_max, rep_min=None):
@@ -294,30 +341,26 @@ def _reps_hint(exercise, sets, rep_max, rep_min=None):
     added = max(s.weight_kg or Decimal("0") for s in sets)
     if rep_max and (all(s.reps >= rep_max for s in sets) or _easy_at_top(sets, rep_max)):
         new_weight = added + exercise.progression_step_kg
-        return ProgressionHint(
-            weight_kg=new_weight,
-            increase=True,
-            reps=None,
-            message=f"All sets hit {rep_max} reps. "
-            f"Try +{format_kg(new_weight)} kg added weight or a harder variation.",
-        )
+        message = ngettext(
+            "All sets hit %(reps)s rep. Try +%(weight)s kg added weight or a harder variation.",
+            "All sets hit %(reps)s reps. Try +%(weight)s kg added weight or a harder variation.",
+            rep_max,
+        ) % {"reps": rep_max, "weight": display_kg(new_weight)}
+        return ProgressionHint(weight_kg=new_weight, increase=True, reps=None, message=message)
     if _limit_at_bottom(sets, rep_min):
+        again = _("Aim for %(reps)s again with clean reps.") % {"reps": best}
         return ProgressionHint(
-            weight_kg=added,
-            increase=False,
-            reps=best,
-            message=f"Last time {rep_min} reps took everything you had. "
-            f"Aim for {best} again with clean reps.",
+            weight_kg=added, increase=False, reps=best, message=f"{_limit_text(rep_min)} {again}"
         )
     target = best + 1
     if rep_max:
         target = min(target, rep_max)
-    return ProgressionHint(
-        weight_kg=added,
-        increase=True,
-        reps=target,
-        message=f"Best set last time: {best} reps. Aim for {target}.",
-    )
+    message = ngettext(
+        "Best set last time: %(best)s rep. Aim for %(target)s.",
+        "Best set last time: %(best)s reps. Aim for %(target)s.",
+        best,
+    ) % {"best": best, "target": target}
+    return ProgressionHint(weight_kg=added, increase=True, reps=target, message=message)
 
 
 def _time_hint(sets, hold_max):
@@ -329,28 +372,31 @@ def _time_hint(sets, hold_max):
             weight_kg=added,
             increase=False,
             duration_seconds=best,
-            message=f"Keep holding {format_duration(best)} until every set reaches "
-            f"{format_duration(hold_max)}.",
+            message=_("Keep holding %(best)s until every set reaches %(target)s.")
+            % {"best": format_duration(best), "target": format_duration(hold_max)},
         )
     target = best + HOLD_STEP_SECONDS
     return ProgressionHint(
         weight_kg=added,
         increase=True,
         duration_seconds=target,
-        message=f"Longest hold last time: {format_duration(best)}. "
-        f"Try {format_duration(target)} (+{HOLD_STEP_SECONDS} s).",
+        message=_("Longest hold last time: %(best)s. Try %(target)s (+%(step)s s).")
+        % {
+            "best": format_duration(best),
+            "target": format_duration(target),
+            "step": HOLD_STEP_SECONDS,
+        },
     )
 
 
 def _distance_hint(sets):
     best = max(sets, key=lambda s: (s.distance_m, -(s.duration_seconds or 0)))
-    text = f"{best.distance_m} m"
-    if best.duration_seconds:
-        text += f" in {format_duration(best.duration_seconds)}"
+    text = distance_text(best.distance_m, best.duration_seconds)
     return ProgressionHint(
         weight_kg=None,
         increase=False,
-        message=f"Best last time: {text}. Go a little farther or a little faster.",
+        message=_("Best last time: %(result)s. Go a little farther or a little faster.")
+        % {"result": text},
     )
 
 
@@ -465,7 +511,7 @@ START_WEIGHT_KG = {
     Equipment.CABLE: Decimal("10"),
     Equipment.MACHINE: Decimal("10"),
 }
-NO_MAX_TEST_NOTE = (
+NO_MAX_TEST_NOTE = gettext_lazy(
     "Why no max test with weights? The last reps before failure are where form breaks "
     "down and injuries happen. A few light test sets and how hard they felt are enough "
     "to estimate your working weight. Test sets are saved as warm-ups, so they don't "
@@ -541,9 +587,9 @@ def _hold_calibration(exercise, current_sets, side, hold_min, hold_max):
     best, tests = _test_result(sets, lambda s: s.duration_seconds, exercise.is_unilateral)
     if best is None:
         if sets:
-            message = "Now the same test hold on the other side."
+            message = _("Now the same test hold on the other side.")
         else:
-            message = (
+            message = _(
                 "First time: test hold. Hold as long as your form stays good, then stop. "
                 "Your working holds are based on it."
             )
@@ -555,12 +601,19 @@ def _hold_calibration(exercise, current_sets, side, hold_min, hold_max):
         target = max(target, hold_min)
     if hold_max:
         target = min(target, hold_max)
-    message = (
-        f"Test hold: {format_duration(best)}. Working holds: {format_duration(target)} (about 75%"
-    )
     if hold_min and hold_max:
-        message += f", within your plan's {hold_min}–{hold_max} s"
-    message += ")."
+        message = _(
+            "Test hold: %(best)s. Working holds: %(target)s "
+            "(about 75%%, within your plan's %(low)s–%(high)s s)."
+        )
+    else:
+        message = _("Test hold: %(best)s. Working holds: %(target)s (about 75%%).")
+    message %= {
+        "best": format_duration(best),
+        "target": format_duration(target),
+        "low": hold_min,
+        "high": hold_max,
+    }
     defaults = SetDefaults(None, None, target, side=side) if len(sets) == tests else None
     return Calibration(message, defaults)
 
@@ -570,16 +623,20 @@ def _reps_calibration(exercise, current_sets, side):
     best, tests = _test_result(sets, lambda s: s.reps, exercise.is_unilateral)
     if best is None:
         if sets:
-            message = "Now the same test set on the other side."
+            message = _("Now the same test set on the other side.")
         else:
-            message = (
+            message = _(
                 "First time: test set. Do as many clean reps as you can and stop when "
                 "your form starts to slip. Your working sets are based on it."
             )
         return Calibration(message, SetDefaults(None, None, side=side))
 
     target = _share(best, REPS_WORKING_SHARE)
-    message = f"Test set: {best} reps. Working sets: {target} reps (about 70%)."
+    message = ngettext(
+        "Test set: %(best)s rep. Working sets: %(target)s reps (about 70%%).",
+        "Test set: %(best)s reps. Working sets: %(target)s reps (about 70%%).",
+        best,
+    ) % {"best": best, "target": target}
     defaults = SetDefaults(None, target, side=side) if len(sets) == tests else None
     return Calibration(message, defaults)
 
@@ -613,29 +670,46 @@ def _weight_calibration(exercise, current_sets, side, rep_min, rep_max):
     if calibrating:
         e1rm = epley_1rm(calibrating.weight_kg, calibrating.reps + calibrating.rir)
         working = max(working_weight(e1rm, high, step), start or Decimal("0"))
-        message = (
-            f"Estimated max: about {format_kg(e1rm)} kg. Working sets: "
-            f"{format_kg(working)} kg × {low}–{high}, stopping with 1–2 reps left."
-        )
+        message = _(
+            "Estimated max: about %(e1rm)s kg. Working sets: "
+            "%(weight)s kg × %(low)s–%(high)s, stopping with 1–2 reps left."
+        ) % {"e1rm": display_kg(e1rm), "weight": display_kg(working), "low": low, "high": high}
         started = any(s.order > calibrating.order and not s.is_warmup for s in current_sets)
         defaults = None if started else SetDefaults(working, low, side=side)
         return Calibration(message, defaults, estimated_1rm=e1rm)
 
     if not current_sets:
         weight = start
-        what = "empty bar, 20 kg" if exercise.equipment == Equipment.BARBELL else "a light weight"
-        message = (
-            f"First time: find your working weight, no max test. "
-            f"Do a test set ({what}, {low} reps), then rate how hard it was."
-        )
+        if exercise.equipment == Equipment.BARBELL:
+            message = ngettext(
+                "First time: find your working weight, no max test. "
+                "Do a test set (empty bar, 20 kg, %(reps)s rep), then rate how hard it was.",
+                "First time: find your working weight, no max test. "
+                "Do a test set (empty bar, 20 kg, %(reps)s reps), then rate how hard it was.",
+                low,
+            )
+        else:
+            message = ngettext(
+                "First time: find your working weight, no max test. "
+                "Do a test set (a light weight, %(reps)s rep), then rate how hard it was.",
+                "First time: find your working weight, no max test. "
+                "Do a test set (a light weight, %(reps)s reps), then rate how hard it was.",
+                low,
+            )
+        message %= {"reps": low}
     else:
         last = current_sets[-1]
         weight = last.weight_kg
         if last.rir is None:
-            message = "Rate your test set (tap ✎ to add it) so LiftLog can suggest the next weight."
+            message = _(
+                "Rate your test set (tap ✎ to add it) so LiftLog can suggest the next weight."
+            )
         else:
             weight = _next_test_weight(last.weight_kg, last.rir, step)
-            message = f"Still light. Next test set: {format_kg(weight)} kg × {low}, then rate it."
+            message = _("Still light. Next test set: %(weight)s kg × %(reps)s, then rate it.") % {
+                "weight": display_kg(weight),
+                "reps": low,
+            }
     return Calibration(
         message,
         SetDefaults(weight, low, side=side, is_warmup=True),
@@ -682,32 +756,32 @@ def personal_records(user, exercise):
         timed = [s for s in sets if s.duration_seconds]
         if timed:
             best = max(timed, key=lambda s: (s.duration_seconds, s.weight_kg))
-            records.append(Record("Longest hold", set_text(best, measurement, long=True), best))
+            records.append(Record(_("Longest hold"), set_text(best, measurement, long=True), best))
     elif measurement == Measurement.DISTANCE_TIME:
         far = [s for s in sets if s.distance_m]
         if far:
             best = max(far, key=lambda s: (s.distance_m, -(s.duration_seconds or 10**9)))
-            records.append(Record("Longest distance", set_text(best, measurement), best))
+            records.append(Record(_("Longest distance"), set_text(best, measurement), best))
     elif measurement == Measurement.REPS:
         counted = [s for s in sets if s.reps]
         if counted:
             best = max(counted, key=lambda s: (s.reps, s.weight_kg))
-            records.append(Record("Most reps", set_text(best, measurement), best))
+            records.append(Record(_("Most reps"), set_text(best, measurement), best))
     else:
         lifted = [s for s in sets if s.reps and s.weight_kg]
         if lifted:
             best = max(lifted, key=lambda s: (epley_1rm(s.weight_kg, s.reps), s.weight_kg))
-            e1rm = format_kg(epley_1rm(best.weight_kg, best.reps))
+            e1rm = display_kg(epley_1rm(best.weight_kg, best.reps))
             records.append(
                 Record(
-                    "Best estimated 1RM",
+                    _("Best estimated 1RM"),
                     f"{e1rm} kg ({set_text(best, measurement, long=True)})",
                     best,
                 )
             )
             heaviest = max(lifted, key=lambda s: (s.weight_kg, s.reps))
             records.append(
-                Record("Heaviest set", set_text(heaviest, measurement, long=True), heaviest)
+                Record(_("Heaviest set"), set_text(heaviest, measurement, long=True), heaviest)
             )
     return records
 

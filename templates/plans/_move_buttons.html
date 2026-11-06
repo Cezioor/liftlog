@@ -1,9 +1,9 @@
-{# Up/down buttons. Expects: url_name, pk, first, last, label. #}
+{% load i18n %}{# Up/down buttons. Expects: url_name, pk, first, last, label. #}
 <form method="post" action="{% url url_name pk 'up' %}">
   {% csrf_token %}
-  <button type="submit" class="icon-button" aria-label="Move {{ label }} up"{% if first %} disabled{% endif %}>↑</button>
+  <button type="submit" class="icon-button" aria-label="{% blocktranslate %}Move {{ label }} up{% endblocktranslate %}"{% if first %} disabled{% endif %}>↑</button>
 </form>
 <form method="post" action="{% url url_name pk 'down' %}">
   {% csrf_token %}
-  <button type="submit" class="icon-button" aria-label="Move {{ label }} down"{% if last %} disabled{% endif %}>↓</button>
+  <button type="submit" class="icon-button" aria-label="{% blocktranslate %}Move {{ label }} down{% endblocktranslate %}"{% if last %} disabled{% endif %}>↓</button>
 </form>

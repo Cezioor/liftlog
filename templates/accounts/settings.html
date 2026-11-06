@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block title %}Settings{% endblock %}
 
@@ -23,12 +24,15 @@
 
   <form method="post" class="card form">
     {% csrf_token %}
+    <h2>{% translate "Language" %}</h2>
+    {{ form.language.as_field_group }}
+
     <h2>Rating your sets</h2>
     <p class="muted small">After a set you can say how hard it was. It helps LiftLog suggest when to add weight. Saved ratings stay the same when you switch.</p>
     {{ form.effort_scale.as_field_group }}
 
     <h2>Rest timer</h2>
-    {% for field in form %}{% if field.name != "effort_scale" %}{{ field.as_field_group }}{% endif %}{% endfor %}
+    {% for field in form %}{% if field.name != "effort_scale" and field.name != "language" %}{{ field.as_field_group }}{% endif %}{% endfor %}
     <button type="submit" class="button button-primary">Save settings</button>
   </form>
 

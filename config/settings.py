@@ -79,6 +79,8 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    # After authentication: the language saved on the account comes first (see the class).
+    "config.middleware.UserLanguageMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -94,6 +96,7 @@ TEMPLATES = [
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.request",
+                "django.template.context_processors.i18n",  # LANGUAGE_CODE in templates
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "feedback.context_processors.feedback_form",
@@ -201,7 +204,14 @@ DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "LiftLog <noreply@lift
 
 
 # Internationalization: store times in UTC, show them in Warsaw time.
-LANGUAGE_CODE = "en-us"
+# Source texts are English (msgid); Polish lives in locale/pl/LC_MESSAGES/django.po.
+# Language: the one saved on the account -> cookie -> browser (Accept-Language) -> Polish
+# (config.middleware.UserLanguageMiddleware).
+LANGUAGE_CODE = "pl"
+LANGUAGES = [("pl", "Polski"), ("en", "English")]  # each in its own language
+LOCALE_PATHS = [BASE_DIR / "locale"]
+LANGUAGE_COOKIE_AGE = 365 * 24 * 60 * 60  # a year: the choice outlives logging out
+LANGUAGE_COOKIE_SECURE = not DEBUG
 TIME_ZONE = "Europe/Warsaw"
 USE_I18N = True
 USE_TZ = True

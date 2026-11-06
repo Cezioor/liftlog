@@ -1,0 +1,1038 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: LiftLog\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-06 22:45+0100\n"
+"PO-Revision-Date: 2026-11-06 22:40+0100\n"
+"Last-Translator: Cezary Muszalski\n"
+"Language-Team: Polish\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
+#: .\accounts\forms.py:35 .\templates\accounts\settings.html:27 .\templates\base.html:49
+msgid "Language"
+msgstr "Język"
+
+#: .\accounts\forms.py:55
+msgid "Enter the name of your shortcut."
+msgstr "Wpisz nazwę swojego skrótu."
+
+#: .\accounts\models.py:18
+msgid "Simple: Easy / Medium / Hard / Max effort"
+msgstr "Prosta: Lekko / Średnio / Ciężko / Maksimum"
+
+#: .\accounts\models.py:19
+msgid "RIR: reps left in the tank (0, 1, 2, 3, 4+)"
+msgstr "RIR: ile powtórzeń zostało w zapasie (0, 1, 2, 3, 4+)"
+
+#: .\accounts\models.py:20
+msgid "RPE: effort from 6 to 10 (RPE = 10 − RIR)"
+msgstr "RPE: wysiłek od 6 do 10 (RPE = 10 − RIR)"
+
+#: .\accounts\models.py:30
+msgid "iPhone Clock timer via Shortcuts"
+msgstr "Minutnik w Zegarze iPhone’a przez Skróty"
+
+#: .\accounts\models.py:32
+msgid "After each set, show a button that starts a timer in the iPhone Clock app."
+msgstr "Po każdej serii pokaż przycisk, który włącza minutnik w aplikacji Zegar na iPhonie."
+
+#: .\accounts\models.py:35
+msgid "shortcut name"
+msgstr "nazwa skrótu"
+
+#: .\accounts\models.py:38
+msgid "Exactly the name of the shortcut in the Shortcuts app."
+msgstr "Dokładnie taka nazwa, jak w aplikacji Skróty."
+
+#: .\accounts\models.py:41
+msgid "keep the screen on during a workout"
+msgstr "nie wygaszaj ekranu podczas treningu"
+
+#: .\accounts\models.py:43
+msgid "Uses more battery. Needs a browser that supports it (HTTPS only)."
+msgstr "Zużywa więcej baterii. Wymaga przeglądarki, która to obsługuje (tylko HTTPS)."
+
+#: .\accounts\models.py:46
+msgid "beep when the rest is over"
+msgstr "sygnał dźwiękowy na koniec przerwy"
+
+#: .\accounts\models.py:48
+msgid "Only while LiftLog is on screen; a locked phone can't play it."
+msgstr "Tylko gdy LiftLog jest na ekranie; zablokowany telefon go nie odtworzy."
+
+#: .\accounts\models.py:52
+msgid "how to rate sets"
+msgstr "jak oceniać serie"
+
+#: .\accounts\models.py:56
+msgid "Changing it only changes how ratings look; saved ratings stay the same."
+msgstr "Zmiana wpływa tylko na wygląd ocen; zapisane oceny się nie zmieniają."
+
+#: .\accounts\models.py:61
+msgid "language"
+msgstr "język"
+
+#: .\accounts\models.py:65 .\accounts\models.py:66
+msgid "user settings"
+msgstr "ustawienia użytkownika"
+
+#: .\accounts\views.py:54
+msgid "This address is already confirmed. You can log in."
+msgstr "Ten adres jest już potwierdzony. Możesz się zalogować."
+
+#: .\accounts\views.py:58
+msgid "We sent a link a moment ago. Wait 3 minutes before asking for another."
+msgstr "Link wysłaliśmy przed chwilą. Odczekaj 3 minuty, zanim poprosisz o kolejny."
+
+#: .\accounts\views.py:61
+msgid "Sent! Check your inbox (and the spam folder)."
+msgstr "Wysłane! Sprawdź skrzynkę (i folder spam)."
+
+#: .\accounts\views.py:74
+msgid "Settings saved."
+msgstr "Ustawienia zapisane."
+
+#: .\plans\forms.py:19
+msgid "e.g. Push"
+msgstr "np. Push"
+
+#: .\plans\forms.py:49
+msgid "Sets"
+msgstr "Serie"
+
+#: .\plans\forms.py:50 .\plans\forms.py:75
+msgid "Reps from"
+msgstr "Powtórzenia od"
+
+#: .\plans\forms.py:51
+msgid "Reps to"
+msgstr "Powtórzenia do"
+
+#: .\plans\forms.py:52
+msgid "Hold from (seconds)"
+msgstr "Utrzymanie od (sekundy)"
+
+#: .\plans\forms.py:53
+msgid "Hold to (seconds)"
+msgstr "Utrzymanie do (sekundy)"
+
+#: .\plans\forms.py:54
+msgid "Distance (metres, optional)"
+msgstr "Dystans (metry, opcjonalnie)"
+
+#: .\plans\forms.py:55
+msgid "Rest (seconds)"
+msgstr "Przerwa (sekundy)"
+
+#: .\plans\forms.py:76
+msgid "Hold from"
+msgstr "Utrzymanie od"
+
+#: .\plans\forms.py:80
+#, python-format
+msgid "Must be at least “%(field)s”."
+msgstr "Nie może być mniej niż „%(field)s”."
+
+#: .\plans\models.py:72
+msgid "hold from (s)"
+msgstr "utrzymanie od (s)"
+
+#: .\plans\models.py:75
+msgid "hold to (s)"
+msgstr "utrzymanie do (s)"
+
+#: .\plans\models.py:78
+msgid "distance (m)"
+msgstr "dystans (m)"
+
+#: .\plans\models.py:112
+#, python-format
+msgid "%(range)s rep"
+msgid_plural "%(range)s reps"
+msgstr[0] "%(range)s powtórzenie"
+msgstr[1] "%(range)s powtórzenia"
+msgstr[2] "%(range)s powtórzeń"
+msgstr[3] "%(range)s powtórzeń"
+
+#: .\plans\views.py:90
+msgid "Plan renamed."
+msgstr "Zmieniono nazwę planu."
+
+#: .\plans\views.py:105
+#, python-format
+msgid "“%(plan)s” is now your active plan."
+msgstr "„%(plan)s” to teraz Twój aktywny plan."
+
+#: .\plans\views.py:114 .\plans\views.py:152
+#, python-format
+msgid "Deleted “%(name)s”."
+msgstr "Usunięto „%(name)s”."
+
+#: .\plans\views.py:132
+msgid "Give the day a name."
+msgstr "Nadaj dniowi nazwę."
+
+#: .\plans\views.py:185 .\templates\plans\plan_exercise_form.html:8
+#, python-format
+msgid "Add to %(day)s"
+msgstr "Dodaj do: %(day)s"
+
+#: .\plans\views.py:185
+msgid "Change exercise"
+msgstr "Zmień ćwiczenie"
+
+#: .\plans\views.py:210
+#, python-format
+msgid "Added %(exercise)s to %(day)s."
+msgstr "Dodano %(exercise)s do dnia %(day)s."
+
+#: .\plans\views.py:258
+#, python-format
+msgid "%(old)s → %(new)s in the plan."
+msgstr "%(old)s → %(new)s w planie."
+
+#: .\templates\base.html:23 .\templates\plans\plan_list.html:4 .\templates\plans\plan_list.html:8
+msgid "Plans"
+msgstr "Plany"
+
+#: .\templates\base.html:24
+msgid "Exercises"
+msgstr "Ćwiczenia"
+
+#: .\templates\base.html:26
+msgctxt "send feedback"
+msgid "Report"
+msgstr "Zgłoś"
+
+#: .\templates\base.html:55
+#, python-format
+msgid ""
+"Exercise data and photos: <a href=\"%(url)s\" rel=\"noopener\">free-exercise-db</a> by yuhonas, "
+"public domain (The Unlicense)."
+msgstr ""
+"Dane i zdjęcia ćwiczeń: <a href=\"%(url)s\" rel=\"noopener\">free-exercise-db</a> (autor: "
+"yuhonas), domena publiczna (The Unlicense)."
+
+#: .\templates\home.html:4
+msgid "Home"
+msgstr "Start"
+
+#: .\templates\home.html:9
+msgid "Workout in progress"
+msgstr "Trening w toku"
+
+#: .\templates\home.html:10
+#, python-format
+msgid "%(title)s · started %(time)s"
+msgstr "%(title)s · start %(time)s"
+
+#: .\templates\home.html:11
+msgid "Resume workout"
+msgstr "Wróć do treningu"
+
+#: .\templates\home.html:14
+msgid "Start a workout"
+msgstr "Zacznij trening"
+
+#: .\templates\home.html:25
+#, python-format
+msgid "Your active plan “%(name)s” has no days yet. <a href=\"%(plan_url)s\">Add days</a>"
+msgstr "Twój aktywny plan „%(name)s” nie ma jeszcze dni. <a href=\"%(plan_url)s\">Dodaj dni</a>"
+
+#: .\templates\home.html:29
+#, python-format
+msgid ""
+"<a href=\"%(create_url)s\">Create a plan</a> to start workouts from it, or just log a free "
+"workout."
+msgstr ""
+"<a href=\"%(create_url)s\">Utwórz plan</a>, żeby zaczynać z niego treningi, albo po prostu zapisz "
+"wolny trening."
+
+#: .\templates\home.html:33
+msgid "Empty workout"
+msgstr "Pusty trening"
+
+#: .\templates\home.html:36
+msgid "From plan:"
+msgstr "Z planu:"
+
+#: .\templates\home.html:40
+msgid "Recent workouts"
+msgstr "Ostatnie treningi"
+
+#: .\templates\home.html:46
+msgid "D j M, H:i"
+msgstr "D j b, H:i"
+
+#: .\templates\home.html:55
+#, python-format
+msgid "Logged in as %(name)s"
+msgstr "Zalogowano jako %(name)s"
+
+#: .\templates\home.html:55
+msgid "Settings"
+msgstr "Ustawienia"
+
+#: .\templates\home.html:56
+msgid "Log out"
+msgstr "Wyloguj"
+
+#: .\templates\plans\_move_buttons.html:4
+#, python-format
+msgid "Move %(label)s up"
+msgstr "Przesuń %(label)s w górę"
+
+#: .\templates\plans\_move_buttons.html:8
+#, python-format
+msgid "Move %(label)s down"
+msgstr "Przesuń %(label)s w dół"
+
+#: .\templates\plans\add_to_plan.html:4
+msgid "Add to plan"
+msgstr "Dodaj do planu"
+
+#: .\templates\plans\add_to_plan.html:8
+#, python-format
+msgid "Add %(name)s"
+msgstr "Dodaj %(name)s"
+
+#: .\templates\plans\add_to_plan.html:9 .\templates\plans\day_form.html:20
+#: .\templates\plans\plan_exercise_form.html:30 .\templates\plans\plan_form.html:14
+#: .\templates\workouts\change_variant_scope.html:21
+#: .\templates\workouts\partials\exercise_card.html:47
+#: .\templates\workouts\partials\set_inputs.html:25
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: .\templates\plans\add_to_plan.html:14 .\templates\plans\plan_detail.html:10
+#: .\templates\plans\plan_list.html:17
+msgctxt "plan"
+msgid "Active"
+msgstr "Aktywny"
+
+#: .\templates\plans\add_to_plan.html:19
+msgid "No days yet."
+msgstr "Nie ma jeszcze dni."
+
+#: .\templates\plans\add_to_plan.html:19 .\templates\plans\plan_detail.html:56
+msgid "Add a day"
+msgstr "Dodaj dzień"
+
+#: .\templates\plans\add_to_plan.html:25
+msgid "You don't have a plan yet."
+msgstr "Nie masz jeszcze planu."
+
+#: .\templates\plans\add_to_plan.html:26
+msgid "Create a plan"
+msgstr "Utwórz plan"
+
+#: .\templates\plans\day_form.html:4
+#, python-format
+msgid "Edit %(name)s"
+msgstr "Edytuj: %(name)s"
+
+#: .\templates\plans\day_form.html:8
+msgid "Edit day"
+msgstr "Edytuj dzień"
+
+#: .\templates\plans\day_form.html:12 .\templates\plans\plan_exercise_form.html:21
+msgid "Save"
+msgstr "Zapisz"
+
+#: .\templates\plans\day_form.html:14
+#, python-format
+msgid "Delete %(name)s and its exercises?"
+msgstr "Usunąć %(name)s razem z ćwiczeniami?"
+
+#: .\templates\plans\day_form.html:18
+msgid "Delete day"
+msgstr "Usuń dzień"
+
+#: .\templates\plans\plan_detail.html:14
+msgid "Set active"
+msgstr "Ustaw jako aktywny"
+
+#: .\templates\plans\plan_detail.html:25
+#, python-format
+msgid "Rename %(name)s"
+msgstr "Zmień nazwę: %(name)s"
+
+#: .\templates\plans\plan_detail.html:35
+#, python-format
+msgid "%(sets)s × %(target)s · rest %(rest)s s"
+msgstr "%(sets)s × %(target)s · przerwa %(rest)s s"
+
+#: .\templates\plans\plan_detail.html:39 .\templates\workouts\partials\exercise_card.html:6
+#, python-format
+msgid "Change variant of %(name)s"
+msgstr "Zmień wariant: %(name)s"
+
+#: .\templates\plans\plan_detail.html:39 .\templates\workouts\change_variant_scope.html:4
+#: .\templates\workouts\partials\exercise_card.html:6
+msgid "Change variant"
+msgstr "Zmień wariant"
+
+#: .\templates\plans\plan_detail.html:46
+msgid "No exercises yet."
+msgstr "Nie ma jeszcze ćwiczeń."
+
+#: .\templates\plans\plan_detail.html:49 .\templates\plans\plan_exercise_form.html:4
+#: .\templates\workouts\workout_detail.html:35 .\workouts\views.py:290
+msgid "Add exercise"
+msgstr "Dodaj ćwiczenie"
+
+#: .\templates\plans\plan_detail.html:52
+msgid "Add the first training day below, e.g. “Push”, “Upper A” or “Full body”."
+msgstr "Dodaj poniżej pierwszy dzień treningowy, np. „Push”, „Góra A” albo „Całe ciało”."
+
+#: .\templates\plans\plan_detail.html:60
+msgid "Add"
+msgstr "Dodaj"
+
+#: .\templates\plans\plan_detail.html:65
+msgid "Plan settings"
+msgstr "Ustawienia planu"
+
+#: .\templates\plans\plan_detail.html:69
+msgid "Rename plan"
+msgstr "Zmień nazwę planu"
+
+#: .\templates\plans\plan_detail.html:71
+msgid "Delete this plan with all its days? Logged workouts are kept."
+msgstr "Usunąć ten plan ze wszystkimi dniami? Zapisane treningi zostaną."
+
+#: .\templates\plans\plan_detail.html:75
+msgid "Delete plan"
+msgstr "Usuń plan"
+
+#: .\templates\plans\plan_detail.html:79
+msgid "All plans"
+msgstr "Wszystkie plany"
+
+#: .\templates\plans\plan_exercise_form.html:4 .\templates\plans\plan_exercise_form.html:8
+msgid "Edit exercise"
+msgstr "Edytuj ćwiczenie"
+
+#: .\templates\plans\plan_exercise_form.html:15
+msgid "Change"
+msgstr "Zmień"
+
+#: .\templates\plans\plan_exercise_form.html:26
+#, python-format
+msgid "Remove from %(day)s"
+msgstr "Usuń z dnia %(day)s"
+
+#: .\templates\plans\plan_form.html:4 .\templates\plans\plan_form.html:8
+msgid "New plan"
+msgstr "Nowy plan"
+
+#: .\templates\plans\plan_form.html:12
+msgid "Create plan"
+msgstr "Utwórz plan"
+
+#: .\templates\plans\plan_list.html:9
+msgctxt "plan"
+msgid "New"
+msgstr "Nowy"
+
+#: .\templates\plans\plan_list.html:18
+msgid "j M Y"
+msgstr "j b Y"
+
+#: .\templates\plans\plan_list.html:18
+#, python-format
+msgid "Created %(date)s"
+msgstr "Utworzony %(date)s"
+
+#: .\templates\plans\plan_list.html:25
+msgid ""
+"No plans yet. A plan has days (e.g. Push / Pull / Legs), and each day has exercises with sets, a "
+"rep range and rest time."
+msgstr ""
+"Nie masz jeszcze planów. Plan składa się z dni (np. Push / Pull / Nogi), a każdy dzień z ćwiczeń z"
+" liczbą serii, zakresem powtórzeń i przerwą."
+
+#: .\templates\plans\plan_list.html:26
+msgid "Create your first plan"
+msgstr "Utwórz pierwszy plan"
+
+#: .\templates\workouts\change_variant_scope.html:9
+#, python-format
+msgid "instead of <strong>%(name)s</strong>."
+msgstr "zamiast <strong>%(name)s</strong>."
+
+#: .\templates\workouts\change_variant_scope.html:11
+#, python-format
+msgid "The %(logged)s set you already logged stays with %(name)s."
+msgid_plural "The %(logged)s sets you already logged stay with %(name)s."
+msgstr[0] "%(logged)s zapisana już seria zostaje przy ćwiczeniu %(name)s."
+msgstr[1] "%(logged)s zapisane już serie zostają przy ćwiczeniu %(name)s."
+msgstr[2] "%(logged)s zapisanych już serii zostaje przy ćwiczeniu %(name)s."
+msgstr[3] "%(logged)s zapisanych już serii zostaje przy ćwiczeniu %(name)s."
+
+#: .\templates\workouts\change_variant_scope.html:16
+msgid "Only today"
+msgstr "Tylko dziś"
+
+#: .\templates\workouts\change_variant_scope.html:17
+#, python-format
+msgid "Next time the plan has %(name)s again."
+msgstr "Następnym razem w planie znowu będzie %(name)s."
+
+#: .\templates\workouts\change_variant_scope.html:18
+msgid "Change in the plan too"
+msgstr "Zmień też w planie"
+
+#: .\templates\workouts\change_variant_scope.html:19
+#, python-format
+msgid "From now on the plan uses %(name)s, with the same sets and reps."
+msgstr "Od teraz w planie będzie %(name)s, z tymi samymi seriami i powtórzeniami."
+
+#: .\templates\workouts\partials\exercise_card.html:8
+#, python-format
+msgid "%(done)s/%(target)s set"
+msgid_plural "%(done)s/%(target)s sets"
+msgstr[0] "%(done)s/%(target)s seria"
+msgstr[1] "%(done)s/%(target)s serie"
+msgstr[2] "%(done)s/%(target)s serii"
+msgstr[3] "%(done)s/%(target)s serii"
+
+#: .\templates\workouts\partials\exercise_card.html:8
+#, python-format
+msgid "%(done)s set"
+msgid_plural "%(done)s sets"
+msgstr[0] "%(done)s seria"
+msgstr[1] "%(done)s serie"
+msgstr[2] "%(done)s serii"
+msgstr[3] "%(done)s serii"
+
+#: .\templates\workouts\partials\exercise_card.html:19
+msgid "Why no max test?"
+msgstr "Dlaczego bez testu maksymalnego?"
+
+#: .\templates\workouts\partials\exercise_card.html:24
+msgid "First time logging this. Pick a distance you can cover at a steady pace."
+msgstr "Pierwszy raz z tym ćwiczeniem. Wybierz dystans, który pokonasz w równym tempie."
+
+#: .\templates\workouts\partials\exercise_card.html:30
+msgid "Set"
+msgstr "Seria"
+
+#: .\templates\workouts\partials\exercise_card.html:30
+msgid "Last time"
+msgstr "Ostatnio"
+
+#: .\templates\workouts\partials\exercise_card.html:30
+msgid "Today"
+msgstr "Dziś"
+
+#: .\templates\workouts\partials\exercise_card.html:30
+msgid "Edit"
+msgstr "Edytuj"
+
+#: .\templates\workouts\partials\exercise_card.html:44
+#, python-format
+msgid "Save set %(number)s"
+msgstr "Zapisz serię %(number)s"
+
+#: .\templates\workouts\partials\exercise_card.html:53
+#, python-format
+msgid "Delete set %(number)s?"
+msgstr "Usunąć serię %(number)s?"
+
+#: .\templates\workouts\partials\exercise_card.html:55
+#, python-format
+msgid "Delete set %(number)s"
+msgstr "Usuń serię %(number)s"
+
+#: .\templates\workouts\partials\exercise_card.html:65 .\templates\workouts\workout_summary.html:21
+#: .\workouts\forms.py:85
+msgid "Warm-up"
+msgstr "Rozgrzewka"
+
+#: .\templates\workouts\partials\exercise_card.html:65
+msgctxt "warm-up set, one letter"
+msgid "W"
+msgstr "R"
+
+#: .\templates\workouts\partials\exercise_card.html:73
+#, python-format
+msgid "Edit set %(number)s"
+msgstr "Edytuj serię %(number)s"
+
+#: .\templates\workouts\partials\exercise_card.html:91
+#, python-format
+msgid "Log set %(number)s"
+msgstr "Zapisz serię %(number)s"
+
+#: .\templates\workouts\partials\set_inputs.html:11 .\workouts\forms.py:84
+msgid "Side"
+msgstr "Strona"
+
+#: .\templates\workouts\partials\set_inputs.html:23
+msgid "Start hold"
+msgstr "Start"
+
+#: .\templates\workouts\partials\set_inputs.html:24
+msgid "Stop &amp; save"
+msgstr "Stop i zapisz"
+
+#: .\templates\workouts\partials\set_inputs.html:34
+msgid "Weight minus 2.5 kg"
+msgstr "Ciężar minus 2,5 kg"
+
+#: .\templates\workouts\partials\set_inputs.html:36
+msgid "Weight plus 2.5 kg"
+msgstr "Ciężar plus 2,5 kg"
+
+#: .\templates\workouts\partials\set_inputs.html:44
+msgid "Reps minus 1"
+msgstr "Powtórzenia minus 1"
+
+#: .\templates\workouts\partials\set_inputs.html:46
+msgid "Reps plus 1"
+msgstr "Powtórzenia plus 1"
+
+#: .\templates\workouts\partials\set_inputs.html:54
+msgid "Distance minus 5 m"
+msgstr "Dystans minus 5 m"
+
+#: .\templates\workouts\partials\set_inputs.html:56
+msgid "Distance plus 5 m"
+msgstr "Dystans plus 5 m"
+
+#: .\templates\workouts\partials\set_inputs.html:62 .\templates\workouts\partials\set_inputs.html:74
+msgid "(optional)"
+msgstr "(opcjonalnie)"
+
+#: .\templates\workouts\partials\set_inputs.html:64
+msgid "Time minus 5 seconds"
+msgstr "Czas minus 5 sekund"
+
+#: .\templates\workouts\partials\set_inputs.html:66
+msgid "Time plus 5 seconds"
+msgstr "Czas plus 5 sekund"
+
+#: .\templates\workouts\partials\set_inputs.html:82
+msgid "Warm-up set"
+msgstr "Seria rozgrzewkowa"
+
+#: .\templates\workouts\set_edit.html:5
+msgid "Edit set"
+msgstr "Edytuj serię"
+
+#: .\templates\workouts\set_edit.html:11
+msgid "Back to workout"
+msgstr "Wróć do treningu"
+
+#: .\templates\workouts\workout_detail.html:17
+#, python-format
+msgid "Started %(time)s · every set is saved as soon as you log it"
+msgstr "Start %(time)s · każda seria zapisuje się od razu"
+
+#: .\templates\workouts\workout_detail.html:31
+msgid "No exercises yet. Add the first one below."
+msgstr "Nie ma jeszcze ćwiczeń. Dodaj pierwsze poniżej."
+
+#: .\templates\workouts\workout_detail.html:40
+msgid "Finish workout"
+msgstr "Zakończ trening"
+
+#: .\templates\workouts\workout_detail.html:43
+msgid "Rest timer settings"
+msgstr "Ustawienia minutnika przerwy"
+
+#: .\templates\workouts\workout_detail.html:45
+msgid "Discard this workout and all its sets?"
+msgstr "Odrzucić ten trening i wszystkie jego serie?"
+
+#: .\templates\workouts\workout_detail.html:49
+msgid "Discard workout"
+msgstr "Odrzuć trening"
+
+#: .\templates\workouts\workout_detail.html:56
+msgid "Rest"
+msgstr "Przerwa"
+
+#: .\templates\workouts\workout_detail.html:59
+msgid "Start iPhone timer"
+msgstr "Włącz minutnik iPhone’a"
+
+#: .\templates\workouts\workout_detail.html:61
+msgid "Skip"
+msgstr "Pomiń"
+
+#: .\templates\workouts\workout_summary.html:26
+msgid "No sets were logged in this workout."
+msgstr "W tym treningu nie zapisano żadnej serii."
+
+#: .\templates\workouts\workout_summary.html:29
+msgid "Back home"
+msgstr "Wróć na start"
+
+#: .\workouts\forms.py:16
+msgid "How hard was it?"
+msgstr "Jak było ciężko?"
+
+#: .\workouts\forms.py:17
+msgid "Reps left in the tank (RIR)"
+msgstr "Powtórzenia w zapasie (RIR)"
+
+#: .\workouts\forms.py:18
+msgid "Effort, 6–10 (RPE)"
+msgstr "Wysiłek, 6–10 (RPE)"
+
+#: .\workouts\forms.py:29
+msgid "Use seconds (90) or minutes:seconds (1:30)."
+msgstr "Wpisz sekundy (90) albo minuty:sekundy (1:30)."
+
+#: .\workouts\forms.py:81
+msgid "Reps"
+msgstr "Powtórzenia"
+
+#: .\workouts\forms.py:82
+msgid "Seconds"
+msgstr "Sekundy"
+
+#: .\workouts\forms.py:83
+msgid "Metres"
+msgstr "Metry"
+
+#: .\workouts\forms.py:120
+msgid "Added kg"
+msgstr "Dodatkowe kg"
+
+#: .\workouts\forms.py:152
+msgid "Note (optional)"
+msgstr "Notatka (opcjonalnie)"
+
+#: .\workouts\forms.py:154
+msgid "How did it go?"
+msgstr "Jak poszło?"
+
+#: .\workouts\models.py:42
+msgid "Workout"
+msgstr "Trening"
+
+#: .\workouts\models.py:50
+msgctxt "side"
+msgid "Left"
+msgstr "Lewa"
+
+#: .\workouts\models.py:51
+msgctxt "side"
+msgid "Right"
+msgstr "Prawa"
+
+#: .\workouts\services.py:92
+msgctxt "left side, one letter"
+msgid "L"
+msgstr "L"
+
+#: .\workouts\services.py:93
+msgctxt "right side, one letter"
+msgid "R"
+msgstr "P"
+
+#: .\workouts\services.py:111
+#, python-format
+msgid "%(reps)s rep"
+msgid_plural "%(reps)s reps"
+msgstr[0] "%(reps)s powtórzenie"
+msgstr[1] "%(reps)s powtórzenia"
+msgstr[2] "%(reps)s powtórzeń"
+msgstr[3] "%(reps)s powtórzeń"
+
+#: .\workouts\services.py:118
+#, python-format
+msgid "%(distance)s m in %(time)s"
+msgstr "%(distance)s m w %(time)s"
+
+#: .\workouts\services.py:127
+msgid "Easy"
+msgstr "Lekko"
+
+#: .\workouts\services.py:128
+msgid "Medium"
+msgstr "Średnio"
+
+#: .\workouts\services.py:129
+msgid "Hard"
+msgstr "Ciężko"
+
+#: .\workouts\services.py:130
+msgid "Max effort"
+msgstr "Maksimum"
+
+#: .\workouts\services.py:291
+#, python-format
+msgid "Stay at %(weight)s kg and add reps first."
+msgstr "Zostań przy %(weight)s kg i najpierw dokładaj powtórzenia."
+
+#: .\workouts\services.py:298
+#, python-format
+msgid "Stay at %(weight)s kg until every set reaches %(reps)s rep."
+msgid_plural "Stay at %(weight)s kg until every set reaches %(reps)s reps."
+msgstr[0] "Zostań przy %(weight)s kg, aż w każdej serii zrobisz %(reps)s powtórzenie."
+msgstr[1] "Zostań przy %(weight)s kg, aż w każdej serii zrobisz %(reps)s powtórzenia."
+msgstr[2] "Zostań przy %(weight)s kg, aż w każdej serii zrobisz %(reps)s powtórzeń."
+msgstr[3] "Zostań przy %(weight)s kg, aż w każdej serii zrobisz %(reps)s powtórzeń."
+
+#: .\workouts\services.py:306
+#, python-format
+msgid "All sets hit %(reps)s rep. Add weight or a harder variation."
+msgid_plural "All sets hit %(reps)s reps. Add weight or a harder variation."
+msgstr[0] ""
+"We wszystkich seriach %(reps)s powtórzenie. Dołóż ciężaru albo wybierz trudniejszy wariant."
+msgstr[1] ""
+"We wszystkich seriach %(reps)s powtórzenia. Dołóż ciężaru albo wybierz trudniejszy wariant."
+msgstr[2] ""
+"We wszystkich seriach %(reps)s powtórzeń. Dołóż ciężaru albo wybierz trudniejszy wariant."
+msgstr[3] ""
+"We wszystkich seriach %(reps)s powtórzeń. Dołóż ciężaru albo wybierz trudniejszy wariant."
+
+#: .\workouts\services.py:314
+#, python-format
+msgid "%(reps)s rep with 3+ more in the tank: too light. Try %(weight)s kg."
+msgid_plural "%(reps)s reps with 3+ more in the tank: too light. Try %(weight)s kg."
+msgstr[0] "%(reps)s powtórzenie i jeszcze 3+ w zapasie: za lekko. Spróbuj %(weight)s kg."
+msgstr[1] "%(reps)s powtórzenia i jeszcze 3+ w zapasie: za lekko. Spróbuj %(weight)s kg."
+msgstr[2] "%(reps)s powtórzeń i jeszcze 3+ w zapasie: za lekko. Spróbuj %(weight)s kg."
+msgstr[3] "%(reps)s powtórzeń i jeszcze 3+ w zapasie: za lekko. Spróbuj %(weight)s kg."
+
+#: .\workouts\services.py:320
+#, python-format
+msgid "All sets hit %(reps)s rep last time. Try %(weight)s kg."
+msgid_plural "All sets hit %(reps)s reps last time. Try %(weight)s kg."
+msgstr[0] "Ostatnio we wszystkich seriach %(reps)s powtórzenie. Spróbuj %(weight)s kg."
+msgstr[1] "Ostatnio we wszystkich seriach %(reps)s powtórzenia. Spróbuj %(weight)s kg."
+msgstr[2] "Ostatnio we wszystkich seriach %(reps)s powtórzeń. Spróbuj %(weight)s kg."
+msgstr[3] "Ostatnio we wszystkich seriach %(reps)s powtórzeń. Spróbuj %(weight)s kg."
+
+#: .\workouts\services.py:331
+#, python-format
+msgid "Last time %(reps)s rep took everything you had."
+msgid_plural "Last time %(reps)s reps took everything you had."
+msgstr[0] "Ostatnio %(reps)s powtórzenie to było maksimum."
+msgstr[1] "Ostatnio %(reps)s powtórzenia to było maksimum."
+msgstr[2] "Ostatnio %(reps)s powtórzeń to było maksimum."
+msgstr[3] "Ostatnio %(reps)s powtórzeń to było maksimum."
+
+#: .\workouts\services.py:345
+#, python-format
+msgid "All sets hit %(reps)s rep. Try +%(weight)s kg added weight or a harder variation."
+msgid_plural "All sets hit %(reps)s reps. Try +%(weight)s kg added weight or a harder variation."
+msgstr[0] ""
+"We wszystkich seriach %(reps)s powtórzenie. Spróbuj z obciążeniem +%(weight)s kg albo "
+"trudniejszego wariantu."
+msgstr[1] ""
+"We wszystkich seriach %(reps)s powtórzenia. Spróbuj z obciążeniem +%(weight)s kg albo "
+"trudniejszego wariantu."
+msgstr[2] ""
+"We wszystkich seriach %(reps)s powtórzeń. Spróbuj z obciążeniem +%(weight)s kg albo trudniejszego "
+"wariantu."
+msgstr[3] ""
+"We wszystkich seriach %(reps)s powtórzeń. Spróbuj z obciążeniem +%(weight)s kg albo trudniejszego "
+"wariantu."
+
+#: .\workouts\services.py:351
+#, python-format
+msgid "Aim for %(reps)s again with clean reps."
+msgstr "Celuj znowu w %(reps)s, z czystą techniką."
+
+#: .\workouts\services.py:359
+#, python-format
+msgid "Best set last time: %(best)s rep. Aim for %(target)s."
+msgid_plural "Best set last time: %(best)s reps. Aim for %(target)s."
+msgstr[0] "Najlepsza seria ostatnio: %(best)s powtórzenie. Celuj w %(target)s."
+msgstr[1] "Najlepsza seria ostatnio: %(best)s powtórzenia. Celuj w %(target)s."
+msgstr[2] "Najlepsza seria ostatnio: %(best)s powtórzeń. Celuj w %(target)s."
+msgstr[3] "Najlepsza seria ostatnio: %(best)s powtórzeń. Celuj w %(target)s."
+
+#: .\workouts\services.py:375
+#, python-format
+msgid "Keep holding %(best)s until every set reaches %(target)s."
+msgstr "Trzymaj %(best)s, aż każda seria dojdzie do %(target)s."
+
+#: .\workouts\services.py:383
+#, python-format
+msgid "Longest hold last time: %(best)s. Try %(target)s (+%(step)s s)."
+msgstr "Najdłuższe utrzymanie ostatnio: %(best)s. Spróbuj %(target)s (+%(step)s s)."
+
+#: .\workouts\services.py:398
+#, python-format
+msgid "Best last time: %(result)s. Go a little farther or a little faster."
+msgstr "Najlepiej ostatnio: %(result)s. Spróbuj trochę dalej albo trochę szybciej."
+
+#: .\workouts\services.py:515
+msgid ""
+"Why no max test with weights? The last reps before failure are where form breaks down and injuries"
+" happen. A few light test sets and how hard they felt are enough to estimate your working weight. "
+"Test sets are saved as warm-ups, so they don't count towards your records."
+msgstr ""
+"Dlaczego bez testu maksymalnego z ciężarem? Ostatnie powtórzenia przed upadkiem mięśniowym to "
+"moment, w którym technika się sypie i zdarzają się kontuzje. Kilka lekkich serii testowych i "
+"ocena, jak były ciężkie, wystarczą, żeby oszacować ciężar roboczy. Serie testowe zapisują się jako"
+" rozgrzewkowe, więc nie liczą się do rekordów."
+
+#: .\workouts\services.py:590
+msgid "Now the same test hold on the other side."
+msgstr "Teraz to samo utrzymanie testowe na drugą stronę."
+
+#: .\workouts\services.py:593
+msgid ""
+"First time: test hold. Hold as long as your form stays good, then stop. Your working holds are "
+"based on it."
+msgstr ""
+"Pierwszy raz: utrzymanie testowe. Trzymaj, dopóki technika jest dobra, potem przerwij. Na tej "
+"podstawie ustalimy utrzymania robocze."
+
+#: .\workouts\services.py:606
+#, python-format
+msgid ""
+"Test hold: %(best)s. Working holds: %(target)s (about 75%%, within your plan's %(low)s–%(high)s "
+"s)."
+msgstr ""
+"Utrzymanie testowe: %(best)s. Utrzymania robocze: %(target)s (ok. 75%%, w zakresie planu "
+"%(low)s–%(high)s s)."
+
+#: .\workouts\services.py:610
+#, python-format
+msgid "Test hold: %(best)s. Working holds: %(target)s (about 75%%)."
+msgstr "Utrzymanie testowe: %(best)s. Utrzymania robocze: %(target)s (ok. 75%%)."
+
+#: .\workouts\services.py:626
+msgid "Now the same test set on the other side."
+msgstr "Teraz ta sama seria testowa na drugą stronę."
+
+#: .\workouts\services.py:629
+msgid ""
+"First time: test set. Do as many clean reps as you can and stop when your form starts to slip. "
+"Your working sets are based on it."
+msgstr ""
+"Pierwszy raz: seria testowa. Zrób tyle czystych powtórzeń, ile dasz radę, i przerwij, gdy technika"
+" zacznie się psuć. Na tej podstawie ustalimy serie robocze."
+
+#: .\workouts\services.py:636
+#, python-format
+msgid "Test set: %(best)s rep. Working sets: %(target)s reps (about 70%%)."
+msgid_plural "Test set: %(best)s reps. Working sets: %(target)s reps (about 70%%)."
+msgstr[0] "Seria testowa: %(best)s powtórzenie. Serie robocze: po %(target)s (ok. 70%%)."
+msgstr[1] "Seria testowa: %(best)s powtórzenia. Serie robocze: po %(target)s (ok. 70%%)."
+msgstr[2] "Seria testowa: %(best)s powtórzeń. Serie robocze: po %(target)s (ok. 70%%)."
+msgstr[3] "Seria testowa: %(best)s powtórzeń. Serie robocze: po %(target)s (ok. 70%%)."
+
+#: .\workouts\services.py:674
+#, python-format
+msgid ""
+"Estimated max: about %(e1rm)s kg. Working sets: %(weight)s kg × %(low)s–%(high)s, stopping with "
+"1–2 reps left."
+msgstr ""
+"Szacowane maksimum: ok. %(e1rm)s kg. Serie robocze: %(weight)s kg × %(low)s–%(high)s, kończ z 1–2 "
+"powtórzeniami w zapasie."
+
+#: .\workouts\services.py:685
+#, python-format
+msgid ""
+"First time: find your working weight, no max test. Do a test set (empty bar, 20 kg, %(reps)s rep),"
+" then rate how hard it was."
+msgid_plural ""
+"First time: find your working weight, no max test. Do a test set (empty bar, 20 kg, %(reps)s "
+"reps), then rate how hard it was."
+msgstr[0] ""
+"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię testową (pusty gryf, 20 "
+"kg, %(reps)s powtórzenie), potem oceń, jak była ciężka."
+msgstr[1] ""
+"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię testową (pusty gryf, 20 "
+"kg, %(reps)s powtórzenia), potem oceń, jak była ciężka."
+msgstr[2] ""
+"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię testową (pusty gryf, 20 "
+"kg, %(reps)s powtórzeń), potem oceń, jak była ciężka."
+msgstr[3] ""
+"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię testową (pusty gryf, 20 "
+"kg, %(reps)s powtórzeń), potem oceń, jak była ciężka."
+
+#: .\workouts\services.py:693
+#, python-format
+msgid ""
+"First time: find your working weight, no max test. Do a test set (a light weight, %(reps)s rep), "
+"then rate how hard it was."
+msgid_plural ""
+"First time: find your working weight, no max test. Do a test set (a light weight, %(reps)s reps), "
+"then rate how hard it was."
+msgstr[0] ""
+"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię testową (lekki ciężar, "
+"%(reps)s powtórzenie), potem oceń, jak była ciężka."
+msgstr[1] ""
+"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię testową (lekki ciężar, "
+"%(reps)s powtórzenia), potem oceń, jak była ciężka."
+msgstr[2] ""
+"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię testową (lekki ciężar, "
+"%(reps)s powtórzeń), potem oceń, jak była ciężka."
+msgstr[3] ""
+"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię testową (lekki ciężar, "
+"%(reps)s powtórzeń), potem oceń, jak była ciężka."
+
+#: .\workouts\services.py:705
+msgid "Rate your test set (tap ✎ to add it) so LiftLog can suggest the next weight."
+msgstr "Oceń serię testową (dotknij ✎, żeby dodać ocenę), a LiftLog podpowie kolejny ciężar."
+
+#: .\workouts\services.py:709
+#, python-format
+msgid "Still light. Next test set: %(weight)s kg × %(reps)s, then rate it."
+msgstr "Nadal lekko. Następna seria testowa: %(weight)s kg × %(reps)s, potem ją oceń."
+
+#: .\workouts\services.py:759
+msgid "Longest hold"
+msgstr "Najdłuższe utrzymanie"
+
+#: .\workouts\services.py:764
+msgid "Longest distance"
+msgstr "Najdłuższy dystans"
+
+#: .\workouts\services.py:769
+msgid "Most reps"
+msgstr "Najwięcej powtórzeń"
+
+#: .\workouts\services.py:777
+msgid "Best estimated 1RM"
+msgstr "Najlepszy szacowany 1RM"
+
+#: .\workouts\services.py:784
+msgid "Heaviest set"
+msgstr "Najcięższa seria"
+
+#: .\workouts\views.py:212
+msgid "You already have a workout in progress."
+msgstr "Masz już trening w toku."
+
+#: .\workouts\views.py:336
+msgid "Check the weight and reps."
+msgstr "Sprawdź ciężar i powtórzenia."
+
+#: .\workouts\views.py:446
+#, python-format
+msgid "%(new)s replaces %(old)s in the plan too."
+msgstr "%(new)s zastępuje %(old)s także w planie."
+
+#: .\workouts\views.py:451
+#, python-format
+msgid "Only today: %(exercise)s. The plan stays as it was."
+msgstr "Tylko dziś: %(exercise)s. Plan zostaje bez zmian."
+
+#: .\workouts\views.py:465
+msgid "Workout saved. Nice work!"
+msgstr "Trening zapisany. Dobra robota!"
+
+#: .\workouts\views.py:474
+msgid "Workout discarded."
+msgstr "Trening odrzucony."

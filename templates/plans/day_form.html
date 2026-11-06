@@ -1,20 +1,22 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Edit {{ day.name }}{% endblock %}
+{% block title %}{% blocktranslate with name=day.name %}Edit {{ name }}{% endblocktranslate %}{% endblock %}
 
 {% block content %}
   <div class="card narrow">
-    <h1>Edit day</h1>
+    <h1>{% translate "Edit day" %}</h1>
     <form method="post" class="form">
       {% csrf_token %}
       {{ form }}
-      <button type="submit" class="button button-primary">Save</button>
+      <button type="submit" class="button button-primary">{% translate "Save" %}</button>
     </form>
+    {% blocktranslate with name=day.name asvar delete_question %}Delete {{ name }} and its exercises?{% endblocktranslate %}
     <form method="post" action="{% url 'plans:day_delete' day.pk %}" class="danger-zone"
-          onsubmit="return confirm('Delete {{ day.name|escapejs }} and its exercises?');">
+          onsubmit="return confirm('{{ delete_question|escapejs }}');">
       {% csrf_token %}
-      <button type="submit" class="button button-danger">Delete day</button>
+      <button type="submit" class="button button-danger">{% translate "Delete day" %}</button>
     </form>
-    <p class="form-links"><a href="{% url 'plans:plan_detail' day.plan_id %}#day-{{ day.pk }}">Cancel</a></p>
+    <p class="form-links"><a href="{% url 'plans:plan_detail' day.plan_id %}#day-{{ day.pk }}">{% translate "Cancel" %}</a></p>
   </div>
 {% endblock %}

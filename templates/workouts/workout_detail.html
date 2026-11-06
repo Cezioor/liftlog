@@ -1,7 +1,10 @@
 {% extends "base.html" %}
-{% load static workout_tags %}
+{% load i18n static workout_tags %}
 
 {% block title %}{{ workout.title }}{% endblock %}
+
+{# An open workout: no PL · EN switch here, the reload would lose unsent inputs. #}
+{% block language_switcher %}{% endblock %}
 
 {% block extra_head %}
   <script src="{% static 'js/workout.js' %}" defer></script>
@@ -11,7 +14,7 @@
   <div class="page-header">
     <div>
       <h1>{{ workout.title }}</h1>
-      <p class="muted small">Started {{ workout.started_at|time:"H:i" }} · every set is saved as soon as you log it</p>
+      <p class="muted small">{% blocktranslate with time=workout.started_at|time:"H:i" %}Started {{ time }} · every set is saved as soon as you log it{% endblocktranslate %}</p>
       <p class="muted small" id="wake-status" hidden></p>
     </div>
   </div>
@@ -25,35 +28,36 @@
     {% for card in cards %}
       {% exercise_card card %}
     {% empty %}
-      <p class="muted">No exercises yet. Add the first one below.</p>
+      <p class="muted">{% translate "No exercises yet. Add the first one below." %}</p>
     {% endfor %}
   </div>
 
-  <a class="button button-big add-exercise-button" href="{% url 'workouts:add_exercise' workout.pk %}">+ Add exercise</a>
+  <a class="button button-big add-exercise-button" href="{% url 'workouts:add_exercise' workout.pk %}">+ {% translate "Add exercise" %}</a>
 
   <form method="post" action="{% url 'workouts:workout_finish' workout.pk %}" class="card form">
     {% csrf_token %}
     {{ finish_form }}
-    <button type="submit" class="button button-primary button-big">Finish workout</button>
+    <button type="submit" class="button button-primary button-big">{% translate "Finish workout" %}</button>
   </form>
 
-  <p class="form-links"><a href="{% url 'settings' %}">Rest timer settings</a></p>
+  <p class="form-links"><a href="{% url 'settings' %}">{% translate "Rest timer settings" %}</a></p>
 
+  {% translate "Discard this workout and all its sets?" as discard_question %}
   <form method="post" action="{% url 'workouts:workout_discard' workout.pk %}"
-        onsubmit="return confirm('Discard this workout and all its sets?');" class="discard">
+        onsubmit="return confirm('{{ discard_question|escapejs }}');" class="discard">
     {% csrf_token %}
-    <button type="submit" class="link-button danger-text">Discard workout</button>
+    <button type="submit" class="link-button danger-text">{% translate "Discard workout" %}</button>
   </form>
 {% endblock %}
 
 {% block after_main %}
   <div class="rest-timer" id="rest-timer" hidden role="timer" aria-live="polite">
     <div class="rest-info">
-      <span class="rest-label" id="rest-label">Rest</span>
+      <span class="rest-label" id="rest-label">{% translate "Rest" %}</span>
       <span class="rest-time" id="rest-time">0:00</span>
     </div>
-    <a class="button button-small button-primary" id="rest-shortcut" href="#" hidden>Start iPhone timer</a>
+    <a class="button button-small button-primary" id="rest-shortcut" href="#" hidden>{% translate "Start iPhone timer" %}</a>
     <button type="button" class="button button-small" data-rest-add="30">+30 s</button>
-    <button type="button" class="button button-small" data-rest-skip>Skip</button>
+    <button type="button" class="button button-small" data-rest-skip>{% translate "Skip" %}</button>
   </div>
 {% endblock %}

@@ -1,4 +1,4 @@
-{# Inputs for one set. The form only contains the fields that fit the exercise's type, #}
+{% load i18n %}{# Inputs for one set. The form only contains the fields that fit the exercise's type, #}
 {# so each block below shows up only when needed. −/+ buttons: static/js/workout.js.  #}
 {% if form.errors %}
   <ul class="errorlist">
@@ -8,7 +8,7 @@
 {% endif %}
 
 {% if form.side %}
-  <div class="side-toggle" role="radiogroup" aria-label="Side">
+  <div class="side-toggle" role="radiogroup" aria-label="{% translate "Side" %}">
     {% for radio in form.side %}
       <label class="chip">{{ radio.tag }}<span>{{ radio.choice_label }}</span></label>
     {% endfor %}
@@ -20,9 +20,9 @@
   <div class="hold-timer" data-hold-timer data-key="hold-{{ workout.pk }}-{{ exercise.pk }}"
        data-input="{{ form.duration_seconds.id_for_label }}">
     <span class="hold-time" data-hold-display aria-live="polite">0:00</span>
-    <button type="button" class="button button-primary button-big" data-hold-start>▶ Start hold</button>
-    <button type="button" class="button button-primary button-big" data-hold-stop hidden>■ Stop &amp; save</button>
-    <button type="button" class="link-button" data-hold-cancel hidden>Cancel</button>
+    <button type="button" class="button button-primary button-big" data-hold-start>▶ {% translate "Start hold" %}</button>
+    <button type="button" class="button button-primary button-big" data-hold-stop hidden>■ {% translate "Stop &amp; save" %}</button>
+    <button type="button" class="link-button" data-hold-cancel hidden>{% translate "Cancel" %}</button>
   </div>
 {% endif %}
 
@@ -31,39 +31,39 @@
     <div class="stepper">
       <label for="{{ form.weight_kg.id_for_label }}">{{ form.weight_kg.label }}</label>
       <div class="stepper-row">
-        <button type="button" class="step" data-step="-2.5" data-for="{{ form.weight_kg.id_for_label }}" aria-label="Weight minus 2.5">−</button>
+        <button type="button" class="step" data-step="-2.5" data-for="{{ form.weight_kg.id_for_label }}" aria-label="{% translate "Weight minus 2.5 kg" %}">−</button>
         {{ form.weight_kg }}
-        <button type="button" class="step" data-step="2.5" data-for="{{ form.weight_kg.id_for_label }}" aria-label="Weight plus 2.5">+</button>
+        <button type="button" class="step" data-step="2.5" data-for="{{ form.weight_kg.id_for_label }}" aria-label="{% translate "Weight plus 2.5 kg" %}">+</button>
       </div>
     </div>
   {% endif %}
   {% if form.reps %}
     <div class="stepper">
-      <label for="{{ form.reps.id_for_label }}">Reps</label>
+      <label for="{{ form.reps.id_for_label }}">{{ form.reps.label }}</label>
       <div class="stepper-row">
-        <button type="button" class="step" data-step="-1" data-for="{{ form.reps.id_for_label }}" aria-label="Reps minus 1">−</button>
+        <button type="button" class="step" data-step="-1" data-for="{{ form.reps.id_for_label }}" aria-label="{% translate "Reps minus 1" %}">−</button>
         {{ form.reps }}
-        <button type="button" class="step" data-step="1" data-for="{{ form.reps.id_for_label }}" aria-label="Reps plus 1">+</button>
+        <button type="button" class="step" data-step="1" data-for="{{ form.reps.id_for_label }}" aria-label="{% translate "Reps plus 1" %}">+</button>
       </div>
     </div>
   {% endif %}
   {% if form.distance_m %}
     <div class="stepper">
-      <label for="{{ form.distance_m.id_for_label }}">Metres</label>
+      <label for="{{ form.distance_m.id_for_label }}">{{ form.distance_m.label }}</label>
       <div class="stepper-row">
-        <button type="button" class="step" data-step="-5" data-for="{{ form.distance_m.id_for_label }}" aria-label="Distance minus 5 m">−</button>
+        <button type="button" class="step" data-step="-5" data-for="{{ form.distance_m.id_for_label }}" aria-label="{% translate "Distance minus 5 m" %}">−</button>
         {{ form.distance_m }}
-        <button type="button" class="step" data-step="5" data-for="{{ form.distance_m.id_for_label }}" aria-label="Distance plus 5 m">+</button>
+        <button type="button" class="step" data-step="5" data-for="{{ form.distance_m.id_for_label }}" aria-label="{% translate "Distance plus 5 m" %}">+</button>
       </div>
     </div>
   {% endif %}
   {% if form.duration_seconds %}
     <div class="stepper">
-      <label for="{{ form.duration_seconds.id_for_label }}">Seconds{% if measurement == "distance_time" %} (optional){% endif %}</label>
+      <label for="{{ form.duration_seconds.id_for_label }}">{{ form.duration_seconds.label }}{% if measurement == "distance_time" %} {% translate "(optional)" %}{% endif %}</label>
       <div class="stepper-row">
-        <button type="button" class="step" data-step="-5" data-for="{{ form.duration_seconds.id_for_label }}" aria-label="Time minus 5 seconds">−</button>
+        <button type="button" class="step" data-step="-5" data-for="{{ form.duration_seconds.id_for_label }}" aria-label="{% translate "Time minus 5 seconds" %}">−</button>
         {{ form.duration_seconds }}
-        <button type="button" class="step" data-step="5" data-for="{{ form.duration_seconds.id_for_label }}" aria-label="Time plus 5 seconds">+</button>
+        <button type="button" class="step" data-step="5" data-for="{{ form.duration_seconds.id_for_label }}" aria-label="{% translate "Time plus 5 seconds" %}">+</button>
       </div>
     </div>
   {% endif %}
@@ -71,7 +71,7 @@
 {% if form.rir %}
   {# Optional rating; tapping the selected button again clears it (workout.js). #}
   <fieldset class="effort">
-    <legend>{{ form.rir.label }} <span class="muted">(optional)</span></legend>
+    <legend>{{ form.rir.label }} <span class="muted">{% translate "(optional)" %}</span></legend>
     <div class="effort-chips">
       {% for radio in form.rir %}
         <label class="chip">{{ radio.tag }}<span>{{ radio.choice_label }}</span></label>
@@ -79,4 +79,4 @@
     </div>
   </fieldset>
 {% endif %}
-<label class="warmup-toggle" for="{{ form.is_warmup.id_for_label }}">{{ form.is_warmup }} Warm-up set</label>
+<label class="warmup-toggle" for="{{ form.is_warmup.id_for_label }}">{{ form.is_warmup }} {% translate "Warm-up set" %}</label>

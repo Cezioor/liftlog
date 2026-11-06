@@ -2,6 +2,8 @@ from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Q
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ngettext
 
 from exercises.models import Exercise
 
@@ -67,13 +69,13 @@ class PlanExercise(models.Model):
     # Targets for other measurement types (Stage 1.6); rep_min/rep_max are used for
     # weight_reps and reps exercises.
     hold_min_s = models.PositiveSmallIntegerField(
-        "hold from (s)", null=True, blank=True, validators=[MinValueValidator(1)]
+        _("hold from (s)"), null=True, blank=True, validators=[MinValueValidator(1)]
     )
     hold_max_s = models.PositiveSmallIntegerField(
-        "hold to (s)", null=True, blank=True, validators=[MinValueValidator(1)]
+        _("hold to (s)"), null=True, blank=True, validators=[MinValueValidator(1)]
     )
     target_distance_m = models.PositiveIntegerField(
-        "distance (m)", null=True, blank=True, validators=[MinValueValidator(1)]
+        _("distance (m)"), null=True, blank=True, validators=[MinValueValidator(1)]
     )
 
     class Meta:
@@ -106,4 +108,5 @@ class PlanExercise(models.Model):
             return f"{self.hold_min_s}–{self.hold_max_s} s"
         if measurement == "distance_time":
             return f"{self.target_distance_m} m" if self.target_distance_m else ""
-        return f"{self.rep_range} reps"
+        # Polish picks the plural form from the last number: "8–12 powtórzeń".
+        return ngettext("%(range)s rep", "%(range)s reps", self.rep_max) % {"range": self.rep_range}

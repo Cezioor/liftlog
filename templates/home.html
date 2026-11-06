@@ -1,16 +1,17 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Home{% endblock %}
+{% block title %}{% translate "Home" %}{% endblock %}
 
 {% block content %}
   {% if open_workout %}
     <section class="card card-highlight">
-      <h1>Workout in progress</h1>
-      <p class="muted">{{ open_workout.title }} · started {{ open_workout.started_at|time:"H:i" }}</p>
-      <a class="button button-primary button-big" href="{% url 'workouts:workout_detail' open_workout.pk %}">Resume workout</a>
+      <h1>{% translate "Workout in progress" %}</h1>
+      <p class="muted">{% blocktranslate with title=open_workout.title time=open_workout.started_at|time:"H:i" %}{{ title }} · started {{ time }}{% endblocktranslate %}</p>
+      <a class="button button-primary button-big" href="{% url 'workouts:workout_detail' open_workout.pk %}">{% translate "Resume workout" %}</a>
     </section>
   {% else %}
-    <h1>Start a workout</h1>
+    <h1>{% translate "Start a workout" %}</h1>
     <div class="stack">
       {% if active_plan %}
         {% for day in active_plan.days.all %}
@@ -20,27 +21,29 @@
             <button type="submit" class="button button-primary button-big">{{ day.name }}</button>
           </form>
         {% empty %}
-          <p class="muted">Your active plan “{{ active_plan.name }}” has no days yet. <a href="{% url 'plans:plan_detail' active_plan.pk %}">Add days</a></p>
+          {% url 'plans:plan_detail' active_plan.pk as plan_url %}
+          <p class="muted">{% blocktranslate with name=active_plan.name %}Your active plan “{{ name }}” has no days yet. <a href="{{ plan_url }}">Add days</a>{% endblocktranslate %}</p>
         {% endfor %}
       {% else %}
-        <p class="muted"><a href="{% url 'plans:plan_create' %}">Create a plan</a> to start workouts from it, or just log a free workout.</p>
+        {% url 'plans:plan_create' as create_url %}
+        <p class="muted">{% blocktranslate %}<a href="{{ create_url }}">Create a plan</a> to start workouts from it, or just log a free workout.{% endblocktranslate %}</p>
       {% endif %}
       <form method="post" action="{% url 'workouts:workout_start' %}">
         {% csrf_token %}
-        <button type="submit" class="button">Empty workout</button>
+        <button type="submit" class="button">{% translate "Empty workout" %}</button>
       </form>
     </div>
-    {% if active_plan %}<p class="muted small">From plan: <a href="{% url 'plans:plan_detail' active_plan.pk %}">{{ active_plan.name }}</a></p>{% endif %}
+    {% if active_plan %}<p class="muted small">{% translate "From plan:" %} <a href="{% url 'plans:plan_detail' active_plan.pk %}">{{ active_plan.name }}</a></p>{% endif %}
   {% endif %}
 
   {% if recent_workouts %}
-    <h2>Recent workouts</h2>
+    <h2>{% translate "Recent workouts" %}</h2>
     <ul class="list">
       {% for workout in recent_workouts %}
         <li>
           <a class="list-item list-link" href="{% url 'workouts:workout_detail' workout.pk %}">
             <span class="list-title">{{ workout.title }}</span>
-            <span class="list-meta">{{ workout.started_at|date:"D j M, H:i" }}</span>
+            <span class="list-meta">{{ workout.started_at|date:_("D j M, H:i") }}</span>
           </a>
         </li>
       {% endfor %}
@@ -49,7 +52,7 @@
 
   <form method="post" action="{% url 'account_logout' %}" class="logout">
     {% csrf_token %}
-    <span class="muted small">Logged in as {{ user.username }} · <a href="{% url 'settings' %}">Settings</a></span>
-    <button type="submit" class="link-button">Log out</button>
+    <span class="muted small">{% blocktranslate with name=user.username %}Logged in as {{ name }}{% endblocktranslate %} · <a href="{% url 'settings' %}">{% translate "Settings" %}</a></span>
+    <button type="submit" class="link-button">{% translate "Log out" %}</button>
   </form>
 {% endblock %}

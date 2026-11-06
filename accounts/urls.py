@@ -7,6 +7,7 @@ from . import views
 # confirming the emailed link) comes from allauth.
 urlpatterns = [
     path("settings/", views.settings_view, name="settings"),
+    path("language/", views.set_language, name="set_language"),
     path(
         "confirm-email/",
         views.VerificationSentView.as_view(),

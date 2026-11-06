@@ -3,10 +3,18 @@ from allauth.account.views import EmailVerificationSentView
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
+from django.utils import translation
+from django.utils.translation import gettext as _
+from django.views import i18n
 from django.views.decorators.http import require_POST
 
 from .forms import UserSettingsForm
-from .services import get_user_settings
+from .services import (
+    get_user_settings,
+    is_supported_language,
+    save_account_language,
+    set_language_cookie,
+)
 
 # Set by accounts.signals whenever a verification email goes out (sign-up, or a log-in
 # attempt with an address that is not confirmed yet).
@@ -43,14 +51,14 @@ def resend_verification(request):
     email = request.session.get(PENDING_EMAIL_KEY, "")
     address = EmailAddress.objects.filter(email__iexact=email, verified=False).first()
     if address is None:
-        messages.info(request, "This address is already confirmed. You can log in.")
+        messages.info(request, _("This address is already confirmed. You can log in."))
         return redirect("account_login")
     if not send_verification_email_to_address(request, address):
         messages.warning(
-            request, "We sent a link a moment ago. Wait 3 minutes before asking for another."
+            request, _("We sent a link a moment ago. Wait 3 minutes before asking for another.")
         )
     elif not getattr(request, "confirmation_mail_failed", False):  # see AccountAdapter
-        messages.success(request, "Sent! Check your inbox (and the spam folder).")
+        messages.success(request, _("Sent! Check your inbox (and the spam folder)."))
     return redirect("account_email_verification_sent")
 
 
@@ -59,8 +67,24 @@ def settings_view(request):
     # No id in the URL: the page always edits the logged-in user's own settings.
     form = UserSettingsForm(request.POST or None, instance=get_user_settings(request.user))
     if request.method == "POST" and form.is_valid():
-        form.save()
-        messages.success(request, "Settings saved.")
-        return redirect("settings")
+        user_settings = form.save()
+        request.user._account_language = user_settings.language  # see account_language
+        # The message and the next page are already in the language just chosen.
+        translation.activate(user_settings.language)
+        messages.success(request, _("Settings saved."))
+        response = redirect("settings")
+        set_language_cookie(response, user_settings.language)
+        return response
     address = EmailAddress.objects.filter(user=request.user, primary=True).first()
     return render(request, "accounts/settings.html", {"form": form, "email_address": address})
+
+
+@require_POST
+def set_language(request):
+    """The PL · EN switcher in the footer: Django's set_language view (cookie, then back
+    to `next`), plus saving the choice on the account of a logged-in user."""
+    response = i18n.set_language(request)
+    language = request.POST.get("language", "")
+    if request.user.is_authenticated and is_supported_language(language):
+        save_account_language(request.user, language)
+    return response

@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% load workout_tags %}
+{% load i18n workout_tags %}
 
 {% block title %}{{ workout.title }}{% endblock %}
 
 {% block content %}
   <h1>{{ workout.title }}</h1>
   <p class="muted">
-    {{ workout.started_at|date:"l j F Y" }} · {{ workout.started_at|time:"H:i" }}–{{ workout.finished_at|time:"H:i" }}
+    {{ workout.started_at|date:"l j E Y" }} · {{ workout.started_at|time:"H:i" }}–{{ workout.finished_at|time:"H:i" }}
   </p>
 
   {% if workout.note %}
@@ -18,13 +18,13 @@
       <h2>{{ exercise.name }}</h2>
       <ol class="summary-sets">
         {% for s in sets %}
-          <li>{% set_label s exercise.measurement effort_scale long=True %}{% if s.is_warmup %} <span class="badge">Warm-up</span>{% endif %}</li>
+          <li>{% set_label s exercise.measurement effort_scale long=True %}{% if s.is_warmup %} <span class="badge">{% translate "Warm-up" %}</span>{% endif %}</li>
         {% endfor %}
       </ol>
     </section>
   {% empty %}
-    <p class="muted">No sets were logged in this workout.</p>
+    <p class="muted">{% translate "No sets were logged in this workout." %}</p>
   {% endfor %}
 
-  <a class="button" href="{% url 'home' %}">Back home</a>
+  <a class="button" href="{% url 'home' %}">{% translate "Back home" %}</a>
 {% endblock %}

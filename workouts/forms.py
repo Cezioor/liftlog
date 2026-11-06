@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from accounts.models import EffortScale
 from exercises.forms import WeightField
@@ -12,9 +13,9 @@ from .services import effort_choices, format_kg
 # Rating a set ("how many more reps could you do?") only makes sense for reps.
 RATED_MEASUREMENTS = {Measurement.WEIGHT_REPS, Measurement.REPS}
 RATING_LABELS = {
-    EffortScale.SIMPLE: "How hard was it?",
-    EffortScale.RIR: "Reps left in the tank (RIR)",
-    EffortScale.RPE: "Effort, 6–10 (RPE)",
+    EffortScale.SIMPLE: _("How hard was it?"),
+    EffortScale.RIR: _("Reps left in the tank (RIR)"),
+    EffortScale.RPE: _("Effort, 6–10 (RPE)"),
 }
 
 
@@ -25,7 +26,7 @@ class DurationField(forms.IntegerField):
         if isinstance(value, str) and ":" in value:
             parts = value.strip().split(":")
             if not all(p.isdigit() for p in parts) or len(parts) > 3:
-                raise forms.ValidationError("Use seconds (90) or minutes:seconds (1:30).")
+                raise forms.ValidationError(_("Use seconds (90) or minutes:seconds (1:30)."))
             seconds = 0
             for part in parts:
                 seconds = seconds * 60 + int(part)
@@ -77,11 +78,11 @@ class WorkoutSetForm(forms.ModelForm):
         field_classes = {"weight_kg": WeightField, "duration_seconds": DurationField}
         labels = {
             "weight_kg": "kg",
-            "reps": "Reps",
-            "duration_seconds": "Seconds",
-            "distance_m": "Metres",
-            "side": "Side",
-            "is_warmup": "Warm-up",
+            "reps": _("Reps"),
+            "duration_seconds": _("Seconds"),
+            "distance_m": _("Metres"),
+            "side": _("Side"),
+            "is_warmup": _("Warm-up"),
         }
         widgets = {
             "weight_kg": _num_input("decimal"),
@@ -116,7 +117,7 @@ class WorkoutSetForm(forms.ModelForm):
         for name, field in self.fields.items():
             field.required = name in required or name == "side"
         if "weight_kg" in self.fields and "weight_kg" not in required:
-            self.fields["weight_kg"].label = "Added kg"
+            self.fields["weight_kg"].label = _("Added kg")
         if "side" in self.fields:
             # Only left / right, without Django's empty "---------" choice.
             self.fields["side"].choices = Side.choices
@@ -148,7 +149,7 @@ class FinishWorkoutForm(forms.ModelForm):
     class Meta:
         model = Workout
         fields = ("note",)
-        labels = {"note": "Note (optional)"}
+        labels = {"note": _("Note (optional)")}
         widgets = {
-            "note": forms.Textarea(attrs={"rows": 2, "placeholder": "How did it go?"}),
+            "note": forms.Textarea(attrs={"rows": 2, "placeholder": _("How did it go?")}),
         }

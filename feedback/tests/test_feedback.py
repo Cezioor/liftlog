@@ -75,7 +75,8 @@ def test_page_path_keeps_only_our_path(url, path):
     "url_name", ["home", "plans:plan_list", "exercises:exercise_list", "settings"]
 )
 def test_every_screen_has_the_report_link_and_dialog(logged_in, url_name):
-    content = logged_in.get(reverse(url_name)).content.decode()
+    # The Polish texts are translations now (English msgids), so check them in Polish.
+    content = logged_in.get(reverse(url_name), HTTP_ACCEPT_LANGUAGE="pl").content.decode()
 
     assert "data-feedback-open" in content and ">Zgłoś</a>" in content
     assert '<dialog class="feedback-dialog"' in content

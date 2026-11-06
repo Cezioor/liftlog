@@ -5,6 +5,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
+from django.utils.translation import gettext, pgettext_lazy
 
 from exercises.models import Exercise
 from plans.models import PlanDay
@@ -38,7 +39,7 @@ class Workout(models.Model):
 
     @property
     def title(self):
-        return self.plan_day.name if self.plan_day else "Workout"
+        return self.plan_day.name if self.plan_day else gettext("Workout")
 
     @property
     def is_finished(self):
@@ -46,8 +47,8 @@ class Workout(models.Model):
 
 
 class Side(models.TextChoices):
-    LEFT = "left", "Left"
-    RIGHT = "right", "Right"
+    LEFT = "left", pgettext_lazy("side", "Left")
+    RIGHT = "right", pgettext_lazy("side", "Right")
 
 
 class WorkoutSet(models.Model):

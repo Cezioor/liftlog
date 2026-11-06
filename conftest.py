@@ -4,7 +4,7 @@ from datetime import timedelta
 from decimal import Decimal
 
 import pytest
-from django.utils import timezone
+from django.utils import timezone, translation
 
 from exercises.models import Exercise
 from workouts.models import Workout, WorkoutSet
@@ -12,8 +12,15 @@ from workouts.models import Workout, WorkoutSet
 
 @pytest.fixture(autouse=True)
 def _test_settings(settings):
-    """Tests run with DEBUG off (like production), minus the parts that need a real deploy."""
+    """Tests run with DEBUG off (like production), minus the parts that need a real deploy.
+
+    And in English: the app defaults to Polish, but most tests check the English source
+    texts. A request without a cookie or Accept-Language gets LANGUAGE_CODE, and code
+    called outside a request uses the active language. Tests of the Polish version ask
+    for it (cookie, Accept-Language or translation.override).
+    """
     settings.SECURE_SSL_REDIRECT = False
+    settings.LANGUAGE_CODE = "en"
     # Rate limits are counted in the cache: per-test memory instead of the DB table
     # that build.sh creates, emptied so one test's attempts don't limit the next.
     settings.CACHES = {"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"}}
@@ -24,6 +31,8 @@ def _test_settings(settings):
         **settings.STORAGES,
         "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
     }
+    with translation.override("en"):
+        yield
 
 
 @pytest.fixture

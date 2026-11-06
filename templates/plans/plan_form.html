@@ -1,15 +1,16 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}New plan{% endblock %}
+{% block title %}{% translate "New plan" %}{% endblock %}
 
 {% block content %}
   <div class="card narrow">
-    <h1>New plan</h1>
+    <h1>{% translate "New plan" %}</h1>
     <form method="post" class="form">
       {% csrf_token %}
       {{ form }}
-      <button type="submit" class="button button-primary">Create plan</button>
+      <button type="submit" class="button button-primary">{% translate "Create plan" %}</button>
     </form>
-    <p class="form-links"><a href="{% url 'plans:plan_list' %}">Cancel</a></p>
+    <p class="form-links"><a href="{% url 'plans:plan_list' %}">{% translate "Cancel" %}</a></p>
   </div>
 {% endblock %}

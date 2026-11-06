@@ -1,9 +1,12 @@
 {% extends "base.html" %}
+{% load i18n %}
 {# Fallback page for editing a set when JavaScript/HTMX is not available. #}
 
-{% block title %}Edit set{% endblock %}
+{% block title %}{% translate "Edit set" %}{% endblock %}
+
+{% block language_switcher %}{% endblock %}
 
 {% block content %}
   {% include "workouts/partials/exercise_card.html" %}
-  <p class="form-links"><a href="{% url 'workouts:workout_detail' workout.pk %}">← Back to workout</a></p>
+  <p class="form-links"><a href="{% url 'workouts:workout_detail' workout.pk %}">← {% translate "Back to workout" %}</a></p>
 {% endblock %}

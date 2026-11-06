@@ -1108,6 +1108,30 @@ div:has(> label > input.muscle-checkboxes) label {
   color: var(--muted);
 }
 
+.site-footer p {
+  margin: 0;
+}
+
+/* PL · EN: big enough to tap, the current language highlighted */
+.language-switcher {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.language-switcher .link-button {
+  min-width: 44px;
+  min-height: 44px;
+  color: var(--muted);
+}
+
+.language-switcher .link-button[aria-current="true"] {
+  color: var(--text);
+  font-weight: 700;
+  text-decoration: none;
+}
+
 /* ---------------------------------------------------------------------- */
 /* Stage 1.6: hold timer and left/right toggle                            */
 

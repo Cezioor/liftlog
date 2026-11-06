@@ -1,11 +1,11 @@
-{% load workout_tags %}
+{% load i18n workout_tags %}
 {# One exercise in an open workout. HTMX replaces this whole <section> after every change. #}
 <section class="card exercise-card" id="ex-{{ exercise.pk }}">
   <header class="ex-header">
     <h2>{{ exercise.name }}</h2>
-    <a class="icon-button ex-change" href="{{ change_variant_url }}" aria-label="Change variant of {{ exercise.name }}" title="Change variant">⇄</a>
+    <a class="icon-button ex-change" href="{{ change_variant_url }}" aria-label="{% blocktranslate with name=exercise.name %}Change variant of {{ name }}{% endblocktranslate %}" title="{% translate "Change variant" %}">⇄</a>
     <span class="ex-progress{% if target and done >= target %} ex-progress-done{% endif %}">
-      {% if target %}{{ done }}/{{ target }} sets{% if plan_exercise.target_label %} · {{ plan_exercise.target_label }}{% endif %}{% else %}{{ done }} set{{ done|pluralize }}{% endif %}
+      {% if target %}{% blocktranslate count target=target %}{{ done }}/{{ target }} set{% plural %}{{ done }}/{{ target }} sets{% endblocktranslate %}{% if plan_exercise.target_label %} · {{ plan_exercise.target_label }}{% endif %}{% else %}{% blocktranslate count done=done %}{{ done }} set{% plural %}{{ done }} sets{% endblocktranslate %}{% endif %}
     </span>
   </header>
 
@@ -16,18 +16,18 @@
     <p class="hint hint-new">{{ calibration.message }}</p>
     {% if calibration.note %}
       <details class="calibration-note">
-        <summary>Why no max test?</summary>
+        <summary>{% translate "Why no max test?" %}</summary>
         <p class="muted small">{{ calibration.note }}</p>
       </details>
     {% endif %}
   {% elif not has_previous %}
-    <p class="hint hint-new">First time logging this. Pick a distance you can cover at a steady pace.</p>
+    <p class="hint hint-new">{% translate "First time logging this. Pick a distance you can cover at a steady pace." %}</p>
   {% endif %}
 
   {% if rows %}
     <table class="sets">
       <thead>
-        <tr><th scope="col">Set</th><th scope="col">Last time</th><th scope="col">Today</th><th scope="col"><span class="visually-hidden">Edit</span></th></tr>
+        <tr><th scope="col">{% translate "Set" %}</th><th scope="col">{% translate "Last time" %}</th><th scope="col">{% translate "Today" %}</th><th scope="col"><span class="visually-hidden">{% translate "Edit" %}</span></th></tr>
       </thead>
       <tbody>
         {% for row in rows %}
@@ -41,18 +41,18 @@
                   {% csrf_token %}
                   {% include "workouts/partials/set_inputs.html" with form=edit_form %}
                   <div class="set-form-actions">
-                    <button type="submit" class="button button-primary">Save set {{ row.number }}</button>
+                    <button type="submit" class="button button-primary">{% blocktranslate with number=row.number %}Save set {{ number }}{% endblocktranslate %}</button>
                     <a class="button" href="{% url 'workouts:workout_detail' workout.pk %}#ex-{{ exercise.pk }}"
                        hx-get="{% url 'workouts:exercise_card' workout.pk exercise.pk %}"
-                       hx-target="closest .exercise-card" hx-swap="outerHTML">Cancel</a>
+                       hx-target="closest .exercise-card" hx-swap="outerHTML">{% translate "Cancel" %}</a>
                   </div>
                 </form>
                 <form method="post" action="{% url 'workouts:set_delete' row.current.pk %}"
                       hx-post="{% url 'workouts:set_delete' row.current.pk %}"
                       hx-target="closest .exercise-card" hx-swap="outerHTML"
-                      hx-confirm="Delete set {{ row.number }}?">
+                      hx-confirm="{% blocktranslate with number=row.number %}Delete set {{ number }}?{% endblocktranslate %}">
                   {% csrf_token %}
-                  <button type="submit" class="button button-danger">Delete set {{ row.number }}</button>
+                  <button type="submit" class="button button-danger">{% blocktranslate with number=row.number %}Delete set {{ number }}{% endblocktranslate %}</button>
                 </form>
               </td>
             </tr>
@@ -62,7 +62,7 @@
               <td class="set-prev">{% if row.previous %}{% set_label row.previous measurement effort_scale %}{% else %}–{% endif %}</td>
               <td class="set-today">
                 {% if row.current %}
-                  {% set_label row.current measurement effort_scale %}{% if row.current.is_warmup %} <span class="badge">W</span>{% endif %}
+                  {% set_label row.current measurement effort_scale %}{% if row.current.is_warmup %} <span class="badge" title="{% translate "Warm-up" %}">{% translate "W" context "warm-up set, one letter" %}</span>{% endif %}
                 {% else %}–{% endif %}
               </td>
               <td class="set-edit">
@@ -70,7 +70,7 @@
                   <a class="icon-button" href="{% url 'workouts:set_update' row.current.pk %}"
                      hx-get="{% url 'workouts:set_update' row.current.pk %}"
                      hx-target="closest .exercise-card" hx-swap="outerHTML"
-                     aria-label="Edit set {{ row.number }}">✎</a>
+                     aria-label="{% blocktranslate with number=row.number %}Edit set {{ number }}{% endblocktranslate %}">✎</a>
                 {% endif %}
               </td>
             </tr>
@@ -88,7 +88,7 @@
           class="set-form" data-rest="{{ rest_seconds }}">
       {% csrf_token %}
       {% include "workouts/partials/set_inputs.html" with hold_timer=True %}
-      <button type="submit" class="button button-primary button-big">Log set {{ done|add:1 }}</button>
+      <button type="submit" class="button button-primary button-big">{% blocktranslate with number=done|add:1 %}Log set {{ number }}{% endblocktranslate %}</button>
     </form>
   {% endif %}
 </section>

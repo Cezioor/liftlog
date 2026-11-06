@@ -5,6 +5,7 @@ from django.db.models import Max
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
 from exercises.models import Exercise
@@ -86,7 +87,7 @@ def plan_detail(request, pk):
     rename_form = PlanForm(request.POST or None, instance=plan)
     if request.method == "POST" and rename_form.is_valid():
         rename_form.save()
-        messages.success(request, "Plan renamed.")
+        messages.success(request, _("Plan renamed."))
         return _plan_redirect(plan)
     days = plan.days.prefetch_related("exercises__exercise")
     return render(
@@ -101,7 +102,7 @@ def plan_detail(request, pk):
 def plan_activate(request, pk):
     plan = _get_plan(request, pk)
     plan.activate()
-    messages.success(request, f"“{plan.name}” is now your active plan.")
+    messages.success(request, _("“%(plan)s” is now your active plan.") % {"plan": plan.name})
     return _plan_redirect(plan)
 
 
@@ -110,7 +111,7 @@ def plan_activate(request, pk):
 def plan_delete(request, pk):
     plan = _get_plan(request, pk)
     plan.delete()
-    messages.success(request, f"Deleted “{plan.name}”.")
+    messages.success(request, _("Deleted “%(name)s”.") % {"name": plan.name})
     return redirect("plans:plan_list")
 
 
@@ -128,7 +129,7 @@ def day_create(request, plan_pk):
         day.order = _next_order(plan.days.all())
         day.save()
         return _plan_redirect(plan, f"day-{day.pk}")
-    messages.error(request, "Give the day a name.")
+    messages.error(request, _("Give the day a name."))
     return _plan_redirect(plan)
 
 
@@ -148,7 +149,7 @@ def day_delete(request, pk):
     day = _get_day(request, pk)
     plan = day.plan
     day.delete()
-    messages.success(request, f"Deleted “{day.name}”.")
+    messages.success(request, _("Deleted “%(name)s”.") % {"name": day.name})
     return _plan_redirect(plan)
 
 
@@ -181,7 +182,7 @@ def _exercise_picker(request, day, extra_params=None):
     # links leave them out, so tapping a result goes on to the sets/reps form.
     return picker_response(
         request,
-        title=f"Add to {day.name}" if not extra_params else "Change exercise",
+        title=_("Add to %(day)s") % {"day": day.name} if not extra_params else _("Change exercise"),
         back_url=f"{reverse('plans:plan_detail', args=[day.plan_id])}#day-{day.pk}",
         select_base=f"{request.path}?exercise=",
         recent=recently_used_exercises(request.user),
@@ -204,7 +205,10 @@ def plan_exercise_create(request, day_pk):
         item.exercise = exercise
         item.order = _next_order(day.exercises.all())
         item.save()
-        messages.success(request, f"Added {exercise.name} to {day.name}.")
+        messages.success(
+            request,
+            _("Added %(exercise)s to %(day)s.") % {"exercise": exercise.name, "day": day.name},
+        )
         return _plan_redirect(day.plan, f"day-{day.pk}")
     return render(
         request,
@@ -249,7 +253,10 @@ def plan_exercise_change_variant(request, pk):
     item.exercise = chosen_variant(request, old)
     item.save(update_fields=["exercise"])
     if item.exercise != old:
-        messages.success(request, f"{old.name} → {item.exercise.name} in the plan.")
+        messages.success(
+            request,
+            _("%(old)s → %(new)s in the plan.") % {"old": old.name, "new": item.exercise.name},
+        )
     return _plan_redirect(item.day.plan, f"day-{item.day_id}")
 
 
