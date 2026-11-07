@@ -17,7 +17,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Step-up",
         "Barbell Step Ups",
-        "wejścia na skrzynię na suwnicy smitha, wejście na podest smith, step up smith",
+        (
+            "wejścia na skrzynię na smithie, wejścia na skrzynię na suwnicy smitha, "
+            "wejście na podest smith, step up smith"
+        ),
         "quads",
         ["quadriceps", "glutes"],
         ["hamstrings"],
@@ -32,7 +35,7 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Lunge",
         "Barbell Lunge",
-        "wykroki na suwnicy smitha, wykrok w miejscu smith, lunge smith",
+        "wykroki na smithie, wykroki na suwnicy smitha, wykrok w miejscu smith, lunge smith",
         "quads",
         ["quadriceps", "glutes"],
         ["hamstrings"],
@@ -47,7 +50,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Reverse Lunge",
         "Dumbbell Rear Lunge",
-        "wykroki w tył na suwnicy smitha, zakroki smith, reverse lunge smith",
+        (
+            "wykroki w tył na smithie, wykroki w tył na suwnicy smitha, zakroki smith, "
+            "reverse lunge smith"
+        ),
         "glutes",
         ["glutes", "quadriceps"],
         ["hamstrings"],
@@ -63,7 +69,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Curtsy Lunge",
         None,
-        "wykroki skrzyżne na suwnicy smitha, curtsy lunge smith, wykrok dygnięcie",
+        (
+            "wykroki skrzyżne na smithie, wykroki skrzyżne na suwnicy smitha, curtsy lunge smith, "
+            "wykrok dygnięcie"
+        ),
         "glutes",
         ["glutes"],
         ["quadriceps", "abductors"],
@@ -79,7 +88,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Bulgarian Split Squat",
         "Bulgarian Split Squat",
-        "bułgarski przysiad na suwnicy smitha, przysiad bułgarski smith, bulgarian smith",
+        (
+            "bułgarski przysiad na smithie, bułgarski przysiad na suwnicy smitha, "
+            "przysiad bułgarski smith, bulgarian smith"
+        ),
         "quads",
         ["quadriceps", "glutes"],
         ["hamstrings"],
@@ -94,7 +106,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Hip Thrust",
         "Barbell Hip Thrust",
-        "hip thrust na suwnicy smitha, wypychanie bioder smith, unoszenie bioder smith",
+        (
+            "hip thrust na smithie, hip thrust na suwnicy smitha, wypychanie bioder smith, "
+            "unoszenie bioder smith"
+        ),
         "glutes",
         ["glutes"],
         ["hamstrings"],
@@ -110,7 +125,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Single-Leg Hip Thrust",
         "Barbell Hip Thrust",
-        "hip thrust jednonóż na suwnicy smitha, unoszenie bioder na jednej nodze smith",
+        (
+            "hip thrust jednonóż na smithie, hip thrust jednonóż na suwnicy smitha, "
+            "unoszenie bioder na jednej nodze smith"
+        ),
         "glutes",
         ["glutes"],
         ["hamstrings"],
@@ -125,7 +143,7 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Glute Bridge",
         "Barbell Glute Bridge",
-        "mostek biodrowy na suwnicy smitha, glute bridge smith",
+        "mostek biodrowy na smithie, mostek biodrowy na suwnicy smitha, glute bridge smith",
         "glutes",
         ["glutes"],
         ["hamstrings"],
@@ -140,7 +158,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Romanian Deadlift",
         "Romanian Deadlift",
-        "martwy ciąg rumuński na suwnicy smitha, rdl smith, rumuński smith",
+        (
+            "martwy ciąg rumuński na smithie, martwy ciąg rumuński na suwnicy smitha, rdl smith, "
+            "rumuński smith"
+        ),
         "hamstrings",
         ["hamstrings"],
         ["glutes", "lower back"],
@@ -156,7 +177,7 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Deadlift",
         "Deadlift",
-        "martwy ciąg na suwnicy smitha, deadlift smith",
+        "martwy ciąg na smithie, martwy ciąg na suwnicy smitha, deadlift smith",
         "hamstrings",
         ["lower back", "glutes"],
         ["hamstrings", "quadriceps", "traps"],
@@ -171,7 +192,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Rack Pull",
         "Rack Pulls",
-        "martwy ciąg z podwyższenia na suwnicy smitha, rack pull smith",
+        (
+            "martwy ciąg z podwyższenia na smithie, martwy ciąg z podwyższenia na suwnicy smitha, "
+            "rack pull smith"
+        ),
         "back",
         ["lower back"],
         ["glutes", "hamstrings", "traps"],
@@ -186,7 +210,7 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Front Squat",
         "Front Squat",
-        "przysiad przedni na suwnicy smitha, front squat smith",
+        "przysiad przedni na smithie, przysiad przedni na suwnicy smitha, front squat smith",
         "quads",
         ["quadriceps"],
         ["glutes"],
@@ -201,7 +225,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Sumo Squat",
         None,
-        "przysiad sumo na suwnicy smitha, sumo squat smith, przysiad szeroki smith",
+        (
+            "przysiad sumo na smithie, przysiad sumo na suwnicy smitha, sumo squat smith, "
+            "przysiad szeroki smith"
+        ),
         "quads",
         ["quadriceps", "adductors"],
         ["glutes"],
@@ -216,7 +243,7 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Box Squat",
         "Box Squat",
-        "przysiad do skrzyni na suwnicy smitha, box squat smith",
+        "przysiad do skrzyni na smithie, przysiad do skrzyni na suwnicy smitha, box squat smith",
         "quads",
         ["quadriceps", "glutes"],
         ["hamstrings"],
@@ -231,7 +258,7 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Hack Squat",
         "Barbell Hack Squat",
-        "hack przysiad na suwnicy smitha, hack squat smith",
+        "hack przysiad na smithie, hack przysiad na suwnicy smitha, hack squat smith",
         "quads",
         ["quadriceps"],
         ["glutes"],
@@ -246,7 +273,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Kneeling Squat",
         "Kneeling Squat",
-        "przysiad na kolanach na suwnicy smitha, kneeling squat smith",
+        (
+            "przysiad na kolanach na smithie, przysiad na kolanach na suwnicy smitha, "
+            "kneeling squat smith"
+        ),
         "glutes",
         ["glutes"],
         ["quadriceps"],
@@ -261,7 +291,7 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Good Morning",
         "Good Morning",
-        "skłony good morning na suwnicy smitha, good morning smith",
+        "skłony good morning na smithie, skłony good morning na suwnicy smitha, good morning smith",
         "hamstrings",
         ["hamstrings"],
         ["glutes", "lower back"],
@@ -276,7 +306,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Seated Calf Raise",
         "Barbell Seated Calf Raise",
-        "wspięcia na palce siedząc na suwnicy smitha, łydki siedząc smith",
+        (
+            "wspięcia na palce siedząc na smithie, wspięcia na palce siedząc na suwnicy smitha, "
+            "łydki siedząc smith"
+        ),
         "calves",
         ["calves"],
         [],
@@ -291,7 +324,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Donkey Calf Raise",
         "Donkey Calf Raises",
-        "wspięcia na palce w skłonie na suwnicy smitha, donkey calf raise smith",
+        (
+            "wspięcia na palce w skłonie na smithie, "
+            "wspięcia na palce w skłonie na suwnicy smitha, donkey calf raise smith"
+        ),
         "calves",
         ["calves"],
         [],
@@ -307,7 +343,7 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Shrug",
         "Barbell Shrug",
-        "szrugsy na suwnicy smitha, wzruszanie ramion smith, kaptury smith",
+        "szrugsy na smithie, szrugsy na suwnicy smitha, wzruszanie ramion smith, kaptury smith",
         "back",
         ["traps"],
         [],
@@ -322,7 +358,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Inverted Row",
         "Inverted Row",
-        "wiosłowanie w zwisie pod suwnicą smitha, australijskie podciąganie smith",
+        (
+            "wiosłowanie w zwisie pod smithem, wiosłowanie w zwisie pod suwnicą smitha, "
+            "australijskie podciąganie smith"
+        ),
         "back",
         ["middle back", "lats"],
         ["biceps"],
@@ -337,7 +376,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Reverse-Grip Row",
         "Reverse Grip Bent-Over Rows",
-        "wiosłowanie podchwytem na suwnicy smitha, wiosłowanie smith podchwyt",
+        (
+            "wiosłowanie podchwytem na smithie, wiosłowanie podchwytem na suwnicy smitha, "
+            "wiosłowanie smith podchwyt"
+        ),
         "back",
         ["middle back", "lats"],
         ["biceps"],
@@ -353,7 +395,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Seated Shoulder Press",
         "Seated Barbell Military Press",
-        "wyciskanie nad głowę siedząc na suwnicy smitha, wyciskanie żołnierskie siedząc smith",
+        (
+            "wyciskanie nad głowę siedząc na smithie, "
+            "wyciskanie nad głowę siedząc na suwnicy smitha, wyciskanie żołnierskie siedząc smith"
+        ),
         "shoulders",
         ["shoulders"],
         ["triceps"],
@@ -368,7 +413,7 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Incline Push-up",
         "Incline Push-Up",
-        "pompki na drążku suwnicy smitha, pompki na podwyższeniu smith",
+        "pompki na drążku smitha, pompki na drążku suwnicy smitha, pompki na podwyższeniu smith",
         "chest",
         ["chest"],
         ["triceps", "shoulders"],
@@ -383,7 +428,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Floor Press",
         "Floor Press",
-        "wyciskanie z podłogi na suwnicy smitha, floor press smith",
+        (
+            "wyciskanie z podłogi na smithie, wyciskanie z podłogi na suwnicy smitha, "
+            "floor press smith"
+        ),
         "chest",
         ["chest", "triceps"],
         ["shoulders"],
@@ -398,7 +446,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Reverse-Grip Bench Press",
         None,
-        "wyciskanie podchwytem na suwnicy smitha, ławka podchwyt smith",
+        (
+            "wyciskanie podchwytem na smithie, wyciskanie podchwytem na suwnicy smitha, "
+            "ławka podchwyt smith"
+        ),
         "chest",
         ["chest"],
         ["triceps", "shoulders"],
@@ -413,7 +464,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Wide-Grip Bench Press",
         "Wide-Grip Barbell Bench Press",
-        "wyciskanie szerokim chwytem na suwnicy smitha, ławka szeroko smith",
+        (
+            "wyciskanie szerokim chwytem na smithie, "
+            "wyciskanie szerokim chwytem na suwnicy smitha, ławka szeroko smith"
+        ),
         "chest",
         ["chest"],
         ["shoulders", "triceps"],
@@ -428,7 +482,7 @@ SMITH_VARIANTS = [
     (
         "Smith Machine JM Press",
         "JM Press",
-        "jm press na suwnicy smitha, wyciskanie jm smith",
+        "jm press na smithie, jm press na suwnicy smitha, wyciskanie jm smith",
         "triceps",
         ["triceps"],
         ["chest"],
@@ -443,7 +497,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Skull Crusher",
         "Skull Crusher",
-        "wyciskanie francuskie na suwnicy smitha, łamacze czaszki smith",
+        (
+            "wyciskanie francuskie na smithie, wyciskanie francuskie na suwnicy smitha, "
+            "łamacze czaszki smith"
+        ),
         "triceps",
         ["triceps"],
         [],
@@ -458,7 +515,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Drag Curl",
         "Drag Curl",
-        "uginanie ramion drag curl na suwnicy smitha, drag curl smith",
+        (
+            "uginanie ramion drag curl na smithie, uginanie ramion drag curl na suwnicy smitha, "
+            "drag curl smith"
+        ),
         "biceps",
         ["biceps"],
         ["forearms"],
