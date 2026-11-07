@@ -7,7 +7,7 @@ and it can build a personalised plan from a short interview (goals, equipment, i
 The owner is learning: explain decisions briefly, prefer clear, conventional Django over clever code,
 and keep each change small enough to review.
 
-## Status (checked in the code on 2026-11-06)
+## Status (checked in the code on 2026-11-07)
 
 | Stage | Status |
 |---|---|
@@ -22,6 +22,7 @@ and keep each change small enough to review.
 | **1.5 – Bigger exercise library** (free-exercise-db, detail page, muscle map, Smith machine, search, movement families and variants) | done |
 | **1.6 – Exercise types** (+ set rating RIR, calibration, old plank sets converted) | done |
 | Feedback ("Zgłoś", admin, `feedback_report`) | done (commit 1f73565); `FEEDBACK_EMAIL` and `ADMIN_EMAILS` still to be set on Render |
+| PL/EN language switcher (whole UI, footer switch, Settings, language on the account; English by default) | done (2026-11-07) |
 | **1.7 – Activities and body weight** | to do |
 | **1.8 – Consistency and rewards** | to do |
 | **1.9 – Training insights** | to do |
@@ -33,11 +34,25 @@ and keep each change small enough to review.
 
 1. **Feedback system** ("Zgłoś": bug / suggestion / opinion, email to `FEEDBACK_EMAIL`, admin panel, `feedback_report`):
    built and deployed; left: set `FEEDBACK_EMAIL` and `ADMIN_EMAILS` on Render and test it on the phone.
-2. **PL/EN language switcher** (the UI is English with some Polish texts; Polish testers are coming).
-3. **Stage 1.7** – activities and body weight.
-4. **Checkpoint A**: a test at the gym and by a second (female) user; then `feedback_report`.
-5. **Stages 1.8, 1.9 and 2.**
-6. **Checkpoint B**: a week of training on a plan built by the AI.
+2. ~~**PL/EN language switcher**~~: done (see "Languages (PL/EN)" below).
+3. **Polish names for more exercises**: on 2026-11-07, 291 of 913 built-ins had Polish names (aliases, for Polish
+   search; names stay English). Missing: 367 of 532 beginner exercises, 211 intermediate, 44 expert. Beginners
+   first, in `exercises/free_db_polish.py`; the owner reviews the proposed names before they are saved.
+4. **Finding exercises by type (A, no data model change)**: "Type" (category) filter chips in the picker; goal
+   tiles on the library (Strength, Warm-up, Stretching, Balance & stability, Cardio); rename "Motor control /
+   balance" to "Balance & stability"; "Stretches for these muscles" on the exercise page; in "⇄ Change variant"
+   show only equipment that fits (used by ≥ 2 built-ins with the same muscle group and mechanic, e.g. no
+   bodyweight hammer curl), the rest behind "Show all equipment", "Other…" stays.
+5. **Plan sections and missing exercises (B + C)**, before Stage 1.7: `PlanExercise.section` with three fixed
+   sections (warm-up / main / cool-down); warm-up and cool-down suggestions from the muscles of the day's main
+   part; on the workout screen warm-up and cool-down are a tick-off list with an optional timer (no weights, hints
+   or records; defaults 1–2 × 30 s, no rest). About 15–20 built-in dynamic warm-up drills (all 123 current
+   stretches are static), exercises marked "before" / "after" training, about 10–15 balance exercises (the
+   category had 1). Lists wait for the owner's approval. Warm-up and stretching never count as hard sets (1.9).
+6. **Stage 1.7** – activities and body weight.
+7. **Checkpoint A**: a test at the gym and by a second (female) user; then `feedback_report`.
+8. **Stages 1.8, 1.9 and 2.**
+9. **Checkpoint B**: a week of training on a plan built by the AI.
 
 Stage 1 items 6 (history list, charts) and 7 (PWA) are not scheduled yet: ask the owner where they fit.
 
@@ -74,6 +89,15 @@ Stage 1 items 6 (history list, charts) and 7 (PWA) are not scheduled yet: ask th
   "Zgłoś" reports).
 - Local database: SQLite `db.sqlite3`; rehearse risky migrations on a copy (e.g. in the scratchpad) with
   `DATABASE_URL=sqlite:///<copy>` and run the `build.sh` steps with `data_fingerprint --save/--compare`.
+- After pulling new migrations the local database needs more than `migrate`: also the other `build.sh` steps
+  (`createcachetable`, `seed_exercises`, `import_free_exercise_db`, `seed_smith_variants`, `group_movements`,
+  `merge_exercises`). Without `createcachetable` logging in fails with "no such table: django_cache".
+- In the local `.env` set `ACCOUNT_EMAIL_VERIFICATION=optional`: otherwise `mandatory` applies, and local emails
+  only go to the runserver console. (Tests ignore it: conftest forces `mandatory`.)
+- gettext (for `makemessages` / `compilemessages`) is in `C:\Users\LT\AppData\Local\Programs\gettext-iconv\bin`;
+  VS Code may not see it on PATH, so prepend it in Git Bash:
+  `export PATH="/c/Users/LT/AppData/Local/Programs/gettext-iconv/bin:$PATH"`. Installed with
+  `winget install -e --id mlocati.GetText --source winget` (the `msstore` source rejects Avast's certificate).
 
 ## Product, in priority order
 
@@ -156,6 +180,20 @@ Stage 1 items 6 (history list, charts) and 7 (PWA) are not scheduled yet: ask th
 - **Working rule:** at every checkpoint (before planning the next piece of work) run
   `python manage.py feedback_report` against production data, read the open reports grouped by kind and propose fixes;
   mark handled ones in the admin.
+
+### Languages (PL/EN) (done)
+
+- The whole UI, logged in or not, in English (the default) and Polish. Choosing: the language saved on the account
+  → the cookie → the browser's Accept-Language → English (`config.middleware.UserLanguageMiddleware`); a browser
+  in a language we don't have gets English (decided 2026-11-07). More languages may come later: add them to
+  `LANGUAGES` and create `locale/<code>/` with `makemessages -l <code>`.
+- "PL · EN" in the footer of every page (also log-in and sign-up), hidden on an open workout (the reload would lose
+  inputs not logged yet), and "Language" in Settings (only Polish and English). The choice is saved on the
+  account (switcher, Settings, and the language someone signs up in); after logging in on a new device the app
+  is in the account's language at once, and after logging out it stays in it (the cookie lasts a year).
+- Not translated on purpose: account emails (Polish, passed SpamAssassin), the admin's own texts, the feedback
+  email to the owner and `feedback_report` (always Polish), exercise names and free-exercise-db instructions
+  (English; Polish names are aliases for search). Saved variant names always use the English equipment label.
 
 ### Stage 1.6 – Exercise types (do this first: it changes the core data model)
 
@@ -297,6 +335,13 @@ nutrition via Apple Health (parked), partner rewards using the points ledger.
 - **Django 5.2+**, Python 3.12+, PostgreSQL in production, SQLite locally.
 - **Server-rendered templates + HTMX** for interactivity (adding sets without page reloads). No SPA framework.
 - Styling: one small hand-written CSS file with CSS variables, dark mode, large tap targets. No CSS framework.
+- Languages: standard Django i18n. Source texts are English (msgid); Polish lives in
+  `locale/pl/LC_MESSAGES/django.po`, and the compiled `django.mo` is committed (Render's build has no gettext).
+  `LANGUAGE_CODE = "en"`; the `.po` uses Django's Polish plural formula (4 forms; the 4th, for fractions, repeats
+  "5 serii"). JS gets its texts from `data-text-*` attributes (no JavaScriptCatalog).
+- Numbers: visible text uses the page language's decimal separator (`display_kg`: "62,5" in Polish); input
+  values, `data-*`, URLs and JS always use a dot (`format_kg`). Text inputs with `inputmode`, and `WeightField`
+  accepts a typed comma.
 - Charts: Chart.js from a CDN with a pinned version.
 - Settings from environment variables (`DJANGO_SECRET_KEY`, `DATABASE_URL`, `ANTHROPIC_API_KEY`, `DEBUG`).
 - Email: django-anymail with **Brevo's HTTP API** (`BREVO_API_KEY`, `DEFAULT_FROM_EMAIL` = a sender verified in Brevo), because Render's
@@ -315,7 +360,7 @@ Exercise(name, aliases, muscle_group, equipment, is_bodyweight, progression_step
          # + free-exercise-db data: source_id, source_name, source_category, muscles, level, …
 Movement(name, owner: User | null)   # null = built-in family
 UserSettings(user 1:1, effort_scale: simple | rir | rpe, ios_shortcut_enabled, ios_shortcut_name,
-             keep_screen_on, rest_end_sound)
+             keep_screen_on, rest_end_sound, language: pl | en | "" = not chosen)
 Plan(owner, name, is_active, created_at)
 PlanDay(plan, name, order)
 PlanExercise(day, exercise, order, target_sets, rep_min, rep_max, hold_min_s, hold_max_s,
@@ -335,4 +380,11 @@ Feedback(user | null, kind: bug | suggestion | opinion, message, page, device, u
 - Every view that touches user data filters by `request.user`; write a test for this for each model.
 - Business logic (progression hint, 1RM, "last time" query) lives in plain functions in `services.py`, tested without views.
 - Times stored in UTC, shown in Europe/Warsaw.
+- Every new text people see goes through gettext (`{% translate %}` / `{% blocktranslate %}`, `gettext`,
+  `gettext_lazy` for module-level texts and labels, `ngettext` / `blocktranslate count` for plurals; never format a
+  lazy text at import) → `makemessages -l pl --ignore=.venv --ignore=staticfiles` → translate (short, natural gym
+  Polish: seria, powtórzenia, ciężar, przerwa, trening, ćwiczenie, rekord; RIR and RPE untranslated) →
+  `compilemessages --ignore=.venv` → commit both `.po` and `.mo`. `config/test_translations.py` fails on empty or
+  fuzzy entries, lost placeholders or a stale `.mo`. Tests run in English (conftest); tests of Polish texts ask for
+  Polish (cookie or `translation.override`).
 - Commit messages in English, imperative mood.

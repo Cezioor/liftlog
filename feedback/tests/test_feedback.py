@@ -2,6 +2,7 @@
 
 import pytest
 from allauth.account.models import EmailAddress
+from django.conf import settings
 from django.core.mail.backends.base import BaseEmailBackend
 from django.core.management import call_command
 from django.urls import reverse
@@ -245,6 +246,19 @@ def test_each_report_is_emailed_to_the_owner(logged_in, owner_inbox, mailoutbox)
         assert text in mail.body, text
 
 
+@pytest.mark.django_db
+def test_the_email_is_polish_even_when_the_sender_uses_english(logged_in, owner_inbox, mailoutbox):
+    logged_in.cookies[settings.LANGUAGE_COOKIE_NAME] = "en"
+
+    response = _send(logged_in, kind="bug", HTTP_USER_AGENT=IPHONE, **HTMX)
+
+    assert "Thanks! Your report has arrived." in response.content.decode()  # the sender's page
+    (mail,) = mailoutbox
+    assert mail.subject.startswith("[LiftLog] Błąd #")
+    assert "Rodzaj: Błąd" in mail.body
+    assert "Urządzenie: Telefon" in mail.body
+
+
 class FailingBackend(BaseEmailBackend):
     def send_messages(self, email_messages):
         raise ConnectionError("Brevo is down")
@@ -330,6 +344,16 @@ def test_admin_login_goes_through_the_app_login(client, logged_in, user):
 
 
 # --- commands -------------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_feedback_report_is_polish_whatever_the_active_language(reports, capsys):
+    with translation.override("en"):  # e.g. a shell started with an English locale
+        call_command("feedback_report")
+
+    out = capsys.readouterr().out
+    assert "== Błąd (1)" in out
+    assert "Nowe" in out  # the status
 
 
 @pytest.mark.django_db

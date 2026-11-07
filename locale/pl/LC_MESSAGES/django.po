@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LiftLog\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-06 23:25+0100\n"
+"POT-Creation-Date: 2026-11-07 15:18+0100\n"
 "PO-Revision-Date: 2026-11-06 22:40+0100\n"
 "Last-Translator: Cezary Muszalski\n"
 "Language-Team: Polish\n"
@@ -15,7 +15,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
+"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
+"n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 #: .\accounts\adapter.py:12
 msgid "Account created. We also sent a link to confirm your email address."
@@ -23,11 +25,11 @@ msgstr "Konto założone. Wysłaliśmy też link do potwierdzenia adresu e-mail.
 
 #: .\accounts\adapter.py:14
 msgid ""
-"Account created, but we couldn't send the link to confirm your email address. You can ask for a "
-"new one in your account settings."
+"Account created, but we couldn't send the link to confirm your email "
+"address. You can ask for a new one in your account settings."
 msgstr ""
-"Konto założone, ale nie udało się wysłać linku do potwierdzenia adresu e-mail. Możesz poprosić o "
-"nowy w ustawieniach konta."
+"Konto założone, ale nie udało się wysłać linku do potwierdzenia adresu e-"
+"mail. Możesz poprosić o nowy w ustawieniach konta."
 
 #: .\accounts\adapter.py:17
 msgid "Couldn't send the email. Try again in a few minutes."
@@ -62,8 +64,11 @@ msgid "iPhone Clock timer via Shortcuts"
 msgstr "Minutnik w Zegarze iPhone’a przez Skróty"
 
 #: .\accounts\models.py:32
-msgid "After each set, show a button that starts a timer in the iPhone Clock app."
-msgstr "Po każdej serii pokaż przycisk, który włącza minutnik w aplikacji Zegar na iPhonie."
+msgid ""
+"After each set, show a button that starts a timer in the iPhone Clock app."
+msgstr ""
+"Po każdej serii pokaż przycisk, który włącza minutnik w aplikacji Zegar na "
+"iPhonie."
 
 #: .\accounts\models.py:35
 msgid "shortcut name"
@@ -79,7 +84,8 @@ msgstr "nie wygaszaj ekranu podczas treningu"
 
 #: .\accounts\models.py:43
 msgid "Uses more battery. Needs a browser that supports it (HTTPS only)."
-msgstr "Zużywa więcej baterii. Wymaga przeglądarki, która to obsługuje (tylko HTTPS)."
+msgstr ""
+"Zużywa więcej baterii. Wymaga przeglądarki, która to obsługuje (tylko HTTPS)."
 
 #: .\accounts\models.py:46
 msgid "beep when the rest is over"
@@ -87,7 +93,8 @@ msgstr "sygnał dźwiękowy na koniec przerwy"
 
 #: .\accounts\models.py:48
 msgid "Only while LiftLog is on screen; a locked phone can't play it."
-msgstr "Tylko gdy LiftLog jest na ekranie; zablokowany telefon go nie odtworzy."
+msgstr ""
+"Tylko gdy LiftLog jest na ekranie; zablokowany telefon go nie odtworzy."
 
 #: .\accounts\models.py:52
 msgid "how to rate sets"
@@ -105,19 +112,20 @@ msgstr "język"
 msgid "user settings"
 msgstr "ustawienia użytkownika"
 
-#: .\accounts\views.py:54
+#: .\accounts\views.py:55
 msgid "This address is already confirmed. You can log in."
 msgstr "Ten adres jest już potwierdzony. Możesz się zalogować."
 
-#: .\accounts\views.py:58
+#: .\accounts\views.py:59
 msgid "We sent a link a moment ago. Wait 3 minutes before asking for another."
-msgstr "Link wysłaliśmy przed chwilą. Odczekaj 3 minuty, zanim poprosisz o kolejny."
+msgstr ""
+"Link wysłaliśmy przed chwilą. Odczekaj 3 minuty, zanim poprosisz o kolejny."
 
-#: .\accounts\views.py:61
+#: .\accounts\views.py:62
 msgid "Sent! Check your inbox (and the spam folder)."
 msgstr "Wysłane! Sprawdź skrzynkę (i folder spam)."
 
-#: .\accounts\views.py:74
+#: .\accounts\views.py:75
 msgid "Settings saved."
 msgstr "Ustawienia zapisane."
 
@@ -139,11 +147,11 @@ msgstr "Zostaw puste, żeby użyć domyślnego"
 
 #: .\exercises\forms.py:60
 msgid ""
-"kg added when every set hits the top of the rep range. Empty = default: dumbbells 2, legs 5, upper"
-" body 2.5."
+"kg added when every set hits the top of the rep range. Empty = default: "
+"dumbbells 2, legs 5, upper body 2.5."
 msgstr ""
-"Ile kg dodać, gdy w każdej serii dojdziesz do górnej granicy powtórzeń. Puste = domyślnie: hantle "
-"2, nogi 5, góra ciała 2,5."
+"Ile kg dodać, gdy w każdej serii dojdziesz do górnej granicy powtórzeń. "
+"Puste = domyślnie: hantle 2, nogi 5, góra ciała 2,5."
 
 #: .\exercises\forms.py:78
 msgid "An exercise with this name already exists."
@@ -357,11 +365,11 @@ msgstr "inne nazwy"
 
 #: .\exercises\models.py:129
 msgid ""
-"Polish names and synonyms, comma separated, e.g. “wyciskanie na ławce płaskiej, wyciskanie "
-"sztangi”."
+"Polish names and synonyms, comma separated, e.g. “wyciskanie na ławce "
+"płaskiej, wyciskanie sztangi”."
 msgstr ""
-"Polskie nazwy i synonimy, oddzielone przecinkami, np. „wyciskanie na ławce płaskiej, wyciskanie "
-"sztangi”."
+"Polskie nazwy i synonimy, oddzielone przecinkami, np. „wyciskanie na ławce "
+"płaskiej, wyciskanie sztangi”."
 
 #: .\exercises\models.py:136
 msgid "muscle group"
@@ -381,7 +389,8 @@ msgstr "zapisywane jako"
 
 #: .\exercises\models.py:144
 msgid "Which fields a set has: kg × reps, reps, time, or distance + time."
-msgstr "Jakie pola ma seria: kg × powtórzenia, powtórzenia, czas albo dystans + czas."
+msgstr ""
+"Jakie pola ma seria: kg × powtórzenia, powtórzenia, czas albo dystans + czas."
 
 #: .\exercises\models.py:147
 msgid "category"
@@ -400,8 +409,10 @@ msgid "progression step (kg)"
 msgstr "krok progresji (kg)"
 
 #: .\exercises\models.py:162
-msgid "How much weight to add when you hit the top of the rep range on every set."
-msgstr "Ile ciężaru dodać, gdy w każdej serii dojdziesz do górnej granicy powtórzeń."
+msgid ""
+"How much weight to add when you hit the top of the rep range on every set."
+msgstr ""
+"Ile ciężaru dodać, gdy w każdej serii dojdziesz do górnej granicy powtórzeń."
 
 #: .\exercises\models.py:170
 msgid "main muscles"
@@ -455,7 +466,8 @@ msgstr "Utworzono „%(name)s”, z własną historią i rekordami."
 #: .\exercises\views.py:214
 #, python-format
 msgid "Created “%(name)s”. You can set its details later in Exercises."
-msgstr "Utworzono „%(name)s”. Szczegóły możesz uzupełnić później w Ćwiczeniach."
+msgstr ""
+"Utworzono „%(name)s”. Szczegóły możesz uzupełnić później w Ćwiczeniach."
 
 #: .\feedback\forms.py:13
 msgid "Kind"
@@ -560,11 +572,16 @@ msgstr "Dzięki! Zgłoszenie dotarło."
 #: .\feedback\views.py:28
 #, python-format
 msgid "You've already sent %(count)s report in the last hour. Try again later."
-msgid_plural "You've already sent %(count)s reports in the last hour. Try again later."
-msgstr[0] "Wysłano już %(count)s zgłoszenie w ciągu godziny. Spróbuj ponownie później."
-msgstr[1] "Wysłano już %(count)s zgłoszenia w ciągu godziny. Spróbuj ponownie później."
-msgstr[2] "Wysłano już %(count)s zgłoszeń w ciągu godziny. Spróbuj ponownie później."
-msgstr[3] "Wysłano już %(count)s zgłoszeń w ciągu godziny. Spróbuj ponownie później."
+msgid_plural ""
+"You've already sent %(count)s reports in the last hour. Try again later."
+msgstr[0] ""
+"Wysłano już %(count)s zgłoszenie w ciągu godziny. Spróbuj ponownie później."
+msgstr[1] ""
+"Wysłano już %(count)s zgłoszenia w ciągu godziny. Spróbuj ponownie później."
+msgstr[2] ""
+"Wysłano już %(count)s zgłoszeń w ciągu godziny. Spróbuj ponownie później."
+msgstr[3] ""
+"Wysłano już %(count)s zgłoszeń w ciągu godziny. Spróbuj ponownie później."
 
 #: .\plans\forms.py:19
 msgid "e.g. Push"
@@ -694,17 +711,18 @@ msgstr "Adres już zajęty"
 msgid "This address is already confirmed by a different account."
 msgstr "Ten adres jest już potwierdzony przez inne konto."
 
-#: .\templates\account\email_confirm.html:21 .\templates\account\password_reset_from_key.html:9
+#: .\templates\account\email_confirm.html:21
+#: .\templates\account\password_reset_from_key.html:9
 msgid "Link expired"
 msgstr "Link wygasł"
 
 #: .\templates\account\email_confirm.html:22
 msgid ""
-"This link has expired or was already used. Try logging in: if your address isn't confirmed yet, "
-"we'll send you a new link."
+"This link has expired or was already used. Try logging in: if your address "
+"isn't confirmed yet, we'll send you a new link."
 msgstr ""
-"Ten link wygasł albo został już użyty. Spróbuj się zalogować: jeśli adres nie jest jeszcze "
-"potwierdzony, wyślemy nowy link."
+"Ten link wygasł albo został już użyty. Spróbuj się zalogować: jeśli adres "
+"nie jest jeszcze potwierdzony, wyślemy nowy link."
 
 #: .\templates\account\email_confirm.html:23 .\templates\account\login.html:4
 #: .\templates\account\login.html:8 .\templates\account\login.html:20
@@ -728,7 +746,8 @@ msgstr "Nie pamiętasz hasła?"
 msgid "Create an account"
 msgstr "Załóż konto"
 
-#: .\templates\account\logout.html:4 .\templates\account\logout.html:12 .\templates\home.html:56
+#: .\templates\account\logout.html:4 .\templates\account\logout.html:12
+#: .\templates\home.html:56
 msgid "Log out"
 msgstr "Wyloguj"
 
@@ -736,7 +755,8 @@ msgstr "Wyloguj"
 msgid "Log out?"
 msgstr "Wylogować?"
 
-#: .\templates\account\password_reset.html:4 .\templates\account\password_reset.html:8
+#: .\templates\account\password_reset.html:4
+#: .\templates\account\password_reset.html:8
 msgid "Reset password"
 msgstr "Reset hasła"
 
@@ -744,7 +764,8 @@ msgstr "Reset hasła"
 msgid "Enter your email and we'll send you a link to set a new password."
 msgstr "Wpisz swój adres e-mail, a wyślemy link do ustawienia nowego hasła."
 
-#: .\templates\account\password_reset.html:13 .\templates\account\verification_sent.html:14
+#: .\templates\account\password_reset.html:13
+#: .\templates\account\verification_sent.html:14
 #: .\templates\accounts\settings.html:19
 msgid "Sending…"
 msgstr "Wysyłam…"
@@ -753,23 +774,25 @@ msgstr "Wysyłam…"
 msgid "Send reset link"
 msgstr "Wyślij link"
 
-#: .\templates\account\password_reset.html:15 .\templates\account\password_reset_done.html:10
+#: .\templates\account\password_reset.html:15
+#: .\templates\account\password_reset_done.html:10
 #: .\templates\account\verification_sent.html:17
 msgid "Back to log in"
 msgstr "Wróć do logowania"
 
-#: .\templates\account\password_reset_done.html:4 .\templates\account\password_reset_done.html:8
+#: .\templates\account\password_reset_done.html:4
+#: .\templates\account\password_reset_done.html:8
 #: .\templates\account\verification_sent.html:4
 msgid "Check your email"
 msgstr "Sprawdź skrzynkę"
 
 #: .\templates\account\password_reset_done.html:9
 msgid ""
-"If an account uses that address, we've sent a link to set a new password. Can't see it? Check your"
-" spam folder."
+"If an account uses that address, we've sent a link to set a new password. "
+"Can't see it? Check your spam folder."
 msgstr ""
-"Jeśli jakieś konto używa tego adresu, wysłaliśmy link do ustawienia nowego hasła. Nie widzisz go? "
-"Sprawdź folder spam."
+"Jeśli jakieś konto używa tego adresu, wysłaliśmy link do ustawienia nowego "
+"hasła. Nie widzisz go? Sprawdź folder spam."
 
 #: .\templates\account\password_reset_from_key.html:4
 msgid "New password"
@@ -810,8 +833,12 @@ msgstr "Załóż konto"
 
 #: .\templates\account\signup.html:19
 #, python-format
-msgid "<a href=\"%(login_url)s\">Log in</a> or <a href=\"%(reset_url)s\">reset your password</a>."
-msgstr "<a href=\"%(login_url)s\">Zaloguj się</a> albo <a href=\"%(reset_url)s\">zresetuj hasło</a>."
+msgid ""
+"<a href=\"%(login_url)s\">Log in</a> or <a href=\"%(reset_url)s\">reset your "
+"password</a>."
+msgstr ""
+"<a href=\"%(login_url)s\">Zaloguj się</a> albo <a "
+"href=\"%(reset_url)s\">zresetuj hasło</a>."
 
 #: .\templates\account\signup.html:26
 msgid "Creating your account…"
@@ -827,12 +854,18 @@ msgstr "Konto założone!"
 
 #: .\templates\account\verification_sent.html:9
 #, python-format
-msgid "We sent a link to <strong>%(email)s</strong>. Click it to activate your account."
-msgstr "Wysłaliśmy link na adres <strong>%(email)s</strong>. Kliknij go, żeby aktywować konto."
+msgid ""
+"We sent a link to <strong>%(email)s</strong>. Click it to activate your "
+"account."
+msgstr ""
+"Wysłaliśmy link na adres <strong>%(email)s</strong>. Kliknij go, żeby "
+"aktywować konto."
 
 #: .\templates\account\verification_sent.html:9
-msgid "We sent a link to your email address. Click it to activate your account."
-msgstr "Wysłaliśmy link na Twój adres e-mail. Kliknij go, żeby aktywować konto."
+msgid ""
+"We sent a link to your email address. Click it to activate your account."
+msgstr ""
+"Wysłaliśmy link na Twój adres e-mail. Kliknij go, żeby aktywować konto."
 
 #: .\templates\account\verification_sent.html:10
 msgid "Can't see the email? Check your spam folder or send it again."
@@ -873,11 +906,12 @@ msgstr "Ocena serii"
 
 #: .\templates\accounts\settings.html:30
 msgid ""
-"After a set you can say how hard it was. It helps LiftLog suggest when to add weight. Saved "
-"ratings stay the same when you switch."
+"After a set you can say how hard it was. It helps LiftLog suggest when to "
+"add weight. Saved ratings stay the same when you switch."
 msgstr ""
-"Po serii możesz ocenić, jak było ciężko. Dzięki temu LiftLog lepiej podpowiada, kiedy dołożyć "
-"ciężaru. Po zmianie skali zapisane oceny się nie zmieniają."
+"Po serii możesz ocenić, jak było ciężko. Dzięki temu LiftLog lepiej "
+"podpowiada, kiedy dołożyć ciężaru. Po zmianie skali zapisane oceny się nie "
+"zmieniają."
 
 #: .\templates\accounts\settings.html:33
 msgid "Rest timer"
@@ -893,28 +927,30 @@ msgstr "Co oznaczają oceny serii"
 
 #: .\templates\accounts\settings.html:41
 msgid ""
-"<strong>Simple.</strong> <em>Easy</em>: you could do 4 or more extra reps. <em>Medium</em>: about "
-"3. <em>Hard</em>: 1–2. <em>Max effort</em>: not one more clean rep."
+"<strong>Simple.</strong> <em>Easy</em>: you could do 4 or more extra reps. "
+"<em>Medium</em>: about 3. <em>Hard</em>: 1–2. <em>Max effort</em>: not one "
+"more clean rep."
 msgstr ""
-"<strong>Prosta.</strong> <em>Lekko</em>: dasz radę zrobić jeszcze 4 lub więcej powtórzeń. "
-"<em>Średnio</em>: około 3. <em>Ciężko</em>: 1–2. <em>Maksimum</em>: ani jednego czystego "
-"powtórzenia więcej."
+"<strong>Prosta.</strong> <em>Lekko</em>: dasz radę zrobić jeszcze 4 lub "
+"więcej powtórzeń. <em>Średnio</em>: około 3. <em>Ciężko</em>: 1–2. "
+"<em>Maksimum</em>: ani jednego czystego powtórzenia więcej."
 
 #: .\templates\accounts\settings.html:42
 msgid ""
-"<strong>RIR</strong> (reps in reserve): how many more good reps you could have done. 0 = none, 4+ "
-"= four or more."
+"<strong>RIR</strong> (reps in reserve): how many more good reps you could "
+"have done. 0 = none, 4+ = four or more."
 msgstr ""
-"<strong>RIR</strong> (reps in reserve, powtórzenia w zapasie): ile jeszcze dobrych powtórzeń "
-"dałoby się zrobić. 0 = żadnego, 4+ = cztery lub więcej."
+"<strong>RIR</strong> (reps in reserve, powtórzenia w zapasie): ile jeszcze "
+"dobrych powtórzeń dałoby się zrobić. 0 = żadnego, 4+ = cztery lub więcej."
 
 #: .\templates\accounts\settings.html:43
 msgid ""
-"<strong>RPE</strong> (rate of perceived exertion): 10 = nothing left, 9 = one rep left, 8 = two, "
-"and so on. 8.5 means “two, maybe one”."
+"<strong>RPE</strong> (rate of perceived exertion): 10 = nothing left, 9 = "
+"one rep left, 8 = two, and so on. 8.5 means “two, maybe one”."
 msgstr ""
-"<strong>RPE</strong> (rate of perceived exertion, odczuwany wysiłek): 10 = nic w zapasie, 9 = "
-"jedno powtórzenie w zapasie, 8 = dwa i tak dalej. 8,5 znaczy „dwa, może jedno”."
+"<strong>RPE</strong> (rate of perceived exertion, odczuwany wysiłek): 10 = "
+"nic w zapasie, 9 = jedno powtórzenie w zapasie, 8 = dwa i tak dalej. 8,5 "
+"znaczy „dwa, może jedno”."
 
 #: .\templates\accounts\settings.html:48
 msgid "How the rest timer options work"
@@ -922,88 +958,104 @@ msgstr "Jak działają opcje minutnika przerwy"
 
 #: .\templates\accounts\settings.html:50
 msgid ""
-"<strong>iPhone Clock timer.</strong> A web page can't ring while the phone is locked, but the "
-"Clock app can. After each set, tap <em>Start iPhone timer</em> in the rest bar: Shortcuts starts a"
-" Clock timer for the planned rest and brings you back to LiftLog."
+"<strong>iPhone Clock timer.</strong> A web page can't ring while the phone "
+"is locked, but the Clock app can. After each set, tap <em>Start iPhone "
+"timer</em> in the rest bar: Shortcuts starts a Clock timer for the planned "
+"rest and brings you back to LiftLog."
 msgstr ""
-"<strong>Minutnik w Zegarze iPhone’a.</strong> Strona internetowa nie zadzwoni, gdy telefon jest "
-"zablokowany, ale aplikacja Zegar tak. Po każdej serii dotknij <em>Włącz minutnik iPhone’a</em> na "
-"pasku przerwy: Skróty włączą minutnik w Zegarze na zaplanowaną przerwę i wrócą do LiftLog."
+"<strong>Minutnik w Zegarze iPhone’a.</strong> Strona internetowa nie "
+"zadzwoni, gdy telefon jest zablokowany, ale aplikacja Zegar tak. Po każdej "
+"serii dotknij <em>Włącz minutnik iPhone’a</em> na pasku przerwy: Skróty "
+"włączą minutnik w Zegarze na zaplanowaną przerwę i wrócą do LiftLog."
 
 #: .\templates\accounts\settings.html:51
 msgid ""
-"<strong>Keep the screen on.</strong> While the workout screen is open, the phone won't auto-lock, "
-"so the built-in timer stays visible. Works on HTTPS in current Safari and Chrome; other browsers "
-"simply ignore it."
+"<strong>Keep the screen on.</strong> While the workout screen is open, the "
+"phone won't auto-lock, so the built-in timer stays visible. Works on HTTPS "
+"in current Safari and Chrome; other browsers simply ignore it."
 msgstr ""
-"<strong>Nie wygaszaj ekranu.</strong> Gdy ekran treningu jest otwarty, telefon nie zablokuje się "
-"sam, więc wbudowany minutnik zostaje na widoku. Działa przez HTTPS w aktualnym Safari i Chrome; "
-"inne przeglądarki po prostu to pomijają."
+"<strong>Nie wygaszaj ekranu.</strong> Gdy ekran treningu jest otwarty, "
+"telefon nie zablokuje się sam, więc wbudowany minutnik zostaje na widoku. "
+"Działa przez HTTPS w aktualnym Safari i Chrome; inne przeglądarki po prostu "
+"to pomijają."
 
 #: .\templates\accounts\settings.html:52
-msgid "<strong>Beep.</strong> A short sound when the rest is over, only while LiftLog is on screen."
+msgid ""
+"<strong>Beep.</strong> A short sound when the rest is over, only while "
+"LiftLog is on screen."
 msgstr ""
-"<strong>Sygnał.</strong> Krótki dźwięk na koniec przerwy, tylko gdy LiftLog jest na ekranie."
+"<strong>Sygnał.</strong> Krótki dźwięk na koniec przerwy, tylko gdy LiftLog "
+"jest na ekranie."
 
 #: .\templates\accounts\settings.html:57
 msgid "Make the iPhone shortcut (once, ~2 minutes)"
 msgstr "Utwórz skrót na iPhonie (raz, ok. 2 minuty)"
 
 #: .\templates\accounts\settings.html:59
-msgid "Open the <strong>Shortcuts</strong> app and tap <strong>+</strong> in the top right corner."
-msgstr "Otwórz aplikację <strong>Skróty</strong> i dotknij <strong>+</strong> w prawym górnym rogu."
+msgid ""
+"Open the <strong>Shortcuts</strong> app and tap <strong>+</strong> in the "
+"top right corner."
+msgstr ""
+"Otwórz aplikację <strong>Skróty</strong> i dotknij <strong>+</strong> w "
+"prawym górnym rogu."
 
 #: .\templates\accounts\settings.html:60
 #, python-format
 msgid ""
 "Tap the shortcut's name at the top, choose <strong>Rename</strong> and type "
-"<strong>exactly</strong> the name from the settings above: <code>%(name)s</code>."
+"<strong>exactly</strong> the name from the settings above: <code>%(name)s</"
+"code>."
 msgstr ""
 "Dotknij nazwy skrótu na górze, wybierz <strong>Zmień nazwę</strong> i wpisz "
 "<strong>dokładnie</strong> nazwę z ustawień powyżej: <code>%(name)s</code>."
 
 #: .\templates\accounts\settings.html:61
 msgid ""
-"Tap <strong>Add Action</strong>, search for <strong>Start Timer</strong> (it belongs to the Clock "
-"app) and tap it."
+"Tap <strong>Add Action</strong>, search for <strong>Start Timer</strong> (it "
+"belongs to the Clock app) and tap it."
 msgstr ""
-"Dotknij <strong>Dodaj czynność</strong>, wyszukaj <strong>Uruchom minutnik</strong> (z aplikacji "
-"Zegar) i dotknij go."
+"Dotknij <strong>Dodaj czynność</strong>, wyszukaj <strong>Uruchom minutnik</"
+"strong> (z aplikacji Zegar) i dotknij go."
 
 #: .\templates\accounts\settings.html:62
 msgid ""
-"The action reads “Start timer for <em>30 minutes</em>”. Tap <em>30</em>, choose <strong>Select "
-"Variable</strong> and then <strong>Shortcut Input</strong>."
+"The action reads “Start timer for <em>30 minutes</em>”. Tap <em>30</em>, "
+"choose <strong>Select Variable</strong> and then <strong>Shortcut Input</"
+"strong>."
 msgstr ""
-"Czynność brzmi „Uruchom minutnik na <em>30 minut</em>”. Dotknij <em>30</em>, wybierz "
-"<strong>Wybierz zmienną</strong>, a potem <strong>Dane wejściowe skrótu</strong>."
+"Czynność brzmi „Uruchom minutnik na <em>30 minut</em>”. Dotknij <em>30</em>, "
+"wybierz <strong>Wybierz zmienną</strong>, a potem <strong>Dane wejściowe "
+"skrótu</strong>."
 
 #: .\templates\accounts\settings.html:63
 msgid ""
-"Tap <em>minutes</em> and change it to <strong>seconds</strong>. LiftLog sends the rest length in "
-"seconds, e.g. 90."
+"Tap <em>minutes</em> and change it to <strong>seconds</strong>. LiftLog "
+"sends the rest length in seconds, e.g. 90."
 msgstr ""
-"Dotknij <em>minut</em> i zmień na <strong>sekundy</strong>. LiftLog wysyła długość przerwy w "
-"sekundach, np. 90."
+"Dotknij <em>minut</em> i zmień na <strong>sekundy</strong>. LiftLog wysyła "
+"długość przerwy w sekundach, np. 90."
 
 #: .\templates\accounts\settings.html:64
 msgid "Tap <strong>Done</strong>."
 msgstr "Dotknij <strong>Gotowe</strong>."
 
 #: .\templates\accounts\settings.html:65
-msgid "Back here, switch on <em>iPhone Clock timer via Shortcuts</em> and save."
-msgstr "Wróć tutaj, włącz <em>Minutnik w Zegarze iPhone’a przez Skróty</em> i zapisz."
+msgid ""
+"Back here, switch on <em>iPhone Clock timer via Shortcuts</em> and save."
+msgstr ""
+"Wróć tutaj, włącz <em>Minutnik w Zegarze iPhone’a przez Skróty</em> i zapisz."
 
 #: .\templates\accounts\settings.html:66
 msgid ""
-"In a workout, log a set and tap <strong>Start iPhone timer</strong> in the rest bar. The first "
-"time, iOS asks whether LiftLog may open Shortcuts: tap <strong>Open</strong>. If Shortcuts asks "
-"for permission to run the action, tap <strong>Always Allow</strong>."
+"In a workout, log a set and tap <strong>Start iPhone timer</strong> in the "
+"rest bar. The first time, iOS asks whether LiftLog may open Shortcuts: tap "
+"<strong>Open</strong>. If Shortcuts asks for permission to run the action, "
+"tap <strong>Always Allow</strong>."
 msgstr ""
-"Na treningu zapisz serię i dotknij <strong>Włącz minutnik iPhone’a</strong> na pasku przerwy. Za "
-"pierwszym razem iOS zapyta, czy LiftLog może otworzyć Skróty: dotknij <strong>Otwórz</strong>. "
-"Jeśli Skróty zapytają o pozwolenie na wykonanie czynności, dotknij <strong>Zawsze "
-"pozwalaj</strong>."
+"Na treningu zapisz serię i dotknij <strong>Włącz minutnik iPhone’a</strong> "
+"na pasku przerwy. Za pierwszym razem iOS zapyta, czy LiftLog może otworzyć "
+"Skróty: dotknij <strong>Otwórz</strong>. Jeśli Skróty zapytają o pozwolenie "
+"na wykonanie czynności, dotknij <strong>Zawsze pozwalaj</strong>."
 
 #: .\templates\accounts\settings.html:69
 msgid "Not working?"
@@ -1011,36 +1063,40 @@ msgstr "Nie działa?"
 
 #: .\templates\accounts\settings.html:71
 msgid ""
-"<strong>“Shortcut not found”</strong>: the name here and in Shortcuts must match exactly, "
-"including spaces and capital letters."
+"<strong>“Shortcut not found”</strong>: the name here and in Shortcuts must "
+"match exactly, including spaces and capital letters."
 msgstr ""
-"<strong>„Nie znaleziono skrótu”</strong>: nazwa tutaj i w Skrótach musi być identyczna, łącznie ze"
-" spacjami i wielkimi literami."
+"<strong>„Nie znaleziono skrótu”</strong>: nazwa tutaj i w Skrótach musi być "
+"identyczna, łącznie ze spacjami i wielkimi literami."
 
 #: .\templates\accounts\settings.html:72
 msgid ""
-"<strong>Timer has the wrong length</strong>: check that the unit is <em>seconds</em>. If the "
-"variable can't be chosen, add the action <strong>Get Numbers from Input</strong> before <em>Start "
-"Timer</em> and use its result as the duration."
+"<strong>Timer has the wrong length</strong>: check that the unit is "
+"<em>seconds</em>. If the variable can't be chosen, add the action "
+"<strong>Get Numbers from Input</strong> before <em>Start Timer</em> and use "
+"its result as the duration."
 msgstr ""
-"<strong>Minutnik ma złą długość</strong>: sprawdź, czy jednostką są <em>sekundy</em>. Jeśli nie da"
-" się wybrać zmiennej, dodaj przed <em>Uruchom minutnik</em> czynność <strong>Pobierz liczby z "
-"danych wejściowych</strong> i użyj jej wyniku jako czasu."
+"<strong>Minutnik ma złą długość</strong>: sprawdź, czy jednostką są "
+"<em>sekundy</em>. Jeśli nie da się wybrać zmiennej, dodaj przed <em>Uruchom "
+"minutnik</em> czynność <strong>Pobierz liczby z danych wejściowych</strong> "
+"i użyj jej wyniku jako czasu."
 
 #: .\templates\accounts\settings.html:73
 msgid ""
-"<strong>You end up in Safari instead of the home-screen app</strong>: that's how iOS handles the "
-"return link; your sets are saved either way."
+"<strong>You end up in Safari instead of the home-screen app</strong>: that's "
+"how iOS handles the return link; your sets are saved either way."
 msgstr ""
-"<strong>Lądujesz w Safari zamiast w aplikacji z ekranu początkowego</strong>: tak iOS obsługuje "
-"link powrotny; serie i tak są zapisane."
+"<strong>Lądujesz w Safari zamiast w aplikacji z ekranu początkowego</"
+"strong>: tak iOS obsługuje link powrotny; serie i tak są zapisane."
 
-#: .\templates\base.html:23 .\templates\plans\plan_list.html:4 .\templates\plans\plan_list.html:8
+#: .\templates\base.html:23 .\templates\plans\plan_list.html:4
+#: .\templates\plans\plan_list.html:8
 msgid "Plans"
 msgstr "Plany"
 
 #: .\templates\base.html:26 .\templates\feedback\feedback_page.html:5
-#: .\templates\feedback\feedback_page.html:9 .\templates\feedback\partials\dialog.html:4
+#: .\templates\feedback\feedback_page.html:9
+#: .\templates\feedback\partials\dialog.html:4
 msgctxt "send feedback"
 msgid "Report"
 msgstr "Zgłoś"
@@ -1048,14 +1104,16 @@ msgstr "Zgłoś"
 #: .\templates\base.html:55
 #, python-format
 msgid ""
-"Exercise data and photos: <a href=\"%(url)s\" rel=\"noopener\">free-exercise-db</a> by yuhonas, "
-"public domain (The Unlicense)."
+"Exercise data and photos: <a href=\"%(url)s\" rel=\"noopener\">free-exercise-"
+"db</a> by yuhonas, public domain (The Unlicense)."
 msgstr ""
-"Dane i zdjęcia ćwiczeń: <a href=\"%(url)s\" rel=\"noopener\">free-exercise-db</a> (autor: "
-"yuhonas), domena publiczna (The Unlicense)."
+"Dane i zdjęcia ćwiczeń: <a href=\"%(url)s\" rel=\"noopener\">free-exercise-"
+"db</a> (autor: yuhonas), domena publiczna (The Unlicense)."
 
-#: .\templates\exercises\change_variant.html:4 .\templates\exercises\change_variant.html:10
-#: .\templates\exercises\exercise_detail.html:51 .\templates\plans\plan_detail.html:39
+#: .\templates\exercises\change_variant.html:4
+#: .\templates\exercises\change_variant.html:10
+#: .\templates\exercises\exercise_detail.html:51
+#: .\templates\plans\plan_detail.html:39
 #: .\templates\workouts\change_variant_scope.html:4
 #: .\templates\workouts\partials\exercise_card.html:6
 msgid "Change variant"
@@ -1069,7 +1127,8 @@ msgstr "Warianty tego ruchu"
 msgid "current"
 msgstr "obecny"
 
-#: .\templates\exercises\change_variant.html:31 .\templates\exercises\exercise_detail.html:59
+#: .\templates\exercises\change_variant.html:31
+#: .\templates\exercises\exercise_detail.html:59
 msgid "mine"
 msgstr "moje"
 
@@ -1079,9 +1138,11 @@ msgstr "Inny sprzęt"
 
 #: .\templates\exercises\change_variant.html:41
 msgid ""
-"Creates a variant with its own history and records. Muscles, instructions and photos are copied."
+"Creates a variant with its own history and records. Muscles, instructions "
+"and photos are copied."
 msgstr ""
-"Tworzy wariant z własną historią i rekordami. Mięśnie, instrukcje i zdjęcia zostaną skopiowane."
+"Tworzy wariant z własną historią i rekordami. Mięśnie, instrukcje i zdjęcia "
+"zostaną skopiowane."
 
 #: .\templates\exercises\change_variant.html:54
 msgctxt "equipment"
@@ -1100,10 +1161,13 @@ msgstr "np. kamizelka obciążeniowa, worek z piaskiem"
 msgid "Create variant"
 msgstr "Utwórz wariant"
 
-#: .\templates\exercises\change_variant.html:66 .\templates\exercises\exercise_form.html:14
+#: .\templates\exercises\change_variant.html:66
+#: .\templates\exercises\exercise_form.html:14
 #: .\templates\exercises\picker.html:12 .\templates\plans\add_to_plan.html:9
-#: .\templates\plans\day_form.html:20 .\templates\plans\plan_exercise_form.html:30
-#: .\templates\plans\plan_form.html:14 .\templates\workouts\change_variant_scope.html:21
+#: .\templates\plans\day_form.html:20
+#: .\templates\plans\plan_exercise_form.html:30
+#: .\templates\plans\plan_form.html:14
+#: .\templates\workouts\change_variant_scope.html:21
 #: .\templates\workouts\partials\exercise_card.html:47
 #: .\templates\workouts\partials\set_inputs.html:25
 msgid "Cancel"
@@ -1131,7 +1195,8 @@ msgstr "Wielostawowe"
 msgid "Isolation"
 msgstr "Izolowane"
 
-#: .\templates\exercises\exercise_detail.html:28 .\templates\exercises\partials\picker_item.html:5
+#: .\templates\exercises\exercise_detail.html:28
+#: .\templates\exercises\partials\picker_item.html:5
 msgid "Mine"
 msgstr "Moje"
 
@@ -1149,7 +1214,8 @@ msgstr "%(name)s, pozycja początkowa"
 msgid "%(name)s, end position"
 msgstr "%(name)s, pozycja końcowa"
 
-#: .\templates\exercises\exercise_detail.html:41 .\templates\exercises\exercise_detail.html:43
+#: .\templates\exercises\exercise_detail.html:41
+#: .\templates\exercises\exercise_detail.html:43
 msgid "Start position"
 msgstr "Pozycja początkowa"
 
@@ -1157,7 +1223,8 @@ msgstr "Pozycja początkowa"
 msgid "End position"
 msgstr "Pozycja końcowa"
 
-#: .\templates\exercises\exercise_detail.html:42 .\templates\exercises\exercise_detail.html:45
+#: .\templates\exercises\exercise_detail.html:42
+#: .\templates\exercises\exercise_detail.html:45
 msgid "Animate"
 msgstr "Animuj"
 
@@ -1170,8 +1237,10 @@ msgid "Variants"
 msgstr "Warianty"
 
 #: .\templates\exercises\exercise_detail.html:56
-msgid "The same movement with other equipment. Each has its own history and records."
-msgstr "Ten sam ruch z innym sprzętem. Każdy wariant ma własną historię i rekordy."
+msgid ""
+"The same movement with other equipment. Each has its own history and records."
+msgstr ""
+"Ten sam ruch z innym sprzętem. Każdy wariant ma własną historię i rekordy."
 
 #: .\templates\exercises\exercise_detail.html:66
 msgid "Muscles"
@@ -1193,7 +1262,8 @@ msgstr "Jak wykonać"
 msgid "My history"
 msgstr "Moja historia"
 
-#: .\templates\exercises\exercise_detail.html:88 .\templates\exercises\exercise_detail.html:93
+#: .\templates\exercises\exercise_detail.html:88
+#: .\templates\exercises\exercise_detail.html:93
 #: .\templates\plans\plan_list.html:18
 msgid "j M Y"
 msgstr "j b Y"
@@ -1207,12 +1277,15 @@ msgstr "Ostatnio (%(date)s):"
 msgid "You haven't logged this exercise yet."
 msgstr "Nie masz jeszcze zapisanego tego ćwiczenia."
 
-#: .\templates\exercises\exercise_detail.html:103 .\templates\plans\add_to_plan.html:4
+#: .\templates\exercises\exercise_detail.html:103
+#: .\templates\plans\add_to_plan.html:4
 msgid "Add to plan"
 msgstr "Dodaj do planu"
 
-#: .\templates\exercises\exercise_detail.html:104 .\templates\exercises\exercise_form.html:4
-#: .\templates\plans\plan_exercise_form.html:4 .\templates\plans\plan_exercise_form.html:8
+#: .\templates\exercises\exercise_detail.html:104
+#: .\templates\exercises\exercise_form.html:4
+#: .\templates\plans\plan_exercise_form.html:4
+#: .\templates\plans\plan_exercise_form.html:8
 msgid "Edit exercise"
 msgstr "Edytuj ćwiczenie"
 
@@ -1221,8 +1294,10 @@ msgstr "Edytuj ćwiczenie"
 msgid "All exercises"
 msgstr "Wszystkie ćwiczenia"
 
-#: .\templates\exercises\exercise_form.html:4 .\templates\exercises\exercise_form.html:8
-#: .\templates\plans\plan_detail.html:49 .\templates\plans\plan_exercise_form.html:4
+#: .\templates\exercises\exercise_form.html:4
+#: .\templates\exercises\exercise_form.html:8
+#: .\templates\plans\plan_detail.html:49
+#: .\templates\plans\plan_exercise_form.html:4
 #: .\templates\workouts\workout_detail.html:41 .\workouts\views.py:290
 msgid "Add exercise"
 msgstr "Dodaj ćwiczenie"
@@ -1232,7 +1307,8 @@ msgstr "Dodaj ćwiczenie"
 msgid "Edit %(name)s"
 msgstr "Edytuj: %(name)s"
 
-#: .\templates\exercises\exercise_form.html:12 .\templates\plans\day_form.html:12
+#: .\templates\exercises\exercise_form.html:12
+#: .\templates\plans\day_form.html:12
 #: .\templates\plans\plan_exercise_form.html:21
 msgid "Save"
 msgstr "Zapisz"
@@ -1328,13 +1404,17 @@ msgstr "Każdy poziom"
 msgid "Search"
 msgstr "Szukaj"
 
-#: .\templates\feedback\partials\dialog.html:5 .\templates\feedback\partials\thanks.html:4
+#: .\templates\feedback\partials\dialog.html:5
+#: .\templates\feedback\partials\thanks.html:4
 msgid "Close"
 msgstr "Zamknij"
 
 #: .\templates\feedback\partials\form.html:25
-msgid "We'll attach this page's address and your device type to make the problem easier to find."
-msgstr "Dołączymy adres tej strony i typ urządzenia, żeby łatwiej znaleźć problem."
+msgid ""
+"We'll attach this page's address and your device type to make the problem "
+"easier to find."
+msgstr ""
+"Dołączymy adres tej strony i typ urządzenia, żeby łatwiej znaleźć problem."
 
 #: .\templates\feedback\partials\form.html:26
 msgid "Send"
@@ -1363,17 +1443,21 @@ msgstr "Zacznij trening"
 
 #: .\templates\home.html:25
 #, python-format
-msgid "Your active plan “%(name)s” has no days yet. <a href=\"%(plan_url)s\">Add days</a>"
-msgstr "Twój aktywny plan „%(name)s” nie ma jeszcze dni. <a href=\"%(plan_url)s\">Dodaj dni</a>"
+msgid ""
+"Your active plan “%(name)s” has no days yet. <a href=\"%(plan_url)s\">Add "
+"days</a>"
+msgstr ""
+"Twój aktywny plan „%(name)s” nie ma jeszcze dni. <a "
+"href=\"%(plan_url)s\">Dodaj dni</a>"
 
 #: .\templates\home.html:29
 #, python-format
 msgid ""
-"<a href=\"%(create_url)s\">Create a plan</a> to start workouts from it, or just log a free "
-"workout."
+"<a href=\"%(create_url)s\">Create a plan</a> to start workouts from it, or "
+"just log a free workout."
 msgstr ""
-"<a href=\"%(create_url)s\">Utwórz plan</a>, żeby zaczynać z niego treningi, albo po prostu zapisz "
-"wolny trening."
+"<a href=\"%(create_url)s\">Utwórz plan</a>, żeby zaczynać z niego treningi, "
+"albo po prostu zapisz wolny trening."
 
 #: .\templates\home.html:33
 msgid "Empty workout"
@@ -1460,7 +1544,8 @@ msgstr "Zmień nazwę: %(name)s"
 msgid "%(sets)s × %(target)s · rest %(rest)s s"
 msgstr "%(sets)s × %(target)s · przerwa %(rest)s s"
 
-#: .\templates\plans\plan_detail.html:39 .\templates\workouts\partials\exercise_card.html:6
+#: .\templates\plans\plan_detail.html:39
+#: .\templates\workouts\partials\exercise_card.html:6
 #, python-format
 msgid "Change variant of %(name)s"
 msgstr "Zmień wariant: %(name)s"
@@ -1470,8 +1555,11 @@ msgid "No exercises yet."
 msgstr "Nie ma jeszcze ćwiczeń."
 
 #: .\templates\plans\plan_detail.html:52
-msgid "Add the first training day below, e.g. “Push”, “Upper A” or “Full body”."
-msgstr "Dodaj poniżej pierwszy dzień treningowy, np. „Push”, „Góra A” albo „Całe ciało”."
+msgid ""
+"Add the first training day below, e.g. “Push”, “Upper A” or “Full body”."
+msgstr ""
+"Dodaj poniżej pierwszy dzień treningowy, np. „Push”, „Góra A” albo „Całe "
+"ciało”."
 
 #: .\templates\plans\plan_detail.html:65
 msgid "Plan settings"
@@ -1522,11 +1610,11 @@ msgstr "Utworzony %(date)s"
 
 #: .\templates\plans\plan_list.html:25
 msgid ""
-"No plans yet. A plan has days (e.g. Push / Pull / Legs), and each day has exercises with sets, a "
-"rep range and rest time."
+"No plans yet. A plan has days (e.g. Push / Pull / Legs), and each day has "
+"exercises with sets, a rep range and rest time."
 msgstr ""
-"Nie masz jeszcze planów. Plan składa się z dni (np. Push / Pull / Nogi), a każdy dzień z ćwiczeń z"
-" liczbą serii, zakresem powtórzeń i przerwą."
+"Nie masz jeszcze planów. Plan składa się z dni (np. Push / Pull / Nogi), a "
+"każdy dzień z ćwiczeń z liczbą serii, zakresem powtórzeń i przerwą."
 
 #: .\templates\plans\plan_list.html:26
 msgid "Create your first plan"
@@ -1562,7 +1650,8 @@ msgstr "Zmień też w planie"
 #: .\templates\workouts\change_variant_scope.html:19
 #, python-format
 msgid "From now on the plan uses %(name)s, with the same sets and reps."
-msgstr "Od teraz w planie będzie %(name)s, z tymi samymi seriami i powtórzeniami."
+msgstr ""
+"Od teraz w planie będzie %(name)s, z tymi samymi seriami i powtórzeniami."
 
 #: .\templates\workouts\partials\exercise_card.html:8
 #, python-format
@@ -1574,6 +1663,7 @@ msgstr[2] "%(done)s/%(target)s serii"
 msgstr[3] "%(done)s/%(target)s serii"
 
 #: .\templates\workouts\partials\exercise_card.html:8
+#: .\workouts\tests\test_l10n.py:67
 #, python-format
 msgid "%(done)s set"
 msgid_plural "%(done)s sets"
@@ -1587,8 +1677,11 @@ msgid "Why no max test?"
 msgstr "Dlaczego bez testu maksymalnego?"
 
 #: .\templates\workouts\partials\exercise_card.html:24
-msgid "First time logging this. Pick a distance you can cover at a steady pace."
-msgstr "Pierwszy raz z tym ćwiczeniem. Wybierz dystans, który pokonasz w równym tempie."
+msgid ""
+"First time logging this. Pick a distance you can cover at a steady pace."
+msgstr ""
+"Pierwszy raz z tym ćwiczeniem. Wybierz dystans, który pokonasz w równym "
+"tempie."
 
 #: .\templates\workouts\partials\exercise_card.html:30
 msgid "Set"
@@ -1621,8 +1714,8 @@ msgstr "Usunąć serię %(number)s?"
 msgid "Delete set %(number)s"
 msgstr "Usuń serię %(number)s"
 
-#: .\templates\workouts\partials\exercise_card.html:65 .\templates\workouts\workout_summary.html:21
-#: .\workouts\forms.py:85
+#: .\templates\workouts\partials\exercise_card.html:65
+#: .\templates\workouts\workout_summary.html:21 .\workouts\forms.py:85
 msgid "Warm-up"
 msgstr "Rozgrzewka"
 
@@ -1677,7 +1770,8 @@ msgstr "Dystans minus 5 m"
 msgid "Distance plus 5 m"
 msgstr "Dystans plus 5 m"
 
-#: .\templates\workouts\partials\set_inputs.html:62 .\templates\workouts\partials\set_inputs.html:74
+#: .\templates\workouts\partials\set_inputs.html:62
+#: .\templates\workouts\partials\set_inputs.html:74
 msgid "(optional)"
 msgstr "(opcjonalnie)"
 
@@ -1706,7 +1800,8 @@ msgstr "Wróć do treningu"
 msgid "Started %(time)s · every set is saved as soon as you log it"
 msgstr "Start %(time)s · każda seria zapisuje się od razu"
 
-#: .\templates\workouts\workout_detail.html:26 .\templates\workouts\workout_detail.html:62
+#: .\templates\workouts\workout_detail.html:26
+#: .\templates\workouts\workout_detail.html:62
 msgid "Rest"
 msgstr "Przerwa"
 
@@ -1720,11 +1815,11 @@ msgstr "Dawaj!"
 
 #: .\templates\workouts\workout_detail.html:29
 msgid ""
-"This browser can't keep the screen on. You can set Auto-Lock in the phone's display settings "
-"instead."
+"This browser can't keep the screen on. You can set Auto-Lock in the phone's "
+"display settings instead."
 msgstr ""
-"Ta przeglądarka nie potrafi utrzymać włączonego ekranu. Zamiast tego ustaw automatyczną blokadę w "
-"ustawieniach ekranu telefonu."
+"Ta przeglądarka nie potrafi utrzymać włączonego ekranu. Zamiast tego ustaw "
+"automatyczną blokadę w ustawieniach ekranu telefonu."
 
 #: .\templates\workouts\workout_detail.html:30
 msgid "Screen stays on during this workout."
@@ -1732,7 +1827,8 @@ msgstr "Ekran nie zgaśnie podczas tego treningu."
 
 #: .\templates\workouts\workout_detail.html:31
 msgid "Couldn't keep the screen on right now (battery saver?)."
-msgstr "Nie udało się teraz utrzymać włączonego ekranu (oszczędzanie baterii?)."
+msgstr ""
+"Nie udało się teraz utrzymać włączonego ekranu (oszczędzanie baterii?)."
 
 #: .\templates\workouts\workout_detail.html:37
 msgid "No exercises yet. Add the first one below."
@@ -1869,41 +1965,58 @@ msgstr "Zostań przy %(weight)s kg i najpierw dokładaj powtórzenia."
 #, python-format
 msgid "Stay at %(weight)s kg until every set reaches %(reps)s rep."
 msgid_plural "Stay at %(weight)s kg until every set reaches %(reps)s reps."
-msgstr[0] "Zostań przy %(weight)s kg, aż w każdej serii zrobisz %(reps)s powtórzenie."
-msgstr[1] "Zostań przy %(weight)s kg, aż w każdej serii zrobisz %(reps)s powtórzenia."
-msgstr[2] "Zostań przy %(weight)s kg, aż w każdej serii zrobisz %(reps)s powtórzeń."
-msgstr[3] "Zostań przy %(weight)s kg, aż w każdej serii zrobisz %(reps)s powtórzeń."
+msgstr[0] ""
+"Zostań przy %(weight)s kg, aż w każdej serii zrobisz %(reps)s powtórzenie."
+msgstr[1] ""
+"Zostań przy %(weight)s kg, aż w każdej serii zrobisz %(reps)s powtórzenia."
+msgstr[2] ""
+"Zostań przy %(weight)s kg, aż w każdej serii zrobisz %(reps)s powtórzeń."
+msgstr[3] ""
+"Zostań przy %(weight)s kg, aż w każdej serii zrobisz %(reps)s powtórzeń."
 
 #: .\workouts\services.py:306
 #, python-format
 msgid "All sets hit %(reps)s rep. Add weight or a harder variation."
 msgid_plural "All sets hit %(reps)s reps. Add weight or a harder variation."
 msgstr[0] ""
-"We wszystkich seriach %(reps)s powtórzenie. Dołóż ciężaru albo wybierz trudniejszy wariant."
+"We wszystkich seriach %(reps)s powtórzenie. Dołóż ciężaru albo wybierz "
+"trudniejszy wariant."
 msgstr[1] ""
-"We wszystkich seriach %(reps)s powtórzenia. Dołóż ciężaru albo wybierz trudniejszy wariant."
+"We wszystkich seriach %(reps)s powtórzenia. Dołóż ciężaru albo wybierz "
+"trudniejszy wariant."
 msgstr[2] ""
-"We wszystkich seriach %(reps)s powtórzeń. Dołóż ciężaru albo wybierz trudniejszy wariant."
+"We wszystkich seriach %(reps)s powtórzeń. Dołóż ciężaru albo wybierz "
+"trudniejszy wariant."
 msgstr[3] ""
-"We wszystkich seriach %(reps)s powtórzeń. Dołóż ciężaru albo wybierz trudniejszy wariant."
+"We wszystkich seriach %(reps)s powtórzeń. Dołóż ciężaru albo wybierz "
+"trudniejszy wariant."
 
 #: .\workouts\services.py:314
 #, python-format
 msgid "%(reps)s rep with 3+ more in the tank: too light. Try %(weight)s kg."
-msgid_plural "%(reps)s reps with 3+ more in the tank: too light. Try %(weight)s kg."
-msgstr[0] "%(reps)s powtórzenie i jeszcze 3+ w zapasie: za lekko. Spróbuj %(weight)s kg."
-msgstr[1] "%(reps)s powtórzenia i jeszcze 3+ w zapasie: za lekko. Spróbuj %(weight)s kg."
-msgstr[2] "%(reps)s powtórzeń i jeszcze 3+ w zapasie: za lekko. Spróbuj %(weight)s kg."
-msgstr[3] "%(reps)s powtórzeń i jeszcze 3+ w zapasie: za lekko. Spróbuj %(weight)s kg."
+msgid_plural ""
+"%(reps)s reps with 3+ more in the tank: too light. Try %(weight)s kg."
+msgstr[0] ""
+"%(reps)s powtórzenie i jeszcze 3+ w zapasie: za lekko. Spróbuj %(weight)s kg."
+msgstr[1] ""
+"%(reps)s powtórzenia i jeszcze 3+ w zapasie: za lekko. Spróbuj %(weight)s kg."
+msgstr[2] ""
+"%(reps)s powtórzeń i jeszcze 3+ w zapasie: za lekko. Spróbuj %(weight)s kg."
+msgstr[3] ""
+"%(reps)s powtórzeń i jeszcze 3+ w zapasie: za lekko. Spróbuj %(weight)s kg."
 
 #: .\workouts\services.py:320
 #, python-format
 msgid "All sets hit %(reps)s rep last time. Try %(weight)s kg."
 msgid_plural "All sets hit %(reps)s reps last time. Try %(weight)s kg."
-msgstr[0] "Ostatnio we wszystkich seriach %(reps)s powtórzenie. Spróbuj %(weight)s kg."
-msgstr[1] "Ostatnio we wszystkich seriach %(reps)s powtórzenia. Spróbuj %(weight)s kg."
-msgstr[2] "Ostatnio we wszystkich seriach %(reps)s powtórzeń. Spróbuj %(weight)s kg."
-msgstr[3] "Ostatnio we wszystkich seriach %(reps)s powtórzeń. Spróbuj %(weight)s kg."
+msgstr[0] ""
+"Ostatnio we wszystkich seriach %(reps)s powtórzenie. Spróbuj %(weight)s kg."
+msgstr[1] ""
+"Ostatnio we wszystkich seriach %(reps)s powtórzenia. Spróbuj %(weight)s kg."
+msgstr[2] ""
+"Ostatnio we wszystkich seriach %(reps)s powtórzeń. Spróbuj %(weight)s kg."
+msgstr[3] ""
+"Ostatnio we wszystkich seriach %(reps)s powtórzeń. Spróbuj %(weight)s kg."
 
 #: .\workouts\services.py:331
 #, python-format
@@ -1916,20 +2029,24 @@ msgstr[3] "Ostatnio %(reps)s powtórzeń to było maksimum."
 
 #: .\workouts\services.py:345
 #, python-format
-msgid "All sets hit %(reps)s rep. Try +%(weight)s kg added weight or a harder variation."
-msgid_plural "All sets hit %(reps)s reps. Try +%(weight)s kg added weight or a harder variation."
+msgid ""
+"All sets hit %(reps)s rep. Try +%(weight)s kg added weight or a harder "
+"variation."
+msgid_plural ""
+"All sets hit %(reps)s reps. Try +%(weight)s kg added weight or a harder "
+"variation."
 msgstr[0] ""
-"We wszystkich seriach %(reps)s powtórzenie. Spróbuj z obciążeniem +%(weight)s kg albo "
-"trudniejszego wariantu."
+"We wszystkich seriach %(reps)s powtórzenie. Spróbuj z obciążeniem +"
+"%(weight)s kg albo trudniejszego wariantu."
 msgstr[1] ""
-"We wszystkich seriach %(reps)s powtórzenia. Spróbuj z obciążeniem +%(weight)s kg albo "
-"trudniejszego wariantu."
+"We wszystkich seriach %(reps)s powtórzenia. Spróbuj z obciążeniem +"
+"%(weight)s kg albo trudniejszego wariantu."
 msgstr[2] ""
-"We wszystkich seriach %(reps)s powtórzeń. Spróbuj z obciążeniem +%(weight)s kg albo trudniejszego "
-"wariantu."
+"We wszystkich seriach %(reps)s powtórzeń. Spróbuj z obciążeniem +%(weight)s "
+"kg albo trudniejszego wariantu."
 msgstr[3] ""
-"We wszystkich seriach %(reps)s powtórzeń. Spróbuj z obciążeniem +%(weight)s kg albo trudniejszego "
-"wariantu."
+"We wszystkich seriach %(reps)s powtórzeń. Spróbuj z obciążeniem +%(weight)s "
+"kg albo trudniejszego wariantu."
 
 #: .\workouts\services.py:351
 #, python-format
@@ -1953,23 +2070,27 @@ msgstr "Trzymaj %(best)s, aż każda seria dojdzie do %(target)s."
 #: .\workouts\services.py:383
 #, python-format
 msgid "Longest hold last time: %(best)s. Try %(target)s (+%(step)s s)."
-msgstr "Najdłuższe utrzymanie ostatnio: %(best)s. Spróbuj %(target)s (+%(step)s s)."
+msgstr ""
+"Najdłuższe utrzymanie ostatnio: %(best)s. Spróbuj %(target)s (+%(step)s s)."
 
 #: .\workouts\services.py:398
 #, python-format
 msgid "Best last time: %(result)s. Go a little farther or a little faster."
-msgstr "Najlepiej ostatnio: %(result)s. Spróbuj trochę dalej albo trochę szybciej."
+msgstr ""
+"Najlepiej ostatnio: %(result)s. Spróbuj trochę dalej albo trochę szybciej."
 
 #: .\workouts\services.py:515
 msgid ""
-"Why no max test with weights? The last reps before failure are where form breaks down and injuries"
-" happen. A few light test sets and how hard they felt are enough to estimate your working weight. "
-"Test sets are saved as warm-ups, so they don't count towards your records."
+"Why no max test with weights? The last reps before failure are where form "
+"breaks down and injuries happen. A few light test sets and how hard they "
+"felt are enough to estimate your working weight. Test sets are saved as warm-"
+"ups, so they don't count towards your records."
 msgstr ""
-"Dlaczego bez testu maksymalnego z ciężarem? Ostatnie powtórzenia przed upadkiem mięśniowym to "
-"moment, w którym technika się sypie i zdarzają się kontuzje. Kilka lekkich serii testowych i "
-"ocena, jak były ciężkie, wystarczą, żeby oszacować ciężar roboczy. Serie testowe zapisują się jako"
-" rozgrzewkowe, więc nie liczą się do rekordów."
+"Dlaczego bez testu maksymalnego z ciężarem? Ostatnie powtórzenia przed "
+"upadkiem mięśniowym to moment, w którym technika się sypie i zdarzają się "
+"kontuzje. Kilka lekkich serii testowych i ocena, jak były ciężkie, "
+"wystarczą, żeby oszacować ciężar roboczy. Serie testowe zapisują się jako "
+"rozgrzewkowe, więc nie liczą się do rekordów."
 
 #: .\workouts\services.py:590
 msgid "Now the same test hold on the other side."
@@ -1977,25 +2098,26 @@ msgstr "Teraz to samo utrzymanie testowe na drugą stronę."
 
 #: .\workouts\services.py:593
 msgid ""
-"First time: test hold. Hold as long as your form stays good, then stop. Your working holds are "
-"based on it."
+"First time: test hold. Hold as long as your form stays good, then stop. Your "
+"working holds are based on it."
 msgstr ""
-"Pierwszy raz: utrzymanie testowe. Trzymaj, dopóki technika jest dobra, potem przerwij. Na tej "
-"podstawie ustalimy utrzymania robocze."
+"Pierwszy raz: utrzymanie testowe. Trzymaj, dopóki technika jest dobra, potem "
+"przerwij. Na tej podstawie ustalimy utrzymania robocze."
 
 #: .\workouts\services.py:606
 #, python-format
 msgid ""
-"Test hold: %(best)s. Working holds: %(target)s (about 75%%, within your plan's %(low)s–%(high)s "
-"s)."
+"Test hold: %(best)s. Working holds: %(target)s (about 75%%, within your "
+"plan's %(low)s–%(high)s s)."
 msgstr ""
-"Utrzymanie testowe: %(best)s. Utrzymania robocze: %(target)s (ok. 75%%, w zakresie planu "
-"%(low)s–%(high)s s)."
+"Utrzymanie testowe: %(best)s. Utrzymania robocze: %(target)s (ok. 75%%, w "
+"zakresie planu %(low)s–%(high)s s)."
 
 #: .\workouts\services.py:610
 #, python-format
 msgid "Test hold: %(best)s. Working holds: %(target)s (about 75%%)."
-msgstr "Utrzymanie testowe: %(best)s. Utrzymania robocze: %(target)s (ok. 75%%)."
+msgstr ""
+"Utrzymanie testowe: %(best)s. Utrzymania robocze: %(target)s (ok. 75%%)."
 
 #: .\workouts\services.py:626
 msgid "Now the same test set on the other side."
@@ -2003,80 +2125,92 @@ msgstr "Teraz ta sama seria testowa na drugą stronę."
 
 #: .\workouts\services.py:629
 msgid ""
-"First time: test set. Do as many clean reps as you can and stop when your form starts to slip. "
-"Your working sets are based on it."
+"First time: test set. Do as many clean reps as you can and stop when your "
+"form starts to slip. Your working sets are based on it."
 msgstr ""
-"Pierwszy raz: seria testowa. Zrób tyle czystych powtórzeń, ile dasz radę, i przerwij, gdy technika"
-" zacznie się psuć. Na tej podstawie ustalimy serie robocze."
+"Pierwszy raz: seria testowa. Zrób tyle czystych powtórzeń, ile dasz radę, i "
+"przerwij, gdy technika zacznie się psuć. Na tej podstawie ustalimy serie "
+"robocze."
 
 #: .\workouts\services.py:636
 #, python-format
 msgid "Test set: %(best)s rep. Working sets: %(target)s reps (about 70%%)."
-msgid_plural "Test set: %(best)s reps. Working sets: %(target)s reps (about 70%%)."
-msgstr[0] "Seria testowa: %(best)s powtórzenie. Serie robocze: po %(target)s (ok. 70%%)."
-msgstr[1] "Seria testowa: %(best)s powtórzenia. Serie robocze: po %(target)s (ok. 70%%)."
-msgstr[2] "Seria testowa: %(best)s powtórzeń. Serie robocze: po %(target)s (ok. 70%%)."
-msgstr[3] "Seria testowa: %(best)s powtórzeń. Serie robocze: po %(target)s (ok. 70%%)."
+msgid_plural ""
+"Test set: %(best)s reps. Working sets: %(target)s reps (about 70%%)."
+msgstr[0] ""
+"Seria testowa: %(best)s powtórzenie. Serie robocze: po %(target)s (ok. 70%%)."
+msgstr[1] ""
+"Seria testowa: %(best)s powtórzenia. Serie robocze: po %(target)s (ok. 70%%)."
+msgstr[2] ""
+"Seria testowa: %(best)s powtórzeń. Serie robocze: po %(target)s (ok. 70%%)."
+msgstr[3] ""
+"Seria testowa: %(best)s powtórzeń. Serie robocze: po %(target)s (ok. 70%%)."
 
 #: .\workouts\services.py:674
 #, python-format
 msgid ""
-"Estimated max: about %(e1rm)s kg. Working sets: %(weight)s kg × %(low)s–%(high)s, stopping with "
-"1–2 reps left."
+"Estimated max: about %(e1rm)s kg. Working sets: %(weight)s kg × %(low)s–"
+"%(high)s, stopping with 1–2 reps left."
 msgstr ""
-"Szacowane maksimum: ok. %(e1rm)s kg. Serie robocze: %(weight)s kg × %(low)s–%(high)s, kończ z 1–2 "
-"powtórzeniami w zapasie."
+"Szacowane maksimum: ok. %(e1rm)s kg. Serie robocze: %(weight)s kg × %(low)s–"
+"%(high)s, kończ z 1–2 powtórzeniami w zapasie."
 
 #: .\workouts\services.py:685
 #, python-format
 msgid ""
-"First time: find your working weight, no max test. Do a test set (empty bar, 20 kg, %(reps)s rep),"
-" then rate how hard it was."
+"First time: find your working weight, no max test. Do a test set (empty bar, "
+"20 kg, %(reps)s rep), then rate how hard it was."
 msgid_plural ""
-"First time: find your working weight, no max test. Do a test set (empty bar, 20 kg, %(reps)s "
-"reps), then rate how hard it was."
+"First time: find your working weight, no max test. Do a test set (empty bar, "
+"20 kg, %(reps)s reps), then rate how hard it was."
 msgstr[0] ""
-"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię testową (pusty gryf, 20 "
-"kg, %(reps)s powtórzenie), potem oceń, jak była ciężka."
+"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię "
+"testową (pusty gryf, 20 kg, %(reps)s powtórzenie), potem oceń, jak była "
+"ciężka."
 msgstr[1] ""
-"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię testową (pusty gryf, 20 "
-"kg, %(reps)s powtórzenia), potem oceń, jak była ciężka."
+"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię "
+"testową (pusty gryf, 20 kg, %(reps)s powtórzenia), potem oceń, jak była "
+"ciężka."
 msgstr[2] ""
-"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię testową (pusty gryf, 20 "
-"kg, %(reps)s powtórzeń), potem oceń, jak była ciężka."
+"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię "
+"testową (pusty gryf, 20 kg, %(reps)s powtórzeń), potem oceń, jak była ciężka."
 msgstr[3] ""
-"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię testową (pusty gryf, 20 "
-"kg, %(reps)s powtórzeń), potem oceń, jak była ciężka."
+"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię "
+"testową (pusty gryf, 20 kg, %(reps)s powtórzeń), potem oceń, jak była ciężka."
 
 #: .\workouts\services.py:693
 #, python-format
 msgid ""
-"First time: find your working weight, no max test. Do a test set (a light weight, %(reps)s rep), "
-"then rate how hard it was."
+"First time: find your working weight, no max test. Do a test set (a light "
+"weight, %(reps)s rep), then rate how hard it was."
 msgid_plural ""
-"First time: find your working weight, no max test. Do a test set (a light weight, %(reps)s reps), "
-"then rate how hard it was."
+"First time: find your working weight, no max test. Do a test set (a light "
+"weight, %(reps)s reps), then rate how hard it was."
 msgstr[0] ""
-"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię testową (lekki ciężar, "
-"%(reps)s powtórzenie), potem oceń, jak była ciężka."
+"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię "
+"testową (lekki ciężar, %(reps)s powtórzenie), potem oceń, jak była ciężka."
 msgstr[1] ""
-"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię testową (lekki ciężar, "
-"%(reps)s powtórzenia), potem oceń, jak była ciężka."
+"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię "
+"testową (lekki ciężar, %(reps)s powtórzenia), potem oceń, jak była ciężka."
 msgstr[2] ""
-"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię testową (lekki ciężar, "
-"%(reps)s powtórzeń), potem oceń, jak była ciężka."
+"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię "
+"testową (lekki ciężar, %(reps)s powtórzeń), potem oceń, jak była ciężka."
 msgstr[3] ""
-"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię testową (lekki ciężar, "
-"%(reps)s powtórzeń), potem oceń, jak była ciężka."
+"Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię "
+"testową (lekki ciężar, %(reps)s powtórzeń), potem oceń, jak była ciężka."
 
 #: .\workouts\services.py:705
-msgid "Rate your test set (tap ✎ to add it) so LiftLog can suggest the next weight."
-msgstr "Oceń serię testową (dotknij ✎, żeby dodać ocenę), a LiftLog podpowie kolejny ciężar."
+msgid ""
+"Rate your test set (tap ✎ to add it) so LiftLog can suggest the next weight."
+msgstr ""
+"Oceń serię testową (dotknij ✎, żeby dodać ocenę), a LiftLog podpowie kolejny "
+"ciężar."
 
 #: .\workouts\services.py:709
 #, python-format
 msgid "Still light. Next test set: %(weight)s kg × %(reps)s, then rate it."
-msgstr "Nadal lekko. Następna seria testowa: %(weight)s kg × %(reps)s, potem ją oceń."
+msgstr ""
+"Nadal lekko. Następna seria testowa: %(weight)s kg × %(reps)s, potem ją oceń."
 
 #: .\workouts\services.py:759
 msgid "Longest hold"

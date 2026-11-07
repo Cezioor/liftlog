@@ -3,6 +3,7 @@
 import pytest
 from django.core.management import call_command
 from django.urls import reverse
+from django.utils import translation
 
 from exercises.models import Equipment, Exercise
 from exercises.services import (
@@ -168,6 +169,15 @@ def test_variant_copies_the_movement_and_changes_the_equipment(user, step_up):
         assert getattr(variant, field) == getattr(step_up, field), field
     assert step_up.progression_step_kg == 2  # dumbbell step
     assert variant.progression_step_kg == 5  # Smith machine, legs
+
+
+@pytest.mark.django_db
+def test_variant_names_stay_english_when_the_page_is_polish(user, step_up):
+    """Names are saved data: the equipment label must not depend on who clicked."""
+    with translation.override("pl"):
+        variant = create_variant(user, step_up, "smith")
+
+    assert variant.name == "Step-up (Smith machine)"
 
 
 @pytest.mark.django_db

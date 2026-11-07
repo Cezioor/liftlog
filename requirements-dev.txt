@@ -2,3 +2,5 @@
 pytest>=8.0
 pytest-django>=4.9
 ruff>=0.15
+# Reads locale/pl/LC_MESSAGES/django.po in config/test_translations.py
+polib>=1.2
