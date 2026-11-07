@@ -1277,4 +1277,627 @@ POLISH_NAMES = {
     "Side_Neck_Stretch": "rozciąganie szyi w bok, skłon głowy w bok, rozciąganie karku",
     "Clean_Deadlift": "martwy ciąg do zarzutu, clean deadlift, martwy ciąg zarzutowy",
     "Clean_Shrug": "szrugsy do zarzutu, clean shrug, dynamiczne szrugsy",
+    # --- Chest, shoulders and triceps (intermediate, reviewed by the owner) ---
+    "Barbell_Guillotine_Bench_Press": (
+        "wyciskanie do szyi, gilotyna, guillotine press, neck press, wyciskanie gilotynowe"
+    ),
+    "Neck_Press": (
+        "wyciskanie do szyi, gilotyna, guillotine press, neck press, wyciskanie gilotynowe"
+    ),
+    "Wide-Grip_Decline_Barbell_Bench_Press": (
+        "wyciskanie szerokim chwytem na skosie ujemnym, "
+        "wyciskanie sztangi szeroko na skosie ujemnym, dolna klatka"
+    ),
+    "Chain_Press": "wyciskanie z łańcuchami na ławce, chain press, łańcuchy na uchwytach wyciągu",
+    "One-Arm_Kettlebell_Floor_Press": (
+        "wyciskanie kettlebell jednorącz z podłogi, floor press kettlebell jednorącz"
+    ),
+    "Leg-Over_Floor_Press": (
+        "wyciskanie kettlebell leżąc z nogą założoną, leg over floor press, floor press kettlebell"
+    ),
+    "Single-Arm_Push-Up": "pompki na jednej ręce, pompka jednorącz, pompki jedną ręką",
+    "Clock_Push-Up": "pompki zegar, clock push up, pompki z przestawianiem dookoła",
+    "Push-Ups_With_Feet_On_An_Exercise_Ball": (
+        "pompki z nogami na piłce, pompki na fitballu, pompki z nogami na piłce gimnastycznej"
+    ),
+    "Drop_Push": "pompki z zeskokiem z podestów, drop push, pompki plyometryczne z podwyższenia",
+    "Around_The_Worlds": (
+        "dookoła świata z hantlami, around the world, przenoszenie hantli łukiem leżąc"
+    ),
+    "Bodyweight_Flyes": (
+        "rozpiętki z masą ciała na sztangach, bodyweight flyes, rozpiętki w podporze na sztangach"
+    ),
+    "Wide-Grip_Decline_Barbell_Pullover": (
+        "przenoszenie sztangi za głowę na skosie ujemnym, pullover, "
+        "pullover ze sztangą na skosie ujemnym, przenoszenie sztangi za głowę szerokim chwytem"
+    ),
+    "Forward_Drag_with_Press": (
+        "ciągnięcie sań z wypchnięciem rąk, sanie, sanki, ciągnięcie sań przodem z wypchnięciem"
+    ),
+    "Standing_Palms-In_Dumbbell_Press": (
+        "wyciskanie hantli chwytem neutralnym stojąc, wyciskanie hantli nad głowę chwytem młotkowym"
+    ),
+    "See-Saw_Press_Alternating_Side_Press": (
+        "wyciskanie see-saw z hantlami, naprzemienne wyciskanie z pochyleniem w bok, huśtawka"
+    ),
+    "Cuban_Press": "wyciskanie kubańskie, cuban press, rotacja zewnętrzna z wyciskaniem",
+    "Clean_and_Press": "zarzut i wyciskanie, clean and press, zarzut z wyciskaniem nad głowę",
+    "Landmine_Linear_Jammer": "wypychanie landmine z przysiadu, linear jammer, landmine jammer",
+    "Single-Arm_Linear_Jammer": (
+        "wypychanie landmine jednorącz, linear jammer jednorącz, landmine jednorącz"
+    ),
+    "Log_Lift": "wyciskanie belki, kłoda, wyciskanie kłody, log press, log lift, strongman",
+    "Alternating_Kettlebell_Press": (
+        "naprzemienne wyciskanie kettlebell, wyciskanie kettlebell na zmianę, seesaw press"
+    ),
+    "Kettlebell_Seesaw_Press": (
+        "naprzemienne wyciskanie kettlebell, wyciskanie kettlebell na zmianę, seesaw press"
+    ),
+    "Kettlebell_Arnold_Press": (
+        "arnoldki z kettlebell, arnold press kettlebell, wyciskanie z rotacją"
+    ),
+    "Kettlebell_Seated_Press": (
+        "wyciskanie kettlebell siedząc na podłodze, wyciskanie kettlebell w siadzie rozkrocznym"
+    ),
+    "One-Arm_Kettlebell_Military_Press_To_The_Side": (
+        "wyciskanie kettlebell jednorącz w bok, military press w bok, chwyt neutralny"
+    ),
+    "One-Arm_Kettlebell_Para_Press": (
+        "wyciskanie kettlebell z łokciem w bok, para press, wyciskanie kettlebell jednorącz"
+    ),
+    "Kettlebell_Halo_With_Overhead_Extension": (
+        "halo z kettlebell z wyciśnięciem, halo z wyprostem nad głową"
+    ),
+    "Two-Arm_Kettlebell_Jerk": "podrzut dwóch kettlebell, jerk dwóch kettlebell, podrzut oburącz",
+    "Double_Kettlebell_Jerk": (
+        "podrzut nożycami dwóch kettlebell, split jerk dwóch kettlebell, jerk z wykrokiem"
+    ),
+    "Double_Kettlebell_Push_Press": (
+        "wyciskanie z podrzutem dwóch kettlebell, push press dwóch kettlebell"
+    ),
+    "One-Arm_Kettlebell_Jerk": "podrzut kettlebell jednorącz, jerk kettlebell jedną ręką",
+    "One-Arm_Kettlebell_Split_Jerk": (
+        "podrzut nożycami kettlebell jednorącz, split jerk kettlebell, jerk z wykrokiem jednorącz"
+    ),
+    "One-Arm_Kettlebell_Push_Press": (
+        "wyciskanie z podrzutem kettlebell jednorącz, push press kettlebell jedną ręką"
+    ),
+    "One-Arm_Kettlebell_Clean_and_Jerk": (
+        "zarzut i podrzut kettlebell jednorącz, clean and jerk kettlebell, zarzut z podrzutem"
+    ),
+    "Kettlebell_Turkish_Get-Up_Lunge_style": (
+        "tureckie wstawanie przez wykrok, turkish get up, tureckie wstawanie z wykrokiem"
+    ),
+    "Standing_Dumbbell_Straight-Arm_Front_Delt_Raise_Above_Head": (
+        "wznosy hantli przodem nad głowę, wznosy przodem prostymi rękami nad głowę"
+    ),
+    "Front_Plate_Raise": (
+        "wznosy talerza przodem, unoszenie talerza przed siebie, przednie barki z talerzem"
+    ),
+    "Dumbbell_One-Arm_Upright_Row": (
+        "podciąganie hantla wzdłuż tułowia jednorącz, upright row hantlem, podciąganie jedną ręką"
+    ),
+    "Lying_Rear_Delt_Raise": (
+        "odwrotne rozpiętki leżąc przodem, tylne aktony leżąc, odwrotne rozpiętki na ławce"
+    ),
+    "Dumbbell_Lying_Rear_Lateral_Raise": (
+        "odwrotne rozpiętki leżąc przodem, tylne aktony leżąc, odwrotne rozpiętki na ławce"
+    ),
+    "Lying_One-Arm_Lateral_Raise": (
+        "odwrotne rozpiętki jednorącz leżąc przodem, tylne aktony jednorącz leżąc"
+    ),
+    "Dumbbell_Lying_One-Arm_Rear_Lateral_Raise": (
+        "odwrotne rozpiętki jednorącz leżąc przodem, tylne aktony jednorącz leżąc"
+    ),
+    "Reverse_Flyes_With_External_Rotation": (
+        "odwrotne rozpiętki z rotacją zewnętrzną, odwrotne rozpiętki na skosie z rotacją, "
+        "tylne aktony"
+    ),
+    "Iron_Cross": "iron cross z hantlami, krzyż z hantlami, wznosy przodem i bokiem",
+    "Bench_Press_-_Powerlifting": (
+        "wyciskanie sztangi trójbojowe, wyciskanie z mostkiem, powerlifting bench press, "
+        "wyciskanie w łuku"
+    ),
+    "Board_Press": "wyciskanie z deskami, board press, wyciskanie do desek",
+    "Pin_Presses": "wyciskanie z bolców, pin press, wyciskanie od zatrzymania, wyciskanie z podpór",
+    "Reverse_Band_Bench_Press": (
+        "wyciskanie z gumami od góry, reverse band, gumy zaczepione u góry, wyciskanie z gumami"
+    ),
+    "Floor_Press_with_Chains": (
+        "wyciskanie leżąc na podłodze z łańcuchami, floor press z łańcuchami, łańcuchy"
+    ),
+    "One_Arm_Floor_Press": (
+        "wyciskanie jednorącz leżąc na podłodze, floor press jednorącz, sztanga jedną ręką"
+    ),
+    "Reverse_Triceps_Bench_Press": (
+        "wyciskanie sztangi podchwytem, wyciskanie podchwytem wąsko, reverse grip bench"
+    ),
+    "Decline_Close-Grip_Bench_To_Skull_Crusher": (
+        "wyciskanie wąskie z francuzem na skosie, wyciskanie wąsko i skull crusher, skos ujemny"
+    ),
+    "Lying_Triceps_Press": (
+        "wyciskanie francuskie leżąc, skull crusher, francuz leżąc, francuz łamaną"
+    ),
+    "Lying_Close-Grip_Barbell_Triceps_Extension_Behind_The_Head": (
+        "wyciskanie francuskie za głowę leżąc, francuz za głowę, francuz łamaną za głowę"
+    ),
+    "Lying_Close-Grip_Barbell_Triceps_Press_To_Chin": (
+        "wyciskanie francuskie do brody, francuz do brody, francuz łamaną"
+    ),
+    "Incline_Barbell_Triceps_Extension": (
+        "wyciskanie francuskie ze sztangą na skosie, francuz na skosie, "
+        "prostowanie ramion zza głowy na ławce skośnej"
+    ),
+    "Kneeling_Cable_Triceps_Extension": (
+        "wyciskanie francuskie na wyciągu w klęku, francuz na wyciągu zza głowy, "
+        "prostowanie ramion w klęku"
+    ),
+    "Standing_Low-Pulley_One-Arm_Triceps_Extension": (
+        "prostowanie ramienia zza głowy na wyciągu, francuz jednorącz na dolnym wyciągu"
+    ),
+    "Dumbbell_One-Arm_Triceps_Extension": (
+        "prostowanie ramienia zza głowy siedząc, francuz jednorącz siedząc, "
+        "prostowanie ramienia z hantlem"
+    ),
+    "Seated_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension": (
+        "prostowanie ramion w opadzie siedząc, kickback oburącz siedząc"
+    ),
+    "Chain_Handle_Extension": (
+        "prostowanie ramion z łańcuchami leżąc, francuz z łańcuchami, łańcuchy na uchwytach"
+    ),
+    "Close-Grip_Push-Up_off_of_a_Dumbbell": (
+        "pompki wąskie na hantlu, pompki tricepsowe na hantlu, pompki diamentowe na hantlu"
+    ),
+    "Body-Up": (
+        "wypychanie z przedramion w desce, body up, deska do podporu, przejście z deski na dłonie"
+    ),
+    "Weighted_Bench_Dip": (
+        "pompki w podporze tyłem z obciążeniem, dipy na ławce z obciążeniem, talerz na udach"
+    ),
+    # --- Back, biceps, forearms and full body (intermediate, reviewed by the owner) ---
+    "Crossover_Reverse_Lunge": (
+        "wykroki w tył ze skrętem tułowia, crossover lunge, wykrok w tył ze skrętem, "
+        "skręt nad przednią nogą"
+    ),
+    "Pelvic_Tilt_Into_Bridge": (
+        "kołysanie miednicy z przejściem do mostka, pelvic tilt, mostek z rolowaniem kręgosłupa"
+    ),
+    "Rhomboids-SMR": (
+        "rolowanie mięśni równoległobocznych, rolowanie górnej części pleców, roller, wałek, "
+        "automasaż"
+    ),
+    "Weighted_Pull_Ups": (
+        "podciąganie z obciążeniem, podciąganie z ciężarem, pas do dipów, "
+        "podciąganie na drążku z obciążeniem"
+    ),
+    "Gironda_Sternum_Chins": (
+        "podciąganie gironda do mostka, sternum chin up, podciąganie podchwytem do mostka"
+    ),
+    "Rocky_Pull-Ups_Pulldowns": (
+        "podciąganie przód i za głowę, rocky pull ups, podciąganie szerokim chwytem za głowę"
+    ),
+    "Side_To_Side_Chins": (
+        "podciąganie z przenoszeniem na boki, side to side chins, podciąganie do jednej ręki"
+    ),
+    "Kipping_Muscle_Up": "muscle up z wymachem na kółkach, kipping muscle up, muscle up na kółkach",
+    "Bodyweight_Mid_Row": (
+        "wiosłowanie w zwisie z nogami na drążku, mid row, "
+        "podciąganie z nogami przełożonymi przez drążek"
+    ),
+    "Rope_Climb": "wspinanie się po linie, lina, rope climb, wspinaczka po linie",
+    "London_Bridges": (
+        "schodzenie po linie w odchyleniu, london bridges, lina, opuszczanie się po linie"
+    ),
+    "Full_Range-Of-Motion_Lat_Pulldown": (
+        "ściąganie wyciągu górnego w pełnym zakresie, full range lat pulldown, "
+        "ściąganie uchwytów strzemion"
+    ),
+    "One-Arm_Kettlebell_Row": (
+        "wiosłowanie kettlebell jednorącz, wiosłowanie kettlebell w opadzie jedną ręką"
+    ),
+    "Two-Arm_Kettlebell_Row": (
+        "wiosłowanie dwoma kettlebell, wiosłowanie kettlebell oburącz w opadzie"
+    ),
+    "Alternating_Kettlebell_Row": (
+        "naprzemienne wiosłowanie kettlebell, wiosłowanie kettlebell na zmianę"
+    ),
+    "Middle_Back_Shrug": (
+        "ściąganie łopatek z hantlami na skosie, szrugsy na środek pleców, "
+        "retrakcja łopatek leżąc przodem"
+    ),
+    "Kettlebell_Sumo_High_Pull": (
+        "wysokie przyciąganie kettlebell sumo, sumo high pull, przyciąganie kettlebell do barków"
+    ),
+    "Bent-Arm_Barbell_Pullover": (
+        "przenoszenie sztangi za głowę, pullover ze sztangą, "
+        "przenoszenie sztangi na ugiętych rękach"
+    ),
+    "Seated_Good_Mornings": "dzień dobry siedząc, good morning siedząc, skłony ze sztangą siedząc",
+    "Weighted_Ball_Hyperextension": (
+        "wyprosty tułowia na piłce z obciążeniem, wyprosty na fitballu, hiperekstensje na piłce"
+    ),
+    "Rack_Pull_with_Bands": (
+        "martwy ciąg ze stojaków z gumami, rack pull z gumami, martwy ciąg z podwyższenia z gumami"
+    ),
+    "Axle_Deadlift": "martwy ciąg z osią, axle, gruby gryf, strongman",
+    "Atlas_Stone_Trainer": "trenażer kamienia atlasa, atlas stone, kamień, strongman",
+    "Keg_Load": "przenoszenie beczki na podest, keg, beczka, strongman, ładowanie beczki",
+    "Brachialis-SMR": "rolowanie mięśnia ramiennego, rolowanie ramienia, roller, wałek, automasaż",
+    "Standing_Dumbbell_Reverse_Curl": (
+        "uginanie hantli nachwytem, uginanie ramion nachwytem z hantlami, reverse curl"
+    ),
+    "Standing_Inner-Biceps_Curl": (
+        "uginanie hantli stojąc z rozchyleniem rąk, inner biceps curl stojąc, "
+        "uginanie hantli na zewnątrz"
+    ),
+    "Dumbbell_Prone_Incline_Curl": (
+        "uginanie hantli leżąc przodem na skosie, spider curl z hantlami, "
+        "uginanie na ławce skośnej przodem"
+    ),
+    "Lying_High_Bench_Barbell_Curl": (
+        "uginanie sztangi leżąc na wysokiej ławce, uginanie leżąc przodem na ławce, "
+        "spider curl ze sztangą"
+    ),
+    "Seated_Close-Grip_Concentration_Barbell_Curl": (
+        "uginanie sztangi w koncentracji siedząc, koncentracja ze sztangą, "
+        "uginanie łamanej wąsko siedząc"
+    ),
+    "Lying_Cable_Curl": (
+        "uginanie ramion na dolnym wyciągu leżąc, uginanie na wyciągu leżąc na plecach"
+    ),
+    "Reverse_Barbell_Preacher_Curls": (
+        "modlitewnik nachwytem, uginanie łamanej nachwytem na modlitewniku, reverse preacher curl"
+    ),
+    "Zottman_Preacher_Curl": (
+        "uginanie zottmana na modlitewniku, zottman na modlitewniku, zottman preacher curl"
+    ),
+    "Seated_One-Arm_Dumbbell_Palms-Down_Wrist_Curl": (
+        "prostowanie nadgarstka jednorącz, uginanie nadgarstka nachwytem jednorącz, "
+        "reverse wrist curl"
+    ),
+    "Plate_Pinch": (
+        "trzymanie talerzy chwytem szczypcowym, plate pinch, pinch grip, siła chwytu, przedramiona"
+    ),
+    "Bottoms-Up_Clean_From_The_Hang_Position": (
+        "zarzut kettlebell dnem do góry, bottoms up clean, kettlebell do góry nogami"
+    ),
+    "Rickshaw_Carry": "spacer z rikszą, rickshaw, riksza, strongman, rama",
+    "Dumbbell_Lying_Supination": (
+        "rotacja zewnętrzna z hantlem, supinacja leżąc, rotatory, stożek rotatorów"
+    ),
+    "Dumbbell_Lying_Pronation": (
+        "rotacja zewnętrzna z hantlem leżąc przodem, pronacja leżąc, rotatory, stożek rotatorów"
+    ),
+    "Clean_Pull": "ciąg zarzutowy, clean pull, ciąg do zarzutu",
+    "Clean_from_Blocks": "zarzut z bloków, clean from blocks, zarzut z podwyższenia",
+    "Power_Clean_from_Blocks": (
+        "zarzut siłowy z bloków, power clean from blocks, zarzut siłowy z podwyższenia"
+    ),
+    "Hang_Clean_-_Below_the_Knees": "zarzut z zawieszenia spod kolan, hang clean poniżej kolan",
+    "Split_Clean": "zarzut nożycami, split clean, zarzut z wykrokiem",
+    "Rack_Delivery": "przyjęcie sztangi na barki, rack delivery, nauka zarzutu",
+    "Frankenstein_Squat": (
+        "przysiad frankensteina, przysiad przedni bez trzymania sztangi, nauka zarzutu"
+    ),
+    "Snatch_Deadlift": "martwy ciąg do rwania, snatch deadlift, martwy ciąg rwaniowy",
+    "Snatch_Shrug": "szrugsy do rwania, snatch shrug, dynamiczne szrugsy szerokim chwytem",
+    "Power_Snatch_from_Blocks": (
+        "rwanie siłowe z bloków, power snatch from blocks, rwanie z podwyższenia"
+    ),
+    "Muscle_Snatch": "rwanie mięśniowe, muscle snatch, rwanie bez podsiadu",
+    "Snatch_Balance": (
+        "wejście pod sztangę do rwania, snatch balance, przysiad pod sztangą nad głową"
+    ),
+    "Heaving_Snatch_Balance": (
+        "wejście pod sztangę z podbiciem, heaving snatch balance, nauka rwania"
+    ),
+    "Jerk_Balance": "wejście w nożyce do podrzutu, jerk balance, nauka podrzutu",
+    "Jerk_Dip_Squat": "ugięcie do podrzutu, jerk dip, dip pod podrzut, podsiad do podrzutu",
+    "Push_Press_-_Behind_the_Neck": (
+        "wyciskanie z podrzutem zza głowy, push press zza głowy, wyciskanie zza karku z podrzutem"
+    ),
+    "Olympic_Squat": "przysiad olimpijski, przysiad high bar, przysiad ze sztangą wysoko na karku",
+    "Romanian_Deadlift_from_Deficit": (
+        "martwy ciąg rumuński z deficytu, rdl z deficytu, martwy ciąg rumuński z podwyższenia"
+    ),
+    "Wide_Stance_Stiff_Legs": (
+        "martwy ciąg na prostych nogach szeroko, martwy ciąg szeroko na sztywnych nogach"
+    ),
+    # --- Quads, calves and glutes (intermediate, reviewed by the owner) ---
+    "Calves-SMR": "rolowanie łydek, roller, wałek, automasaż łydek",
+    "Anterior_Tibialis-SMR": (
+        "rolowanie piszczelowego przedniego, rolowanie przodu goleni, wałek, roller"
+    ),
+    "Peroneals-SMR": "rolowanie mięśni strzałkowych, rolowanie boku goleni, wałek, roller",
+    "Foot-SMR": "rolowanie stopy, piłeczka pod stopą, rozluźnianie rozcięgna podeszwowego",
+    "Peroneals_Stretch": (
+        "rozciąganie mięśni strzałkowych z paskiem, rozciąganie boku goleni, pasek, taśma"
+    ),
+    "Posterior_Tibialis_Stretch": (
+        "rozciąganie piszczelowego tylnego z paskiem, rozciąganie goleni, pasek, taśma"
+    ),
+    "Calf_Raise_On_A_Dumbbell": (
+        "wspięcia na palce na hantlu, wspięcia na rączce hantla, łydki na hantlu"
+    ),
+    "Donkey_Calf_Raises": (
+        "wspięcia na palce w skłonie na maszynie, donkey calf raise, osioł, łydki w skłonie"
+    ),
+    "Adductor": "rolowanie przywodzicieli, rolowanie wewnętrznej strony uda, wałek, roller",
+    "Iliotibial_Tract-SMR": (
+        "rolowanie pasma biodrowo-piszczelowego, rolowanie IT band, rolowanie boku uda, wałek"
+    ),
+    "Piriformis-SMR": (
+        "rolowanie mięśnia gruszkowatego, rolowanie pośladka, wałek, roller, piriformis"
+    ),
+    "IT_Band_and_Glute_Stretch": (
+        "rozciąganie pasma biodrowego z paskiem, IT band, pasmo biodrowo-piszczelowe, "
+        "rozciąganie pośladka"
+    ),
+    "Groin_and_Back_Stretch": (
+        "skłon w przód w siadzie motylkowym, motylek ze skłonem, rozciąganie pachwin i pleców"
+    ),
+    "Adductor_Groin": (
+        "ściskanie nóg z oporem partnera, przywodziciele z partnerem, ściskanie nóg leżąc"
+    ),
+    "Windmills": (
+        "przenoszenie nogi w poprzek ciała leżąc, windmills, skręt z nogą leżąc na plecach"
+    ),
+    "Groiners": "wskoki nogami do rąk z podporu, groiners, przeskoki z podporu do przysiadu",
+    "Downward_Facing_Balance": (
+        "równowaga na piłce w podporze, podpór na fitballu, przejście dłońmi na piłce"
+    ),
+    "Kneeling_Squat": (
+        "przysiad na kolanach ze sztangą, kneeling squat, przysiad w klęku ze sztangą"
+    ),
+    "Step_Mill": "maszyna schodowa, stepmill, schody",
+    "Rope_Jumping": "skakanka, skakanie na skakance, rope jumping",
+    "Skating": "jazda na rolkach, rolki, wrotki, łyżwy",
+    "All_Fours_Quad_Stretch": (
+        "rozciąganie czworogłowego w klęku podpartym, stretching uda w klęku, pięta do pośladka"
+    ),
+    "Intermediate_Hip_Flexor_and_Quad_Stretch": (
+        "rozciąganie uda z paskiem leżąc przodem, rozciąganie zginaczy biodra i czworogłowego, "
+        "pasek"
+    ),
+    "Quad_Stretch": (
+        "rozciąganie uda z paskiem leżąc bokiem, rozciąganie czworogłowego z paskiem, taśma"
+    ),
+    "Quadriceps-SMR": "rolowanie czworogłowych, rolowanie przodu uda, wałek, roller",
+    "Iron_Crosses_stretch": (
+        "skorpion leżąc przodem, iron cross stretch, przenoszenie nogi za plecami leżąc, skorpion"
+    ),
+    "Frog_Hops": "żabki, skoki żabki, frog hops, skoki z przysiadu",
+    "Bench_Jump": "przeskok przez ławkę, bench jump, skok przez ławkę obunóż",
+    "Dumbbell_Seated_Box_Jump": (
+        "wskok na skrzynię z siadu z hantlem, box jump z siadu, wskok z ławki"
+    ),
+    "Linear_Depth_Jump": (
+        "zeskok z wyskokiem na skrzynię, depth jump, skok w głąb, zeskok między skrzyniami"
+    ),
+    "Weighted_Jump_Squat": (
+        "przysiad z wyskokiem z obciążeniem, jump squat ze sztangą, wyskok z obciążeniem"
+    ),
+    "Narrow_Stance_Squats": (
+        "przysiad wąski ze sztangą, przysiad wąsko, przysiad ze sztangą wąskim rozstawem"
+    ),
+    "Front_Squat_Clean_Grip": (
+        "przysiad przedni chwytem zarzutowym, front squat, przysiad przedni ze sztangą na barkach"
+    ),
+    "Jefferson_Squats": "przysiad Jeffersona, jefferson squat, sztanga między nogami",
+    "Squat_with_Bands": "przysiad ze sztangą i gumami, przysiad z gumami, przysiad z oporem gum",
+    "Squat_with_Chains": "przysiad ze sztangą i łańcuchami, przysiad z łańcuchami, łańcuchy",
+    "Reverse_Band_Box_Squat": (
+        "przysiad na skrzynię z gumami od góry, reverse band box squat, gumy zaczepione u góry"
+    ),
+    "Speed_Box_Squat": (
+        "szybki przysiad na skrzynię, speed box squat, przysiad na skrzynię z gumami"
+    ),
+    "Squat_with_Plate_Movers": "przysiad z przekładaniem talerzy, przysiad szeroki z talerzami",
+    "Weighted_Squat": (
+        "przysiad z obciążeniem na pasie, belt squat, przysiad z ciężarem między nogami, "
+        "pas do dipów"
+    ),
+    "Dumbbell_Squat_To_A_Bench": (
+        "przysiad z hantlami do ławki, przysiad do ławki, przysiad na ławkę z hantlami"
+    ),
+    "Lying_Machine_Squat": "przysiad na maszynie leżąc, maszyna do przysiadów leżąc",
+    "Narrow_Stance_Hack_Squats": (
+        "przysiad hack wąsko, hack squat wąsko, przysiad hack wąskim rozstawem"
+    ),
+    "Smith_Machine_Pistol_Squat": (
+        "pistolet na smithie, przysiad na jednej nodze na smithie, pistol squat"
+    ),
+    "Smith_Machine_Leg_Press": (
+        "wypychanie nogami na smithie, leg press na smithie, suwnica na smithie"
+    ),
+    "Suspended_Split_Squat": (
+        "przysiad bułgarski na taśmach TRX, bułgarski z nogą w taśmie, trx split squat"
+    ),
+    "Elevated_Back_Lunge": (
+        "wykroki w tył z podwyższenia ze sztangą, wykroki w tył z platformy, deficit reverse lunge"
+    ),
+    "Lunge_Sprint": "wykroki z wybiciem na smithie, lunge sprint, dynamiczne wykroki na smithie",
+    "Yoke_Walk": "spacer z jarzmem, yoke, jarzmo, strongman",
+    "Tire_Flip": "przewracanie opony, tire flip, opona, strongman",
+    "Car_Deadlift": "martwy ciąg samochodu, car deadlift, strongman",
+    "Rickshaw_Deadlift": "martwy ciąg z rikszą, rickshaw, riksza, strongman",
+    "Conans_Wheel": "koło Conana, conan's wheel, strongman, chód z ciężarem w chwycie zerchera",
+    # --- Hamstrings, core and neck (intermediate, reviewed by the owner) ---
+    "Worlds_Greatest_Stretch": (
+        "world's greatest stretch, najlepsze rozciąganie świata, wykrok z rotacją, "
+        "rozgrzewka całego ciała"
+    ),
+    "Intermediate_Groin_Stretch": (
+        "rozciąganie pachwiny z paskiem leżąc, rozciąganie przywodzicieli, noga w bok z paskiem"
+    ),
+    "Seated_Hamstring_and_Calf_Stretch": (
+        "rozciąganie tyłu nogi z paskiem siedząc, rozciąganie dwugłowych i łydki, pasek, taśma"
+    ),
+    "Split_Squats": "wykroki z wyskokiem ze zmianą nóg, jumping lunges, wykroki skakane, nożyce",
+    "Floor_Glute-Ham_Raise": (
+        "uginanie nordyckie, nordic curl, glute ham raise na podłodze, nordyki"
+    ),
+    "Good_Morning_off_Pins": (
+        "dzień dobry z bolców, good morning z podpór, dzień dobry od zatrzymania"
+    ),
+    "Hanging_Bar_Good_Morning": (
+        "dzień dobry ze sztangą zawieszoną, good morning ze sztangą na łańcuchach"
+    ),
+    "Sumo_Deadlift_with_Bands": "martwy ciąg sumo z gumami, sumo z gumami",
+    "Sumo_Deadlift_with_Chains": "martwy ciąg sumo z łańcuchami, sumo z łańcuchami",
+    "Snatch_Pull": "ciąg rwaniowy, snatch pull, ciąg do rwania",
+    "Power_Stairs": "wnoszenie ciężaru po schodach, power stairs, schody strongman, strongman",
+    "Dumbbell_Clean": "zarzut hantlami, dumbbell clean, zarzut z hantlami",
+    "Smith_Machine_Hang_Power_Clean": (
+        "zarzut siłowy z zawieszenia na smithie, hang power clean na smithie"
+    ),
+    "One-Arm_Kettlebell_Clean": "zarzut kettlebell jednorącz, kettlebell clean, zarzut jedną ręką",
+    "One-Arm_Open_Palm_Kettlebell_Clean": (
+        "zarzut kettlebell otwartą dłonią, open palm clean, zarzut z łapaniem uchwytu"
+    ),
+    "Kettlebell_Dead_Clean": (
+        "zarzut kettlebell z martwego punktu, dead clean, zarzut kettlebell z ziemi"
+    ),
+    "Kettlebell_Hang_Clean": "zarzut kettlebell z zawieszenia, hang clean kettlebell",
+    "Alternating_Hang_Clean": (
+        "naprzemienny zarzut kettlebell z zawieszenia, zarzut kettlebell na zmianę, dwa kettlebell"
+    ),
+    "Double_Kettlebell_Alternating_Hang_Clean": (
+        "płynny naprzemienny zarzut dwóch kettlebell, zarzut dwóch kettlebell na zmianę bez przerwy"
+    ),
+    "Lunge_Pass_Through": (
+        "wykroki z przekładaniem kettlebell, przekładanie kettlebell pod nogą w wykroku"
+    ),
+    "Frog_Sit-Ups": "brzuszki żabki, frog sit up, brzuszki ze stopami złączonymi",
+    "Weighted_Sit-Ups_-_With_Bands": (
+        "brzuszki na skosie z gumami, brzuszki z gumami na ławce skośnej"
+    ),
+    "Plate_Twist": (
+        "skręty z talerzem z uniesionymi nogami, skręty z talerzem, rosyjskie skręty z talerzem"
+    ),
+    "Weighted_Ball_Side_Bend": (
+        "skłony boczne na piłce z obciążeniem, skośne na fitballu z ciężarem"
+    ),
+    "Gorilla_Chin_Crunch": (
+        "podciąganie gorilla z kolanami, gorilla chin, podciąganie z przyciąganiem kolan"
+    ),
+    "Barbell_Rollout_from_Bench": (
+        "rolowanie sztangi z kolanami na ławce, rollout ze sztangą z ławki, kółko ze sztangą"
+    ),
+    "Suspended_Fallout": "wysuwanie ramion na taśmach TRX, fallout, rollout na taśmach, trx",
+    "Advanced_Kettlebell_Windmill": (
+        "zaawansowany wiatrak z kettlebell, windmill, wiatrak z kettlebell nad głową"
+    ),
+    "Double_Kettlebell_Windmill": "wiatrak z dwoma kettlebell, double windmill, wiatrak",
+    "Kettlebell_Figure_8": "ósemki z kettlebell, figure 8, ósemka między nogami",
+    "Kettlebell_Pass_Between_The_Legs": (
+        "przekładanie kettlebell między nogami, podawanie kettlebell między nogami"
+    ),
+    "Neck-SMR": "rolowanie karku, rolowanie szyi, wałek, automasaż karku",
+    "Lying_Face_Down_Plate_Neck_Resistance": (
+        "prostowanie szyi z talerzem leżąc przodem, wzmacnianie karku z talerzem, "
+        "szyja z obciążeniem"
+    ),
+    "Lying_Face_Up_Plate_Neck_Resistance": (
+        "zginanie szyi z talerzem leżąc na plecach, wzmacnianie szyi z talerzem, przód szyi"
+    ),
+    "Seated_Head_Harness_Neck_Resistance": (
+        "prostowanie szyi z uprzężą siedząc, uprząż na głowę, neck harness, wzmacnianie karku"
+    ),
+    # --- All muscle groups (expert, reviewed by the owner) ---
+    "Overhead_Lat": (
+        "rozciąganie najszerszego z partnerem, PNF, rozciąganie pleców z partnerem, ręka w górze"
+    ),
+    "Behind_Head_Chest_Stretch": (
+        "rozciąganie klatki z partnerem, PNF, łokcie do tyłu z partnerem, ręce za głową"
+    ),
+    "Seated_Front_Deltoid": (
+        "rozciąganie przodu barków z partnerem, PNF, rozciąganie barków z partnerem"
+    ),
+    "Seated_Biceps": "rozciąganie bicepsa z partnerem, PNF, rozciąganie ramion z partnerem",
+    "Overhead_Triceps": (
+        "rozciąganie tricepsa z partnerem, PNF, rozciąganie tricepsa za głową z partnerem"
+    ),
+    "Lying_Prone_Quadriceps": (
+        "rozciąganie czworogłowego z partnerem, PNF, rozciąganie uda leżąc przodem z partnerem"
+    ),
+    "Lying_Hamstring": (
+        "rozciąganie dwugłowych z partnerem leżąc, PNF, rozciąganie tyłu uda z partnerem"
+    ),
+    "Seated_Hamstring": (
+        "rozciąganie dwugłowych z partnerem siedząc, PNF, skłon w siadzie z partnerem"
+    ),
+    "Lying_Glute": (
+        "rozciąganie pośladka z partnerem leżąc, PNF, rozciąganie pośladka leżąc na plecach"
+    ),
+    "Seated_Glute": "rozciąganie pośladka z partnerem siedząc, PNF, czwórka w siadzie z partnerem",
+    "Lying_Crossover": (
+        "skręt z kolanem w poprzek z partnerem, PNF, rozciąganie pośladka i boku z partnerem"
+    ),
+    "Lying_Bent_Leg_Groin": (
+        "rozciąganie pachwin z partnerem, PNF, motylek leżąc z partnerem, przywodziciele"
+    ),
+    "Deadlift_with_Bands": "martwy ciąg z gumami, martwy ciąg z oporem gum",
+    "Deadlift_with_Chains": "martwy ciąg z łańcuchami, łańcuchy, martwy ciąg z oporem łańcuchów",
+    "Reverse_Band_Deadlift": (
+        "martwy ciąg z gumami od góry, reverse band deadlift, gumy zaczepione u góry"
+    ),
+    "Reverse_Band_Sumo_Deadlift": (
+        "martwy ciąg sumo z gumami od góry, reverse band sumo, gumy zaczepione u góry"
+    ),
+    "One-Arm_Side_Deadlift": (
+        "martwy ciąg walizkowy ze sztangą, martwy ciąg jednorącz bokiem, "
+        "suitcase deadlift ze sztangą, martwy ciąg walizkowy"
+    ),
+    "Speed_Squats": "szybki przysiad ze sztangą, speed squat, przysiad dynamiczny",
+    "Barbell_Squat_To_A_Bench": (
+        "przysiad ze sztangą do ławki, przysiad do ławki, przysiad na ławkę ze sztangą"
+    ),
+    "Front_Barbell_Squat_To_A_Bench": "przysiad przedni do ławki, front squat do ławki",
+    "Box_Squat_with_Bands": "przysiad na skrzynię z gumami, box squat z gumami",
+    "Box_Squat_with_Chains": "przysiad na skrzynię z łańcuchami, box squat z łańcuchami",
+    "Reverse_Band_Power_Squat": (
+        "przysiad z gumami od góry, reverse band squat, gumy zaczepione u góry"
+    ),
+    "Kneeling_Jump_Squat": (
+        "wyskok z klęku ze sztangą, kneeling jump squat, wyskok z kolan do przysiadu"
+    ),
+    "One-Arm_Overhead_Kettlebell_Squats": (
+        "przysiad z kettlebell nad głową jednorącz, overhead squat kettlebell, "
+        "przysiad z ciężarem nad głową"
+    ),
+    "Hang_Snatch": "rwanie z zawieszenia, hang snatch, rwanie z wysokości ud",
+    "Hang_Snatch_-_Below_Knees": "rwanie z zawieszenia spod kolan, hang snatch poniżej kolan",
+    "Snatch_from_Blocks": "rwanie z bloków, snatch from blocks, rwanie z podwyższenia",
+    "Split_Snatch": "rwanie nożycami, split snatch, rwanie z wykrokiem",
+    "Power_Jerk": "podrzut siłowy, power jerk, podrzut bez nożyc",
+    "Squat_Jerk": "podrzut z przysiadem, squat jerk, podrzut z podsiadem",
+    "Double_Kettlebell_Snatch": "rwanie dwóch kettlebell, double snatch, rwanie oburącz kettlebell",
+    "One-Arm_Kettlebell_Split_Snatch": (
+        "rwanie nożycami kettlebell jednorącz, split snatch kettlebell, rwanie z wykrokiem"
+    ),
+    "Open_Palm_Kettlebell_Clean": (
+        "zarzut kettlebell otwartymi dłońmi, open palm clean oburącz, zarzut z łapaniem uchwytu"
+    ),
+    "Bent_Press": "wyciskanie kettlebell w skłonie bocznym, bent press, wyciskanie w skłonie",
+    "Alternating_Renegade_Row": (
+        "wiosłowanie w podporze z kettlebell, renegade row, wiosłowanie renegata, "
+        "podpór na kettlebell"
+    ),
+    "One_Arm_Chin-Up": "podciąganie na jednej ręce, podciąganie jednorącz, one arm chin up",
+    "Mixed_Grip_Chin": (
+        "podciąganie chwytem mieszanym, podciąganie jedną ręką nachwytem a drugą podchwytem"
+    ),
+    "Plyo_Kettlebell_Pushups": (
+        "pompki plyometryczne przez kettlebell, pompki z przeskokiem przez kettlebell"
+    ),
+    "Bench_Press_with_Chains": (
+        "wyciskanie sztangi z łańcuchami, wyciskanie z łańcuchami na ławce, łańcuchy"
+    ),
+    "Barbell_Ab_Rollout_-_On_Knees": (
+        "rolowanie sztangi z kolan, rollout ze sztangą na kolanach, kółko ze sztangą"
+    ),
+    "Press_Sit-Up": "brzuszki z wyciskaniem sztangi, brzuszki ze sztangą, press sit up",
+    "Atlas_Stones": "kamienie atlasa, atlas stones, kamień, strongman",
+    "Circus_Bell": "hantel cyrkowy, circus bell, gruby hantel, strongman",
 }
