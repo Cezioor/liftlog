@@ -85,8 +85,8 @@ def test_stem(word, expected):
     [
         ("step up smith", ["step", "up"], "smith"),
         ("step-ups Smith machine", ["step", "up"], "smith"),
-        ("przysiad na suwnicy", ["przysiad", "na"], "smith"),
-        ("przysiad z hantlami", ["przysiad", "z"], "dumbbell"),
+        ("przysiad na suwnicy", ["przysiad"], "smith"),  # "na" is a filler word
+        ("przysiad z hantlami", ["przysiad"], "dumbbell"),
         ("wiosłowanie sztangą", ["wioslowanie"], "barbell"),
         ("kettlebell swing", ["swing"], "kettlebell"),
         ("prostowanie ramion wyciąg", ["prostowanie", "ramion"], "cable"),

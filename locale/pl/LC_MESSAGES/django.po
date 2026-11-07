@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LiftLog\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-07 15:18+0100\n"
+"POT-Creation-Date: 2026-11-07 22:29+0100\n"
 "PO-Revision-Date: 2026-11-06 22:40+0100\n"
 "Last-Translator: Cezary Muszalski\n"
 "Language-Team: Polish\n"
@@ -425,6 +425,30 @@ msgstr "mięśnie pomocnicze"
 #: .\exercises\models.py:172
 msgid "level"
 msgstr "poziom"
+
+#: .\exercises\picker.py:26
+msgid "You can also do these on the Smith machine"
+msgstr "Możesz zrobić też na smithie"
+
+#: .\exercises\picker.py:27
+msgid "You can also do these with a barbell"
+msgstr "Możesz zrobić też ze sztangą"
+
+#: .\exercises\picker.py:28
+msgid "You can also do these with dumbbells"
+msgstr "Możesz zrobić też z hantlami"
+
+#: .\exercises\picker.py:29
+msgid "You can also do these with a kettlebell"
+msgstr "Możesz zrobić też z kettlebell"
+
+#: .\exercises\picker.py:30
+msgid "You can also do these on a cable"
+msgstr "Możesz zrobić też na wyciągu"
+
+#: .\exercises\picker.py:31
+msgid "You can also do these with a resistance band"
+msgstr "Możesz zrobić też z gumą"
 
 #: .\exercises\templatetags\exercise_tags.py:25
 msgid "none"
@@ -1290,7 +1314,7 @@ msgid "Edit exercise"
 msgstr "Edytuj ćwiczenie"
 
 #: .\templates\exercises\exercise_detail.html:106
-#: .\templates\exercises\partials\picker_results.html:31
+#: .\templates\exercises\partials\picker_results.html:22
 msgid "All exercises"
 msgstr "Wszystkie ćwiczenia"
 
@@ -1337,36 +1361,36 @@ msgstr "Dodaj własne ćwiczenie: «%(name)s»"
 msgid "Creates it and picks it right away; add details later"
 msgstr "Utworzy je i od razu wybierze; szczegóły uzupełnisz później"
 
-#: .\templates\exercises\partials\picker_results.html:10
-#, python-format
-msgid "Add variant: «%(movement)s» — %(equipment)s"
-msgstr "Dodaj wariant: «%(movement)s» — %(equipment)s"
-
-#: .\templates\exercises\partials\picker_results.html:11
-msgid "Same muscles and instructions, its own history and records"
-msgstr "Te same mięśnie i instrukcje, własna historia i rekordy"
-
-#: .\templates\exercises\partials\picker_results.html:22
+#: .\templates\exercises\partials\picker_results.html:13
 msgid "Recently used"
 msgstr "Ostatnio używane"
 
-#: .\templates\exercises\partials\picker_results.html:31
+#: .\templates\exercises\partials\picker_results.html:22
 msgid "Results"
 msgstr "Wyniki"
 
-#: .\templates\exercises\partials\picker_results.html:38
+#: .\templates\exercises\partials\picker_results.html:29
 #, python-format
 msgid "No exercise matches “%(query)s”."
 msgstr "Brak ćwiczeń pasujących do „%(query)s”."
 
-#: .\templates\exercises\partials\picker_results.html:38
+#: .\templates\exercises\partials\picker_results.html:29
 msgid "No exercise matches."
 msgstr "Brak pasujących ćwiczeń."
 
-#: .\templates\exercises\partials\picker_results.html:42
+#: .\templates\exercises\partials\picker_results.html:33
 #, python-format
 msgid "Showing %(shown)s of %(results_count)s. Type more to narrow it down."
 msgstr "Widać %(shown)s z %(results_count)s. Wpisz więcej, żeby zawęzić."
+
+#: .\templates\exercises\partials\picker_variant.html:8
+#, python-format
+msgid "Add variant: «%(movement)s» — %(equipment)s"
+msgstr "Dodaj wariant: «%(movement)s» — %(equipment)s"
+
+#: .\templates\exercises\partials\picker_variant.html:9
+msgid "Same muscles and instructions, its own history and records"
+msgstr "Te same mięśnie i instrukcje, własna historia i rekordy"
 
 #: .\templates\exercises\picker.html:24
 msgid "Search, e.g. przysiad, bench, wiosłowanie"

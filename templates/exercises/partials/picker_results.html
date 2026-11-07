@@ -1,16 +1,7 @@
 {% load i18n %}{# Results of the exercise picker; re-rendered by HTMX on every search. #}
 {% if variant %}
   {# The movement exists, but not with the equipment typed: offer the user's own variant. #}
-  <form method="post" action="{% url 'exercises:exercise_variant_create' variant.base.pk %}" class="picker-add-form picker-variant-form">
-    {% csrf_token %}
-    <input type="hidden" name="equipment" value="{{ variant.equipment }}">
-    <input type="hidden" name="next" value="{{ select_base }}">
-    <input type="hidden" name="suffix" value="{{ select_suffix }}">
-    <button type="submit" class="picker-item picker-add picker-variant">
-      <span class="list-title">+ {% blocktranslate with movement=variant.movement equipment=variant.equipment_label %}Add variant: «{{ movement }}» — {{ equipment }}{% endblocktranslate %}</span>
-      <span class="list-meta">{% translate "Same muscles and instructions, its own history and records" %}</span>
-    </button>
-  </form>
+  {% include "exercises/partials/picker_variant.html" %}
 {% endif %}
 
 {% if quick_add_name and not results_count %}
@@ -40,6 +31,15 @@
 </ul>
 {% if results_count > results|length %}
   <p class="muted small">{% blocktranslate with shown=results|length %}Showing {{ shown }} of {{ results_count }}. Type more to narrow it down.{% endblocktranslate %}</p>
+{% endif %}
+
+{% if also_with %}
+  {# A muscle and equipment were typed: popular exercises for that muscle without a version #}
+  {# with that equipment yet (exercises.services.equipment_suggestions). Hidden when empty. #}
+  <h2 class="picker-heading">{{ also_with_heading }}</h2>
+  {% for variant in also_with %}
+    {% include "exercises/partials/picker_variant.html" %}
+  {% endfor %}
 {% endif %}
 
 {% if quick_add_name and results_count %}

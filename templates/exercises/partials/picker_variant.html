@@ -1,0 +1,11 @@
+{% load i18n %}{# "+ Add variant: «Step Ups» — Smith machine": creates the user's own variant and picks it. #}
+<form method="post" action="{% url 'exercises:exercise_variant_create' variant.base.pk %}" class="picker-add-form picker-variant-form">
+  {% csrf_token %}
+  <input type="hidden" name="equipment" value="{{ variant.equipment }}">
+  <input type="hidden" name="next" value="{{ select_base }}">
+  <input type="hidden" name="suffix" value="{{ select_suffix }}">
+  <button type="submit" class="picker-item picker-add picker-variant">
+    <span class="list-title">+ {% blocktranslate with movement=variant.movement equipment=variant.equipment_label %}Add variant: «{{ movement }}» — {{ equipment }}{% endblocktranslate %}</span>
+    <span class="list-meta">{% translate "Same muscles and instructions, its own history and records" %}</span>
+  </button>
+</form>

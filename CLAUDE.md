@@ -386,12 +386,18 @@ Wrong categories or muscle groups:
 - Dumbbell_Lying_Supination and Dumbbell_Lying_Pronation: muscle group forearms, but the instructions describe
   shoulder external rotation (the muscle filter would show them under forearms).
 - Split_Squats: stretching / mobility, but it is jumping lunges (plyometric).
+- Power_Clean (one of the 65 originals): source category "strength", but it is an Olympic lift; muscle-word
+  suggestions skip it because its group is full body.
 
 Wrong equipment (the equipment filter shows them in the wrong place):
 - Incline_Bench_Pull: barbell in free-exercise-db, but the instructions use dumbbells.
 - Lunge_Sprint: machine in free-exercise-db, but the instructions use the Smith machine.
 
 Missing instructions (named after the English name): Side_Jackknife, Iron_Cross.
+
+Movement family gaps (for MANUAL_GROUPS, the owner's decision): Back Squat has no family, while Smith Machine
+Squat is in the "Squat" family with Dumbbell Squat. The muscle-word suggestions avoid offering a duplicate by
+comparing movement names (`_similar_name_exists`).
 
 ## Technical decisions
 

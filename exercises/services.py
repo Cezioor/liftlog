@@ -4,10 +4,10 @@ from dataclasses import dataclass
 from decimal import Decimal
 
 from django.db.models import Case, F, IntegerField, Q, TextField, Value, When
-from django.db.models.functions import Replace
+from django.db.models.functions import Cast, Replace
 from django.utils import translation
 
-from .models import Equipment, Exercise, Level, Movement, Muscle, MuscleGroup
+from .models import Category, Equipment, Exercise, Level, Movement, Muscle, MuscleGroup
 from .text import normalize
 
 LOWER_BODY_GROUPS = {
@@ -64,6 +64,82 @@ WORD_TO_EQUIPMENT = {
 }
 
 
+@dataclass(frozen=True)
+class MuscleTarget:
+    """What a muscle word in a search means: these muscle groups, or these muscles
+    (Exercise.primary_muscles / secondary_muscles, the muscle map's names)."""
+
+    groups: frozenset
+    muscles: frozenset
+
+
+def _target(groups, muscles):
+    return MuscleTarget(frozenset(groups), frozenset(muscles))
+
+
+LEG_GROUPS = (MuscleGroup.QUADS, MuscleGroup.HAMSTRINGS, MuscleGroup.GLUTES, MuscleGroup.CALVES)
+LEG_MUSCLES = (Muscle.QUADRICEPS, Muscle.HAMSTRINGS, Muscle.GLUTES, Muscle.CALVES,
+               Muscle.ADDUCTORS, Muscle.ABDUCTORS)  # fmt: skip
+MUSCLE_TARGETS = {
+    "glutes": _target([MuscleGroup.GLUTES], [Muscle.GLUTES]),
+    "chest": _target([MuscleGroup.CHEST], [Muscle.CHEST]),
+    "back": _target([MuscleGroup.BACK], [Muscle.LATS, Muscle.MIDDLE_BACK, Muscle.LOWER_BACK]),
+    "shoulders": _target([MuscleGroup.SHOULDERS], [Muscle.SHOULDERS]),
+    "biceps": _target([MuscleGroup.BICEPS], [Muscle.BICEPS]),
+    "triceps": _target([MuscleGroup.TRICEPS], [Muscle.TRICEPS]),
+    "forearms": _target([MuscleGroup.FOREARMS], [Muscle.FOREARMS]),
+    "quads": _target([MuscleGroup.QUADS], [Muscle.QUADRICEPS]),
+    "hamstrings": _target([MuscleGroup.HAMSTRINGS], [Muscle.HAMSTRINGS]),
+    "calves": _target([MuscleGroup.CALVES], [Muscle.CALVES]),
+    "legs": _target(LEG_GROUPS, LEG_MUSCLES),  # "nogi": the whole legs, not only the quads
+    "core": _target([MuscleGroup.CORE], [Muscle.ABDOMINALS]),
+    "traps": _target([], [Muscle.TRAPS]),  # no muscle group of their own
+}
+# Words in a search that name a muscle (after normalize()), formal and colloquial, Polish
+# and English. Like equipment words they filter instead of having to be in the name.
+MUSCLE_WORDS = {
+    "glutes": {"posladki", "posladek", "posladka", "posladkow", "posladkach", "posladkami",
+               "dupa", "dupe", "dupy", "dupie", "dupka", "dupke", "tylek", "tylka", "tylku",
+               "pupa", "pupe", "pupy", "glute", "glutes", "butt"},
+    "chest": {"klata", "klate", "klaty", "klacie", "klatka", "klatke", "klatki", "klatce",
+              "chest"},
+    "back": {"plecy", "plecow", "plecach", "plecami", "grzbiet", "grzbietu", "back", "lats"},
+    "shoulders": {"barki", "barkow", "barkach", "bark", "barku", "shoulders", "shoulder",
+                  "delts"},
+    "biceps": {"biceps", "bicepsa", "bicepsy", "bicepsow", "bicki", "bickow", "bica",
+               "bicep"},
+    "triceps": {"triceps", "tricepsa", "tricepsy", "tricepsow", "tricki", "trickow", "tricep"},
+    "forearms": {"przedramiona", "przedramie", "przedramion", "przedramienia", "forearms",
+                 "forearm"},
+    "quads": {"uda", "udo", "ud", "udach", "czworki", "czworke", "czworoglowe",
+              "czworoglowych", "quads", "quad"},
+    "hamstrings": {"dwuglowe", "dwuglowych", "dwojki", "hamstringi", "hamstrings",
+                   "hamstring"},
+    "calves": {"lydki", "lydka", "lydek", "lydkach", "lydy", "calves", "calf"},
+    "legs": {"nogi", "nog", "nogach", "nogami", "noge", "legs"},
+    "core": {"brzuch", "brzucha", "brzuchu", "brzuszek", "abs", "absy", "core", "kaloryfer",
+             "kaloryfera"},
+    "traps": {"kaptury", "kapturow", "kaptur", "trapezy", "traps"},
+}  # fmt: skip
+WORD_TO_MUSCLE = {word: key for key, words in MUSCLE_WORDS.items() for word in words}
+# Two-word names, read before single words ("tył uda" is not the front of the thigh).
+PHRASES = {
+    "tyl uda": ("muscle", "hamstrings"),
+    "tylu uda": ("muscle", "hamstrings"),
+    "tyl ud": ("muscle", "hamstrings"),
+    "miesnie brzucha": ("muscle", "core"),
+    "miesni brzucha": ("muscle", "core"),
+    "masa ciala": ("equipment", Equipment.BODYWEIGHT),
+    "masy ciala": ("equipment", Equipment.BODYWEIGHT),
+    "bez sprzetu": ("equipment", Equipment.BODYWEIGHT),
+}
+# Words that only fill a sentence: "ćwiczenie na smithie na dupę", "glute exercises smith".
+FILLER_WORDS = {
+    "cwiczenie", "cwiczenia", "cwiczen", "na", "do", "z", "ze", "dla", "w", "pod", "i",
+    "jakies", "jakis", "exercise", "exercises", "for", "with", "on",
+}  # fmt: skip
+
+
 def stem(word):
     """Crude English singular, enough for exercise names: "ups" -> "up",
     "presses" -> "press", "crunches" -> "crunch", "flies" -> "fly".
@@ -85,24 +161,79 @@ class ParsedQuery:
     words: list  # stemmed words without spaces between them mattering
     equipment: str = ""  # equipment named in the query, e.g. "smith"
     equipment_word: str = ""  # the word that named it, e.g. "suwnica"
+    muscle: str = ""  # muscle named in the query: a MUSCLE_TARGETS key, e.g. "glutes"
+    # Every word but the fillers, in order ("back squat" -> ["back", "squat"]): a name that
+    # starts with them still comes first, even when "back" also names a muscle.
+    all_words: tuple = ()
 
 
 def parse_query(query):
-    """Split a search into movement words and an equipment word.
+    """Split a search into movement words, an equipment word and a muscle word.
 
-    "step up smith machine" -> words ["step", "up"], equipment smith ("machine" is
-    part of "Smith machine", not a second piece of equipment).
+    "step up smith machine" -> words ["step", "up"], equipment smith ("machine" is part
+    of "Smith machine", not a second piece of equipment).
+    "ćwiczenie na smithie na dupę" -> no words, equipment smith, muscle glutes
+    (filler words like "ćwiczenie", "na" are dropped).
     """
-    words, equipment, equipment_word = [], "", ""
-    for word in normalize(query).split():
+    text = f" {normalize(query)} "
+    equipment, equipment_word, muscle = "", "", ""
+    for phrase, (kind, value) in PHRASES.items():
+        if f" {phrase} " in text:
+            text = text.replace(f" {phrase} ", " ")
+            if kind == "muscle" and not muscle:
+                muscle = value
+            elif kind == "equipment" and not equipment:
+                equipment, equipment_word = value, phrase
+    words, all_words = [], []
+    for word in text.split():
+        if word in FILLER_WORDS:
+            continue
+        all_words.append(stem(word))
         named = WORD_TO_EQUIPMENT.get(word) or WORD_TO_EQUIPMENT.get(stem(word))
-        if named and not equipment:
-            equipment, equipment_word = named, word
-        elif named:
-            continue  # a second equipment word: "smith machine", "hantle dumbbell"
+        muscle_named = WORD_TO_MUSCLE.get(word) or WORD_TO_MUSCLE.get(stem(word))
+        if named:
+            if not equipment:  # a second one: "smith machine", "hantle dumbbell"
+                equipment, equipment_word = named, word
+        elif muscle_named:
+            if not muscle:
+                muscle = muscle_named
         else:
             words.append(stem(word))
-    return ParsedQuery(words, equipment, equipment_word)
+    return ParsedQuery(words, equipment, equipment_word, muscle, tuple(all_words))
+
+
+def popular_exercises(user):
+    """Q for the exercises suggested first: the 65 common ones LiftLog was seeded with
+    (seed_data.EXERCISES) and the ones this user has logged."""
+    from workouts.models import WorkoutSet  # workouts imports this app's models
+
+    from .seed_data import EXERCISES
+
+    common = [name for name, *_ in EXERCISES]
+    logged = WorkoutSet.objects.filter(workout__owner=user).values("exercise_id")
+    return Q(owner__isnull=True, name__in=common) | Q(pk__in=logged)
+
+
+def _muscles_as_text(field):
+    """A muscles JSON list as text ('["glutes", "hamstrings"]'), searchable the same way
+    on SQLite and Postgres."""
+    return Cast(field, TextField())
+
+
+def muscle_match(target):
+    """Q for exercises whose muscle group or main muscles are `target` (strong match)."""
+    query = Q(muscle_group__in=target.groups)
+    for muscle in target.muscles:
+        query |= Q(primary_text__contains=f'"{muscle}"')
+    return query
+
+
+def helping_muscle_match(target):
+    """Q for exercises that work `target` as a helping muscle (weaker match)."""
+    query = Q(pk__in=[])
+    for muscle in target.muscles:
+        query |= Q(secondary_text__contains=f'"{muscle}"')
+    return query
 
 
 def _compact(text):
@@ -117,8 +248,13 @@ def search_exercises(user, query="", muscle_group="", equipment="", level=""):
     - Every word must appear somewhere in the name or the other names.
     - A word naming equipment ("smith", "hantle", "wyciąg"…) matches exercises with that
       equipment, or with that word in a name ("suwnica" also finds the leg press).
-    Order: name starts with the query, then exercises with Polish names (the common
-    ones and the user's own), then alphabetical.
+    - A word naming a muscle ("dupa", "klata", "glutes"…) works the same way: exercises
+      for that muscle (group, main or helping muscle), or with that word in a name
+      ("przyciąganie kolan do klatki" is still found by "klatki").
+    - Filler words ("ćwiczenie", "na", "for"…) are ignored.
+    Order: name starts with the query, then (with a muscle word) the muscle as group or
+    main muscle before the muscle as helping one, then exercises with Polish names (the
+    common ones and the user's own), then alphabetical.
     """
     results = Exercise.objects.visible_to(user)
     if muscle_group in MuscleGroup.values:
@@ -145,16 +281,57 @@ def search_exercises(user, query="", muscle_group="", equipment="", level=""):
         results = results.filter(Q(equipment=parsed.equipment) | in_name)
 
     ordering = []
-    start = "".join(parsed.words)
-    if start:
+    if parsed.muscle:
+        target = MUSCLE_TARGETS[parsed.muscle]
+        results = results.annotate(
+            primary_text=_muscles_as_text("primary_muscles"),
+            secondary_text=_muscles_as_text("secondary_muscles"),
+        )
+        # As with equipment: any form of the word in a name counts too ("na plecach").
+        in_name = Q(pk__in=[])
+        for word in MUSCLE_WORDS[parsed.muscle]:
+            if len(word) >= 4:
+                in_name |= Q(compact__contains=word)
+        strong, helping = muscle_match(target), helping_muscle_match(target)
+        results = results.filter(strong | helping | in_name).annotate(
+            muscle_rank=Case(
+                When(strong, then=Value(0)),
+                When(helping, then=Value(1)),
+                default=Value(2),
+                output_field=IntegerField(),
+            )
+        )
+
+    starts = {"".join(parsed.words), "".join(parsed.all_words)} - {""}
+    if starts:
+        first = Q()
+        for start in starts:
+            first |= Q(compact__startswith=start)
         results = results.annotate(
             name_first=Case(
-                When(compact__startswith=start, then=Value(0)),
+                When(first, then=Value(0)), default=Value(1), output_field=IntegerField()
+            )
+        )
+        ordering.append("name_first")
+    if parsed.muscle:
+        # Within a muscle: the common exercises and the user's own history first, so
+        # "na tyłek" starts with hip thrusts and squats, not with foam rolling.
+        results = results.annotate(
+            popular_first=Case(
+                When(popular_exercises(user), then=Value(0)),
                 default=Value(1),
                 output_field=IntegerField(),
             )
         )
-        ordering.append("name_first")
+        # Stretching and foam rolling after the exercises that train the muscle.
+        results = results.annotate(
+            stretch_last=Case(
+                When(category=Category.MOBILITY, then=Value(1)),
+                default=Value(0),
+                output_field=IntegerField(),
+            )
+        )
+        ordering += ["muscle_rank", "popular_first", "stretch_last"]
     results = results.annotate(
         familiar_first=Case(
             When(Q(owner__isnull=False) | ~Q(aliases=""), then=Value(0)),
@@ -249,6 +426,116 @@ def variant_suggestion(user, query):
     if family(user, base).filter(equipment=parsed.equipment).exists():
         return None
     return VariantSuggestion(base, parsed.equipment)
+
+
+# At most this many "You can also do these on the Smith machine" suggestions.
+EQUIPMENT_SUGGESTIONS_LIMIT = 5
+
+
+# A movement can be done with the key's equipment when its family has a version with one of
+# these (free weights that load the body the same way). Machines, pull-up bars, bodyweight,
+# TRX and landmine are specific to their movements, so nothing is suggested for them.
+SIMILAR_EQUIPMENT = {
+    Equipment.SMITH: {Equipment.BARBELL},
+    Equipment.BARBELL: {Equipment.DUMBBELL, Equipment.SMITH},
+    Equipment.DUMBBELL: {Equipment.BARBELL, Equipment.KETTLEBELL},
+    Equipment.KETTLEBELL: {Equipment.DUMBBELL},
+    Equipment.CABLE: {Equipment.DUMBBELL, Equipment.BAND},
+    Equipment.BAND: {Equipment.CABLE},
+}
+# Olympic lifts and strongman events are not moved to other equipment.
+NOT_MOVED_CATEGORIES = {"olympic weightlifting", "strongman"}
+
+
+def equipment_fits(user, exercise, equipment):
+    """Whether doing `exercise` with `equipment` makes sense.
+
+    The movement needs a version with similar equipment (SIMILAR_EQUIPMENT): for the Smith
+    machine a barbell version (a squat yes, a hammer curl no). For anything but the Smith
+    machine, at least two built-in exercises with the same muscle group and mechanic
+    (compound / isolation) must also use that equipment.
+    """
+    similar = SIMILAR_EQUIPMENT.get(equipment)
+    if (
+        not similar
+        or exercise.source_category in NOT_MOVED_CATEGORIES
+        or exercise.muscle_group == MuscleGroup.FULL_BODY  # e.g. Power Clean ("strength")
+    ):
+        return False
+    versions = {exercise.equipment} | set(
+        family(user, exercise).values_list("equipment", flat=True)
+    )
+    if not versions & similar:
+        return False
+    if equipment == Equipment.SMITH:
+        return True
+    same_kind = Exercise.objects.filter(
+        owner__isnull=True,
+        muscle_group=exercise.muscle_group,
+        mechanic=exercise.mechanic,
+        equipment=equipment,
+    )
+    return same_kind.count() >= 2
+
+
+# Words that don't change the movement: "Back Squat" = "Squat", "Hammer Curl" =
+# "Cable Hammer Curls - Rope Attachment". "Incline" or "Close-Grip" do change it.
+NOT_DISTINGUISHING_WORDS = {"back", "bench", "seated", "standing", "walking", "rope",
+                            "attachment", "with", "the"}  # fmt: skip
+
+
+def _movement_words(name):
+    return {stem(word) for word in normalize(movement_name(name)).split()}
+
+
+def _similar_name_exists(user, exercise, equipment):
+    """An exercise with `equipment` whose movement name differs only by words that don't
+    change the movement ("Smith Machine Squat" for "Back Squat"): families don't join all
+    of these, and a suggestion would duplicate it."""
+    words = _movement_words(exercise.name)
+    neutral = {stem(word) for word in NOT_DISTINGUISHING_WORDS}
+    for name in (
+        Exercise.objects.visible_to(user).filter(equipment=equipment).values_list("name", flat=True)
+    ):
+        other = _movement_words(name)
+        if other and (words ^ other) <= neutral:
+            return True
+    return False
+
+
+def equipment_suggestions(user, muscle, equipment, limit=EQUIPMENT_SUGGESTIONS_LIMIT):
+    """For "ćwiczenie na smithie na dupę": popular exercises for the muscle that have no
+    version with that equipment yet, but where it fits; each can become the user's
+    variant in one tap ("+ Add variant"). Only exercises with that muscle as group or
+    main muscle (a helping muscle would suggest an Arnold press for triceps); one per
+    movement family. Empty when there is nothing to suggest.
+    """
+    if muscle not in MUSCLE_TARGETS or equipment not in Equipment.values:
+        return []
+    target = MUSCLE_TARGETS[muscle]
+    candidates = (
+        Exercise.objects.visible_to(user)
+        .filter(popular_exercises(user))
+        .exclude(equipment=equipment)
+        .annotate(primary_text=_muscles_as_text("primary_muscles"))
+        .filter(muscle_match(target))
+        .order_by("name")
+    )
+    suggestions, seen = [], set()
+    for exercise in candidates:
+        movement = exercise.movement_id or f"exercise-{exercise.pk}"
+        if movement in seen:
+            continue
+        seen.add(movement)
+        if family(user, exercise).filter(equipment=equipment).exists():
+            continue  # already has a version with it: it is in the results above
+        if _similar_name_exists(user, exercise, equipment):
+            continue  # e.g. Smith Machine Squat for Back Squat, in another family
+        if equipment_fits(user, exercise, equipment):
+            suggestions.append(VariantSuggestion(exercise, equipment))
+            if len(suggestions) == limit:
+                break
+    return suggestions
 
 
 def variant_name(base, equipment, label=""):
