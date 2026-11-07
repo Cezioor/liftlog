@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .ruff_cache/
-db.sqlite3
+# The local database and any copies of it (db.sqlite3.bak, -journal, ...)
+db.sqlite3*
 staticfiles/
 .env
