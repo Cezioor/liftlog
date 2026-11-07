@@ -1,5 +1,6 @@
 from allauth.account.models import EmailAddress
 from allauth.account.views import EmailVerificationSentView
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
@@ -85,6 +86,9 @@ def set_language(request):
     to `next`), plus saving the choice on the account of a logged-in user."""
     response = i18n.set_language(request)
     language = request.POST.get("language", "")
-    if request.user.is_authenticated and is_supported_language(language):
+    if not is_supported_language(language):
+        # Django's view accepts any language it has translations for (e.g. "de").
+        response.cookies.pop(settings.LANGUAGE_COOKIE_NAME, None)
+    elif request.user.is_authenticated:
         save_account_language(request.user, language)
     return response

@@ -14,13 +14,11 @@ from workouts.models import Workout, WorkoutSet
 def _test_settings(settings):
     """Tests run with DEBUG off (like production), minus the parts that need a real deploy.
 
-    And in English: the app defaults to Polish, but most tests check the English source
-    texts. A request without a cookie or Accept-Language gets LANGUAGE_CODE, and code
-    called outside a request uses the active language. Tests of the Polish version ask
-    for it (cookie, Accept-Language or translation.override).
+    And in English, the default language: code called outside a request (services,
+    commands) gets English too. Tests of the Polish version ask for it (cookie,
+    Accept-Language or translation.override).
     """
     settings.SECURE_SSL_REDIRECT = False
-    settings.LANGUAGE_CODE = "en"
     # The default from the code, whatever a developer's .env says (locally: optional).
     settings.ACCOUNT_EMAIL_VERIFICATION = "mandatory"
     # Rate limits are counted in the cache: per-test memory instead of the DB table

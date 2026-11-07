@@ -28,7 +28,7 @@ class UserLanguageMiddleware(LocaleMiddleware):
     """Pick the page language: the account's language first, then Django's usual order.
 
     Django's LocaleMiddleware looks at the language cookie, then the browser's
-    Accept-Language, then LANGUAGE_CODE (Polish). It doesn't know about accounts, so
+    Accept-Language, then LANGUAGE_CODE (English). It doesn't know about accounts, so
     this subclass checks UserSettings.language first. On the way out it copies the
     account's language into the cookie: right after logging in on a new device the
     next page is already in that language, and after logging out it stays that way.

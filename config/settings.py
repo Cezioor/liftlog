@@ -205,9 +205,10 @@ DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "LiftLog <noreply@lift
 
 # Internationalization: store times in UTC, show them in Warsaw time.
 # Source texts are English (msgid); Polish lives in locale/pl/LC_MESSAGES/django.po.
-# Language: the one saved on the account -> cookie -> browser (Accept-Language) -> Polish
-# (config.middleware.UserLanguageMiddleware).
-LANGUAGE_CODE = "pl"
+# Language: the one saved on the account -> cookie -> browser (Accept-Language) -> English
+# (config.middleware.UserLanguageMiddleware). A browser in a language we don't have gets English.
+# Another language later: add it here and create locale/<code>/ with makemessages -l <code>.
+LANGUAGE_CODE = "en"
 LANGUAGES = [("pl", "Polski"), ("en", "English")]  # each in its own language
 LOCALE_PATHS = [BASE_DIR / "locale"]
 LANGUAGE_COOKIE_AGE = 365 * 24 * 60 * 60  # a year: the choice outlives logging out
