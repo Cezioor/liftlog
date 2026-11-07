@@ -23,6 +23,7 @@ and keep each change small enough to review.
 | **1.6 – Exercise types** (+ set rating RIR, calibration, old plank sets converted) | done |
 | Feedback ("Zgłoś", admin, `feedback_report`) | done (commit 1f73565); `FEEDBACK_EMAIL` and `ADMIN_EMAILS` set on Render, tested on the phone (2026-11-07) |
 | PL/EN language switcher (whole UI, footer switch, Settings, language on the account; English by default) | done (2026-11-07) |
+| Polish names for all 913 built-in exercises (search aliases) | done (2026-11-07) |
 | **1.7 – Activities and body weight** | to do |
 | **1.8 – Consistency and rewards** | to do |
 | **1.9 – Training insights** | to do |
@@ -35,26 +36,46 @@ and keep each change small enough to review.
 1. ~~**Feedback system**~~: done; `FEEDBACK_EMAIL` and `ADMIN_EMAILS` are set on Render and it was tested on the
    phone (2026-11-07).
 2. ~~**PL/EN language switcher**~~: done (see "Languages (PL/EN)" below).
-3. **Polish names for more exercises** (aliases in `exercises/free_db_polish.py`, for Polish search; names stay
-   English): beginners done on 2026-11-07 (all 532; 367 added in six reviewed batches), so 658 of 913 built-ins
-   have Polish names. Left: 211 intermediate and 44 expert exercises (not scheduled yet). The owner reviews each
-   batch before it is saved; naming rules: same instructions → same main name, main name ≤ ~45 characters,
-   popular Polish names first, forms as in the file ("na smithie", "na skosie"), checked against the instructions.
-4. **Finding exercises by type (A, no data model change)**: "Type" (category) filter chips in the picker; goal
+3. ~~**Polish names for more exercises**~~: done on 2026-11-07. All 913 built-ins have Polish names (aliases in
+   `exercises/free_db_polish.py`, for Polish search; names stay English): 622 added in eleven batches reviewed by
+   the owner (367 beginner, 211 intermediate, 44 expert). Naming rules for new ones: same instructions → same main
+   name, main name ≤ ~45 characters, popular Polish names first, forms as in the file ("na smithie", "na skosie"),
+   checked against the instructions.
+4. **Searching by muscle and in everyday words** (after the Polish names; the second tester at Checkpoint A will
+   search like this, e.g. "ćwiczenie na smithie na dupę"):
+   1. Bug: "smithie", "smithem", "smithu" are not recognised as Smith, so "hip thrust na smithie" doesn't find
+      Smith Machine Hip Thrust (alias "na suwnicy smitha"). Add these forms to `EQUIPMENT_WORDS` and check other
+      equipment for common missing forms.
+   2. Filler words ignored in a query: ćwiczenie/ćwiczenia/ćwiczeń, na, do, z, ze, dla, w, pod, i, jakieś,
+      exercise, for, with.
+   3. Muscle words work like equipment words (a filter, not a word required in the name), formal and colloquial,
+      e.g. pośladki/pośladek/dupa/dupę/tyłek/pupa/glutes → glutes; klata/klatka → chest; plecy/grzbiet; barki;
+      biceps/bicki/bica; triceps/tricki; nogi/uda/czwórki; dwugłowe/tył uda; łydki; brzuch/abs/core/kaloryfer;
+      kaptury; przedramiona. Exercises with that muscle as the group or a primary muscle first, then as a
+      secondary muscle (lower), so "na dupę" also shows squats, lunges and deadlifts.
+   4. Muscle + equipment (e.g. glutes + Smith): the existing exercises first, then a section "You can also do these
+      on the Smith machine" with popular exercises for that muscle that have no version with that equipment, each
+      with the existing "+ Add variant" in one tap. Only where the equipment fits (for Smith: movements that have
+      a barbell version).
+   5. Tests on real queries: "ćwiczenie na smithie na dupę", "hip thrust na smithie", "na tyłek", "klata hantle",
+      "bicki wyciąg".
+   6. Optional, a separate commit: in `smith_variants.py` change the Polish names from "na suwnicy smitha" to
+      "na smithie", as in `free_db_polish.py` ("suwnica smitha" stays in the synonyms).
+5. **Finding exercises by type (A, no data model change)**: "Type" (category) filter chips in the picker; goal
    tiles on the library (Strength, Warm-up, Stretching, Balance & stability, Cardio); rename "Motor control /
    balance" to "Balance & stability"; "Stretches for these muscles" on the exercise page; in "⇄ Change variant"
    show only equipment that fits (used by ≥ 2 built-ins with the same muscle group and mechanic, e.g. no
    bodyweight hammer curl), the rest behind "Show all equipment", "Other…" stays.
-5. **Plan sections and missing exercises (B + C)**, before Stage 1.7: `PlanExercise.section` with three fixed
+6. **Plan sections and missing exercises (B + C)**, before Stage 1.7: `PlanExercise.section` with three fixed
    sections (warm-up / main / cool-down); warm-up and cool-down suggestions from the muscles of the day's main
    part; on the workout screen warm-up and cool-down are a tick-off list with an optional timer (no weights, hints
    or records; defaults 1–2 × 30 s, no rest). About 15–20 built-in dynamic warm-up drills (all 123 current
    stretches are static), exercises marked "before" / "after" training, about 10–15 balance exercises (the
    category had 1). Lists wait for the owner's approval. Warm-up and stretching never count as hard sets (1.9).
-6. **Stage 1.7** – activities and body weight.
-7. **Checkpoint A**: a test at the gym and by a second (female) user; then `feedback_report`.
-8. **Stages 1.8, 1.9 and 2.**
-9. **Checkpoint B**: a week of training on a plan built by the AI.
+7. **Stage 1.7** – activities and body weight.
+8. **Checkpoint A**: a test at the gym and by a second (female) user; then `feedback_report`.
+9. **Stages 1.8, 1.9 and 2.**
+10. **Checkpoint B**: a week of training on a plan built by the AI.
 
 Stage 1 items 6 (history list, charts) and 7 (PWA) are not scheduled yet: ask the owner where they fit.
 
@@ -332,7 +353,7 @@ To do:
 Share a plan or workout with friends by link, friends and following, Strava import (official API, Standard Tier up to 10 users),
 nutrition via Apple Health (parked), partner rewards using the points ledger.
 
-**free-exercise-db data issues** (found while adding Polish names; for "Next up" 4 and possible merges, each
+**free-exercise-db data issues** (found while adding Polish names; for "Next up" 5 and possible merges, each
 needs the owner's decision): duplicates, wrong categories and wrong equipment. Duplicates (same instructions or
 the same movement, same Polish main name):
 - Decline_Smith_Press = Smith_Machine_Decline_Press
@@ -349,15 +370,28 @@ the same movement, same Polish main name):
 - Rope_Crunch = Cable_Crunch
 - Flat_Bench_Leg_Pull-In = Leg_Pull-In
 - Seated_Flat_Bench_Leg_Pull-In = Seated_Leg_Tucks (identical instructions)
+- Barbell_Guillotine_Bench_Press = Neck_Press
+- Kettlebell_Seesaw_Press = Alternating_Kettlebell_Press
+- Lying_Rear_Delt_Raise = Dumbbell_Lying_Rear_Lateral_Raise (flat bench vs 15°)
+- Lying_One-Arm_Lateral_Raise = Dumbbell_Lying_One-Arm_Rear_Lateral_Raise (flat bench vs 15°)
+- Lying_Triceps_Press = EZ-Bar_Skullcrusher (Skull Crusher)
+- Dumbbell_Lying_Supination = External_Rotation (see wrong categories)
+- Linear_Depth_Jump = Depth_Jump_Leap
+- Split_Squats = Scissors_Jump
+- Floor_Glute-Ham_Raise = Natural_Glute_Ham_Raise (Nordic Hamstring Curl)
 
-Wrong categories:
+Wrong categories or muscle groups:
 - Isometric_Chest_Squeezes: plyometric, should be isometric.
 - Balance_Board: strength, should be balance & stability.
+- Dumbbell_Lying_Supination and Dumbbell_Lying_Pronation: muscle group forearms, but the instructions describe
+  shoulder external rotation (the muscle filter would show them under forearms).
+- Split_Squats: stretching / mobility, but it is jumping lunges (plyometric).
 
 Wrong equipment (the equipment filter shows them in the wrong place):
 - Incline_Bench_Pull: barbell in free-exercise-db, but the instructions use dumbbells.
+- Lunge_Sprint: machine in free-exercise-db, but the instructions use the Smith machine.
 
-Missing instructions: Side_Jackknife (named after the English name, like "Jackknife Sit-Up").
+Missing instructions (named after the English name): Side_Jackknife, Iron_Cross.
 
 ## Technical decisions
 
