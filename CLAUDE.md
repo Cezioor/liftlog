@@ -21,7 +21,7 @@ and keep each change small enough to review.
 | 1.7 PWA | to do: no manifest, no service worker |
 | **1.5 – Bigger exercise library** (free-exercise-db, detail page, muscle map, Smith machine, search, movement families and variants) | done |
 | **1.6 – Exercise types** (+ set rating RIR, calibration, old plank sets converted) | done |
-| Feedback ("Zgłoś", admin, `feedback_report`) | done (commit 1f73565); `FEEDBACK_EMAIL` and `ADMIN_EMAILS` still to be set on Render |
+| Feedback ("Zgłoś", admin, `feedback_report`) | done (commit 1f73565); `FEEDBACK_EMAIL` and `ADMIN_EMAILS` set on Render, tested on the phone (2026-11-07) |
 | PL/EN language switcher (whole UI, footer switch, Settings, language on the account; English by default) | done (2026-11-07) |
 | **1.7 – Activities and body weight** | to do |
 | **1.8 – Consistency and rewards** | to do |
@@ -32,12 +32,14 @@ and keep each change small enough to review.
 
 ## Next up (in this order)
 
-1. **Feedback system** ("Zgłoś": bug / suggestion / opinion, email to `FEEDBACK_EMAIL`, admin panel, `feedback_report`):
-   built and deployed; left: set `FEEDBACK_EMAIL` and `ADMIN_EMAILS` on Render and test it on the phone.
+1. ~~**Feedback system**~~: done; `FEEDBACK_EMAIL` and `ADMIN_EMAILS` are set on Render and it was tested on the
+   phone (2026-11-07).
 2. ~~**PL/EN language switcher**~~: done (see "Languages (PL/EN)" below).
-3. **Polish names for more exercises**: on 2026-11-07, 291 of 913 built-ins had Polish names (aliases, for Polish
-   search; names stay English). Missing: 367 of 532 beginner exercises, 211 intermediate, 44 expert. Beginners
-   first, in `exercises/free_db_polish.py`; the owner reviews the proposed names before they are saved.
+3. **Polish names for more exercises** (aliases in `exercises/free_db_polish.py`, for Polish search; names stay
+   English): beginners done on 2026-11-07 (all 532; 367 added in six reviewed batches), so 658 of 913 built-ins
+   have Polish names. Left: 211 intermediate and 44 expert exercises (not scheduled yet). The owner reviews each
+   batch before it is saved; naming rules: same instructions → same main name, main name ≤ ~45 characters,
+   popular Polish names first, forms as in the file ("na smithie", "na skosie"), checked against the instructions.
 4. **Finding exercises by type (A, no data model change)**: "Type" (category) filter chips in the picker; goal
    tiles on the library (Strength, Warm-up, Stretching, Balance & stability, Cardio); rename "Motor control /
    balance" to "Balance & stability"; "Stretches for these muscles" on the exercise page; in "⇄ Change variant"
@@ -329,6 +331,33 @@ To do:
 
 Share a plan or workout with friends by link, friends and following, Strava import (official API, Standard Tier up to 10 users),
 nutrition via Apple Health (parked), partner rewards using the points ledger.
+
+**free-exercise-db data issues** (found while adding Polish names; for "Next up" 4 and possible merges, each
+needs the owner's decision): duplicates, wrong categories and wrong equipment. Duplicates (same instructions or
+the same movement, same Polish main name):
+- Decline_Smith_Press = Smith_Machine_Decline_Press
+- Decline_Push-Up = Push-Ups With Feet Elevated
+- Parallel_Bar_Dip = Dips_-_Triceps_Version
+- Incline_Dumbbell_Bench_With_Palms_Facing_In = Hammer_Grip_Incline_DB_Bench_Press
+- Incline_Push-Up_Medium = Incline_Push-Up
+- Standing_Bent-Over_One-Arm_Dumbbell_Triceps_Extension = Tricep_Dumbbell_Kickback
+- Seated_Dumbbell_Press = Dumbbell_Shoulder_Press (Seated Dumbbell Shoulder Press)
+- Dumbbell_Raise = Side_Lateral_Raise (Lateral Raise)
+- Bent_Over_One-Arm_Long_Bar_Row = One-Arm_Long_Bar_Row
+- Jogging_Treadmill = Running_Treadmill
+- Hurdle_Hops = Front_Cone_Hops_or_hurdle_hops
+- Rope_Crunch = Cable_Crunch
+- Flat_Bench_Leg_Pull-In = Leg_Pull-In
+- Seated_Flat_Bench_Leg_Pull-In = Seated_Leg_Tucks (identical instructions)
+
+Wrong categories:
+- Isometric_Chest_Squeezes: plyometric, should be isometric.
+- Balance_Board: strength, should be balance & stability.
+
+Wrong equipment (the equipment filter shows them in the wrong place):
+- Incline_Bench_Pull: barbell in free-exercise-db, but the instructions use dumbbells.
+
+Missing instructions: Side_Jackknife (named after the English name, like "Jackknife Sit-Up").
 
 ## Technical decisions
 
