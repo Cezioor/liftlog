@@ -4,7 +4,7 @@ from django.urls import reverse
 
 from exercises.models import Exercise
 from exercises.seed_data import ALIASES, EXERCISES, EXTRA_EXERCISES
-from exercises.services import find_by_name, search_exercises
+from exercises.services import find_by_name, movement_name, parse_query, search_exercises
 from exercises.text import normalize
 
 
@@ -150,3 +150,50 @@ def test_library_page_uses_the_same_search(client, library, user):
     response = client.get(reverse("exercises:exercise_list"), {"q": "zgiecia"})
 
     assert "Barbell Curl" in _names(response.context["results"])
+
+
+# --- equipment word forms ---------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "word, equipment",
+    [
+        ("smithie", "smith"),
+        ("smithem", "smith"),
+        ("smithu", "smith"),
+        ("hantlach", "dumbbell"),
+        ("sztangami", "barbell"),
+        ("kettlebellem", "kettlebell"),
+        ("gumach", "band"),
+        ("maszynach", "machine"),
+        ("talerzami", "plate"),
+        ("drążkach", "pullup_bar"),
+        ("bodyweight", "bodyweight"),
+    ],
+)
+def test_common_word_forms_name_their_equipment(word, equipment):
+    assert parse_query(f"przysiad {word}").equipment == equipment
+
+
+@pytest.mark.django_db
+@pytest.mark.parametrize(
+    "query", ["hip thrust na smithie", "hip thrust smithem", "hip thrust na smithu"]
+)
+def test_smith_word_forms_find_smith_exercises(user, query):
+    """The built-in Smith variants say "na suwnicy smitha", not "smithie"."""
+    smith = Exercise.objects.create(
+        name="Smith Machine Hip Thrust",
+        aliases="hip thrust na suwnicy smitha",
+        muscle_group="glutes",
+        equipment="smith",
+    )
+    Exercise.objects.create(name="Barbell Hip Thrust", muscle_group="glutes", equipment="barbell")
+
+    assert _names(search_exercises(user, query)) == [smith.name]
+
+
+def test_bodyweight_stays_part_of_a_movement_name():
+    """ "Bodyweight Squat" is its own movement: the word isn't dropped as equipment, so
+    group_movements doesn't put it in the barbell squat's family."""
+    assert movement_name("Bodyweight Squat") == "Bodyweight Squat"
+    assert movement_name("Barbell Squat") == "Squat"

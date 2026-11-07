@@ -38,20 +38,26 @@ def default_progression_step(muscle_group, equipment):
 # Words in a search that name equipment, after normalize() (no diacritics, lowercase).
 # "przysiad hantle" = squats done with dumbbells. English plurals are handled by stem().
 EQUIPMENT_WORDS = {
-    Equipment.SMITH: {"smith", "smitha", "suwnica", "suwnicy", "suwnice", "suwnicach"},
-    Equipment.DUMBBELL: {"hantle", "hantla", "hantli", "hantlami", "hantlem", "hantel",
-                         "hantelki", "dumbbell", "db"},
-    Equipment.BARBELL: {"sztanga", "sztangi", "sztange", "sztangach", "barbell",
+    Equipment.SMITH: {"smith", "smitha", "smithie", "smithem", "smithu", "suwnica", "suwnicy",
+                      "suwnice", "suwnicach"},
+    Equipment.DUMBBELL: {"hantle", "hantla", "hantli", "hantlami", "hantlem", "hantlach",
+                         "hantel", "hantelki", "dumbbell", "db"},
+    Equipment.BARBELL: {"sztanga", "sztangi", "sztange", "sztangach", "sztangami", "barbell",
                         "gryf", "gryfem"},
-    Equipment.KETTLEBELL: {"kettlebell", "kettla", "kettle", "kettlem", "kb", "odwaznik"},
+    Equipment.KETTLEBELL: {"kettlebell", "kettlebella", "kettlebellem", "kettlebellami",
+                           "kettla", "kettle", "kettli", "kettlem", "kb", "odwaznik",
+                           "odwaznikiem"},
     Equipment.CABLE: {"wyciag", "wyciagu", "wyciagiem", "wyciagach", "linka", "linki", "linke",
                       "cable"},
-    Equipment.BAND: {"gumy", "guma", "gume", "gumie", "gumami", "band", "tasma", "tasmy"},
-    Equipment.MACHINE: {"maszyna", "maszynie", "maszyne", "maszyny", "machine"},
-    Equipment.PLATE: {"talerz", "talerza", "talerzem", "talerzu", "plate"},
-    Equipment.PULLUP_BAR: {"drazek", "drazku", "drazkiem", "drazka"},
+    Equipment.BAND: {"gumy", "guma", "gume", "gumie", "gumami", "gumach", "band", "tasma",
+                     "tasmy"},
+    Equipment.MACHINE: {"maszyna", "maszynie", "maszyne", "maszyny", "maszynach", "machine"},
+    Equipment.PLATE: {"talerz", "talerza", "talerzem", "talerzu", "talerze", "talerzy",
+                      "talerzami", "plate"},
+    Equipment.PULLUP_BAR: {"drazek", "drazku", "drazkiem", "drazka", "drazkach"},
     Equipment.LANDMINE: {"landmine", "landmina", "landminie"},
     Equipment.SUSPENSION: {"trx", "suspension"},
+    Equipment.BODYWEIGHT: {"bodyweight"},
 }  # fmt: skip
 WORD_TO_EQUIPMENT = {
     word: equipment for equipment, words in EQUIPMENT_WORDS.items() for word in words
@@ -163,8 +169,14 @@ def search_exercises(user, query="", muscle_group="", equipment="", level=""):
 
 
 # Words that only say which equipment an exercise uses ("Barbell Step Ups").
+# Not "bodyweight": "Bodyweight Squat" is its own movement, and dropping the word would put
+# it in the "squat" family with the barbell squat (group_movements would regroup families).
 NAME_EQUIPMENT_WORDS = {
-    word for words in EQUIPMENT_WORDS.values() for word in words if len(word) >= 4
+    word
+    for equipment, words in EQUIPMENT_WORDS.items()
+    if equipment != Equipment.BODYWEIGHT
+    for word in words
+    if len(word) >= 4
 } | {"ez", "bar", "smith", "machine", "cable", "cables", "kettlebells", "dumbbells"}
 
 
