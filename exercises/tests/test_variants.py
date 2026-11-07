@@ -185,6 +185,47 @@ def test_variant_has_its_own_history_and_records(user, make_workout, step_up):
     assert personal_records(user, variant)[1].workout_set.weight_kg == 60
 
 
+@pytest.mark.django_db
+def test_a_variant_of_a_variant_is_named_and_copied_from_the_built_in(user, step_up):
+    bodyweight = create_variant(user, step_up, "bodyweight")
+    Exercise.objects.filter(pk=step_up.pk).update(instructions=["Step up onto the box."])
+
+    kettlebell = create_variant(user, bodyweight, "kettlebell")
+
+    # Not "Step-up (Bodyweight) (Kettlebell)".
+    assert kettlebell.name == "Step-up (Kettlebell)"
+    assert kettlebell.instructions == ["Step up onto the box."]  # from the built-in
+    assert kettlebell.movement_id == step_up.movement_id
+
+
+@pytest.mark.django_db
+def test_a_variant_in_a_users_own_family_is_named_after_their_first_exercise(user):
+    mine = Exercise.objects.create(
+        name="Zercher Carry", muscle_group="core", equipment="barbell", owner=user
+    )
+    sandbag = create_variant(user, mine, "other", label="sandbag")
+
+    plate = create_variant(user, sandbag, "plate")
+
+    assert sandbag.name == "Zercher Carry (sandbag)"
+    assert plate.name == "Zercher Carry (Weight plate)"
+
+
+@pytest.mark.django_db
+def test_changing_the_variant_again_and_again_never_stacks_names(client, user, step_up):
+    """The exercise page's "Change variant", tapped on each new variant in turn."""
+    client.force_login(user)
+    current = step_up
+    for equipment in ("bodyweight", "kettlebell", "smith"):
+        response = client.post(
+            reverse("exercises:variant_open", args=[current.pk]), {"equipment": equipment}
+        )
+        current = Exercise.objects.get(pk=response.url.rstrip("/").rsplit("/", 1)[-1])
+
+    names = sorted(Exercise.objects.filter(owner=user).values_list("name", flat=True))
+    assert names == ["Step-up (Bodyweight)", "Step-up (Kettlebell)", "Step-up (Smith machine)"]
+
+
 # --- screens ---------------------------------------------------------------------------
 
 

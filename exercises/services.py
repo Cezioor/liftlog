@@ -249,14 +249,29 @@ def variant_name(base, equipment, label=""):
     return f"{movement_name(base.name)} ({label.strip()})"[:100]
 
 
+def family_origin(user, exercise):
+    """What new variants of `exercise` are made from: the exercise itself if it is
+    built-in, otherwise its family's built-in exercise (the oldest one), otherwise the
+    user's oldest exercise in the family, the one without an "(equipment)" suffix.
+
+    Without this, a variant of a variant got both suffixes:
+    "Hammer Curl (Bodyweight) (Kettlebell)".
+    """
+    if exercise.is_builtin or exercise.movement_id is None:
+        return exercise
+    return family(user, exercise).order_by(F("owner").asc(nulls_first=True), "pk").first()
+
+
 def create_variant(user, base, equipment, label=""):
     """The user's own copy of `base` with other equipment, in the same family.
 
-    Muscles, measurement type, category, instructions and photos come from the base;
-    equipment (and so the default weight step) is the new one. History and records
-    are separate because it is a separate exercise. Returns the existing exercise if
-    the user can already see one with that name.
+    Muscles, measurement type, category, instructions and photos come from the base
+    (for a user's own variant: from its family's origin, see family_origin); equipment
+    (and so the default weight step) is the new one. History and records are separate
+    because it is a separate exercise. Returns the existing exercise if the user can
+    already see one with that name.
     """
+    base = family_origin(user, base)
     name = variant_name(base, equipment, label)
     existing = find_by_name(user, name)
     if existing is not None:
