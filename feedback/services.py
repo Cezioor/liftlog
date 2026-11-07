@@ -7,7 +7,7 @@ from urllib.parse import urlsplit
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.urls import reverse
-from django.utils import timezone
+from django.utils import timezone, translation
 
 from .models import Device, Feedback
 
@@ -74,18 +74,21 @@ def notify_owner(feedback, site_url=""):
     user = feedback.user
     who = f"{user.get_username()} <{user.email}>" if user else "(deleted account)"
     admin_url = site_url.rstrip("/") + reverse("admin:feedback_feedback_change", args=[feedback.pk])
+    # The owner's email is Polish, whatever language the sender uses the app in.
+    with translation.override("pl"):
+        kind, device = str(feedback.get_kind_display()), str(feedback.get_device_display())
     body = (
-        f"Rodzaj: {feedback.get_kind_display()}\n"
+        f"Rodzaj: {kind}\n"
         f"Użytkownik: {who}\n"
         f"Strona: {feedback.page or '–'}\n"
-        f"Urządzenie: {feedback.get_device_display()}\n"
+        f"Urządzenie: {device}\n"
         f"Wysłano: {timezone.localtime(feedback.created_at):%Y-%m-%d %H:%M}\n"
         f"Panel admina: {admin_url}\n"
         f"\n{feedback.message}\n"
     )
     first_line = " ".join(feedback.message.split())[:60]
     message = EmailMessage(
-        subject=f"[LiftLog] {feedback.get_kind_display()} #{feedback.pk}: {first_line}",
+        subject=f"[LiftLog] {kind} #{feedback.pk}: {first_line}",
         body=body,
         to=[to],
         reply_to=[user.email] if user and user.email else None,

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LiftLog\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-06 22:45+0100\n"
+"POT-Creation-Date: 2026-11-06 23:25+0100\n"
 "PO-Revision-Date: 2026-11-06 22:40+0100\n"
 "Last-Translator: Cezary Muszalski\n"
 "Language-Team: Polish\n"
@@ -17,7 +17,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
-#: .\accounts\forms.py:35 .\templates\accounts\settings.html:27 .\templates\base.html:49
+#: .\accounts\adapter.py:12
+msgid "Account created. We also sent a link to confirm your email address."
+msgstr "Konto założone. Wysłaliśmy też link do potwierdzenia adresu e-mail."
+
+#: .\accounts\adapter.py:14
+msgid ""
+"Account created, but we couldn't send the link to confirm your email address. You can ask for a "
+"new one in your account settings."
+msgstr ""
+"Konto założone, ale nie udało się wysłać linku do potwierdzenia adresu e-mail. Możesz poprosić o "
+"nowy w ustawieniach konta."
+
+#: .\accounts\adapter.py:17
+msgid "Couldn't send the email. Try again in a few minutes."
+msgstr "Nie udało się wysłać e-maila. Spróbuj ponownie za kilka minut."
+
+#: .\accounts\adapter.py:24
+msgid "An account with this email already exists."
+msgstr "Konto z tym adresem e-mail już istnieje."
+
+#: .\accounts\forms.py:35 .\templates\base.html:49
 msgid "Language"
 msgstr "Język"
 
@@ -100,6 +120,451 @@ msgstr "Wysłane! Sprawdź skrzynkę (i folder spam)."
 #: .\accounts\views.py:74
 msgid "Settings saved."
 msgstr "Ustawienia zapisane."
+
+#: .\exercises\forms.py:20
+msgid "Main muscles"
+msgstr "Główne mięśnie"
+
+#: .\exercises\forms.py:24
+msgid "Shown on the muscle map. Empty = based on the muscle group."
+msgstr "Widoczne na mapie mięśni. Puste = według grupy mięśni."
+
+#: .\exercises\forms.py:27
+msgid "Helping muscles"
+msgstr "Mięśnie pomocnicze"
+
+#: .\exercises\forms.py:52
+msgid "Leave empty for the default"
+msgstr "Zostaw puste, żeby użyć domyślnego"
+
+#: .\exercises\forms.py:60
+msgid ""
+"kg added when every set hits the top of the rep range. Empty = default: dumbbells 2, legs 5, upper"
+" body 2.5."
+msgstr ""
+"Ile kg dodać, gdy w każdej serii dojdziesz do górnej granicy powtórzeń. Puste = domyślnie: hantle "
+"2, nogi 5, góra ciała 2,5."
+
+#: .\exercises\forms.py:78
+msgid "An exercise with this name already exists."
+msgstr "Ćwiczenie o tej nazwie już istnieje."
+
+#: .\exercises\models.py:14 .\exercises\models.py:54
+msgid "Chest"
+msgstr "Klatka piersiowa"
+
+#: .\exercises\models.py:15
+msgid "Back"
+msgstr "Plecy"
+
+#: .\exercises\models.py:16 .\exercises\models.py:63
+msgid "Shoulders"
+msgstr "Barki"
+
+#: .\exercises\models.py:17 .\exercises\models.py:52
+msgid "Biceps"
+msgstr "Biceps"
+
+#: .\exercises\models.py:18 .\exercises\models.py:65
+msgid "Triceps"
+msgstr "Triceps"
+
+#: .\exercises\models.py:19 .\exercises\models.py:55
+msgid "Forearms"
+msgstr "Przedramiona"
+
+#: .\exercises\models.py:20
+msgid "Quads"
+msgstr "Czworogłowe ud"
+
+#: .\exercises\models.py:21 .\exercises\models.py:57
+msgid "Hamstrings"
+msgstr "Dwugłowe ud"
+
+#: .\exercises\models.py:22 .\exercises\models.py:56
+msgid "Glutes"
+msgstr "Pośladki"
+
+#: .\exercises\models.py:23 .\exercises\models.py:53
+msgid "Calves"
+msgstr "Łydki"
+
+#: .\exercises\models.py:24
+msgid "Core"
+msgstr "Brzuch i core"
+
+#: .\exercises\models.py:25
+msgid "Full body"
+msgstr "Całe ciało"
+
+#: .\exercises\models.py:27
+msgctxt "muscle group"
+msgid "Other"
+msgstr "Inne"
+
+#: .\exercises\models.py:31
+msgid "Barbell"
+msgstr "Sztanga"
+
+#: .\exercises\models.py:32
+msgid "Smith machine"
+msgstr "Suwnica Smitha"
+
+#: .\exercises\models.py:33
+msgid "Dumbbell"
+msgstr "Hantle"
+
+#: .\exercises\models.py:34
+msgid "Machine"
+msgstr "Maszyna"
+
+#: .\exercises\models.py:35
+msgid "Cable"
+msgstr "Wyciąg"
+
+#: .\exercises\models.py:36
+msgid "Kettlebell"
+msgstr "Kettlebell"
+
+#: .\exercises\models.py:37
+msgid "Resistance band"
+msgstr "Guma oporowa"
+
+#: .\exercises\models.py:38
+msgid "Weight plate"
+msgstr "Talerz"
+
+#: .\exercises\models.py:39
+msgid "Pull-up bar"
+msgstr "Drążek"
+
+#: .\exercises\models.py:40
+msgid "Landmine"
+msgstr "Landmine"
+
+#: .\exercises\models.py:41
+msgid "TRX / suspension"
+msgstr "TRX / taśmy"
+
+#: .\exercises\models.py:42
+msgid "Bodyweight"
+msgstr "Masa ciała"
+
+#: .\exercises\models.py:43
+msgctxt "equipment"
+msgid "Other"
+msgstr "Inny"
+
+#: .\exercises\models.py:49
+msgid "Abdominals"
+msgstr "Mięśnie brzucha"
+
+#: .\exercises\models.py:50
+msgid "Abductors"
+msgstr "Odwodziciele"
+
+#: .\exercises\models.py:51
+msgid "Adductors"
+msgstr "Przywodziciele"
+
+#: .\exercises\models.py:58
+msgid "Lats"
+msgstr "Najszersze grzbietu"
+
+#: .\exercises\models.py:59
+msgid "Lower back"
+msgstr "Dolna część pleców"
+
+#: .\exercises\models.py:60
+msgid "Middle back"
+msgstr "Środek pleców"
+
+#: .\exercises\models.py:61
+msgid "Neck"
+msgstr "Szyja"
+
+#: .\exercises\models.py:62
+msgid "Quadriceps"
+msgstr "Czworogłowe ud"
+
+#: .\exercises\models.py:64
+msgid "Traps"
+msgstr "Kaptury (czworoboczne)"
+
+#: .\exercises\models.py:71
+msgid "Weight × reps"
+msgstr "Ciężar × powtórzenia"
+
+#: .\exercises\models.py:72 .\workouts\forms.py:81
+msgid "Reps"
+msgstr "Powtórzenia"
+
+#: .\exercises\models.py:73
+msgid "Time"
+msgstr "Czas"
+
+#: .\exercises\models.py:74
+msgid "Distance + time"
+msgstr "Dystans + czas"
+
+#: .\exercises\models.py:78
+msgid "Strength"
+msgstr "Siłowe"
+
+#: .\exercises\models.py:79
+msgid "Isometric"
+msgstr "Izometryczne"
+
+#: .\exercises\models.py:80
+msgid "Stretching / mobility"
+msgstr "Rozciąganie / mobilność"
+
+#: .\exercises\models.py:81
+msgid "Plyometric"
+msgstr "Plyometryczne"
+
+#: .\exercises\models.py:82
+msgid "Motor control / balance"
+msgstr "Kontrola ruchu / równowaga"
+
+#: .\exercises\models.py:83
+msgid "Cardio"
+msgstr "Cardio"
+
+#: .\exercises\models.py:84
+msgid "Rehab"
+msgstr "Rehabilitacja"
+
+#: .\exercises\models.py:88
+msgid "Beginner"
+msgstr "Początkujący"
+
+#: .\exercises\models.py:89
+msgid "Intermediate"
+msgstr "Średniozaawansowany"
+
+#: .\exercises\models.py:90
+msgid "Expert"
+msgstr "Zaawansowany"
+
+#: .\exercises\models.py:124
+msgid "name"
+msgstr "nazwa"
+
+#: .\exercises\models.py:126
+msgid "other names"
+msgstr "inne nazwy"
+
+#: .\exercises\models.py:129
+msgid ""
+"Polish names and synonyms, comma separated, e.g. “wyciskanie na ławce płaskiej, wyciskanie "
+"sztangi”."
+msgstr ""
+"Polskie nazwy i synonimy, oddzielone przecinkami, np. „wyciskanie na ławce płaskiej, wyciskanie "
+"sztangi”."
+
+#: .\exercises\models.py:136
+msgid "muscle group"
+msgstr "grupa mięśni"
+
+#: .\exercises\models.py:137
+msgid "equipment"
+msgstr "sprzęt"
+
+#: .\exercises\models.py:138
+msgid "is bodyweight"
+msgstr "ćwiczenie z masą ciała"
+
+#: .\exercises\models.py:140
+msgid "logged as"
+msgstr "zapisywane jako"
+
+#: .\exercises\models.py:144
+msgid "Which fields a set has: kg × reps, reps, time, or distance + time."
+msgstr "Jakie pola ma seria: kg × powtórzenia, powtórzenia, czas albo dystans + czas."
+
+#: .\exercises\models.py:147
+msgid "category"
+msgstr "kategoria"
+
+#: .\exercises\models.py:150
+msgid "one side at a time"
+msgstr "jedna strona naraz"
+
+#: .\exercises\models.py:152
+msgid "Log left and right separately (e.g. single-leg exercises)."
+msgstr "Zapisuj lewą i prawą stronę osobno (np. ćwiczenia na jednej nodze)."
+
+#: .\exercises\models.py:157
+msgid "progression step (kg)"
+msgstr "krok progresji (kg)"
+
+#: .\exercises\models.py:162
+msgid "How much weight to add when you hit the top of the rep range on every set."
+msgstr "Ile ciężaru dodać, gdy w każdej serii dojdziesz do górnej granicy powtórzeń."
+
+#: .\exercises\models.py:170
+msgid "main muscles"
+msgstr "główne mięśnie"
+
+#: .\exercises\models.py:171
+msgid "helping muscles"
+msgstr "mięśnie pomocnicze"
+
+#: .\exercises\models.py:172
+msgid "level"
+msgstr "poziom"
+
+#: .\exercises\templatetags\exercise_tags.py:25
+msgid "none"
+msgstr "brak"
+
+#: .\exercises\templatetags\exercise_tags.py:26
+#, python-format
+msgid "Main: %(muscles)s"
+msgstr "Główne: %(muscles)s"
+
+#: .\exercises\templatetags\exercise_tags.py:29
+#, python-format
+msgid "Helping: %(muscles)s"
+msgstr "Pomocnicze: %(muscles)s"
+
+#: .\exercises\views.py:34 .\templates\base.html:24
+msgid "Exercises"
+msgstr "Ćwiczenia"
+
+#: .\exercises\views.py:39 .\templates\plans\plan_detail.html:60
+msgid "Add"
+msgstr "Dodaj"
+
+#: .\exercises\views.py:78
+#, python-format
+msgid "Added “%(name)s”."
+msgstr "Dodano „%(name)s”."
+
+#: .\exercises\views.py:92
+#, python-format
+msgid "Saved “%(name)s”."
+msgstr "Zapisano „%(name)s”."
+
+#: .\exercises\views.py:183
+#, python-format
+msgid "Created “%(name)s”, with its own history and records."
+msgstr "Utworzono „%(name)s”, z własną historią i rekordami."
+
+#: .\exercises\views.py:214
+#, python-format
+msgid "Created “%(name)s”. You can set its details later in Exercises."
+msgstr "Utworzono „%(name)s”. Szczegóły możesz uzupełnić później w Ćwiczeniach."
+
+#: .\feedback\forms.py:13
+msgid "Kind"
+msgstr "Rodzaj"
+
+#: .\feedback\forms.py:18 .\feedback\forms.py:19
+msgid "Choose the kind of report."
+msgstr "Wybierz rodzaj zgłoszenia."
+
+#: .\feedback\forms.py:23
+msgid "Describe what happened or what you suggest"
+msgstr "Opisz, co się wydarzyło albo co proponujesz"
+
+#: .\feedback\forms.py:27 .\feedback\forms.py:38
+msgid "Write a few words: what happened or what you suggest."
+msgstr "Napisz kilka słów: co się stało albo co proponujesz."
+
+#: .\feedback\forms.py:29
+#, python-format
+msgid "At most %(limit_value)d characters."
+msgstr "Maksymalnie %(limit_value)d znaków."
+
+#: .\feedback\models.py:8
+msgid "Bug"
+msgstr "Błąd"
+
+#: .\feedback\models.py:9
+msgid "Suggestion"
+msgstr "Sugestia zmiany"
+
+#: .\feedback\models.py:10
+msgid "Opinion"
+msgstr "Opinia"
+
+#: .\feedback\models.py:14
+msgctxt "report status"
+msgid "New"
+msgstr "Nowe"
+
+#: .\feedback\models.py:15
+msgctxt "report status"
+msgid "In progress"
+msgstr "W trakcie"
+
+#: .\feedback\models.py:16
+msgctxt "report status"
+msgid "Done"
+msgstr "Załatwione"
+
+#: .\feedback\models.py:20
+msgid "Phone"
+msgstr "Telefon"
+
+#: .\feedback\models.py:21
+msgid "Tablet"
+msgstr "Tablet"
+
+#: .\feedback\models.py:22
+msgid "Computer"
+msgstr "Komputer"
+
+#: .\feedback\models.py:23
+msgid "Unknown"
+msgstr "Nieznane"
+
+#: .\feedback\models.py:42
+msgid "kind"
+msgstr "rodzaj"
+
+#: .\feedback\models.py:43
+msgid "message"
+msgstr "treść"
+
+#: .\feedback\models.py:44
+msgid "page"
+msgstr "strona"
+
+#: .\feedback\models.py:46
+msgid "device"
+msgstr "urządzenie"
+
+#: .\feedback\models.py:50
+msgid "status"
+msgstr "status"
+
+#: .\feedback\models.py:52
+msgid "sent"
+msgstr "wysłano"
+
+#: .\feedback\models.py:56
+msgid "report"
+msgstr "zgłoszenie"
+
+#: .\feedback\models.py:57
+msgid "reports"
+msgstr "zgłoszenia"
+
+#: .\feedback\views.py:10
+msgid "Thanks! Your report has arrived."
+msgstr "Dzięki! Zgłoszenie dotarło."
+
+#: .\feedback\views.py:28
+#, python-format
+msgid "You've already sent %(count)s report in the last hour. Try again later."
+msgid_plural "You've already sent %(count)s reports in the last hour. Try again later."
+msgstr[0] "Wysłano już %(count)s zgłoszenie w ciągu godziny. Spróbuj ponownie później."
+msgstr[1] "Wysłano już %(count)s zgłoszenia w ciągu godziny. Spróbuj ponownie później."
+msgstr[2] "Wysłano już %(count)s zgłoszeń w ciągu godziny. Spróbuj ponownie później."
+msgstr[3] "Wysłano już %(count)s zgłoszeń w ciągu godziny. Spróbuj ponownie później."
 
 #: .\plans\forms.py:19
 msgid "e.g. Push"
@@ -200,15 +665,382 @@ msgstr "Dodano %(exercise)s do dnia %(day)s."
 msgid "%(old)s → %(new)s in the plan."
 msgstr "%(old)s → %(new)s w planie."
 
+#: .\templates\account\email_confirm.html:4
+msgid "Confirm your email"
+msgstr "Potwierdź adres e-mail"
+
+#: .\templates\account\email_confirm.html:9
+msgid "Activate your account"
+msgstr "Aktywuj konto"
+
+#: .\templates\account\email_confirm.html:10
+#, python-format
+msgid "Confirm that <strong>%(email)s</strong> is your email address."
+msgstr "Potwierdź, że <strong>%(email)s</strong> to Twój adres e-mail."
+
+#: .\templates\account\email_confirm.html:15
+msgid "Activating…"
+msgstr "Aktywuję…"
+
+#: .\templates\account\email_confirm.html:15
+msgid "Activate my account"
+msgstr "Aktywuj moje konto"
+
+#: .\templates\account\email_confirm.html:18
+msgid "Already in use"
+msgstr "Adres już zajęty"
+
+#: .\templates\account\email_confirm.html:19
+msgid "This address is already confirmed by a different account."
+msgstr "Ten adres jest już potwierdzony przez inne konto."
+
+#: .\templates\account\email_confirm.html:21 .\templates\account\password_reset_from_key.html:9
+msgid "Link expired"
+msgstr "Link wygasł"
+
+#: .\templates\account\email_confirm.html:22
+msgid ""
+"This link has expired or was already used. Try logging in: if your address isn't confirmed yet, "
+"we'll send you a new link."
+msgstr ""
+"Ten link wygasł albo został już użyty. Spróbuj się zalogować: jeśli adres nie jest jeszcze "
+"potwierdzony, wyślemy nowy link."
+
+#: .\templates\account\email_confirm.html:23 .\templates\account\login.html:4
+#: .\templates\account\login.html:8 .\templates\account\login.html:20
+#: .\templates\account\password_reset_from_key_done.html:10
+msgid "Log in"
+msgstr "Zaloguj się"
+
+#: .\templates\account\login.html:18
+msgid "Keep me logged in"
+msgstr "Nie wylogowuj mnie"
+
+#: .\templates\account\login.html:20
+msgid "Logging in…"
+msgstr "Loguję…"
+
+#: .\templates\account\login.html:23
+msgid "Forgot password?"
+msgstr "Nie pamiętasz hasła?"
+
+#: .\templates\account\login.html:24 .\templates\account\signup.html:8
+msgid "Create an account"
+msgstr "Załóż konto"
+
+#: .\templates\account\logout.html:4 .\templates\account\logout.html:12 .\templates\home.html:56
+msgid "Log out"
+msgstr "Wyloguj"
+
+#: .\templates\account\logout.html:8
+msgid "Log out?"
+msgstr "Wylogować?"
+
+#: .\templates\account\password_reset.html:4 .\templates\account\password_reset.html:8
+msgid "Reset password"
+msgstr "Reset hasła"
+
+#: .\templates\account\password_reset.html:9
+msgid "Enter your email and we'll send you a link to set a new password."
+msgstr "Wpisz swój adres e-mail, a wyślemy link do ustawienia nowego hasła."
+
+#: .\templates\account\password_reset.html:13 .\templates\account\verification_sent.html:14
+#: .\templates\accounts\settings.html:19
+msgid "Sending…"
+msgstr "Wysyłam…"
+
+#: .\templates\account\password_reset.html:13
+msgid "Send reset link"
+msgstr "Wyślij link"
+
+#: .\templates\account\password_reset.html:15 .\templates\account\password_reset_done.html:10
+#: .\templates\account\verification_sent.html:17
+msgid "Back to log in"
+msgstr "Wróć do logowania"
+
+#: .\templates\account\password_reset_done.html:4 .\templates\account\password_reset_done.html:8
+#: .\templates\account\verification_sent.html:4
+msgid "Check your email"
+msgstr "Sprawdź skrzynkę"
+
+#: .\templates\account\password_reset_done.html:9
+msgid ""
+"If an account uses that address, we've sent a link to set a new password. Can't see it? Check your"
+" spam folder."
+msgstr ""
+"Jeśli jakieś konto używa tego adresu, wysłaliśmy link do ustawienia nowego hasła. Nie widzisz go? "
+"Sprawdź folder spam."
+
+#: .\templates\account\password_reset_from_key.html:4
+msgid "New password"
+msgstr "Nowe hasło"
+
+#: .\templates\account\password_reset_from_key.html:10
+msgid "This password reset link was already used or has expired."
+msgstr "Ten link do resetu hasła został już użyty albo wygasł."
+
+#: .\templates\account\password_reset_from_key.html:11
+msgid "Request a new link"
+msgstr "Poproś o nowy link"
+
+#: .\templates\account\password_reset_from_key.html:13
+msgid "Set a new password"
+msgstr "Ustaw nowe hasło"
+
+#: .\templates\account\password_reset_from_key.html:19
+msgid "Saving…"
+msgstr "Zapisuję…"
+
+#: .\templates\account\password_reset_from_key.html:19
+msgid "Save password"
+msgstr "Zapisz hasło"
+
+#: .\templates\account\password_reset_from_key_done.html:4
+#: .\templates\account\password_reset_from_key_done.html:8
+msgid "Password changed"
+msgstr "Hasło zmienione"
+
+#: .\templates\account\password_reset_from_key_done.html:9
+msgid "You can now log in with your new password."
+msgstr "Możesz się teraz zalogować nowym hasłem."
+
+#: .\templates\account\signup.html:4 .\templates\account\signup.html:26
+msgid "Sign up"
+msgstr "Załóż konto"
+
+#: .\templates\account\signup.html:19
+#, python-format
+msgid "<a href=\"%(login_url)s\">Log in</a> or <a href=\"%(reset_url)s\">reset your password</a>."
+msgstr "<a href=\"%(login_url)s\">Zaloguj się</a> albo <a href=\"%(reset_url)s\">zresetuj hasło</a>."
+
+#: .\templates\account\signup.html:26
+msgid "Creating your account…"
+msgstr "Zakładam konto…"
+
+#: .\templates\account\signup.html:29
+msgid "I already have an account"
+msgstr "Mam już konto"
+
+#: .\templates\account\verification_sent.html:8
+msgid "Account created!"
+msgstr "Konto założone!"
+
+#: .\templates\account\verification_sent.html:9
+#, python-format
+msgid "We sent a link to <strong>%(email)s</strong>. Click it to activate your account."
+msgstr "Wysłaliśmy link na adres <strong>%(email)s</strong>. Kliknij go, żeby aktywować konto."
+
+#: .\templates\account\verification_sent.html:9
+msgid "We sent a link to your email address. Click it to activate your account."
+msgstr "Wysłaliśmy link na Twój adres e-mail. Kliknij go, żeby aktywować konto."
+
+#: .\templates\account\verification_sent.html:10
+msgid "Can't see the email? Check your spam folder or send it again."
+msgstr "Nie widzisz maila? Sprawdź folder spam albo wyślij go jeszcze raz."
+
+#: .\templates\account\verification_sent.html:14
+msgid "Send the link again"
+msgstr "Wyślij link jeszcze raz"
+
+#: .\templates\accounts\settings.html:4 .\templates\accounts\settings.html:7
+#: .\templates\home.html:55
+msgid "Settings"
+msgstr "Ustawienia"
+
+#: .\templates\accounts\settings.html:11
+msgid "Account"
+msgstr "Konto"
+
+#: .\templates\accounts\settings.html:13
+msgid "confirmed"
+msgstr "potwierdzony"
+
+#: .\templates\accounts\settings.html:13
+msgid "not confirmed yet"
+msgstr "jeszcze niepotwierdzony"
+
+#: .\templates\accounts\settings.html:15
+msgid "Confirm it so you can always reset your password."
+msgstr "Potwierdź go, żeby zawsze móc zresetować hasło."
+
+#: .\templates\accounts\settings.html:19
+msgid "Send the confirmation link again"
+msgstr "Wyślij link potwierdzający jeszcze raz"
+
+#: .\templates\accounts\settings.html:29
+msgid "Rating your sets"
+msgstr "Ocena serii"
+
+#: .\templates\accounts\settings.html:30
+msgid ""
+"After a set you can say how hard it was. It helps LiftLog suggest when to add weight. Saved "
+"ratings stay the same when you switch."
+msgstr ""
+"Po serii możesz ocenić, jak było ciężko. Dzięki temu LiftLog lepiej podpowiada, kiedy dołożyć "
+"ciężaru. Po zmianie skali zapisane oceny się nie zmieniają."
+
+#: .\templates\accounts\settings.html:33
+msgid "Rest timer"
+msgstr "Minutnik przerwy"
+
+#: .\templates\accounts\settings.html:35
+msgid "Save settings"
+msgstr "Zapisz ustawienia"
+
+#: .\templates\accounts\settings.html:39
+msgid "What the set ratings mean"
+msgstr "Co oznaczają oceny serii"
+
+#: .\templates\accounts\settings.html:41
+msgid ""
+"<strong>Simple.</strong> <em>Easy</em>: you could do 4 or more extra reps. <em>Medium</em>: about "
+"3. <em>Hard</em>: 1–2. <em>Max effort</em>: not one more clean rep."
+msgstr ""
+"<strong>Prosta.</strong> <em>Lekko</em>: dasz radę zrobić jeszcze 4 lub więcej powtórzeń. "
+"<em>Średnio</em>: około 3. <em>Ciężko</em>: 1–2. <em>Maksimum</em>: ani jednego czystego "
+"powtórzenia więcej."
+
+#: .\templates\accounts\settings.html:42
+msgid ""
+"<strong>RIR</strong> (reps in reserve): how many more good reps you could have done. 0 = none, 4+ "
+"= four or more."
+msgstr ""
+"<strong>RIR</strong> (reps in reserve, powtórzenia w zapasie): ile jeszcze dobrych powtórzeń "
+"dałoby się zrobić. 0 = żadnego, 4+ = cztery lub więcej."
+
+#: .\templates\accounts\settings.html:43
+msgid ""
+"<strong>RPE</strong> (rate of perceived exertion): 10 = nothing left, 9 = one rep left, 8 = two, "
+"and so on. 8.5 means “two, maybe one”."
+msgstr ""
+"<strong>RPE</strong> (rate of perceived exertion, odczuwany wysiłek): 10 = nic w zapasie, 9 = "
+"jedno powtórzenie w zapasie, 8 = dwa i tak dalej. 8,5 znaczy „dwa, może jedno”."
+
+#: .\templates\accounts\settings.html:48
+msgid "How the rest timer options work"
+msgstr "Jak działają opcje minutnika przerwy"
+
+#: .\templates\accounts\settings.html:50
+msgid ""
+"<strong>iPhone Clock timer.</strong> A web page can't ring while the phone is locked, but the "
+"Clock app can. After each set, tap <em>Start iPhone timer</em> in the rest bar: Shortcuts starts a"
+" Clock timer for the planned rest and brings you back to LiftLog."
+msgstr ""
+"<strong>Minutnik w Zegarze iPhone’a.</strong> Strona internetowa nie zadzwoni, gdy telefon jest "
+"zablokowany, ale aplikacja Zegar tak. Po każdej serii dotknij <em>Włącz minutnik iPhone’a</em> na "
+"pasku przerwy: Skróty włączą minutnik w Zegarze na zaplanowaną przerwę i wrócą do LiftLog."
+
+#: .\templates\accounts\settings.html:51
+msgid ""
+"<strong>Keep the screen on.</strong> While the workout screen is open, the phone won't auto-lock, "
+"so the built-in timer stays visible. Works on HTTPS in current Safari and Chrome; other browsers "
+"simply ignore it."
+msgstr ""
+"<strong>Nie wygaszaj ekranu.</strong> Gdy ekran treningu jest otwarty, telefon nie zablokuje się "
+"sam, więc wbudowany minutnik zostaje na widoku. Działa przez HTTPS w aktualnym Safari i Chrome; "
+"inne przeglądarki po prostu to pomijają."
+
+#: .\templates\accounts\settings.html:52
+msgid "<strong>Beep.</strong> A short sound when the rest is over, only while LiftLog is on screen."
+msgstr ""
+"<strong>Sygnał.</strong> Krótki dźwięk na koniec przerwy, tylko gdy LiftLog jest na ekranie."
+
+#: .\templates\accounts\settings.html:57
+msgid "Make the iPhone shortcut (once, ~2 minutes)"
+msgstr "Utwórz skrót na iPhonie (raz, ok. 2 minuty)"
+
+#: .\templates\accounts\settings.html:59
+msgid "Open the <strong>Shortcuts</strong> app and tap <strong>+</strong> in the top right corner."
+msgstr "Otwórz aplikację <strong>Skróty</strong> i dotknij <strong>+</strong> w prawym górnym rogu."
+
+#: .\templates\accounts\settings.html:60
+#, python-format
+msgid ""
+"Tap the shortcut's name at the top, choose <strong>Rename</strong> and type "
+"<strong>exactly</strong> the name from the settings above: <code>%(name)s</code>."
+msgstr ""
+"Dotknij nazwy skrótu na górze, wybierz <strong>Zmień nazwę</strong> i wpisz "
+"<strong>dokładnie</strong> nazwę z ustawień powyżej: <code>%(name)s</code>."
+
+#: .\templates\accounts\settings.html:61
+msgid ""
+"Tap <strong>Add Action</strong>, search for <strong>Start Timer</strong> (it belongs to the Clock "
+"app) and tap it."
+msgstr ""
+"Dotknij <strong>Dodaj czynność</strong>, wyszukaj <strong>Uruchom minutnik</strong> (z aplikacji "
+"Zegar) i dotknij go."
+
+#: .\templates\accounts\settings.html:62
+msgid ""
+"The action reads “Start timer for <em>30 minutes</em>”. Tap <em>30</em>, choose <strong>Select "
+"Variable</strong> and then <strong>Shortcut Input</strong>."
+msgstr ""
+"Czynność brzmi „Uruchom minutnik na <em>30 minut</em>”. Dotknij <em>30</em>, wybierz "
+"<strong>Wybierz zmienną</strong>, a potem <strong>Dane wejściowe skrótu</strong>."
+
+#: .\templates\accounts\settings.html:63
+msgid ""
+"Tap <em>minutes</em> and change it to <strong>seconds</strong>. LiftLog sends the rest length in "
+"seconds, e.g. 90."
+msgstr ""
+"Dotknij <em>minut</em> i zmień na <strong>sekundy</strong>. LiftLog wysyła długość przerwy w "
+"sekundach, np. 90."
+
+#: .\templates\accounts\settings.html:64
+msgid "Tap <strong>Done</strong>."
+msgstr "Dotknij <strong>Gotowe</strong>."
+
+#: .\templates\accounts\settings.html:65
+msgid "Back here, switch on <em>iPhone Clock timer via Shortcuts</em> and save."
+msgstr "Wróć tutaj, włącz <em>Minutnik w Zegarze iPhone’a przez Skróty</em> i zapisz."
+
+#: .\templates\accounts\settings.html:66
+msgid ""
+"In a workout, log a set and tap <strong>Start iPhone timer</strong> in the rest bar. The first "
+"time, iOS asks whether LiftLog may open Shortcuts: tap <strong>Open</strong>. If Shortcuts asks "
+"for permission to run the action, tap <strong>Always Allow</strong>."
+msgstr ""
+"Na treningu zapisz serię i dotknij <strong>Włącz minutnik iPhone’a</strong> na pasku przerwy. Za "
+"pierwszym razem iOS zapyta, czy LiftLog może otworzyć Skróty: dotknij <strong>Otwórz</strong>. "
+"Jeśli Skróty zapytają o pozwolenie na wykonanie czynności, dotknij <strong>Zawsze "
+"pozwalaj</strong>."
+
+#: .\templates\accounts\settings.html:69
+msgid "Not working?"
+msgstr "Nie działa?"
+
+#: .\templates\accounts\settings.html:71
+msgid ""
+"<strong>“Shortcut not found”</strong>: the name here and in Shortcuts must match exactly, "
+"including spaces and capital letters."
+msgstr ""
+"<strong>„Nie znaleziono skrótu”</strong>: nazwa tutaj i w Skrótach musi być identyczna, łącznie ze"
+" spacjami i wielkimi literami."
+
+#: .\templates\accounts\settings.html:72
+msgid ""
+"<strong>Timer has the wrong length</strong>: check that the unit is <em>seconds</em>. If the "
+"variable can't be chosen, add the action <strong>Get Numbers from Input</strong> before <em>Start "
+"Timer</em> and use its result as the duration."
+msgstr ""
+"<strong>Minutnik ma złą długość</strong>: sprawdź, czy jednostką są <em>sekundy</em>. Jeśli nie da"
+" się wybrać zmiennej, dodaj przed <em>Uruchom minutnik</em> czynność <strong>Pobierz liczby z "
+"danych wejściowych</strong> i użyj jej wyniku jako czasu."
+
+#: .\templates\accounts\settings.html:73
+msgid ""
+"<strong>You end up in Safari instead of the home-screen app</strong>: that's how iOS handles the "
+"return link; your sets are saved either way."
+msgstr ""
+"<strong>Lądujesz w Safari zamiast w aplikacji z ekranu początkowego</strong>: tak iOS obsługuje "
+"link powrotny; serie i tak są zapisane."
+
 #: .\templates\base.html:23 .\templates\plans\plan_list.html:4 .\templates\plans\plan_list.html:8
 msgid "Plans"
 msgstr "Plany"
 
-#: .\templates\base.html:24
-msgid "Exercises"
-msgstr "Ćwiczenia"
-
-#: .\templates\base.html:26
+#: .\templates\base.html:26 .\templates\feedback\feedback_page.html:5
+#: .\templates\feedback\feedback_page.html:9 .\templates\feedback\partials\dialog.html:4
 msgctxt "send feedback"
 msgid "Report"
 msgstr "Zgłoś"
@@ -221,6 +1053,292 @@ msgid ""
 msgstr ""
 "Dane i zdjęcia ćwiczeń: <a href=\"%(url)s\" rel=\"noopener\">free-exercise-db</a> (autor: "
 "yuhonas), domena publiczna (The Unlicense)."
+
+#: .\templates\exercises\change_variant.html:4 .\templates\exercises\change_variant.html:10
+#: .\templates\exercises\exercise_detail.html:51 .\templates\plans\plan_detail.html:39
+#: .\templates\workouts\change_variant_scope.html:4
+#: .\templates\workouts\partials\exercise_card.html:6
+msgid "Change variant"
+msgstr "Zmień wariant"
+
+#: .\templates\exercises\change_variant.html:16
+msgid "Variants of this movement"
+msgstr "Warianty tego ruchu"
+
+#: .\templates\exercises\change_variant.html:23
+msgid "current"
+msgstr "obecny"
+
+#: .\templates\exercises\change_variant.html:31 .\templates\exercises\exercise_detail.html:59
+msgid "mine"
+msgstr "moje"
+
+#: .\templates\exercises\change_variant.html:40
+msgid "Other equipment"
+msgstr "Inny sprzęt"
+
+#: .\templates\exercises\change_variant.html:41
+msgid ""
+"Creates a variant with its own history and records. Muscles, instructions and photos are copied."
+msgstr ""
+"Tworzy wariant z własną historią i rekordami. Mięśnie, instrukcje i zdjęcia zostaną skopiowane."
+
+#: .\templates\exercises\change_variant.html:54
+msgctxt "equipment"
+msgid "Other…"
+msgstr "Inny…"
+
+#: .\templates\exercises\change_variant.html:58
+msgid "What do you use?"
+msgstr "Czego używasz?"
+
+#: .\templates\exercises\change_variant.html:59
+msgid "e.g. weighted vest, sandbag"
+msgstr "np. kamizelka obciążeniowa, worek z piaskiem"
+
+#: .\templates\exercises\change_variant.html:60
+msgid "Create variant"
+msgstr "Utwórz wariant"
+
+#: .\templates\exercises\change_variant.html:66 .\templates\exercises\exercise_form.html:14
+#: .\templates\exercises\picker.html:12 .\templates\plans\add_to_plan.html:9
+#: .\templates\plans\day_form.html:20 .\templates\plans\plan_exercise_form.html:30
+#: .\templates\plans\plan_form.html:14 .\templates\workouts\change_variant_scope.html:21
+#: .\templates\workouts\partials\exercise_card.html:47
+#: .\templates\workouts\partials\set_inputs.html:25
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: .\templates\exercises\exercise_detail.html:15
+#, python-format
+msgid "In free-exercise-db: %(name)s"
+msgstr "W free-exercise-db: %(name)s"
+
+#: .\templates\exercises\exercise_detail.html:23
+#, python-format
+msgid "Logged as %(type)s"
+msgstr "Zapisywane jako: %(type)s"
+
+#: .\templates\exercises\exercise_detail.html:24
+msgid "One side at a time"
+msgstr "Jedna strona naraz"
+
+#: .\templates\exercises\exercise_detail.html:27
+msgid "Compound"
+msgstr "Wielostawowe"
+
+#: .\templates\exercises\exercise_detail.html:27
+msgid "Isolation"
+msgstr "Izolowane"
+
+#: .\templates\exercises\exercise_detail.html:28 .\templates\exercises\partials\picker_item.html:5
+msgid "Mine"
+msgstr "Moje"
+
+#: .\templates\exercises\exercise_detail.html:34
+msgid "Show the other position"
+msgstr "Pokaż drugą pozycję"
+
+#: .\templates\exercises\exercise_detail.html:36
+#, python-format
+msgid "%(name)s, start position"
+msgstr "%(name)s, pozycja początkowa"
+
+#: .\templates\exercises\exercise_detail.html:36
+#, python-format
+msgid "%(name)s, end position"
+msgstr "%(name)s, pozycja końcowa"
+
+#: .\templates\exercises\exercise_detail.html:41 .\templates\exercises\exercise_detail.html:43
+msgid "Start position"
+msgstr "Pozycja początkowa"
+
+#: .\templates\exercises\exercise_detail.html:41
+msgid "End position"
+msgstr "Pozycja końcowa"
+
+#: .\templates\exercises\exercise_detail.html:42 .\templates\exercises\exercise_detail.html:45
+msgid "Animate"
+msgstr "Animuj"
+
+#: .\templates\exercises\exercise_detail.html:42
+msgid "Pause"
+msgstr "Pauza"
+
+#: .\templates\exercises\exercise_detail.html:55
+msgid "Variants"
+msgstr "Warianty"
+
+#: .\templates\exercises\exercise_detail.html:56
+msgid "The same movement with other equipment. Each has its own history and records."
+msgstr "Ten sam ruch z innym sprzętem. Każdy wariant ma własną historię i rekordy."
+
+#: .\templates\exercises\exercise_detail.html:66
+msgid "Muscles"
+msgstr "Mięśnie"
+
+#: .\templates\exercises\exercise_detail.html:69
+msgid "Main:"
+msgstr "Główne:"
+
+#: .\templates\exercises\exercise_detail.html:70
+msgid "Helping:"
+msgstr "Pomocnicze:"
+
+#: .\templates\exercises\exercise_detail.html:76
+msgid "How to do it"
+msgstr "Jak wykonać"
+
+#: .\templates\exercises\exercise_detail.html:84
+msgid "My history"
+msgstr "Moja historia"
+
+#: .\templates\exercises\exercise_detail.html:88 .\templates\exercises\exercise_detail.html:93
+#: .\templates\plans\plan_list.html:18
+msgid "j M Y"
+msgstr "j b Y"
+
+#: .\templates\exercises\exercise_detail.html:93
+#, python-format
+msgid "Last time (%(date)s):"
+msgstr "Ostatnio (%(date)s):"
+
+#: .\templates\exercises\exercise_detail.html:98
+msgid "You haven't logged this exercise yet."
+msgstr "Nie masz jeszcze zapisanego tego ćwiczenia."
+
+#: .\templates\exercises\exercise_detail.html:103 .\templates\plans\add_to_plan.html:4
+msgid "Add to plan"
+msgstr "Dodaj do planu"
+
+#: .\templates\exercises\exercise_detail.html:104 .\templates\exercises\exercise_form.html:4
+#: .\templates\plans\plan_exercise_form.html:4 .\templates\plans\plan_exercise_form.html:8
+msgid "Edit exercise"
+msgstr "Edytuj ćwiczenie"
+
+#: .\templates\exercises\exercise_detail.html:106
+#: .\templates\exercises\partials\picker_results.html:31
+msgid "All exercises"
+msgstr "Wszystkie ćwiczenia"
+
+#: .\templates\exercises\exercise_form.html:4 .\templates\exercises\exercise_form.html:8
+#: .\templates\plans\plan_detail.html:49 .\templates\plans\plan_exercise_form.html:4
+#: .\templates\workouts\workout_detail.html:41 .\workouts\views.py:290
+msgid "Add exercise"
+msgstr "Dodaj ćwiczenie"
+
+#: .\templates\exercises\exercise_form.html:8 .\templates\plans\day_form.html:4
+#, python-format
+msgid "Edit %(name)s"
+msgstr "Edytuj: %(name)s"
+
+#: .\templates\exercises\exercise_form.html:12 .\templates\plans\day_form.html:12
+#: .\templates\plans\plan_exercise_form.html:21
+msgid "Save"
+msgstr "Zapisz"
+
+#: .\templates\exercises\partials\muscle_map.html:4
+#, python-format
+msgid "Muscle map. %(description)s"
+msgstr "Mapa mięśni. %(description)s"
+
+#: .\templates\exercises\partials\muscle_map.html:9
+msgctxt "body view"
+msgid "Front"
+msgstr "Przód"
+
+#: .\templates\exercises\partials\muscle_map.html:40
+msgctxt "body view"
+msgid "Back"
+msgstr "Tył"
+
+#: .\templates\exercises\partials\picker_add_own.html:10
+#, python-format
+msgid "Add my own exercise: «%(name)s»"
+msgstr "Dodaj własne ćwiczenie: «%(name)s»"
+
+#: .\templates\exercises\partials\picker_add_own.html:11
+msgid "Creates it and picks it right away; add details later"
+msgstr "Utworzy je i od razu wybierze; szczegóły uzupełnisz później"
+
+#: .\templates\exercises\partials\picker_results.html:10
+#, python-format
+msgid "Add variant: «%(movement)s» — %(equipment)s"
+msgstr "Dodaj wariant: «%(movement)s» — %(equipment)s"
+
+#: .\templates\exercises\partials\picker_results.html:11
+msgid "Same muscles and instructions, its own history and records"
+msgstr "Te same mięśnie i instrukcje, własna historia i rekordy"
+
+#: .\templates\exercises\partials\picker_results.html:22
+msgid "Recently used"
+msgstr "Ostatnio używane"
+
+#: .\templates\exercises\partials\picker_results.html:31
+msgid "Results"
+msgstr "Wyniki"
+
+#: .\templates\exercises\partials\picker_results.html:38
+#, python-format
+msgid "No exercise matches “%(query)s”."
+msgstr "Brak ćwiczeń pasujących do „%(query)s”."
+
+#: .\templates\exercises\partials\picker_results.html:38
+msgid "No exercise matches."
+msgstr "Brak pasujących ćwiczeń."
+
+#: .\templates\exercises\partials\picker_results.html:42
+#, python-format
+msgid "Showing %(shown)s of %(results_count)s. Type more to narrow it down."
+msgstr "Widać %(shown)s z %(results_count)s. Wpisz więcej, żeby zawęzić."
+
+#: .\templates\exercises\picker.html:24
+msgid "Search, e.g. przysiad, bench, wiosłowanie"
+msgstr "Szukaj, np. przysiad, bench, wiosłowanie"
+
+#: .\templates\exercises\picker.html:25
+msgid "Search exercises"
+msgstr "Szukaj ćwiczeń"
+
+#: .\templates\exercises\picker.html:28
+msgid "Muscle group"
+msgstr "Grupa mięśni"
+
+#: .\templates\exercises\picker.html:29
+msgid "All muscles"
+msgstr "Wszystkie mięśnie"
+
+#: .\templates\exercises\picker.html:34
+msgid "Equipment"
+msgstr "Sprzęt"
+
+#: .\templates\exercises\picker.html:35
+msgid "All equipment"
+msgstr "Każdy sprzęt"
+
+#: .\templates\exercises\picker.html:40
+msgid "Difficulty"
+msgstr "Poziom trudności"
+
+#: .\templates\exercises\picker.html:41
+msgid "Any level"
+msgstr "Każdy poziom"
+
+#: .\templates\exercises\picker.html:46
+msgid "Search"
+msgstr "Szukaj"
+
+#: .\templates\feedback\partials\dialog.html:5 .\templates\feedback\partials\thanks.html:4
+msgid "Close"
+msgstr "Zamknij"
+
+#: .\templates\feedback\partials\form.html:25
+msgid "We'll attach this page's address and your device type to make the problem easier to find."
+msgstr "Dołączymy adres tej strony i typ urządzenia, żeby łatwiej znaleźć problem."
+
+#: .\templates\feedback\partials\form.html:26
+msgid "Send"
+msgstr "Wyślij"
 
 #: .\templates\home.html:4
 msgid "Home"
@@ -278,14 +1396,6 @@ msgstr "D j b, H:i"
 msgid "Logged in as %(name)s"
 msgstr "Zalogowano jako %(name)s"
 
-#: .\templates\home.html:55
-msgid "Settings"
-msgstr "Ustawienia"
-
-#: .\templates\home.html:56
-msgid "Log out"
-msgstr "Wyloguj"
-
 #: .\templates\plans\_move_buttons.html:4
 #, python-format
 msgid "Move %(label)s up"
@@ -296,22 +1406,10 @@ msgstr "Przesuń %(label)s w górę"
 msgid "Move %(label)s down"
 msgstr "Przesuń %(label)s w dół"
 
-#: .\templates\plans\add_to_plan.html:4
-msgid "Add to plan"
-msgstr "Dodaj do planu"
-
 #: .\templates\plans\add_to_plan.html:8
 #, python-format
 msgid "Add %(name)s"
 msgstr "Dodaj %(name)s"
-
-#: .\templates\plans\add_to_plan.html:9 .\templates\plans\day_form.html:20
-#: .\templates\plans\plan_exercise_form.html:30 .\templates\plans\plan_form.html:14
-#: .\templates\workouts\change_variant_scope.html:21
-#: .\templates\workouts\partials\exercise_card.html:47
-#: .\templates\workouts\partials\set_inputs.html:25
-msgid "Cancel"
-msgstr "Anuluj"
 
 #: .\templates\plans\add_to_plan.html:14 .\templates\plans\plan_detail.html:10
 #: .\templates\plans\plan_list.html:17
@@ -335,18 +1433,9 @@ msgstr "Nie masz jeszcze planu."
 msgid "Create a plan"
 msgstr "Utwórz plan"
 
-#: .\templates\plans\day_form.html:4
-#, python-format
-msgid "Edit %(name)s"
-msgstr "Edytuj: %(name)s"
-
 #: .\templates\plans\day_form.html:8
 msgid "Edit day"
 msgstr "Edytuj dzień"
-
-#: .\templates\plans\day_form.html:12 .\templates\plans\plan_exercise_form.html:21
-msgid "Save"
-msgstr "Zapisz"
 
 #: .\templates\plans\day_form.html:14
 #, python-format
@@ -376,27 +1465,13 @@ msgstr "%(sets)s × %(target)s · przerwa %(rest)s s"
 msgid "Change variant of %(name)s"
 msgstr "Zmień wariant: %(name)s"
 
-#: .\templates\plans\plan_detail.html:39 .\templates\workouts\change_variant_scope.html:4
-#: .\templates\workouts\partials\exercise_card.html:6
-msgid "Change variant"
-msgstr "Zmień wariant"
-
 #: .\templates\plans\plan_detail.html:46
 msgid "No exercises yet."
 msgstr "Nie ma jeszcze ćwiczeń."
 
-#: .\templates\plans\plan_detail.html:49 .\templates\plans\plan_exercise_form.html:4
-#: .\templates\workouts\workout_detail.html:35 .\workouts\views.py:290
-msgid "Add exercise"
-msgstr "Dodaj ćwiczenie"
-
 #: .\templates\plans\plan_detail.html:52
 msgid "Add the first training day below, e.g. “Push”, “Upper A” or “Full body”."
 msgstr "Dodaj poniżej pierwszy dzień treningowy, np. „Push”, „Góra A” albo „Całe ciało”."
-
-#: .\templates\plans\plan_detail.html:60
-msgid "Add"
-msgstr "Dodaj"
 
 #: .\templates\plans\plan_detail.html:65
 msgid "Plan settings"
@@ -417,10 +1492,6 @@ msgstr "Usuń plan"
 #: .\templates\plans\plan_detail.html:79
 msgid "All plans"
 msgstr "Wszystkie plany"
-
-#: .\templates\plans\plan_exercise_form.html:4 .\templates\plans\plan_exercise_form.html:8
-msgid "Edit exercise"
-msgstr "Edytuj ćwiczenie"
 
 #: .\templates\plans\plan_exercise_form.html:15
 msgid "Change"
@@ -443,10 +1514,6 @@ msgstr "Utwórz plan"
 msgctxt "plan"
 msgid "New"
 msgstr "Nowy"
-
-#: .\templates\plans\plan_list.html:18
-msgid "j M Y"
-msgstr "j b Y"
 
 #: .\templates\plans\plan_list.html:18
 #, python-format
@@ -639,35 +1706,59 @@ msgstr "Wróć do treningu"
 msgid "Started %(time)s · every set is saved as soon as you log it"
 msgstr "Start %(time)s · każda seria zapisuje się od razu"
 
-#: .\templates\workouts\workout_detail.html:31
-msgid "No exercises yet. Add the first one below."
-msgstr "Nie ma jeszcze ćwiczeń. Dodaj pierwsze poniżej."
-
-#: .\templates\workouts\workout_detail.html:40
-msgid "Finish workout"
-msgstr "Zakończ trening"
-
-#: .\templates\workouts\workout_detail.html:43
-msgid "Rest timer settings"
-msgstr "Ustawienia minutnika przerwy"
-
-#: .\templates\workouts\workout_detail.html:45
-msgid "Discard this workout and all its sets?"
-msgstr "Odrzucić ten trening i wszystkie jego serie?"
-
-#: .\templates\workouts\workout_detail.html:49
-msgid "Discard workout"
-msgstr "Odrzuć trening"
-
-#: .\templates\workouts\workout_detail.html:56
+#: .\templates\workouts\workout_detail.html:26 .\templates\workouts\workout_detail.html:62
 msgid "Rest"
 msgstr "Przerwa"
 
-#: .\templates\workouts\workout_detail.html:59
+#: .\templates\workouts\workout_detail.html:27
+msgid "Rest over"
+msgstr "Koniec przerwy"
+
+#: .\templates\workouts\workout_detail.html:28
+msgid "Go!"
+msgstr "Dawaj!"
+
+#: .\templates\workouts\workout_detail.html:29
+msgid ""
+"This browser can't keep the screen on. You can set Auto-Lock in the phone's display settings "
+"instead."
+msgstr ""
+"Ta przeglądarka nie potrafi utrzymać włączonego ekranu. Zamiast tego ustaw automatyczną blokadę w "
+"ustawieniach ekranu telefonu."
+
+#: .\templates\workouts\workout_detail.html:30
+msgid "Screen stays on during this workout."
+msgstr "Ekran nie zgaśnie podczas tego treningu."
+
+#: .\templates\workouts\workout_detail.html:31
+msgid "Couldn't keep the screen on right now (battery saver?)."
+msgstr "Nie udało się teraz utrzymać włączonego ekranu (oszczędzanie baterii?)."
+
+#: .\templates\workouts\workout_detail.html:37
+msgid "No exercises yet. Add the first one below."
+msgstr "Nie ma jeszcze ćwiczeń. Dodaj pierwsze poniżej."
+
+#: .\templates\workouts\workout_detail.html:46
+msgid "Finish workout"
+msgstr "Zakończ trening"
+
+#: .\templates\workouts\workout_detail.html:49
+msgid "Rest timer settings"
+msgstr "Ustawienia minutnika przerwy"
+
+#: .\templates\workouts\workout_detail.html:51
+msgid "Discard this workout and all its sets?"
+msgstr "Odrzucić ten trening i wszystkie jego serie?"
+
+#: .\templates\workouts\workout_detail.html:55
+msgid "Discard workout"
+msgstr "Odrzuć trening"
+
+#: .\templates\workouts\workout_detail.html:65
 msgid "Start iPhone timer"
 msgstr "Włącz minutnik iPhone’a"
 
-#: .\templates\workouts\workout_detail.html:61
+#: .\templates\workouts\workout_detail.html:67
 msgid "Skip"
 msgstr "Pomiń"
 
@@ -694,10 +1785,6 @@ msgstr "Wysiłek, 6–10 (RPE)"
 #: .\workouts\forms.py:29
 msgid "Use seconds (90) or minutes:seconds (1:30)."
 msgstr "Wpisz sekundy (90) albo minuty:sekundy (1:30)."
-
-#: .\workouts\forms.py:81
-msgid "Reps"
-msgstr "Powtórzenia"
 
 #: .\workouts\forms.py:82
 msgid "Seconds"

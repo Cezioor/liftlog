@@ -1,4 +1,4 @@
-{# The "Zgłoś" form. Sent with HTMX: only this form is replaced (by itself with errors, or #}
+{% load i18n %}{# The "Zgłoś" form. Sent with HTMX: only this form is replaced (by itself with errors, or #}
 {# by the thanks message), so the page underneath, e.g. a workout, is never reloaded.    #}
 <form method="post" action="{% url 'feedback:feedback' %}" class="form feedback-form"
       hx-post="{% url 'feedback:feedback' %}" hx-target="this" hx-swap="outerHTML"
@@ -22,6 +22,6 @@
     <ul class="errorlist">{% for error in feedback_form.message.errors %}<li>{{ error }}</li>{% endfor %}</ul>
   {% endif %}
   {{ feedback_form.message }}
-  <p class="muted small">Dołączymy adres tej strony i typ urządzenia, żeby łatwiej znaleźć problem.</p>
-  <button type="submit" class="button button-primary">Wyślij</button>
+  <p class="muted small">{% translate "We'll attach this page's address and your device type to make the problem easier to find." %}</p>
+  <button type="submit" class="button button-primary">{% translate "Send" %}</button>
 </form>

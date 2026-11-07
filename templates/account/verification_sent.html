@@ -1,19 +1,19 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Check your email{% endblock %}
+{% block title %}{% translate "Check your email" %}{% endblock %}
 
 {% block content %}
   <div class="card narrow verification-sent">
-    <h1>Account created!</h1>
-    <p>We sent a link to {% if email %}<strong>{{ email }}</strong>{% else %}your email address{% endif %}.
-       Click it to activate your account.</p>
-    <p class="muted">Can't see the email? Check your spam folder or send it again.</p>
+    <h1>{% translate "Account created!" %}</h1>
+    <p>{% if email %}{% blocktranslate %}We sent a link to <strong>{{ email }}</strong>. Click it to activate your account.{% endblocktranslate %}{% else %}{% translate "We sent a link to your email address. Click it to activate your account." %}{% endif %}</p>
+    <p class="muted">{% translate "Can't see the email? Check your spam folder or send it again." %}</p>
     {% if email %}
       <form method="post" action="{% url 'resend_verification' %}" class="form" data-submit-once>
         {% csrf_token %}
-        <button type="submit" class="button" data-busy-text="Sending…">Send the link again</button>
+        <button type="submit" class="button" data-busy-text="{% translate "Sending…" %}">{% translate "Send the link again" %}</button>
       </form>
     {% endif %}
-    <p class="form-links"><a href="{% url 'account_login' %}">Back to log in</a></p>
+    <p class="form-links"><a href="{% url 'account_login' %}">{% translate "Back to log in" %}</a></p>
   </div>
 {% endblock %}

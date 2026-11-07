@@ -1,4 +1,4 @@
-{# Results of the exercise picker; re-rendered by HTMX on every search. #}
+{% load i18n %}{# Results of the exercise picker; re-rendered by HTMX on every search. #}
 {% if variant %}
   {# The movement exists, but not with the equipment typed: offer the user's own variant. #}
   <form method="post" action="{% url 'exercises:exercise_variant_create' variant.base.pk %}" class="picker-add-form picker-variant-form">
@@ -7,8 +7,8 @@
     <input type="hidden" name="next" value="{{ select_base }}">
     <input type="hidden" name="suffix" value="{{ select_suffix }}">
     <button type="submit" class="picker-item picker-add picker-variant">
-      <span class="list-title">+ Add variant: «{{ variant.movement }}» — {{ variant.equipment_label }}</span>
-      <span class="list-meta">Same muscles and instructions, its own history and records</span>
+      <span class="list-title">+ {% blocktranslate with movement=variant.movement equipment=variant.equipment_label %}Add variant: «{{ movement }}» — {{ equipment }}{% endblocktranslate %}</span>
+      <span class="list-meta">{% translate "Same muscles and instructions, its own history and records" %}</span>
     </button>
   </form>
 {% endif %}
@@ -19,7 +19,7 @@
 {% endif %}
 
 {% if recent %}
-  <h2 class="picker-heading">Recently used</h2>
+  <h2 class="picker-heading">{% translate "Recently used" %}</h2>
   <ul class="picker-list">
     {% for exercise in recent %}
       {% include "exercises/partials/picker_item.html" %}
@@ -28,18 +28,18 @@
 {% endif %}
 
 <h2 class="picker-heading">
-  {% if filtering %}Results{% else %}All exercises{% endif %}
+  {% if filtering %}{% translate "Results" %}{% else %}{% translate "All exercises" %}{% endif %}
   <span class="muted">({{ results_count }})</span>
 </h2>
 <ul class="picker-list">
   {% for exercise in results %}
     {% include "exercises/partials/picker_item.html" %}
   {% empty %}
-    <li class="picker-empty muted">No exercise matches{% if query %} “{{ query }}”{% endif %}.</li>
+    <li class="picker-empty muted">{% if query %}{% blocktranslate %}No exercise matches “{{ query }}”.{% endblocktranslate %}{% else %}{% translate "No exercise matches." %}{% endif %}</li>
   {% endfor %}
 </ul>
 {% if results_count > results|length %}
-  <p class="muted small">Showing {{ results|length }} of {{ results_count }}. Type more to narrow it down.</p>
+  <p class="muted small">{% blocktranslate with shown=results|length %}Showing {{ shown }} of {{ results_count }}. Type more to narrow it down.{% endblocktranslate %}</p>
 {% endif %}
 
 {% if quick_add_name and results_count %}

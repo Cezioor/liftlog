@@ -5,22 +5,23 @@ import logging
 from allauth.account import app_settings
 from allauth.account.adapter import DefaultAccountAdapter
 from django.contrib import messages
+from django.utils.translation import gettext_lazy as _
 
 logger = logging.getLogger(__name__)
 
-SIGNUP_DONE = "Konto założone. Wysłaliśmy też link do potwierdzenia adresu e-mail."
-SIGNUP_MAIL_FAILED = (
-    "Konto założone, ale nie udało się wysłać linku do potwierdzenia adresu e-mail. "
-    "Możesz poprosić o nowy w ustawieniach konta."
+SIGNUP_DONE = _("Account created. We also sent a link to confirm your email address.")
+SIGNUP_MAIL_FAILED = _(
+    "Account created, but we couldn't send the link to confirm your email address. "
+    "You can ask for a new one in your account settings."
 )
-MAIL_FAILED = "Nie udało się wysłać e-maila. Spróbuj ponownie za kilka minut."
+MAIL_FAILED = _("Couldn't send the email. Try again in a few minutes.")
 
 
 class AccountAdapter(DefaultAccountAdapter):
     error_messages = {
         **DefaultAccountAdapter.error_messages,
         # The sign-up page adds links to "log in" and "reset your password" under it.
-        "email_taken": "An account with this email already exists.",
+        "email_taken": _("An account with this email already exists."),
     }
 
     def add_message(self, request, level, message_template=None, *args, **kwargs):

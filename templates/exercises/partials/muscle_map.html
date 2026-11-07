@@ -1,12 +1,12 @@
-{# Simple front/back body drawn for LiftLog (no third-party artwork).          #}
+{% load i18n %}{# Simple front/back body drawn for LiftLog (no third-party artwork).          #}
 {# Shapes with class "m" are muscles; c.<muscle> adds m-primary / m-secondary. #}
 {# Each figure is drawn around x=100 (x 46–154) and shifted into place.     #}
-<svg class="muscle-map" viewBox="0 0 280 360" role="img" aria-label="Muscle map. {{ description }}">
+<svg class="muscle-map" viewBox="0 0 280 360" role="img" aria-label="{% blocktranslate %}Muscle map. {{ description }}{% endblocktranslate %}">
   <title>{{ description }}</title>
 
   {# ---------------- FRONT ---------------- #}
   <g transform="translate(-35 0)">
-    <text class="map-label" x="100" y="356" text-anchor="middle">Front</text>
+    <text class="map-label" x="100" y="356" text-anchor="middle">{% translate "Front" context "body view" %}</text>
     <circle class="b" cx="100" cy="24" r="16"/>
     <rect class="m {{ c.neck }}" x="93" y="40" width="14" height="12" rx="3"/>
     <path class="m {{ c.traps }}" d="M93 49 L76 60 L93 58 Z M107 49 L124 60 L107 58 Z"/>
@@ -37,7 +37,7 @@
 
   {# ---------------- BACK ---------------- #}
   <g transform="translate(105 0)">
-    <text class="map-label" x="100" y="356" text-anchor="middle">Back</text>
+    <text class="map-label" x="100" y="356" text-anchor="middle">{% translate "Back" context "body view" %}</text>
     <circle class="b" cx="100" cy="24" r="16"/>
     <rect class="m {{ c.neck }}" x="93" y="40" width="14" height="12" rx="3"/>
     <rect class="m {{ c.lower_back }}" x="89" y="122" width="22" height="34" rx="4"/>

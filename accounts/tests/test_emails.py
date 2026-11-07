@@ -12,6 +12,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ImproperlyConfigured
 from django.core.mail.backends.base import BaseEmailBackend
 from django.urls import reverse
+from django.utils import translation
 
 from accounts.adapter import SIGNUP_DONE, SIGNUP_MAIL_FAILED
 
@@ -32,6 +33,15 @@ def optional(settings):
     settings.ACCOUNT_EMAIL_VERIFICATION = "optional"
 
 
+@pytest.fixture
+def polish(settings):
+    """The sign-up messages were Polish before PL/EN; now they are translations of English
+    msgids, so these tests check them in Polish (str() of the lazy text, in Polish)."""
+    settings.LANGUAGE_CODE = "pl"
+    with translation.override("pl"):
+        yield
+
+
 # --- the switch -------------------------------------------------------------------------
 
 
@@ -41,6 +51,8 @@ def optional(settings):
 def test_verification_mode_comes_from_the_environment(monkeypatch, env, expected):
     import config.settings
 
+    # Only the environment given here: a developer's .env (e.g. optional) must not leak in.
+    monkeypatch.setattr("dotenv.load_dotenv", lambda *args, **kwargs: False)
     if env is None:
         monkeypatch.delenv("ACCOUNT_EMAIL_VERIFICATION", raising=False)
     else:
@@ -68,12 +80,13 @@ def test_a_typo_in_the_mode_stops_the_app_instead_of_guessing(monkeypatch):
 
 
 @pytest.mark.django_db
-def test_optional_signup_logs_in_and_says_a_link_was_sent(client, optional, mailoutbox):
+def test_optional_signup_logs_in_and_says_a_link_was_sent(client, optional, polish, mailoutbox):
     response = _signup(client)
 
     assert response.redirect_chain[-1][0] == reverse("home")
     assert "_auth_user_id" in client.session
-    assert SIGNUP_DONE in response.content.decode()
+    assert str(SIGNUP_DONE) in response.content.decode()
+    assert "Konto założone. Wysłaliśmy też link" in response.content.decode()
     assert len(mailoutbox) == 1
     assert not EmailAddress.objects.get().verified
 
@@ -101,7 +114,7 @@ def test_mandatory_signup_shows_the_check_your_email_page_not_the_message(client
 
     content = response.content.decode()
     assert "Account created!" in content
-    assert SIGNUP_DONE not in content
+    assert str(SIGNUP_DONE) not in content
     assert "_auth_user_id" not in client.session
 
 
@@ -115,7 +128,7 @@ class FailingBackend(BaseEmailBackend):
 
 @pytest.mark.django_db
 @pytest.mark.parametrize("mode", ["optional", "mandatory"])
-def test_signup_survives_a_mail_failure_and_says_so(client, settings, caplog, mode):
+def test_signup_survives_a_mail_failure_and_says_so(client, settings, caplog, polish, mode):
     settings.ACCOUNT_EMAIL_VERIFICATION = mode
     settings.EMAIL_BACKEND = "accounts.tests.test_emails.FailingBackend"
 
@@ -124,8 +137,9 @@ def test_signup_survives_a_mail_failure_and_says_so(client, settings, caplog, mo
     assert response.status_code == 200
     assert User.objects.filter(email="ania@example.com").exists()
     content = response.content.decode()
-    assert SIGNUP_MAIL_FAILED in content
-    assert SIGNUP_DONE not in content
+    assert str(SIGNUP_MAIL_FAILED) in content
+    assert "nie udało się wysłać linku" in content
+    assert str(SIGNUP_DONE) not in content
     assert "Sending email account/email/email_confirmation_signup failed" in caplog.text
     assert "ania@example.com" not in caplog.text  # no personal data in logs
 

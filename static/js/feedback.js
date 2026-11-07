@@ -1,4 +1,4 @@
-// The "Zgłoś" dialog: opens over the current page, sends with HTMX (feedback form),
+// The "Report" ("Zgłoś") dialog: opens over the current page, sends with HTMX (feedback form),
 // shows the thanks and closes by itself. The page underneath, e.g. a workout with
 // numbers typed but not logged yet, is never reloaded or touched.
 (function () {

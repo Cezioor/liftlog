@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from django.utils import timezone
+from django.utils import timezone, translation
 
 from feedback.models import Feedback, Kind, Status
 
@@ -10,7 +10,12 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument("--all", action="store_true", help="Include reports marked done.")
 
-    def handle(self, *args, all=False, **options):
+    def handle(self, *args, **options):
+        # For the owner, in Polish (like the admin and the report emails).
+        with translation.override("pl"):
+            self._report(**options)
+
+    def _report(self, all=False, **options):
         reports = Feedback.objects.select_related("user").order_by("created_at")
         if not all:
             reports = reports.exclude(status=Status.DONE)

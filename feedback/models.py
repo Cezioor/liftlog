@@ -1,24 +1,26 @@
 from django.conf import settings
 from django.db import models
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import pgettext_lazy
 
 
 class Kind(models.TextChoices):
-    BUG = "bug", "Błąd"
-    SUGGESTION = "suggestion", "Sugestia zmiany"
-    OPINION = "opinion", "Opinia"
+    BUG = "bug", _("Bug")
+    SUGGESTION = "suggestion", _("Suggestion")
+    OPINION = "opinion", _("Opinion")
 
 
 class Status(models.TextChoices):
-    NEW = "new", "Nowe"
-    IN_PROGRESS = "in_progress", "W trakcie"
-    DONE = "done", "Załatwione"
+    NEW = "new", pgettext_lazy("report status", "New")
+    IN_PROGRESS = "in_progress", pgettext_lazy("report status", "In progress")
+    DONE = "done", pgettext_lazy("report status", "Done")
 
 
 class Device(models.TextChoices):
-    PHONE = "phone", "Telefon"
-    TABLET = "tablet", "Tablet"
-    COMPUTER = "computer", "Komputer"
-    UNKNOWN = "unknown", "Nieznane"
+    PHONE = "phone", _("Phone")
+    TABLET = "tablet", _("Tablet")
+    COMPUTER = "computer", _("Computer")
+    UNKNOWN = "unknown", _("Unknown")
 
 
 MESSAGE_MAX_LENGTH = 2000
@@ -37,20 +39,22 @@ class Feedback(models.Model):
         on_delete=models.SET_NULL,
         related_name="feedback",
     )
-    kind = models.CharField("rodzaj", max_length=20, choices=Kind.choices)
-    message = models.TextField("treść", max_length=MESSAGE_MAX_LENGTH)
-    page = models.CharField("strona", max_length=500, blank=True)
+    kind = models.CharField(_("kind"), max_length=20, choices=Kind.choices)
+    message = models.TextField(_("message"), max_length=MESSAGE_MAX_LENGTH)
+    page = models.CharField(_("page"), max_length=500, blank=True)
     device = models.CharField(
-        "urządzenie", max_length=10, choices=Device.choices, default=Device.UNKNOWN
+        _("device"), max_length=10, choices=Device.choices, default=Device.UNKNOWN
     )
     user_agent = models.CharField(max_length=300, blank=True)
-    status = models.CharField(max_length=20, choices=Status.choices, default=Status.NEW)
-    created_at = models.DateTimeField("wysłano", auto_now_add=True)
+    status = models.CharField(
+        _("status"), max_length=20, choices=Status.choices, default=Status.NEW
+    )
+    created_at = models.DateTimeField(_("sent"), auto_now_add=True)
 
     class Meta:
         ordering = ["-created_at"]
-        verbose_name = "zgłoszenie"
-        verbose_name_plural = "zgłoszenia"
+        verbose_name = _("report")
+        verbose_name_plural = _("reports")
 
     def __str__(self):
         return f"#{self.pk} {self.get_kind_display()}: {self.message[:50]}"

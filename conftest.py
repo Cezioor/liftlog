@@ -21,6 +21,8 @@ def _test_settings(settings):
     """
     settings.SECURE_SSL_REDIRECT = False
     settings.LANGUAGE_CODE = "en"
+    # The default from the code, whatever a developer's .env says (locally: optional).
+    settings.ACCOUNT_EMAIL_VERIFICATION = "mandatory"
     # Rate limits are counted in the cache: per-test memory instead of the DB table
     # that build.sh creates, emptied so one test's attempts don't limit the next.
     settings.CACHES = {"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"}}

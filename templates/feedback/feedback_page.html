@@ -1,11 +1,12 @@
 {% extends "base.html" %}
+{% load i18n %}
 {# The same form as a page, for browsers without JavaScript. #}
 
-{% block title %}Zgłoś{% endblock %}
+{% block title %}{% translate "Report" context "send feedback" %}{% endblock %}
 
 {% block content %}
   <div class="card narrow">
-    <h1>Zgłoś</h1>
+    <h1>{% translate "Report" context "send feedback" %}</h1>
     {% include "feedback/partials/form.html" %}
   </div>
 {% endblock %}

@@ -8,6 +8,14 @@
   const caption = figure.querySelector("[data-photo-caption]");
   const playButton = figure.querySelector("[data-photo-play]");
   if (images.length < 2) return;
+  // Texts in the page's language (data-text-* in exercise_detail.html).
+  const texts = (caption && caption.parentElement.dataset) || {};
+  const text = {
+    start: texts.textStart || "Start position",
+    end: texts.textEnd || "End position",
+    animate: texts.textAnimate || "Animate",
+    pause: texts.textPause || "Pause",
+  };
 
   let current = 0;
   let timer = null;
@@ -17,14 +25,14 @@
     images.forEach(function (img, i) {
       img.hidden = i !== current;
     });
-    if (caption) caption.textContent = current === 0 ? "Start position" : "End position";
+    if (caption) caption.textContent = current === 0 ? text.start : text.end;
   }
 
   function setPlaying(playing) {
     clearInterval(timer);
     timer = playing ? setInterval(function () { show(current + 1); }, 1000) : null;
     if (playButton) {
-      playButton.textContent = playing ? "Pause" : "Animate";
+      playButton.textContent = playing ? text.pause : text.animate;
       playButton.setAttribute("aria-pressed", playing ? "true" : "false");
     }
   }

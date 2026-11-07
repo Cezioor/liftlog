@@ -1,15 +1,16 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}{% if exercise %}Edit exercise{% else %}Add exercise{% endif %}{% endblock %}
+{% block title %}{% if exercise %}{% translate "Edit exercise" %}{% else %}{% translate "Add exercise" %}{% endif %}{% endblock %}
 
 {% block content %}
   <div class="card narrow">
-    <h1>{% if exercise %}Edit {{ exercise.name }}{% else %}Add exercise{% endif %}</h1>
+    <h1>{% if exercise %}{% blocktranslate with name=exercise.name %}Edit {{ name }}{% endblocktranslate %}{% else %}{% translate "Add exercise" %}{% endif %}</h1>
     <form method="post" class="form">
       {% csrf_token %}
       {{ form }}
-      <button type="submit" class="button button-primary">Save</button>
+      <button type="submit" class="button button-primary">{% translate "Save" %}</button>
     </form>
-    <p class="form-links"><a href="{% url 'exercises:exercise_list' %}">Cancel</a></p>
+    <p class="form-links"><a href="{% url 'exercises:exercise_list' %}">{% translate "Cancel" %}</a></p>
   </div>
 {% endblock %}

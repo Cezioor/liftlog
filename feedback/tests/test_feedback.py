@@ -5,6 +5,7 @@ from allauth.account.models import EmailAddress
 from django.core.mail.backends.base import BaseEmailBackend
 from django.core.management import call_command
 from django.urls import reverse
+from django.utils import translation
 
 from feedback.models import Device, Feedback, Kind, Status
 from feedback.services import HOURLY_LIMIT, device_from_user_agent, page_path
@@ -15,6 +16,15 @@ IPHONE = (
     "(KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1"
 )
 URL = "/feedback/"
+
+
+@pytest.fixture(autouse=True)
+def _polish(settings):
+    """These tests check the Polish texts the feedback feature had before PL/EN: they are
+    translations of English msgids now, so the whole module runs in Polish."""
+    settings.LANGUAGE_CODE = "pl"
+    with translation.override("pl"):
+        yield
 
 
 @pytest.fixture
@@ -75,8 +85,7 @@ def test_page_path_keeps_only_our_path(url, path):
     "url_name", ["home", "plans:plan_list", "exercises:exercise_list", "settings"]
 )
 def test_every_screen_has_the_report_link_and_dialog(logged_in, url_name):
-    # The Polish texts are translations now (English msgids), so check them in Polish.
-    content = logged_in.get(reverse(url_name), HTTP_ACCEPT_LANGUAGE="pl").content.decode()
+    content = logged_in.get(reverse(url_name)).content.decode()
 
     assert "data-feedback-open" in content and ">Zgłoś</a>" in content
     assert '<dialog class="feedback-dialog"' in content

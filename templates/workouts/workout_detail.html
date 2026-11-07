@@ -22,7 +22,13 @@
   {# Read by static/js/workout.js. Change these in Settings. #}
   <div id="workout-config" hidden
        data-keep-screen-on="{{ user_settings.keep_screen_on|yesno:'1,0' }}"
-       data-rest-sound="{{ user_settings.rest_end_sound|yesno:'1,0' }}"></div>
+       data-rest-sound="{{ user_settings.rest_end_sound|yesno:'1,0' }}"
+       data-text-rest="{% translate "Rest" %}"
+       data-text-rest-over="{% translate "Rest over" %}"
+       data-text-go="{% translate "Go!" %}"
+       data-text-wake-unsupported="{% translate "This browser can't keep the screen on. You can set Auto-Lock in the phone's display settings instead." %}"
+       data-text-wake-on="{% translate "Screen stays on during this workout." %}"
+       data-text-wake-failed="{% translate "Couldn't keep the screen on right now (battery saver?)." %}"></div>
 
   <div class="exercise-cards">
     {% for card in cards %}

@@ -115,8 +115,19 @@
   const shortcutLink = document.getElementById("rest-shortcut");
   if (!bar) return;
 
-  // Settings rendered by the server (see accounts.models.UserSettings).
+  // Settings rendered by the server (see accounts.models.UserSettings), plus the
+  // texts below in the page's language (data-text-* in workout_detail.html).
   const config = (document.getElementById("workout-config") || {}).dataset || {};
+  const text = {
+    rest: config.textRest || "Rest",
+    restOver: config.textRestOver || "Rest over",
+    go: config.textGo || "Go!",
+    wakeUnsupported:
+      config.textWakeUnsupported ||
+      "This browser can't keep the screen on. You can set Auto-Lock in the phone's display settings instead.",
+    wakeOn: config.textWakeOn || "Screen stays on during this workout.",
+    wakeFailed: config.textWakeFailed || "Couldn't keep the screen on right now (battery saver?).",
+  };
   const soundEnabled = config.restSound === "1";
 
   let endsAt = null;
@@ -167,8 +178,8 @@
     clearInterval(tick);
     endsAt = null;
     store(null);
-    labelEl.textContent = "Rest over";
-    timeEl.textContent = "Go!";
+    labelEl.textContent = text.restOver;
+    timeEl.textContent = text.go;
     bar.classList.add("rest-done");
     if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
     // Only beep when LiftLog is actually on screen.
@@ -187,7 +198,7 @@
     clearInterval(tick);
     endsAt = untilMs;
     store(endsAt);
-    labelEl.textContent = "Rest";
+    labelEl.textContent = text.rest;
     bar.classList.remove("rest-done");
     bar.hidden = false;
     render();
@@ -255,7 +266,7 @@
 
     if (!("wakeLock" in navigator)) {
       // Not supported, or not HTTPS (wake lock needs a secure connection).
-      say("This browser can't keep the screen on. You can set Auto-Lock in the phone's display settings instead.");
+      say(text.wakeUnsupported);
     } else {
       let lock = null;
       const acquire = async function () {
@@ -265,10 +276,10 @@
           lock.addEventListener("release", function () {
             lock = null;
           });
-          say("Screen stays on during this workout.");
+          say(text.wakeOn);
         } catch (e) {
           // e.g. Low Power Mode on iPhone, or the browser refused.
-          say("Couldn't keep the screen on right now (battery saver?).");
+          say(text.wakeFailed);
         }
       };
       document.addEventListener("visibilitychange", acquire);

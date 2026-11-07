@@ -4,88 +4,90 @@ from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Q
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import pgettext_lazy
 
 from .text import normalize
 
 
 class MuscleGroup(models.TextChoices):
-    CHEST = "chest", "Chest"
-    BACK = "back", "Back"
-    SHOULDERS = "shoulders", "Shoulders"
-    BICEPS = "biceps", "Biceps"
-    TRICEPS = "triceps", "Triceps"
-    FOREARMS = "forearms", "Forearms"
-    QUADS = "quads", "Quads"
-    HAMSTRINGS = "hamstrings", "Hamstrings"
-    GLUTES = "glutes", "Glutes"
-    CALVES = "calves", "Calves"
-    CORE = "core", "Core"
-    FULL_BODY = "full_body", "Full body"
+    CHEST = "chest", _("Chest")
+    BACK = "back", _("Back")
+    SHOULDERS = "shoulders", _("Shoulders")
+    BICEPS = "biceps", _("Biceps")
+    TRICEPS = "triceps", _("Triceps")
+    FOREARMS = "forearms", _("Forearms")
+    QUADS = "quads", _("Quads")
+    HAMSTRINGS = "hamstrings", _("Hamstrings")
+    GLUTES = "glutes", _("Glutes")
+    CALVES = "calves", _("Calves")
+    CORE = "core", _("Core")
+    FULL_BODY = "full_body", _("Full body")
     # Used by "Add my own: …" in the picker when no muscle group filter is chosen.
-    OTHER = "other", "Other"
+    OTHER = "other", pgettext_lazy("muscle group", "Other")
 
 
 class Equipment(models.TextChoices):
-    BARBELL = "barbell", "Barbell"
-    SMITH = "smith", "Smith machine"
-    DUMBBELL = "dumbbell", "Dumbbell"
-    MACHINE = "machine", "Machine"
-    CABLE = "cable", "Cable"
-    KETTLEBELL = "kettlebell", "Kettlebell"
-    BAND = "band", "Resistance band"
-    PLATE = "plate", "Weight plate"
-    PULLUP_BAR = "pullup_bar", "Pull-up bar"
-    LANDMINE = "landmine", "Landmine"
-    SUSPENSION = "suspension", "TRX / suspension"
-    BODYWEIGHT = "bodyweight", "Bodyweight"
-    OTHER = "other", "Other"
+    BARBELL = "barbell", _("Barbell")
+    SMITH = "smith", _("Smith machine")
+    DUMBBELL = "dumbbell", _("Dumbbell")
+    MACHINE = "machine", _("Machine")
+    CABLE = "cable", _("Cable")
+    KETTLEBELL = "kettlebell", _("Kettlebell")
+    BAND = "band", _("Resistance band")
+    PLATE = "plate", _("Weight plate")
+    PULLUP_BAR = "pullup_bar", _("Pull-up bar")
+    LANDMINE = "landmine", _("Landmine")
+    SUSPENSION = "suspension", _("TRX / suspension")
+    BODYWEIGHT = "bodyweight", _("Bodyweight")
+    OTHER = "other", pgettext_lazy("equipment", "Other")
 
 
 class Muscle(models.TextChoices):
     """Individual muscles, named exactly as in free-exercise-db. Drive the muscle map."""
 
-    ABDOMINALS = "abdominals", "Abdominals"
-    ABDUCTORS = "abductors", "Abductors"
-    ADDUCTORS = "adductors", "Adductors"
-    BICEPS = "biceps", "Biceps"
-    CALVES = "calves", "Calves"
-    CHEST = "chest", "Chest"
-    FOREARMS = "forearms", "Forearms"
-    GLUTES = "glutes", "Glutes"
-    HAMSTRINGS = "hamstrings", "Hamstrings"
-    LATS = "lats", "Lats"
-    LOWER_BACK = "lower back", "Lower back"
-    MIDDLE_BACK = "middle back", "Middle back"
-    NECK = "neck", "Neck"
-    QUADRICEPS = "quadriceps", "Quadriceps"
-    SHOULDERS = "shoulders", "Shoulders"
-    TRAPS = "traps", "Traps"
-    TRICEPS = "triceps", "Triceps"
+    ABDOMINALS = "abdominals", _("Abdominals")
+    ABDUCTORS = "abductors", _("Abductors")
+    ADDUCTORS = "adductors", _("Adductors")
+    BICEPS = "biceps", _("Biceps")
+    CALVES = "calves", _("Calves")
+    CHEST = "chest", _("Chest")
+    FOREARMS = "forearms", _("Forearms")
+    GLUTES = "glutes", _("Glutes")
+    HAMSTRINGS = "hamstrings", _("Hamstrings")
+    LATS = "lats", _("Lats")
+    LOWER_BACK = "lower back", _("Lower back")
+    MIDDLE_BACK = "middle back", _("Middle back")
+    NECK = "neck", _("Neck")
+    QUADRICEPS = "quadriceps", _("Quadriceps")
+    SHOULDERS = "shoulders", _("Shoulders")
+    TRAPS = "traps", _("Traps")
+    TRICEPS = "triceps", _("Triceps")
 
 
 class Measurement(models.TextChoices):
     """What a set of this exercise records; decides which inputs the workout screen shows."""
 
-    WEIGHT_REPS = "weight_reps", "Weight × reps"
-    REPS = "reps", "Reps"
-    TIME = "time", "Time"
-    DISTANCE_TIME = "distance_time", "Distance + time"
+    WEIGHT_REPS = "weight_reps", _("Weight × reps")
+    REPS = "reps", _("Reps")
+    TIME = "time", _("Time")
+    DISTANCE_TIME = "distance_time", _("Distance + time")
 
 
 class Category(models.TextChoices):
-    STRENGTH = "strength", "Strength"
-    ISOMETRIC = "isometric", "Isometric"
-    MOBILITY = "mobility", "Stretching / mobility"
-    PLYOMETRIC = "plyometric", "Plyometric"
-    MOTOR = "motor", "Motor control / balance"
-    CARDIO = "cardio", "Cardio"
-    REHAB = "rehab", "Rehab"
+    STRENGTH = "strength", _("Strength")
+    ISOMETRIC = "isometric", _("Isometric")
+    MOBILITY = "mobility", _("Stretching / mobility")
+    PLYOMETRIC = "plyometric", _("Plyometric")
+    MOTOR = "motor", _("Motor control / balance")
+    CARDIO = "cardio", _("Cardio")
+    REHAB = "rehab", _("Rehab")
 
 
 class Level(models.TextChoices):
-    BEGINNER = "beginner", "Beginner"
-    INTERMEDIATE = "intermediate", "Intermediate"
-    EXPERT = "expert", "Expert"
+    BEGINNER = "beginner", _("Beginner")
+    INTERMEDIATE = "intermediate", _("Intermediate")
+    EXPERT = "expert", _("Expert")
 
 
 class ExerciseQuerySet(models.QuerySet):
@@ -119,41 +121,45 @@ class Movement(models.Model):
 
 
 class Exercise(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(_("name"), max_length=100)
     aliases = models.TextField(
-        "other names",
+        _("other names"),
         blank=True,
-        help_text="Polish names and synonyms, comma separated, e.g. "
-        "“wyciskanie na ławce płaskiej, wyciskanie sztangi”.",
+        help_text=_(
+            "Polish names and synonyms, comma separated, e.g. "
+            "“wyciskanie na ławce płaskiej, wyciskanie sztangi”."
+        ),
     )
     # name + aliases, lowercased and without diacritics; filled in save().
     # Searching this column works the same on SQLite and Postgres.
     search_text = models.TextField(blank=True, editable=False)
-    muscle_group = models.CharField(max_length=20, choices=MuscleGroup.choices)
-    equipment = models.CharField(max_length=20, choices=Equipment.choices)
-    is_bodyweight = models.BooleanField(default=False)
+    muscle_group = models.CharField(_("muscle group"), max_length=20, choices=MuscleGroup.choices)
+    equipment = models.CharField(_("equipment"), max_length=20, choices=Equipment.choices)
+    is_bodyweight = models.BooleanField(_("is bodyweight"), default=False)
     measurement = models.CharField(
-        "logged as",
+        _("logged as"),
         max_length=20,
         choices=Measurement.choices,
         default=Measurement.WEIGHT_REPS,
-        help_text="Which fields a set has: kg × reps, reps, time, or distance + time.",
+        help_text=_("Which fields a set has: kg × reps, reps, time, or distance + time."),
     )
-    category = models.CharField(max_length=20, choices=Category.choices, default=Category.STRENGTH)
+    category = models.CharField(
+        _("category"), max_length=20, choices=Category.choices, default=Category.STRENGTH
+    )
     is_unilateral = models.BooleanField(
-        "one side at a time",
+        _("one side at a time"),
         default=False,
-        help_text="Log left and right separately (e.g. single-leg exercises).",
+        help_text=_("Log left and right separately (e.g. single-leg exercises)."),
     )
     # kg added by the progression hint. Left empty, it is filled in save() from
     # exercises.services.default_progression_step.
     progression_step_kg = models.DecimalField(
-        "progression step (kg)",
+        _("progression step (kg)"),
         max_digits=5,
         decimal_places=2,
         blank=True,
         validators=[MinValueValidator(Decimal("0.25")), MaxValueValidator(Decimal("50"))],
-        help_text="How much weight to add when you hit the top of the rep range on every set.",
+        help_text=_("How much weight to add when you hit the top of the rep range on every set."),
     )
     # --- From free-exercise-db (empty for user exercises and unmatched originals) ---
     # Stable id in free-exercise-db, e.g. "Barbell_Squat". The importer matches on it.
@@ -161,9 +167,9 @@ class Exercise(models.Model):
     # The exercise's name in free-exercise-db. Matched originals keep their own name,
     # so this one is added to the search text: "EZ-Bar Skullcrusher" finds "Skull Crusher".
     source_name = models.CharField(max_length=120, blank=True, editable=False)
-    primary_muscles = models.JSONField("main muscles", default=list, blank=True)
-    secondary_muscles = models.JSONField("helping muscles", default=list, blank=True)
-    level = models.CharField(max_length=20, choices=Level.choices, blank=True)
+    primary_muscles = models.JSONField(_("main muscles"), default=list, blank=True)
+    secondary_muscles = models.JSONField(_("helping muscles"), default=list, blank=True)
+    level = models.CharField(_("level"), max_length=20, choices=Level.choices, blank=True)
     # free-exercise-db's own category (strength, stretching, olympic weightlifting, ...).
     source_category = models.CharField(max_length=30, blank=True, editable=False)
     mechanic = models.CharField(max_length=20, blank=True)  # compound / isolation

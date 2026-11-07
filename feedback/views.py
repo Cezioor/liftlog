@@ -2,11 +2,12 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
+from django.utils.translation import gettext_lazy, ngettext
 
 from . import services
 from .forms import FeedbackForm
 
-THANKS = "Dzięki! Zgłoszenie dotarło."
+THANKS = gettext_lazy("Thanks! Your report has arrived.")
 
 
 def _is_htmx(request):
@@ -23,8 +24,12 @@ def feedback(request):
         if form.is_valid() and services.over_limit(request.user):
             form.add_error(
                 None,
-                f"Wysłano już {services.HOURLY_LIMIT} zgłoszeń w ciągu godziny. "
-                "Spróbuj ponownie później.",
+                ngettext(
+                    "You've already sent %(count)s report in the last hour. Try again later.",
+                    "You've already sent %(count)s reports in the last hour. Try again later.",
+                    services.HOURLY_LIMIT,
+                )
+                % {"count": services.HOURLY_LIMIT},
             )
         if form.is_valid():
             page = request.headers.get("HX-Current-URL") or form.cleaned_data["page"]

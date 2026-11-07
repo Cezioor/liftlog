@@ -5,6 +5,7 @@ from decimal import Decimal
 
 from django.db.models import Case, F, IntegerField, Q, TextField, Value, When
 from django.db.models.functions import Replace
+from django.utils import translation
 
 from .models import Equipment, Exercise, Level, Movement, Muscle, MuscleGroup
 from .text import normalize
@@ -241,8 +242,11 @@ def variant_suggestion(user, query):
 def variant_name(base, equipment, label=""):
     """ "Barbell Step Ups" + Smith machine -> "Step Ups (Smith machine)";
     with "Other…" the typed label: "Step Ups (weighted vest)"."""
-    label = label.strip() or Equipment(equipment).label
-    return f"{movement_name(base.name)} ({label})"[:100]
+    if not label.strip():
+        # A saved exercise name: always in English, whatever the page language.
+        with translation.override("en"):
+            label = str(Equipment(equipment).label)
+    return f"{movement_name(base.name)} ({label.strip()})"[:100]
 
 
 def create_variant(user, base, equipment, label=""):

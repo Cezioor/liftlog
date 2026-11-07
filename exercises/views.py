@@ -6,6 +6,7 @@ from django.http import Http404, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
 from accounts.services import get_user_settings
@@ -30,12 +31,12 @@ def exercise_list(request):
     """The exercise library: the same picker as in plans and workouts, linking to details."""
     return picker_response(
         request,
-        title="Exercises",
+        title=_("Exercises"),
         back_url=reverse("home"),
         select_base=reverse("exercises:exercise_list"),
         select_suffix="/",
         recent=recently_used_exercises(request.user),
-        header_action=("+ Add", reverse("exercises:exercise_create")),
+        header_action=("+ " + _("Add"), reverse("exercises:exercise_create")),
     )
 
 
@@ -74,7 +75,7 @@ def exercise_create(request):
         form = ExerciseForm(request.POST, owner=request.user)
         if form.is_valid():
             exercise = form.save()
-            messages.success(request, f"Added “{exercise.name}”.")
+            messages.success(request, _("Added “%(name)s”.") % {"name": exercise.name})
             return redirect("exercises:exercise_list")
     else:
         form = ExerciseForm(owner=request.user)
@@ -88,7 +89,7 @@ def exercise_update(request, pk):
     form = ExerciseForm(request.POST or None, instance=exercise, owner=request.user)
     if request.method == "POST" and form.is_valid():
         form.save()
-        messages.success(request, f"Saved “{exercise.name}”.")
+        messages.success(request, _("Saved “%(name)s”.") % {"name": exercise.name})
         return redirect("exercises:exercise_list")
     return render(request, "exercises/exercise_form.html", {"form": form, "exercise": exercise})
 
@@ -177,7 +178,10 @@ def exercise_variant_create(request, pk):
     if equipment not in Equipment.values or next_url is None:
         return HttpResponseBadRequest("Invalid equipment or return address.")
     variant = create_variant(request.user, base, equipment)
-    messages.success(request, f"Created “{variant.name}”, with its own history and records.")
+    messages.success(
+        request,
+        _("Created “%(name)s”, with its own history and records.") % {"name": variant.name},
+    )
     return _select(request, next_url, variant)
 
 
@@ -207,6 +211,7 @@ def exercise_quick_add(request):
         )
         messages.success(
             request,
-            f"Created “{exercise.name}”. You can set its details later in Exercises.",
+            _("Created “%(name)s”. You can set its details later in Exercises.")
+            % {"name": exercise.name},
         )
     return _select(request, next_url, exercise)

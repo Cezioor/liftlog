@@ -1,4 +1,5 @@
 from django import template
+from django.utils.translation import gettext as _
 
 from exercises.models import Muscle
 
@@ -21,9 +22,11 @@ def muscle_map(primary, secondary):
         else:
             classes[key] = ""
     labels = dict(Muscle.choices)
-    description = "Main: " + (", ".join(labels[m] for m in primary) or "none")
+    main = ", ".join(str(labels[m]) for m in primary) or _("none")
+    description = _("Main: %(muscles)s") % {"muscles": main}
     if secondary:
-        description += ". Helping: " + ", ".join(labels[m] for m in secondary)
+        helping = ", ".join(str(labels[m]) for m in secondary)
+        description += ". " + _("Helping: %(muscles)s") % {"muscles": helping}
     return {"c": classes, "description": description}
 
 

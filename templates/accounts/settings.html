@@ -1,22 +1,22 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}Settings{% endblock %}
+{% block title %}{% translate "Settings" %}{% endblock %}
 
 {% block content %}
-  <h1>Settings</h1>
+  <h1>{% translate "Settings" %}</h1>
 
   {% if email_address %}
     <section class="card">
-      <h2>Account</h2>
+      <h2>{% translate "Account" %}</h2>
       <p>{{ email_address.email }}
-        {% if email_address.verified %}<span class="badge">confirmed</span>{% else %}<span class="badge badge-warn">not confirmed yet</span>{% endif %}</p>
+        {% if email_address.verified %}<span class="badge">{% translate "confirmed" %}</span>{% else %}<span class="badge badge-warn">{% translate "not confirmed yet" %}</span>{% endif %}</p>
       {% if not email_address.verified %}
-        <p class="muted small">Confirm it so you can always reset your password.</p>
+        <p class="muted small">{% translate "Confirm it so you can always reset your password." %}</p>
         <form method="post" action="{% url 'account_email' %}" class="form" data-submit-once>
           {% csrf_token %}
           <input type="hidden" name="email" value="{{ email_address.email }}">
-          <button type="submit" name="action_send" class="button" data-busy-text="Sending…">Send the confirmation link again</button>
+          <button type="submit" name="action_send" class="button" data-busy-text="{% translate "Sending…" %}">{% translate "Send the confirmation link again" %}</button>
         </form>
       {% endif %}
     </section>
@@ -24,54 +24,53 @@
 
   <form method="post" class="card form">
     {% csrf_token %}
-    <h2>{% translate "Language" %}</h2>
     {{ form.language.as_field_group }}
 
-    <h2>Rating your sets</h2>
-    <p class="muted small">After a set you can say how hard it was. It helps LiftLog suggest when to add weight. Saved ratings stay the same when you switch.</p>
+    <h2>{% translate "Rating your sets" %}</h2>
+    <p class="muted small">{% translate "After a set you can say how hard it was. It helps LiftLog suggest when to add weight. Saved ratings stay the same when you switch." %}</p>
     {{ form.effort_scale.as_field_group }}
 
-    <h2>Rest timer</h2>
+    <h2>{% translate "Rest timer" %}</h2>
     {% for field in form %}{% if field.name != "effort_scale" and field.name != "language" %}{{ field.as_field_group }}{% endif %}{% endfor %}
-    <button type="submit" class="button button-primary">Save settings</button>
+    <button type="submit" class="button button-primary">{% translate "Save settings" %}</button>
   </form>
 
   <section class="card">
-    <h2>What the set ratings mean</h2>
+    <h2>{% translate "What the set ratings mean" %}</h2>
     <ul class="info-list">
-      <li><strong>Simple.</strong> <em>Easy</em>: you could do 4 or more extra reps. <em>Medium</em>: about 3. <em>Hard</em>: 1–2. <em>Max effort</em>: not one more clean rep.</li>
-      <li><strong>RIR</strong> (reps in reserve): how many more good reps you could have done. 0 = none, 4+ = four or more.</li>
-      <li><strong>RPE</strong> (rate of perceived exertion): 10 = nothing left, 9 = one rep left, 8 = two, and so on. 8.5 means “two, maybe one”.</li>
+      <li>{% blocktranslate trimmed %}<strong>Simple.</strong> <em>Easy</em>: you could do 4 or more extra reps. <em>Medium</em>: about 3. <em>Hard</em>: 1–2. <em>Max effort</em>: not one more clean rep.{% endblocktranslate %}</li>
+      <li>{% blocktranslate trimmed %}<strong>RIR</strong> (reps in reserve): how many more good reps you could have done. 0 = none, 4+ = four or more.{% endblocktranslate %}</li>
+      <li>{% blocktranslate trimmed %}<strong>RPE</strong> (rate of perceived exertion): 10 = nothing left, 9 = one rep left, 8 = two, and so on. 8.5 means “two, maybe one”.{% endblocktranslate %}</li>
     </ul>
   </section>
 
   <section class="card">
-    <h2>How the rest timer options work</h2>
+    <h2>{% translate "How the rest timer options work" %}</h2>
     <ul class="info-list">
-      <li><strong>iPhone Clock timer.</strong> A web page can't ring while the phone is locked, but the Clock app can. After each set, tap <em>Start iPhone timer</em> in the rest bar: Shortcuts starts a Clock timer for the planned rest and brings you back to LiftLog.</li>
-      <li><strong>Keep the screen on.</strong> While the workout screen is open, the phone won't auto-lock, so the built-in timer stays visible. Works on HTTPS in current Safari and Chrome; other browsers simply ignore it.</li>
-      <li><strong>Beep.</strong> A short sound when the rest is over, only while LiftLog is on screen.</li>
+      <li>{% blocktranslate trimmed %}<strong>iPhone Clock timer.</strong> A web page can't ring while the phone is locked, but the Clock app can. After each set, tap <em>Start iPhone timer</em> in the rest bar: Shortcuts starts a Clock timer for the planned rest and brings you back to LiftLog.{% endblocktranslate %}</li>
+      <li>{% blocktranslate trimmed %}<strong>Keep the screen on.</strong> While the workout screen is open, the phone won't auto-lock, so the built-in timer stays visible. Works on HTTPS in current Safari and Chrome; other browsers simply ignore it.{% endblocktranslate %}</li>
+      <li>{% blocktranslate trimmed %}<strong>Beep.</strong> A short sound when the rest is over, only while LiftLog is on screen.{% endblocktranslate %}</li>
     </ul>
   </section>
 
   <section class="card" id="shortcut-guide">
-    <h2>Make the iPhone shortcut (once, ~2 minutes)</h2>
+    <h2>{% translate "Make the iPhone shortcut (once, ~2 minutes)" %}</h2>
     <ol class="steps">
-      <li>Open the <strong>Shortcuts</strong> app (Skróty) and tap <strong>+</strong> in the top right corner.</li>
-      <li>Tap the shortcut's name at the top, choose <strong>Rename</strong> and type <strong>exactly</strong> the name from the settings above: <code>{{ form.instance.ios_shortcut_name|default:"LiftLog Rest" }}</code>.</li>
-      <li>Tap <strong>Add Action</strong>, search for <strong>Start Timer</strong> (it belongs to the Clock app; in Polish look for „minutnik” under Zegar) and tap it.</li>
-      <li>The action reads “Start timer for <em>30 minutes</em>”. Tap <em>30</em>, choose <strong>Select Variable</strong> and then <strong>Shortcut Input</strong> (Dane wejściowe skrótu).</li>
-      <li>Tap <em>minutes</em> and change it to <strong>seconds</strong>. LiftLog sends the rest length in seconds, e.g. 90.</li>
-      <li>Tap <strong>Done</strong>.</li>
-      <li>Back here, switch on <em>iPhone Clock timer via Shortcuts</em> and save.</li>
-      <li>In a workout, log a set and tap <strong>Start iPhone timer</strong> in the rest bar. The first time, iOS asks whether LiftLog may open Shortcuts: tap <strong>Open</strong>. If Shortcuts asks for permission to run the action, tap <strong>Always Allow</strong>.</li>
+      <li>{% blocktranslate trimmed %}Open the <strong>Shortcuts</strong> app and tap <strong>+</strong> in the top right corner.{% endblocktranslate %}</li>
+      <li>{% blocktranslate trimmed with name=form.instance.ios_shortcut_name|default:"LiftLog Rest" %}Tap the shortcut's name at the top, choose <strong>Rename</strong> and type <strong>exactly</strong> the name from the settings above: <code>{{ name }}</code>.{% endblocktranslate %}</li>
+      <li>{% blocktranslate trimmed %}Tap <strong>Add Action</strong>, search for <strong>Start Timer</strong> (it belongs to the Clock app) and tap it.{% endblocktranslate %}</li>
+      <li>{% blocktranslate trimmed %}The action reads “Start timer for <em>30 minutes</em>”. Tap <em>30</em>, choose <strong>Select Variable</strong> and then <strong>Shortcut Input</strong>.{% endblocktranslate %}</li>
+      <li>{% blocktranslate trimmed %}Tap <em>minutes</em> and change it to <strong>seconds</strong>. LiftLog sends the rest length in seconds, e.g. 90.{% endblocktranslate %}</li>
+      <li>{% blocktranslate trimmed %}Tap <strong>Done</strong>.{% endblocktranslate %}</li>
+      <li>{% blocktranslate trimmed %}Back here, switch on <em>iPhone Clock timer via Shortcuts</em> and save.{% endblocktranslate %}</li>
+      <li>{% blocktranslate trimmed %}In a workout, log a set and tap <strong>Start iPhone timer</strong> in the rest bar. The first time, iOS asks whether LiftLog may open Shortcuts: tap <strong>Open</strong>. If Shortcuts asks for permission to run the action, tap <strong>Always Allow</strong>.{% endblocktranslate %}</li>
     </ol>
     <details>
-      <summary>Not working?</summary>
+      <summary>{% translate "Not working?" %}</summary>
       <ul class="info-list">
-        <li><strong>“Shortcut not found”</strong>: the name here and in Shortcuts must match exactly, including spaces and capital letters.</li>
-        <li><strong>Timer has the wrong length</strong>: check that the unit is <em>seconds</em>. If the variable can't be chosen, add the action <strong>Get Numbers from Input</strong> before <em>Start Timer</em> and use its result as the duration.</li>
-        <li><strong>You end up in Safari instead of the home-screen app</strong>: that's how iOS handles the return link; your sets are saved either way.</li>
+        <li>{% blocktranslate trimmed %}<strong>“Shortcut not found”</strong>: the name here and in Shortcuts must match exactly, including spaces and capital letters.{% endblocktranslate %}</li>
+        <li>{% blocktranslate trimmed %}<strong>Timer has the wrong length</strong>: check that the unit is <em>seconds</em>. If the variable can't be chosen, add the action <strong>Get Numbers from Input</strong> before <em>Start Timer</em> and use its result as the duration.{% endblocktranslate %}</li>
+        <li>{% blocktranslate trimmed %}<strong>You end up in Safari instead of the home-screen app</strong>: that's how iOS handles the return link; your sets are saved either way.{% endblocktranslate %}</li>
       </ul>
     </details>
   </section>
