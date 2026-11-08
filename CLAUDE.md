@@ -41,26 +41,15 @@ and keep each change small enough to review.
    the owner (367 beginner, 211 intermediate, 44 expert). Naming rules for new ones: same instructions → same main
    name, main name ≤ ~45 characters, popular Polish names first, forms as in the file ("na smithie", "na skosie"),
    checked against the instructions.
-4. **Searching by muscle and in everyday words** (after the Polish names; the second tester at Checkpoint A will
-   search like this, e.g. "ćwiczenie na smithie na dupę"):
-   1. Bug: "smithie", "smithem", "smithu" are not recognised as Smith, so "hip thrust na smithie" doesn't find
-      Smith Machine Hip Thrust (alias "na suwnicy smitha"). Add these forms to `EQUIPMENT_WORDS` and check other
-      equipment for common missing forms.
-   2. Filler words ignored in a query: ćwiczenie/ćwiczenia/ćwiczeń, na, do, z, ze, dla, w, pod, i, jakieś,
-      exercise, for, with.
-   3. Muscle words work like equipment words (a filter, not a word required in the name), formal and colloquial,
-      e.g. pośladki/pośladek/dupa/dupę/tyłek/pupa/glutes → glutes; klata/klatka → chest; plecy/grzbiet; barki;
-      biceps/bicki/bica; triceps/tricki; nogi/uda/czwórki; dwugłowe/tył uda; łydki; brzuch/abs/core/kaloryfer;
-      kaptury; przedramiona. Exercises with that muscle as the group or a primary muscle first, then as a
-      secondary muscle (lower), so "na dupę" also shows squats, lunges and deadlifts.
-   4. Muscle + equipment (e.g. glutes + Smith): the existing exercises first, then a section "You can also do these
-      on the Smith machine" with popular exercises for that muscle that have no version with that equipment, each
-      with the existing "+ Add variant" in one tap. Only where the equipment fits (for Smith: movements that have
-      a barbell version).
-   5. Tests on real queries: "ćwiczenie na smithie na dupę", "hip thrust na smithie", "na tyłek", "klata hantle",
-      "bicki wyciąg".
-   6. Optional, a separate commit: in `smith_variants.py` change the Polish names from "na suwnicy smitha" to
-      "na smithie", as in `free_db_polish.py` ("suwnica smitha" stays in the synonyms).
+4. ~~**Searching by muscle and in everyday words**~~: done on 2026-11-08. More forms of equipment words
+   ("na smithie"); filler words ignored; muscle words (formal, colloquial, anatomical, English, body regions,
+   several in one query) filter like equipment words, from `exercises/muscle_words.py` (reviewed by the owner;
+   Polish forms compared by stem, `text.polish_stem`); keyword in a name first, then main muscle, then helping
+   muscle; "rozciąganie"/"stretching" filters to mobility. Muscle + equipment adds "You can also do these on …"
+   with every fitting variant (helping muscles only for compound lifts; no Olympic, strongman, full-body or
+   barbell set-up lifts), 10 shown and the rest behind "Show N more". Smith variants named "na smithie".
+   Vocabulary rules: keywords are never body parts that a name uses for a position ("kolan", "kark"); anatomy
+   only, no injuries or diseases (those go to the Stage 2 rehab consultation).
 5. **Finding exercises by type (A, no data model change)**: "Type" (category) filter chips in the picker; goal
    tiles on the library (Strength, Warm-up, Stretching, Balance & stability, Cardio); rename "Motor control /
    balance" to "Balance & stability"; "Stretches for these muscles" on the exercise page; in "⇄ Change variant"
@@ -284,6 +273,20 @@ RIR 0 at the bottom of the range means stay at that weight.
   suggest a deload week or an exercise variation. Explain the rule in the UI.
 
 ### Stage 2 – AI plan builder and coach
+
+**First step, before the AI planner: precise exercise targets and rehab exercises.** free-exercise-db knows only
+17 muscles, so there is no way to find exercises for a specific band, tendon or small muscle, which someone after
+an injury with a physio's guidance (and the rehab mode) needs.
+- A field with precise targets: a closed list of about 40 structures (e.g. IT band, Achilles tendon, hip flexors,
+  rotator cuff, tibialis anterior, piriformis, thoracic spine) with a PL/EN name and synonyms (based on the muscle
+  vocabulary, `exercises/muscle_words.py`).
+- Exercises are tagged in batches approved by the owner: stretching, mobility and rehab first, then the rest.
+- Exercise page: "Works on: …"; the search uses the field instead of keywords in names; the AI planner picks
+  exercises by target.
+- Built-in rehab exercises missing from free-exercise-db (e.g. quad sets, terminal knee extension with a band,
+  heel slides, clamshell, eccentric heel drops for the Achilles, chin tuck, dead bug, bird dog): the list waits
+  for the owner's approval.
+- The search knows anatomy, not injuries; exercises in the rehab category show "stop if pain increases".
 
 Guided interview (form steps + short chat): goal, experience, days per week, session length, equipment, exercises liked/disliked,
 **injuries, pain and surgeries**. The Claude API returns a plan as JSON validated against a schema, then saved as a normal editable Plan

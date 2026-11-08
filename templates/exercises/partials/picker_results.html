@@ -40,6 +40,14 @@
   {% for variant in also_with %}
     {% include "exercises/partials/picker_variant.html" %}
   {% endfor %}
+  {% if also_with_more %}
+    <details class="picker-more">
+      <summary class="button button-small">{% blocktranslate count count=also_with_more|length %}Show {{ count }} more{% plural %}Show {{ count }} more{% endblocktranslate %}</summary>
+      {% for variant in also_with_more %}
+        {% include "exercises/partials/picker_variant.html" %}
+      {% endfor %}
+    </details>
+  {% endif %}
 {% endif %}
 
 {% if quick_add_name and results_count %}

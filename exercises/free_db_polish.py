@@ -1035,10 +1035,10 @@ POLISH_NAMES = {
     "Moving_Claw_Series": "bieg z zagarnianiem stopy, claw drill, technika biegu, zagarnianie",
     "Prowler_Sprint": "sprint z saniami, prowler, pchanie sań sprintem, sanie",
     "Hip_Circles_prone": (
-        "krążenia biodra w klęku podpartym, krążenia kolanem w klęku, rozgrzewka bioder"
+        "krążenia biodra w klęku podpartym, kółka kolanem w klęku, rozgrzewka bioder"
     ),
     "Standing_Hip_Circles": (
-        "krążenia biodra stojąc, otwieranie biodra, krążenia kolanem stojąc, rozgrzewka bioder"
+        "krążenia biodra stojąc, otwieranie biodra, kółka kolanem stojąc, rozgrzewka bioder"
     ),
     "Side_Leg_Raises": (
         "wymachy nogi w bok, odwodzenie nogi stojąc, rozgrzewka bioder, wymachy nóg na boki"

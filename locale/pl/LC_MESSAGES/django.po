@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LiftLog\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-07 22:29+0100\n"
+"POT-Creation-Date: 2026-11-07 22:56+0100\n"
 "PO-Revision-Date: 2026-11-06 22:40+0100\n"
 "Last-Translator: Cezary Muszalski\n"
 "Language-Team: Polish\n"
@@ -426,27 +426,27 @@ msgstr "mięśnie pomocnicze"
 msgid "level"
 msgstr "poziom"
 
-#: .\exercises\picker.py:26
+#: .\exercises\picker.py:27
 msgid "You can also do these on the Smith machine"
 msgstr "Możesz zrobić też na smithie"
 
-#: .\exercises\picker.py:27
+#: .\exercises\picker.py:28
 msgid "You can also do these with a barbell"
 msgstr "Możesz zrobić też ze sztangą"
 
-#: .\exercises\picker.py:28
+#: .\exercises\picker.py:29
 msgid "You can also do these with dumbbells"
 msgstr "Możesz zrobić też z hantlami"
 
-#: .\exercises\picker.py:29
+#: .\exercises\picker.py:30
 msgid "You can also do these with a kettlebell"
 msgstr "Możesz zrobić też z kettlebell"
 
-#: .\exercises\picker.py:30
+#: .\exercises\picker.py:31
 msgid "You can also do these on a cable"
 msgstr "Możesz zrobić też na wyciągu"
 
-#: .\exercises\picker.py:31
+#: .\exercises\picker.py:32
 msgid "You can also do these with a resistance band"
 msgstr "Możesz zrobić też z gumą"
 
@@ -1382,6 +1382,15 @@ msgstr "Brak pasujących ćwiczeń."
 #, python-format
 msgid "Showing %(shown)s of %(results_count)s. Type more to narrow it down."
 msgstr "Widać %(shown)s z %(results_count)s. Wpisz więcej, żeby zawęzić."
+
+#: .\templates\exercises\partials\picker_results.html:45
+#, python-format
+msgid "Show %(count)s more"
+msgid_plural "Show %(count)s more"
+msgstr[0] "Pokaż jeszcze %(count)s"
+msgstr[1] "Pokaż jeszcze %(count)s"
+msgstr[2] "Pokaż jeszcze %(count)s"
+msgstr[3] "Pokaż jeszcze %(count)s"
 
 #: .\templates\exercises\partials\picker_variant.html:8
 #, python-format

@@ -87,12 +87,12 @@ def test_stem(word, expected):
         ("step-ups Smith machine", ["step", "up"], "smith"),
         ("przysiad na suwnicy", ["przysiad"], "smith"),  # "na" is a filler word
         ("przysiad z hantlami", ["przysiad"], "dumbbell"),
-        ("wiosłowanie sztangą", ["wioslowanie"], "barbell"),
+        ("wiosłowanie sztangą", ["wioslowan"], "barbell"),  # by stem
         ("kettlebell swing", ["swing"], "kettlebell"),
-        ("prostowanie ramion wyciąg", ["prostowanie", "ramion"], "cable"),
+        ("prostowanie ramion wyciąg", ["prostowan"], "cable"),  # "ramion": a muscle word
         ("face pull linka", ["face", "pull"], "cable"),
-        ("odwodzenie gumy", ["odwodzenie"], "band"),
-        ("wyprosty maszyna", ["wyprosty"], "machine"),
+        ("odwodzenie gumy", ["odwodzen"], "band"),
+        ("wyprosty maszyna", ["wyprost"], "machine"),
         ("dumbbells", [], "dumbbell"),
         ("bench press", ["bench", "press"], ""),
     ],
