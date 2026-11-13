@@ -123,6 +123,22 @@ def type_fields(record):
     }
 
 
+# Mistakes in the dataset, fixed on import (reviewed by the owner, 2026-11-13). The
+# category feeds the "Type" filter and the library tiles. Measurements were changed only
+# after checking that nobody had logged a set of these exercises.
+SOURCE_CORRECTIONS = {
+    "Isometric_Chest_Squeezes": {"category": Category.ISOMETRIC},  # was "plyometrics"
+    "Balance_Board": {"category": Category.MOTOR, "measurement": Measurement.TIME},
+    # Jumping lunges, filed under "stretching".
+    "Split_Squats": {"category": Category.PLYOMETRIC, "measurement": Measurement.REPS},
+    "Downward_Facing_Balance": {"category": Category.MOTOR},  # balancing on a ball
+    "Superman": {"category": Category.ISOMETRIC},  # was "stretching"
+    # Group "forearms", but the instructions describe rotating the shoulder.
+    "Dumbbell_Lying_Supination": {"muscle_group": MuscleGroup.SHOULDERS},
+    "Dumbbell_Lying_Pronation": {"muscle_group": MuscleGroup.SHOULDERS},
+}
+
+
 def muscle_group_for(record):
     if record.get("category") == "olympic weightlifting":
         return MuscleGroup.FULL_BODY
@@ -309,7 +325,8 @@ def import_dataset(records):
             report.conflicts.append((source_id, f"name “{name}” is taken"))
             continue
 
-        muscle_group = muscle_group_for(record)
+        corrections = SOURCE_CORRECTIONS.get(source_id, {})
+        muscle_group = corrections.get("muscle_group", muscle_group_for(record))
         equipment = equipment_for(record)
         _, created = Exercise.objects.update_or_create(
             source_id=source_id,
@@ -323,6 +340,7 @@ def import_dataset(records):
                 "progression_step_kg": default_progression_step(muscle_group, equipment),
                 **detail_fields(record),
                 **type_fields(record),
+                **corrections,
             },
         )
         builtin_names[name.lower()] = source_id

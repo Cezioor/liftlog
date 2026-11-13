@@ -50,17 +50,29 @@ and keep each change small enough to review.
    barbell set-up lifts), 10 shown and the rest behind "Show N more". Smith variants named "na smithie".
    Vocabulary rules: keywords are never body parts that a name uses for a position ("kolan", "kark"); anatomy
    only, no injuries or diseases (those go to the Stage 2 rehab consultation).
-5. **Finding exercises by type (A, no data model change)**: "Type" (category) filter chips in the picker; goal
-   tiles on the library (Strength, Warm-up, Stretching, Balance & stability, Cardio); rename "Motor control /
-   balance" to "Balance & stability"; "Stretches for these muscles" on the exercise page; in "⇄ Change variant"
-   show only equipment that fits (used by ≥ 2 built-ins with the same muscle group and mechanic, e.g. no
-   bodyweight hammer curl), the rest behind "Show all equipment", "Other…" stays.
+5. **Finding exercises by type (A, no data model change)**, in this order:
+   1. ~~Isometric holds and balance exercises~~ (2026-11-13): 33 built-ins in `exercises/holds_balance.py`
+      (21 holds incl. bird dog, 12 balance), reviewed by the owner in two batches; timed holds are named
+      "utrzymanie …" (not "… z pauzą"); duplicates of existing exercises skipped. Dataset mistakes fixed in
+      `free_db.SOURCE_CORRECTIONS` (categories, two muscle groups; Balance Board → time and Split Squats → reps
+      after checking production had no sets). All built-ins have a level.
+   2. Loaded holds (no new measurement: `time` already takes kg): a hold whose equipment is a weight shows "kg",
+      its hint adds `progression_step_kg` once every hold reaches the top of the plan's time range (time back to
+      the bottom), calibration keeps the test hold's weight, and records add "Heaviest hold".
+   3. Rename "Motor control / balance" to "Balance & stability"; "Type" filter chips in the picker (Rehab is
+      not shown: rehab comes with Stage 2).
+   4. Goal tiles on the library: Strength, Warm-up (until item 6: exercises with "rozgrzewka" in their Polish
+      names), Stretching, Balance & stability, Cardio.
+   5. "Stretches for these muscles" on the exercise page.
+   6. "⇄ Change variant" shows only equipment that fits: a hand-made list for popular movements (approved by
+      the owner, e.g. hip thrust: barbell, Smith, machine; no band), otherwise equipment similar to what the
+      family already has; the rest behind "Show all equipment", "Other…" stays.
 6. **Plan sections and missing exercises (B + C)**, before Stage 1.7: `PlanExercise.section` with three fixed
    sections (warm-up / main / cool-down); warm-up and cool-down suggestions from the muscles of the day's main
    part; on the workout screen warm-up and cool-down are a tick-off list with an optional timer (no weights, hints
    or records; defaults 1–2 × 30 s, no rest). About 15–20 built-in dynamic warm-up drills (all 123 current
-   stretches are static), exercises marked "before" / "after" training, about 10–15 balance exercises (the
-   category had 1). Lists wait for the owner's approval. Warm-up and stretching never count as hard sets (1.9).
+   stretches are static), exercises marked "before" / "after" training (balance exercises came in item 5).
+   Lists wait for the owner's approval. Warm-up and stretching never count as hard sets (1.9).
 7. **Stage 1.7** – activities and body weight.
 8. **Checkpoint A**: a test at the gym and by a second (female) user; then `feedback_report`.
 9. **Stages 1.8, 1.9 and 2.**
@@ -284,8 +296,9 @@ an injury with a physio's guidance (and the rehab mode) needs.
 - Exercise page: "Works on: …"; the search uses the field instead of keywords in names; the AI planner picks
   exercises by target.
 - Built-in rehab exercises missing from free-exercise-db (e.g. quad sets, terminal knee extension with a band,
-  heel slides, clamshell, eccentric heel drops for the Achilles, chin tuck, dead bug, bird dog): the list waits
-  for the owner's approval.
+  heel slides, clamshell, eccentric heel drops for the Achilles, chin tuck): the list waits for the owner's
+  approval. Bird dog and dead bug are already built in (2026-11-13): Stage 2 only tags their targets and does
+  not create them again.
 - The search knows anatomy, not injuries; exercises in the rehab category show "stop if pain increases".
 
 Guided interview (form steps + short chat): goal, experience, days per week, session length, equipment, exercises liked/disliked,
@@ -378,17 +391,12 @@ the same movement, same Polish main name):
 - Lying_Rear_Delt_Raise = Dumbbell_Lying_Rear_Lateral_Raise (flat bench vs 15°)
 - Lying_One-Arm_Lateral_Raise = Dumbbell_Lying_One-Arm_Rear_Lateral_Raise (flat bench vs 15°)
 - Lying_Triceps_Press = EZ-Bar_Skullcrusher (Skull Crusher)
-- Dumbbell_Lying_Supination = External_Rotation (see wrong categories)
+- Dumbbell_Lying_Supination = External_Rotation
 - Linear_Depth_Jump = Depth_Jump_Leap
 - Split_Squats = Scissors_Jump
 - Floor_Glute-Ham_Raise = Natural_Glute_Ham_Raise (Nordic Hamstring Curl)
 
-Wrong categories or muscle groups:
-- Isometric_Chest_Squeezes: plyometric, should be isometric.
-- Balance_Board: strength, should be balance & stability.
-- Dumbbell_Lying_Supination and Dumbbell_Lying_Pronation: muscle group forearms, but the instructions describe
-  shoulder external rotation (the muscle filter would show them under forearms).
-- Split_Squats: stretching / mobility, but it is jumping lunges (plyometric).
+Wrong categories or muscle groups (the ones fixed on 2026-11-13 are in `free_db.SOURCE_CORRECTIONS`):
 - Power_Clean (one of the 65 originals): source category "strength", but it is an Olympic lift; muscle-word
   suggestions skip it because its group is full body.
 

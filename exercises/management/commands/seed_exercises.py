@@ -7,6 +7,7 @@ from exercises.seed_data import (
     EXERCISE_TYPES,
     EXERCISES,
     EXTRA_EXERCISES,
+    ORIGINAL_LEVELS,
     PROGRESSION_STEP_OVERRIDES,
 )
 from exercises.services import default_progression_step
@@ -39,6 +40,7 @@ class Command(BaseCommand):
                     "measurement": measurement,
                     "category": category,
                     "is_unilateral": unilateral,
+                    **({"level": ORIGINAL_LEVELS[name]} if name in ORIGINAL_LEVELS else {}),
                 },
             )
             created_count += created

@@ -605,14 +605,17 @@ POLISH_NAMES = {
     ),
     "Crucifix": (
         "trzymanie ciężarów w bok (krzyż), krzyż z ciężarami w bok, crucifix, "
-        "utrzymanie ramion w bok, izometria barków, strongman"
+        "utrzymanie ramion w bok, utrzymanie wznosów bokiem, izometria barków, strongman"
     ),
     # --- Back and biceps (beginners, reviewed by the owner) ---
     "Cat_Stretch": "koci grzbiet, kot, cat cow, zaokrąglanie pleców w klęku podpartym",
     "Childs_Pose": (
         "pozycja dziecka, child's pose, balasana, rozciąganie pleców w siadzie na piętach"
     ),
-    "Superman": "superman, łódka, unoszenie rąk i nóg leżąc na brzuchu, wyprosty leżąc",
+    "Superman": (
+        "superman, utrzymanie supermana, łódka, unoszenie rąk i nóg leżąc na brzuchu, "
+        "wyprosty leżąc"
+    ),
     "Dynamic_Back_Stretch": "dynamiczne rozciąganie pleców, wymachy ramion, rozgrzewka pleców",
     "Upper_Back_Stretch": (
         "rozciąganie górnej części pleców, zaokrąglanie pleców z rękami przed sobą, "

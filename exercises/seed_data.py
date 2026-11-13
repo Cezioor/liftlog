@@ -5,6 +5,8 @@ Each tuple: (name, muscle_group, equipment, is_bodyweight).
 
 from decimal import Decimal
 
+from .holds_balance import HOLDS_AND_BALANCE
+
 EXERCISES = [
     # Chest
     ("Barbell Bench Press", "chest", "barbell", False),
@@ -208,6 +210,7 @@ EXTRA_EXERCISES = [
         "measurement": "time",
         "category": "isometric",
         "is_unilateral": False,
+        "level": "beginner",
         "primary_muscles": ["quadriceps"],
         "secondary_muscles": ["glutes"],
         "aliases": "przysiad hiszpański, izometria przysiadu z gumą, spanish squat",
@@ -226,6 +229,7 @@ EXTRA_EXERCISES = [
         "measurement": "time",
         "category": "isometric",
         "is_unilateral": True,
+        "level": "intermediate",
         "primary_muscles": ["adductors"],
         "secondary_muscles": ["abdominals"],
         "aliases": "deska kopenhaska, plank kopenhaski, przywodziciele",
@@ -244,6 +248,7 @@ EXTRA_EXERCISES = [
         "measurement": "time",
         "category": "motor",
         "is_unilateral": True,
+        "level": "beginner",
         "primary_muscles": ["calves"],
         "secondary_muscles": ["glutes", "abdominals"],
         "aliases": "stanie na jednej nodze, równowaga na jednej nodze, balans",
@@ -260,6 +265,7 @@ EXTRA_EXERCISES = [
         "measurement": "time",
         "category": "isometric",
         "is_unilateral": False,
+        "level": "beginner",
         "primary_muscles": ["quadriceps"],
         "secondary_muscles": ["glutes"],
         "aliases": "krzesełko, siad przy ścianie, wall sit",
@@ -277,6 +283,7 @@ EXTRA_EXERCISES = [
         "measurement": "time",
         "category": "isometric",
         "is_unilateral": False,
+        "level": "beginner",
         "primary_muscles": ["forearms"],
         "secondary_muscles": ["lats", "shoulders"],
         "aliases": "zwis na drążku, zwis",
@@ -293,6 +300,7 @@ EXTRA_EXERCISES = [
         "measurement": "time",
         "category": "isometric",
         "is_unilateral": False,
+        "level": "beginner",
         "primary_muscles": ["abdominals"],
         "secondary_muscles": [],
         "aliases": "łódka, hollow hold, trzymanie łódki",
@@ -303,3 +311,10 @@ EXTRA_EXERCISES = [
         ],
     },
 ]
+
+# Isometric holds and balance exercises (reviewed by the owner, 2026-11-13).
+EXTRA_EXERCISES += HOLDS_AND_BALANCE
+
+# Levels for originals that free-exercise-db has no counterpart for (the import sets the
+# others' level from their match).
+ORIGINAL_LEVELS = {"Pendlay Row": "intermediate"}

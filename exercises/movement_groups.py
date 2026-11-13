@@ -35,6 +35,11 @@ REJECTED_GROUPS: set[str] = {
 
 # Families by hand: {family name: [built-in exercise names]}.
 MANUAL_GROUPS: dict[str, list[str]] = {
+    # Single-leg deadlift: bodyweight (a balance exercise) and with a kettlebell (2026-11-13).
+    "Single-Leg Deadlift": [
+        "Kettlebell One-Legged Deadlift",
+        "Bodyweight Single-Leg Romanian Deadlift",
+    ],
     # Bent-over rows with both arms at once (the one-arm rows stay separate).
     "Bent Over Row (two arms)": [
         "Barbell Row",

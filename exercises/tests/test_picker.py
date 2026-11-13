@@ -65,8 +65,11 @@ def test_results_link_to_select_url(logged_in, picker_url, library):
 def test_filter_chips(logged_in, picker_url, library):
     response = logged_in.get(picker_url, {"muscle": "calves"}, **HTMX_RESULTS)
 
-    names = [e.name for e in response.context["results"]]
-    assert names == ["Seated Calf Raise", "Single-Leg Balance", "Standing Calf Raise"]
+    results = list(response.context["results"])
+    assert {e.muscle_group for e in results} == {"calves"}
+    assert {"Seated Calf Raise", "Single-Leg Balance", "Standing Calf Raise"} <= {
+        e.name for e in results
+    }
 
 
 @pytest.mark.django_db

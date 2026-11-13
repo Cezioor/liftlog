@@ -272,3 +272,26 @@ def test_full_import_of_the_real_dataset(originals):
     # The originals are all still there, with their ids, and nothing is duplicated.
     assert dict(Exercise.objects.filter(name__in=originals).values_list("name", "pk")) == originals
     assert Exercise.objects.count() == len(EXERCISES) + len(EXTRA_EXERCISES) + report.created
+
+
+@pytest.mark.django_db
+def test_dataset_mistakes_are_corrected_on_import():
+    """Balance Board is a balance exercise held for time, not "strength" × reps."""
+    import_dataset(
+        [
+            record("Balance_Board", "Balance Board", equipment="other", primaryMuscles=["calves"]),
+            record("Dumbbell_Lying_Supination", "Dumbbell Lying Supination",
+                   equipment="dumbbell", primaryMuscles=["forearms"]),
+        ]
+    )  # fmt: skip
+
+    board = Exercise.objects.get(source_id="Balance_Board")
+    assert (board.category, board.measurement) == ("motor", "time")
+    supination = Exercise.objects.get(source_id="Dumbbell_Lying_Supination")
+    assert supination.muscle_group == "shoulders"
+
+
+def test_corrections_name_exercises_of_the_dataset():
+    dataset_ids = {r["id"] for r in load_dataset()}
+
+    assert set(free_db.SOURCE_CORRECTIONS) <= dataset_ids

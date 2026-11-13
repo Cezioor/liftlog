@@ -142,3 +142,47 @@ def test_create_allows_name_used_by_another_user(client, user, other_user):
 
     assert response.status_code == 302
     assert Exercise.objects.filter(name="My Row", owner=user).exists()
+
+
+# --- Isometric holds and balance exercises (exercises/holds_balance.py) ------
+
+
+def test_holds_and_balance_do_not_clash_with_the_library():
+    """A name taken by free-exercise-db would make its import skip that exercise."""
+    from exercises.free_db import load_dataset
+    from exercises.holds_balance import HOLDS_AND_BALANCE
+
+    taken = {r["name"].strip().lower() for r in load_dataset()} | {
+        name.lower() for name, *_ in EXERCISES
+    }
+    names = [extra["name"].lower() for extra in EXTRA_EXERCISES]
+    assert len(names) == len(set(names))
+    assert not taken & {extra["name"].lower() for extra in HOLDS_AND_BALANCE}
+
+
+def test_holds_and_balance_have_valid_data():
+    from exercises.holds_balance import HOLDS_AND_BALANCE
+    from exercises.models import Category, Equipment, Level, Measurement, Muscle, MuscleGroup
+
+    assert len(HOLDS_AND_BALANCE) == 33
+    for extra in HOLDS_AND_BALANCE:
+        assert extra["muscle_group"] in MuscleGroup.values
+        assert extra["equipment"] in Equipment.values
+        assert extra["measurement"] in Measurement.values
+        assert extra["category"] in (Category.ISOMETRIC, Category.MOTOR)
+        assert extra["level"] in Level.values
+        assert set(extra["primary_muscles"] + extra["secondary_muscles"]) <= set(Muscle.values)
+        assert extra["instructions"]
+        # Holds measured in time are "utrzymanie …" in Polish, never "… z pauzą".
+        if extra["category"] == Category.ISOMETRIC:
+            assert extra["measurement"] == Measurement.TIME
+        assert "pauz" not in extra["aliases"]
+
+
+@pytest.mark.django_db
+def test_every_seeded_extra_exercise_has_a_level():
+    call_command("seed_exercises")
+
+    assert not Exercise.objects.filter(
+        owner=None, name__in=[e["name"] for e in EXTRA_EXERCISES], level=""
+    )

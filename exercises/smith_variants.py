@@ -9,6 +9,13 @@ Fields: name, base exercise name (None if the library has no close match), Polis
 muscle group, main muscles, helping muscles, measurement, one side at a time, steps.
 """
 
+# Levels of the variants without a base exercise (the others take the base's level).
+BASELESS_LEVELS = {
+    "Smith Machine Curtsy Lunge": "beginner",
+    "Smith Machine Reverse-Grip Bench Press": "beginner",
+    "Smith Machine Sumo Squat": "beginner",
+}
+
 # Shared first step: the Smith bar runs on rails, so setting the hooks matters most.
 SET_BAR = "Set the bar height and the safety stops before you load the bar."
 
