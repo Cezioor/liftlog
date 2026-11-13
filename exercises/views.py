@@ -37,6 +37,7 @@ def exercise_list(request):
         select_suffix="/",
         recent=recently_used_exercises(request.user),
         header_action=("+ " + _("Add"), reverse("exercises:exercise_create")),
+        goal_tiles=True,
     )
 
 

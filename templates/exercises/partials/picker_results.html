@@ -9,6 +9,16 @@
   {% include "exercises/partials/picker_add_own.html" with prominent=True %}
 {% endif %}
 
+{% if goal_tiles %}
+  {# Untouched library: one tap filters by goal (the same as the "Type" chips). #}
+  <h2 class="picker-heading">{% translate "What do you want to do?" %}</h2>
+  <ul class="goal-tiles">
+    {% for value, label in goal_tiles %}
+      <li><a class="goal-tile" href="?category={{ value }}">{{ label }}</a></li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
 {% if recent %}
   <h2 class="picker-heading">{% translate "Recently used" %}</h2>
   <ul class="picker-list">

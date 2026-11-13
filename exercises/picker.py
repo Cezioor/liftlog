@@ -7,10 +7,12 @@ with or without JavaScript.
 
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation import pgettext_lazy
 
-from .models import Equipment, Level, MuscleGroup
+from .models import Category, Equipment, Exercise, Level, MuscleGroup
 from .services import (
     EQUIPMENT_SUGGESTIONS_SHOWN,
+    WARMUP,
     equipment_suggestions,
     find_by_name,
     parse_query,
@@ -33,6 +35,38 @@ ALSO_WITH = {
 }
 
 
+# The "Type" filter: categories plus the warm-up goal. Rehab is not offered: it comes
+# with the rehab mode of Stage 2.
+TYPE_CHOICES = [
+    (Category.STRENGTH, Category.STRENGTH.label),
+    (WARMUP, _("Warm-up")),
+    (Category.MOBILITY, Category.MOBILITY.label),
+    (Category.ISOMETRIC, Category.ISOMETRIC.label),
+    (Category.PLYOMETRIC, Category.PLYOMETRIC.label),
+    (Category.MOTOR, Category.MOTOR.label),
+    (Category.CARDIO, Category.CARDIO.label),
+]
+TYPE_VALUES = {value for value, _label in TYPE_CHOICES}
+
+# Tiles on the untouched exercise library: one tap filters by goal.
+GOAL_TILES = [
+    (Category.STRENGTH, pgettext_lazy("goal tile", "Strength")),
+    (WARMUP, _("Warm-up")),
+    (Category.MOBILITY, _("Stretching")),
+    (Category.MOTOR, Category.MOTOR.label),
+    (Category.CARDIO, _("Cardio")),
+]
+
+
+def _type_choices(user):
+    """The "Type" choices that have exercises (no chip that always shows nothing)."""
+    visible = Exercise.objects.visible_to(user)
+    used = set(visible.values_list("category", flat=True).distinct())
+    if visible.filter(search_text__contains="rozgrzewk").exists():
+        used.add(WARMUP)
+    return [(value, label) for value, label in TYPE_CHOICES if value in used]
+
+
 def picker_response(
     request,
     *,
@@ -43,10 +77,12 @@ def picker_response(
     extra_params=None,
     select_suffix="",
     header_action=None,
+    goal_tiles=False,
 ):
     """Render the picker. A result links to f"{select_base}{exercise.pk}{select_suffix}".
 
     header_action: optional (label, url) shown as a button next to the title.
+    goal_tiles: show the goal tiles (Strength, Warm-up…) while nothing is chosen yet.
     """
     query = request.GET.get("q", "").strip()[:100]
     muscle = request.GET.get("muscle", "")
@@ -55,9 +91,11 @@ def picker_response(
     muscle = muscle if muscle in MuscleGroup.values else ""
     equipment = equipment if equipment in Equipment.values else ""
     level = level if level in Level.values else ""
+    category = request.GET.get("category", "")
+    category = category if category in TYPE_VALUES else ""
 
-    results = search_exercises(request.user, query, muscle, equipment, level)
-    filtering = bool(normalize(query) or muscle or equipment or level)
+    results = search_exercises(request.user, query, muscle, equipment, level, category)
+    filtering = bool(normalize(query) or muscle or equipment or level or category)
     # A muscle and equipment ("na smithie na dupę"): exercises for that muscle that could
     # also be done with it, each one tap from the user's own variant.
     parsed = parse_query(query)
@@ -78,6 +116,9 @@ def picker_response(
         "equipment_choices": Equipment.choices,
         "level": level,
         "level_choices": Level.choices,
+        "category": category,
+        "type_choices": _type_choices(request.user),
+        "goal_tiles": GOAL_TILES if goal_tiles and not filtering else [],
         "results": results[:RESULTS_LIMIT],
         "results_count": results_count,
         "filtering": filtering,

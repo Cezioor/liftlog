@@ -79,7 +79,7 @@ class Category(models.TextChoices):
     ISOMETRIC = "isometric", _("Isometric")
     MOBILITY = "mobility", _("Stretching / mobility")
     PLYOMETRIC = "plyometric", _("Plyometric")
-    MOTOR = "motor", _("Motor control / balance")
+    MOTOR = "motor", _("Balance & stability")
     CARDIO = "cardio", _("Cardio")
     REHAB = "rehab", _("Rehab")
 

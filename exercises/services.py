@@ -295,7 +295,12 @@ def _compact(text):
     return text.replace(" ", "")
 
 
-def search_exercises(user, query="", muscle_group="", equipment="", level=""):
+# A goal in the "Type" filter that is not a category: until Next up 6 marks exercises
+# "before training", warm-ups are the ones with "rozgrzewka" in their Polish names.
+WARMUP = "warmup"
+
+
+def search_exercises(user, query="", muscle_group="", equipment="", level="", category=""):
     """Exercises visible to `user` matching the query and filters.
 
     - Case, Polish diacritics, hyphens and spaces don't matter, nor English plurals:
@@ -318,6 +323,10 @@ def search_exercises(user, query="", muscle_group="", equipment="", level=""):
         results = results.filter(equipment=equipment)
     if level in Level.values:
         results = results.filter(level=level)
+    if category == WARMUP:
+        results = results.filter(search_text__contains="rozgrzewk")
+    elif category in Category.values:
+        results = results.filter(category=category)
 
     parsed = parse_query(query)
     # The names without spaces, so "stepup" finds "step up" and the other way round.

@@ -186,3 +186,73 @@ def test_other_user_cannot_open_picker_for_my_workout(client, other_user, picker
     client.force_login(other_user)
 
     assert client.get(picker_url).status_code == 404
+
+
+# --- "Type" filter and goal tiles (Next up 5) --------------------------------
+
+
+@pytest.mark.django_db
+def test_type_chip_filters_by_category(logged_in, picker_url, library):
+    response = logged_in.get(picker_url, {"category": "motor"}, **HTMX_RESULTS)
+
+    results = list(response.context["results"])
+    assert results and {e.category for e in results} == {"motor"}
+    assert "Single-Leg Balance" in {e.name for e in results}
+
+
+@pytest.mark.django_db
+def test_type_and_muscle_words_work_together(logged_in, picker_url, library):
+    response = logged_in.get(picker_url, {"category": "isometric", "q": "pośladki"}, **HTMX_RESULTS)
+
+    names = {e.name for e in response.context["results"]}
+    assert "Glute Bridge Hold" in names and "Barbell Hip Thrust" not in names
+
+
+@pytest.mark.django_db
+def test_warm_up_shows_exercises_named_as_warm_ups(logged_in, picker_url, library):
+    Exercise.objects.create(
+        name="Arm Circles", muscle_group="shoulders", equipment="bodyweight",
+        category="mobility", aliases="krążenia ramion, rozgrzewka barków",
+    )  # fmt: skip
+
+    response = logged_in.get(picker_url, {"category": "warmup"}, **HTMX_RESULTS)
+
+    assert [e.name for e in response.context["results"]] == ["Arm Circles"]
+
+
+@pytest.mark.django_db
+def test_type_chips_skip_rehab_and_empty_types(logged_in, picker_url, library):
+    Exercise.objects.create(
+        name="Quad Set", muscle_group="quads", equipment="bodyweight", category="rehab"
+    )
+
+    content = logged_in.get(picker_url).content.decode()
+
+    assert 'name="category" value="motor"' in content
+    assert "Balance &amp; stability" in content
+    assert 'value="rehab"' not in content
+    assert 'value="cardio"' not in content  # the seeded library has no cardio
+    assert logged_in.get(picker_url, {"category": "rehab"}).context["category"] == ""
+
+
+@pytest.mark.django_db
+def test_goal_tiles_only_on_the_untouched_library(logged_in, picker_url, library):
+    library_url = reverse("exercises:exercise_list")
+
+    content = logged_in.get(library_url).content.decode()
+    assert "What do you want to do?" in content
+    assert 'href="?category=warmup"' in content and 'href="?category=motor"' in content
+    assert (
+        "What do you want to do?" not in logged_in.get(library_url, {"q": "squat"}).content.decode()
+    )
+    assert "What do you want to do?" not in logged_in.get(picker_url).content.decode()
+
+
+def test_balance_category_is_called_balance_and_stability():
+    from django.utils import translation
+
+    from exercises.models import Category
+
+    assert Category.MOTOR.label == "Balance & stability"
+    with translation.override("pl"):
+        assert str(Category.MOTOR.label) == "Równowaga i stabilizacja"
