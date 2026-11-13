@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LiftLog\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-07 22:56+0100\n"
+"POT-Creation-Date: 2026-11-13 13:25+0100\n"
 "PO-Revision-Date: 2026-11-06 22:40+0100\n"
 "Last-Translator: Cezary Muszalski\n"
 "Language-Team: Polish\n"
@@ -1322,7 +1322,7 @@ msgstr "Wszystkie ćwiczenia"
 #: .\templates\exercises\exercise_form.html:8
 #: .\templates\plans\plan_detail.html:49
 #: .\templates\plans\plan_exercise_form.html:4
-#: .\templates\workouts\workout_detail.html:41 .\workouts\views.py:290
+#: .\templates\workouts\workout_detail.html:41 .\workouts\views.py:291
 msgid "Add exercise"
 msgstr "Dodaj ćwiczenie"
 
@@ -1923,15 +1923,15 @@ msgstr "Sekundy"
 msgid "Metres"
 msgstr "Metry"
 
-#: .\workouts\forms.py:120
+#: .\workouts\forms.py:123
 msgid "Added kg"
 msgstr "Dodatkowe kg"
 
-#: .\workouts\forms.py:152
+#: .\workouts\forms.py:155
 msgid "Note (optional)"
 msgstr "Notatka (opcjonalnie)"
 
-#: .\workouts\forms.py:154
+#: .\workouts\forms.py:157
 msgid "How did it go?"
 msgstr "Jak poszło?"
 
@@ -1949,17 +1949,17 @@ msgctxt "side"
 msgid "Right"
 msgstr "Prawa"
 
-#: .\workouts\services.py:92
+#: .\workouts\services.py:110
 msgctxt "left side, one letter"
 msgid "L"
 msgstr "L"
 
-#: .\workouts\services.py:93
+#: .\workouts\services.py:111
 msgctxt "right side, one letter"
 msgid "R"
 msgstr "P"
 
-#: .\workouts\services.py:111
+#: .\workouts\services.py:129
 #, python-format
 msgid "%(reps)s rep"
 msgid_plural "%(reps)s reps"
@@ -1968,33 +1968,33 @@ msgstr[1] "%(reps)s powtórzenia"
 msgstr[2] "%(reps)s powtórzeń"
 msgstr[3] "%(reps)s powtórzeń"
 
-#: .\workouts\services.py:118
+#: .\workouts\services.py:136
 #, python-format
 msgid "%(distance)s m in %(time)s"
 msgstr "%(distance)s m w %(time)s"
 
-#: .\workouts\services.py:127
+#: .\workouts\services.py:145
 msgid "Easy"
 msgstr "Lekko"
 
-#: .\workouts\services.py:128
+#: .\workouts\services.py:146
 msgid "Medium"
 msgstr "Średnio"
 
-#: .\workouts\services.py:129
+#: .\workouts\services.py:147
 msgid "Hard"
 msgstr "Ciężko"
 
-#: .\workouts\services.py:130
+#: .\workouts\services.py:148
 msgid "Max effort"
 msgstr "Maksimum"
 
-#: .\workouts\services.py:291
+#: .\workouts\services.py:313
 #, python-format
 msgid "Stay at %(weight)s kg and add reps first."
 msgstr "Zostań przy %(weight)s kg i najpierw dokładaj powtórzenia."
 
-#: .\workouts\services.py:298
+#: .\workouts\services.py:320
 #, python-format
 msgid "Stay at %(weight)s kg until every set reaches %(reps)s rep."
 msgid_plural "Stay at %(weight)s kg until every set reaches %(reps)s reps."
@@ -2007,7 +2007,7 @@ msgstr[2] ""
 msgstr[3] ""
 "Zostań przy %(weight)s kg, aż w każdej serii zrobisz %(reps)s powtórzeń."
 
-#: .\workouts\services.py:306
+#: .\workouts\services.py:328
 #, python-format
 msgid "All sets hit %(reps)s rep. Add weight or a harder variation."
 msgid_plural "All sets hit %(reps)s reps. Add weight or a harder variation."
@@ -2024,7 +2024,7 @@ msgstr[3] ""
 "We wszystkich seriach %(reps)s powtórzeń. Dołóż ciężaru albo wybierz "
 "trudniejszy wariant."
 
-#: .\workouts\services.py:314
+#: .\workouts\services.py:336
 #, python-format
 msgid "%(reps)s rep with 3+ more in the tank: too light. Try %(weight)s kg."
 msgid_plural ""
@@ -2038,7 +2038,7 @@ msgstr[2] ""
 msgstr[3] ""
 "%(reps)s powtórzeń i jeszcze 3+ w zapasie: za lekko. Spróbuj %(weight)s kg."
 
-#: .\workouts\services.py:320
+#: .\workouts\services.py:342
 #, python-format
 msgid "All sets hit %(reps)s rep last time. Try %(weight)s kg."
 msgid_plural "All sets hit %(reps)s reps last time. Try %(weight)s kg."
@@ -2051,7 +2051,7 @@ msgstr[2] ""
 msgstr[3] ""
 "Ostatnio we wszystkich seriach %(reps)s powtórzeń. Spróbuj %(weight)s kg."
 
-#: .\workouts\services.py:331
+#: .\workouts\services.py:353
 #, python-format
 msgid "Last time %(reps)s rep took everything you had."
 msgid_plural "Last time %(reps)s reps took everything you had."
@@ -2060,7 +2060,7 @@ msgstr[1] "Ostatnio %(reps)s powtórzenia to było maksimum."
 msgstr[2] "Ostatnio %(reps)s powtórzeń to było maksimum."
 msgstr[3] "Ostatnio %(reps)s powtórzeń to było maksimum."
 
-#: .\workouts\services.py:345
+#: .\workouts\services.py:367
 #, python-format
 msgid ""
 "All sets hit %(reps)s rep. Try +%(weight)s kg added weight or a harder "
@@ -2081,12 +2081,12 @@ msgstr[3] ""
 "We wszystkich seriach %(reps)s powtórzeń. Spróbuj z obciążeniem +%(weight)s "
 "kg albo trudniejszego wariantu."
 
-#: .\workouts\services.py:351
+#: .\workouts\services.py:373
 #, python-format
 msgid "Aim for %(reps)s again with clean reps."
 msgstr "Celuj znowu w %(reps)s, z czystą techniką."
 
-#: .\workouts\services.py:359
+#: .\workouts\services.py:381
 #, python-format
 msgid "Best set last time: %(best)s rep. Aim for %(target)s."
 msgid_plural "Best set last time: %(best)s reps. Aim for %(target)s."
@@ -2095,24 +2095,32 @@ msgstr[1] "Najlepsza seria ostatnio: %(best)s powtórzenia. Celuj w %(target)s."
 msgstr[2] "Najlepsza seria ostatnio: %(best)s powtórzeń. Celuj w %(target)s."
 msgstr[3] "Najlepsza seria ostatnio: %(best)s powtórzeń. Celuj w %(target)s."
 
-#: .\workouts\services.py:375
+#: .\workouts\services.py:397
 #, python-format
 msgid "Keep holding %(best)s until every set reaches %(target)s."
 msgstr "Trzymaj %(best)s, aż każda seria dojdzie do %(target)s."
 
-#: .\workouts\services.py:383
+#: .\workouts\services.py:405
 #, python-format
 msgid "Longest hold last time: %(best)s. Try %(target)s (+%(step)s s)."
 msgstr ""
 "Najdłuższe utrzymanie ostatnio: %(best)s. Spróbuj %(target)s (+%(step)s s)."
 
-#: .\workouts\services.py:398
+#: .\workouts\services.py:427
+#, python-format
+msgid ""
+"Every hold reached %(top)s. Add %(step)s kg: %(weight)s kg for %(target)s."
+msgstr ""
+"Każde utrzymanie doszło do %(top)s. Dodaj %(step)s kg: %(weight)s kg przez "
+"%(target)s."
+
+#: .\workouts\services.py:443
 #, python-format
 msgid "Best last time: %(result)s. Go a little farther or a little faster."
 msgstr ""
 "Najlepiej ostatnio: %(result)s. Spróbuj trochę dalej albo trochę szybciej."
 
-#: .\workouts\services.py:515
+#: .\workouts\services.py:560
 msgid ""
 "Why no max test with weights? The last reps before failure are where form "
 "breaks down and injuries happen. A few light test sets and how hard they "
@@ -2125,11 +2133,11 @@ msgstr ""
 "wystarczą, żeby oszacować ciężar roboczy. Serie testowe zapisują się jako "
 "rozgrzewkowe, więc nie liczą się do rekordów."
 
-#: .\workouts\services.py:590
+#: .\workouts\services.py:635
 msgid "Now the same test hold on the other side."
 msgstr "Teraz to samo utrzymanie testowe na drugą stronę."
 
-#: .\workouts\services.py:593
+#: .\workouts\services.py:638
 msgid ""
 "First time: test hold. Hold as long as your form stays good, then stop. Your "
 "working holds are based on it."
@@ -2137,7 +2145,16 @@ msgstr ""
 "Pierwszy raz: utrzymanie testowe. Trzymaj, dopóki technika jest dobra, potem "
 "przerwij. Na tej podstawie ustalimy utrzymania robocze."
 
-#: .\workouts\services.py:606
+#: .\workouts\services.py:643
+msgid ""
+"First time: test hold with a light weight. Hold as long as your form stays "
+"good, then stop. Your working holds are based on it, at the same weight."
+msgstr ""
+"Pierwszy raz: utrzymanie testowe z lekkim ciężarem. Trzymaj, dopóki technika "
+"jest dobra, potem przestań. Na tej podstawie ustalimy utrzymania robocze, z "
+"tym samym ciężarem."
+
+#: .\workouts\services.py:656
 #, python-format
 msgid ""
 "Test hold: %(best)s. Working holds: %(target)s (about 75%%, within your "
@@ -2146,17 +2163,17 @@ msgstr ""
 "Utrzymanie testowe: %(best)s. Utrzymania robocze: %(target)s (ok. 75%%, w "
 "zakresie planu %(low)s–%(high)s s)."
 
-#: .\workouts\services.py:610
+#: .\workouts\services.py:660
 #, python-format
 msgid "Test hold: %(best)s. Working holds: %(target)s (about 75%%)."
 msgstr ""
 "Utrzymanie testowe: %(best)s. Utrzymania robocze: %(target)s (ok. 75%%)."
 
-#: .\workouts\services.py:626
+#: .\workouts\services.py:678
 msgid "Now the same test set on the other side."
 msgstr "Teraz ta sama seria testowa na drugą stronę."
 
-#: .\workouts\services.py:629
+#: .\workouts\services.py:681
 msgid ""
 "First time: test set. Do as many clean reps as you can and stop when your "
 "form starts to slip. Your working sets are based on it."
@@ -2165,7 +2182,7 @@ msgstr ""
 "przerwij, gdy technika zacznie się psuć. Na tej podstawie ustalimy serie "
 "robocze."
 
-#: .\workouts\services.py:636
+#: .\workouts\services.py:688
 #, python-format
 msgid "Test set: %(best)s rep. Working sets: %(target)s reps (about 70%%)."
 msgid_plural ""
@@ -2179,7 +2196,7 @@ msgstr[2] ""
 msgstr[3] ""
 "Seria testowa: %(best)s powtórzeń. Serie robocze: po %(target)s (ok. 70%%)."
 
-#: .\workouts\services.py:674
+#: .\workouts\services.py:726
 #, python-format
 msgid ""
 "Estimated max: about %(e1rm)s kg. Working sets: %(weight)s kg × %(low)s–"
@@ -2188,7 +2205,7 @@ msgstr ""
 "Szacowane maksimum: ok. %(e1rm)s kg. Serie robocze: %(weight)s kg × %(low)s–"
 "%(high)s, kończ z 1–2 powtórzeniami w zapasie."
 
-#: .\workouts\services.py:685
+#: .\workouts\services.py:737
 #, python-format
 msgid ""
 "First time: find your working weight, no max test. Do a test set (empty bar, "
@@ -2211,7 +2228,7 @@ msgstr[3] ""
 "Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię "
 "testową (pusty gryf, 20 kg, %(reps)s powtórzeń), potem oceń, jak była ciężka."
 
-#: .\workouts\services.py:693
+#: .\workouts\services.py:745
 #, python-format
 msgid ""
 "First time: find your working weight, no max test. Do a test set (a light "
@@ -2232,61 +2249,65 @@ msgstr[3] ""
 "Pierwszy raz: znajdź ciężar roboczy, bez testu maksymalnego. Zrób serię "
 "testową (lekki ciężar, %(reps)s powtórzeń), potem oceń, jak była ciężka."
 
-#: .\workouts\services.py:705
+#: .\workouts\services.py:757
 msgid ""
 "Rate your test set (tap ✎ to add it) so LiftLog can suggest the next weight."
 msgstr ""
 "Oceń serię testową (dotknij ✎, żeby dodać ocenę), a LiftLog podpowie kolejny "
 "ciężar."
 
-#: .\workouts\services.py:709
+#: .\workouts\services.py:761
 #, python-format
 msgid "Still light. Next test set: %(weight)s kg × %(reps)s, then rate it."
 msgstr ""
 "Nadal lekko. Następna seria testowa: %(weight)s kg × %(reps)s, potem ją oceń."
 
-#: .\workouts\services.py:759
+#: .\workouts\services.py:812
 msgid "Longest hold"
 msgstr "Najdłuższe utrzymanie"
 
-#: .\workouts\services.py:764
+#: .\workouts\services.py:817
+msgid "Heaviest hold"
+msgstr "Najcięższe utrzymanie"
+
+#: .\workouts\services.py:823
 msgid "Longest distance"
 msgstr "Najdłuższy dystans"
 
-#: .\workouts\services.py:769
+#: .\workouts\services.py:828
 msgid "Most reps"
 msgstr "Najwięcej powtórzeń"
 
-#: .\workouts\services.py:777
+#: .\workouts\services.py:836
 msgid "Best estimated 1RM"
 msgstr "Najlepszy szacowany 1RM"
 
-#: .\workouts\services.py:784
+#: .\workouts\services.py:843
 msgid "Heaviest set"
 msgstr "Najcięższa seria"
 
-#: .\workouts\views.py:212
+#: .\workouts\views.py:213
 msgid "You already have a workout in progress."
 msgstr "Masz już trening w toku."
 
-#: .\workouts\views.py:336
+#: .\workouts\views.py:337
 msgid "Check the weight and reps."
 msgstr "Sprawdź ciężar i powtórzenia."
 
-#: .\workouts\views.py:446
+#: .\workouts\views.py:447
 #, python-format
 msgid "%(new)s replaces %(old)s in the plan too."
 msgstr "%(new)s zastępuje %(old)s także w planie."
 
-#: .\workouts\views.py:451
+#: .\workouts\views.py:452
 #, python-format
 msgid "Only today: %(exercise)s. The plan stays as it was."
 msgstr "Tylko dziś: %(exercise)s. Plan zostaje bez zmian."
 
-#: .\workouts\views.py:465
+#: .\workouts\views.py:466
 msgid "Workout saved. Nice work!"
 msgstr "Trening zapisany. Dobra robota!"
 
-#: .\workouts\views.py:474
+#: .\workouts\views.py:475
 msgid "Workout discarded."
 msgstr "Trening odrzucony."

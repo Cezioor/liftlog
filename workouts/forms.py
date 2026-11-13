@@ -100,6 +100,7 @@ class WorkoutSetForm(forms.ModelForm):
         measurement=Measurement.WEIGHT_REPS,
         unilateral=False,
         effort_scale=EffortScale.SIMPLE,
+        loaded=False,
         **kwargs,
     ):
         super().__init__(*args, **kwargs)
@@ -116,7 +117,9 @@ class WorkoutSetForm(forms.ModelForm):
         required = self.REQUIRED_BY_MEASUREMENT[measurement]
         for name, field in self.fields.items():
             field.required = name in required or name == "side"
-        if "weight_kg" in self.fields and "weight_kg" not in required:
+        if "weight_kg" in self.fields and "weight_kg" not in required and not loaded:
+            # Optional extra weight (a weighted plank); for a loaded hold (hip thrust
+            # hold) the weight is the exercise's own load, so the label stays "kg".
             self.fields["weight_kg"].label = _("Added kg")
         if "side" in self.fields:
             # Only left / right, without Django's empty "---------" choice.

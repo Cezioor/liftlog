@@ -65,6 +65,7 @@ def _form_kwargs(exercise, scale):
         "measurement": exercise.measurement,
         "unilateral": exercise.is_unilateral,
         "effort_scale": scale,
+        "loaded": services.is_loaded_hold(exercise),
     }
 
 
@@ -96,7 +97,7 @@ def build_card(workout, exercise, plan_exercise=None, form=None, edit_form=None,
     hold_min = plan_exercise.hold_min_s if plan_exercise else None
     hold_max = plan_exercise.hold_max_s if plan_exercise else None
     hint = services.progression_hint(
-        exercise, previous, rep_max=rep_max, hold_max=hold_max, rep_min=rep_min
+        exercise, previous, rep_max=rep_max, hold_max=hold_max, rep_min=rep_min, hold_min=hold_min
     )
     defaults = services.next_set_defaults(
         current,

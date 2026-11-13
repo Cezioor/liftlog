@@ -25,10 +25,45 @@ from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy, ngettext, pgettext
 
 from exercises.models import Equipment, Exercise, Measurement
+from plans.models import PlanExercise
 
 from .models import Side, WorkoutSet, WorkoutSwap
 
 HOLD_STEP_SECONDS = 5
+# Equipment that is the load itself: a hold with it (hip thrust hold, Pallof hold) is a
+# loaded hold, progressed by weight once the holds reach the top of the plan's range.
+LOADING_EQUIPMENT = {
+    Equipment.BARBELL,
+    Equipment.SMITH,
+    Equipment.DUMBBELL,
+    Equipment.KETTLEBELL,
+    Equipment.PLATE,
+    Equipment.CABLE,
+    Equipment.MACHINE,
+    Equipment.LANDMINE,
+}
+
+
+# Time range for a loaded hold done without a plan (or a plan without a hold range), so
+# the progression still knows when to add weight.
+DEFAULT_LOADED_HOLD_RANGE = (20, 40)
+# The shortest hold that counts for the "Heaviest hold" record when no plan says otherwise:
+# a 3-second hold of a big weight is not a record.
+MIN_RECORD_HOLD_SECONDS = 10
+
+
+def is_loaded_hold(exercise):
+    """A hold where the weight is part of the exercise, not an optional extra."""
+    return exercise.measurement == Measurement.TIME and exercise.equipment in LOADING_EQUIPMENT
+
+
+def hold_range(exercise, hold_min, hold_max):
+    """The plan's hold range; a loaded hold without one gets DEFAULT_LOADED_HOLD_RANGE."""
+    if hold_max or not is_loaded_hold(exercise):
+        return hold_min, hold_max
+    low, high = DEFAULT_LOADED_HOLD_RANGE
+    return (hold_min if hold_min and hold_min < high else low), high
+
 
 # A set at the top of the rep range with this many reps to spare means: clearly add weight.
 EASY_RIR = Decimal("3")
@@ -248,7 +283,9 @@ class ProgressionHint:
     duration_seconds: int | None = None
 
 
-def progression_hint(exercise, previous_sets, rep_max=None, hold_max=None, rep_min=None):
+def progression_hint(
+    exercise, previous_sets, rep_max=None, hold_max=None, rep_min=None, hold_min=None
+):
     """Suggest today's target from last time's sets, according to the exercise's type.
 
     Returns None when there is nothing to base a hint on. A hint is a suggestion,
@@ -265,6 +302,8 @@ def progression_hint(exercise, previous_sets, rep_max=None, hold_max=None, rep_m
     if measurement == Measurement.REPS:
         return _reps_hint(exercise, sets, rep_max, rep_min)
     if measurement == Measurement.TIME:
+        if is_loaded_hold(exercise):
+            return _loaded_hold_hint(exercise, sets, *hold_range(exercise, hold_min, hold_max))
         return _time_hint(sets, hold_max)
     if measurement == Measurement.DISTANCE_TIME:
         return _distance_hint(sets)
@@ -385,6 +424,30 @@ def _time_hint(sets, hold_max):
             "best": format_duration(best),
             "target": format_duration(target),
             "step": HOLD_STEP_SECONDS,
+        },
+    )
+
+
+def _loaded_hold_hint(exercise, sets, hold_min, hold_max):
+    """Loaded holds: once every hold reached the top of the range, more weight and the
+    time back to the bottom of the range; until then the same weight, longer holds.
+    The range is the plan's, else DEFAULT_LOADED_HOLD_RANGE (see hold_range). Holds
+    logged without any weight progress like unloaded ones (+5 s)."""
+    weight = max(s.weight_kg or Decimal("0") for s in sets)
+    if not weight or not all(s.duration_seconds >= hold_max for s in sets):
+        return _time_hint(sets, hold_max)
+    step = exercise.progression_step_kg
+    target = hold_min or hold_max
+    return ProgressionHint(
+        weight_kg=weight + step,
+        increase=True,
+        duration_seconds=target,
+        message=_("Every hold reached %(top)s. Add %(step)s kg: %(weight)s kg for %(target)s.")
+        % {
+            "top": format_duration(hold_max),
+            "step": display_kg(step),
+            "weight": display_kg(weight + step),
+            "target": format_duration(target),
         },
     )
 
@@ -548,6 +611,7 @@ def calibration(exercise, current_sets, rep_min=None, rep_max=None, hold_min=Non
     measurement = exercise.measurement
     side = _next_side(current_sets, exercise.is_unilateral)
     if measurement == Measurement.TIME:
+        hold_min, hold_max = hold_range(exercise, hold_min, hold_max)
         return _hold_calibration(exercise, current_sets, side, hold_min, hold_max)
     if measurement == Measurement.REPS:
         return _reps_calibration(exercise, current_sets, side)
@@ -593,6 +657,11 @@ def _hold_calibration(exercise, current_sets, side, hold_min, hold_max):
                 "First time: test hold. Hold as long as your form stays good, then stop. "
                 "Your working holds are based on it."
             )
+        if is_loaded_hold(exercise) and not sets:
+            message = _(
+                "First time: test hold with a light weight. Hold as long as your form stays "
+                "good, then stop. Your working holds are based on it, at the same weight."
+            )
         return Calibration(message, SetDefaults(None, None, None, side=side))
 
     target = _share(best, HOLD_WORKING_SHARE)
@@ -614,7 +683,9 @@ def _hold_calibration(exercise, current_sets, side, hold_min, hold_max):
         "low": hold_min,
         "high": hold_max,
     }
-    defaults = SetDefaults(None, None, target, side=side) if len(sets) == tests else None
+    # A loaded hold keeps the test hold's weight; for the others weight is optional.
+    weight = sets[0].weight_kg if is_loaded_hold(exercise) and sets[0].weight_kg else None
+    defaults = SetDefaults(weight, None, target, side=side) if len(sets) == tests else None
     return Calibration(message, defaults)
 
 
@@ -735,11 +806,26 @@ class Record:
     workout_set: WorkoutSet
 
 
+def _record_min_hold(user, exercise):
+    """Shortest hold for "Heaviest hold": the bottom of the user's plan range for this
+    exercise (the active plan first), else MIN_RECORD_HOLD_SECONDS."""
+    plan_min = (
+        PlanExercise.objects.filter(
+            day__plan__owner=user, exercise=exercise, hold_min_s__isnull=False
+        )
+        .order_by("-day__plan__is_active")
+        .values_list("hold_min_s", flat=True)
+        .first()
+    )
+    return plan_min or MIN_RECORD_HOLD_SECONDS
+
+
 def personal_records(user, exercise):
     """Best results per type from the user's finished workouts (warm-ups excluded).
 
     weight_reps: best estimated 1RM and heaviest set; reps: most reps in a set;
-    time: longest hold; distance_time: longest distance.
+    time: longest hold (and the heaviest one for loaded holds); distance_time: longest
+    distance.
     """
     sets = list(
         WorkoutSet.objects.filter(
@@ -757,6 +843,15 @@ def personal_records(user, exercise):
         if timed:
             best = max(timed, key=lambda s: (s.duration_seconds, s.weight_kg))
             records.append(Record(_("Longest hold"), set_text(best, measurement, long=True), best))
+            if is_loaded_hold(exercise):
+                shortest = _record_min_hold(user, exercise)
+                loaded = [s for s in timed if s.weight_kg and s.duration_seconds >= shortest]
+                if loaded:
+                    heaviest = max(loaded, key=lambda s: (s.weight_kg, s.duration_seconds))
+                    text = f"{display_kg(heaviest.weight_kg)} kg × " + format_duration(
+                        heaviest.duration_seconds
+                    )
+                    records.append(Record(_("Heaviest hold"), text, heaviest))
     elif measurement == Measurement.DISTANCE_TIME:
         far = [s for s in sets if s.distance_m]
         if far:

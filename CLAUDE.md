@@ -56,9 +56,11 @@ and keep each change small enough to review.
       "utrzymanie …" (not "… z pauzą"); duplicates of existing exercises skipped. Dataset mistakes fixed in
       `free_db.SOURCE_CORRECTIONS` (categories, two muscle groups; Balance Board → time and Split Squats → reps
       after checking production had no sets). All built-ins have a level.
-   2. Loaded holds (no new measurement: `time` already takes kg): a hold whose equipment is a weight shows "kg",
-      its hint adds `progression_step_kg` once every hold reaches the top of the plan's time range (time back to
-      the bottom), calibration keeps the test hold's weight, and records add "Heaviest hold".
+   2. ~~Loaded holds~~ (2026-11-13; no new measurement: `time` already takes kg): a hold whose equipment is a
+      weight (`workouts.services.is_loaded_hold`) shows "kg", its hint adds `progression_step_kg` once every
+      hold reaches the top of the time range (time back to the bottom); the range is the plan's, without one
+      20–40 s (`DEFAULT_LOADED_HOLD_RANGE`). Calibration keeps the test hold's weight. Records add "Heaviest
+      hold" ("80 kg × 30 s"), counting only holds of at least the plan's minimum (without a plan 10 s).
    3. Rename "Motor control / balance" to "Balance & stability"; "Type" filter chips in the picker (Rehab is
       not shown: rehab comes with Stage 2).
    4. Goal tiles on the library: Strength, Warm-up (until item 6: exercises with "rozgrzewka" in their Polish
