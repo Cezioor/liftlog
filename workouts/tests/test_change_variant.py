@@ -300,3 +300,65 @@ def test_finished_workout_cannot_change(logged_in, user, make_workout, day, item
     finished = make_workout(user, days_ago=1, finished=True, plan_day=day)
 
     assert _apply(logged_in, finished, item, smith_step_up, "today").status_code == 404
+
+
+# --- which equipment comes first (exercises/variant_equipment.py) -------------------
+
+
+def _shown_and_more(content):
+    """Equipment values before and after "Show all equipment"."""
+    import re
+
+    split = content.index("Show all equipment")
+    values = [
+        (m.start(), m.group(1)) for m in re.finditer(r'name="equipment" value="(\w+)"', content)
+    ]
+    return [v for at, v in values if at < split], [v for at, v in values if at > split]
+
+
+@pytest.mark.django_db
+def test_fitting_equipment_first_the_rest_behind_show_all(logged_in, step_up, smith_step_up):
+    """Not in the reviewed list: equipment similar to the family's (dumbbell, Smith)."""
+    shown, more = _shown_and_more(_chooser(logged_in, step_up, "/x/").content.decode())
+
+    assert shown == ["barbell", "kettlebell", "cable"]
+    assert "bodyweight" in more and "band" in more
+    assert more[-1] == "other"  # "Other…" stays at the very end
+
+
+@pytest.mark.django_db
+def test_popular_movements_use_the_reviewed_list(logged_in):
+    """Hip thrust: barbell, Smith (variants) and a machine; nobody does it with a band."""
+    hip_thrust = Exercise.objects.create(
+        name="Barbell Hip Thrust", muscle_group="glutes", equipment="barbell"
+    )
+    ensure_movement(hip_thrust)
+    Exercise.objects.create(
+        name="Smith Machine Hip Thrust", muscle_group="glutes", equipment="smith",
+        movement=hip_thrust.movement,
+    )  # fmt: skip
+
+    shown, more = _shown_and_more(_chooser(logged_in, hip_thrust, "/x/").content.decode())
+
+    assert shown == ["machine"]
+    assert "band" in more and "dumbbell" in more
+
+
+@pytest.mark.django_db
+def test_a_users_own_variant_of_a_popular_movement_uses_its_list(logged_in, user):
+    hammer = Exercise.objects.create(
+        name="Hammer Curl", muscle_group="biceps", equipment="dumbbell"
+    )
+    own = create_variant(user, hammer, "cable")
+
+    shown, more = _shown_and_more(_chooser(logged_in, own, "/x/").content.decode())
+
+    assert shown == ["kettlebell", "band"]
+    assert "bodyweight" in more and "smith" in more
+
+
+def test_reviewed_list_names_the_original_exercises():
+    from exercises.seed_data import EXERCISES
+    from exercises.variant_equipment import SHOWN_EQUIPMENT
+
+    assert set(SHOWN_EQUIPMENT) <= {name for name, *_ in EXERCISES}

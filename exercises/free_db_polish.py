@@ -65,7 +65,9 @@ POLISH_NAMES = {
     "Rack_Pulls": "martwy ciąg ze stojaków, rack pull",
     "Trap_Bar_Deadlift": "martwy ciąg z trap barem, martwy ciąg sztangą heksagonalną",
     "Stiff-Legged_Barbell_Deadlift": "martwy ciąg na prostych nogach",
-    "Stiff-Legged_Dumbbell_Deadlift": "martwy ciąg na prostych nogach z hantlami",
+    "Stiff-Legged_Dumbbell_Deadlift": (
+        "martwy ciąg rumuński z hantlami, martwy ciąg na prostych nogach z hantlami, rdl z hantlami"
+    ),
     "Good_Morning": "dzień dobry, skłony ze sztangą na plecach",
     "Reverse_Hyperextension": "odwrotne wyprosty, reverse hyper",
     "Hyperextensions_With_No_Hyperextension_Bench": "wyprosty tułowia bez ławki",

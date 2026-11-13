@@ -41,14 +41,21 @@
   <p class="muted small">{% translate "Creates a variant with its own history and records. Muscles, instructions and photos are copied." %}</p>
   <ul class="picker-list equipment-list">
     {% for value, label in choices.equipment %}
-      <li>
-        <form method="post" action="{{ action }}" data-submit-once>
-          {% csrf_token %}
-          <input type="hidden" name="equipment" value="{{ value }}">
-          <button type="submit" class="picker-item"><span class="list-title">{{ label }}</span></button>
-        </form>
-      </li>
+      {% include "exercises/partials/variant_equipment.html" %}
     {% endfor %}
+    {% if choices.more_equipment %}
+      {# Equipment that rarely fits this movement (no bodyweight hammer curl), one tap away. #}
+      <li>
+        <details class="picker-item more-equipment">
+          <summary class="list-title">{% translate "Show all equipment" %}</summary>
+          <ul class="picker-list equipment-list">
+            {% for value, label in choices.more_equipment %}
+              {% include "exercises/partials/variant_equipment.html" %}
+            {% endfor %}
+          </ul>
+        </details>
+      </li>
+    {% endif %}
     <li>
       <details class="picker-item other-equipment">
         <summary class="list-title">{% translate "Other…" context "equipment" %}</summary>

@@ -45,7 +45,8 @@ EXERCISES = [
     ("Hammer Curl", "biceps", "dumbbell", False),
     ("Incline Dumbbell Curl", "biceps", "dumbbell", False),
     ("Cable Curl", "biceps", "cable", False),
-    ("Preacher Curl", "biceps", "machine", False),
+    # The instructions use an E-Z bar on a preacher bench (was "machine" until 2026-11-13).
+    ("Preacher Curl", "biceps", "barbell", False),
     # Triceps
     ("Close-Grip Bench Press", "triceps", "barbell", False),
     ("Skull Crusher", "triceps", "barbell", False),
@@ -314,6 +315,33 @@ EXTRA_EXERCISES = [
 
 # Isometric holds and balance exercises (reviewed by the owner, 2026-11-13).
 EXTRA_EXERCISES += HOLDS_AND_BALANCE
+
+# free-exercise-db's goblet squat uses a kettlebell (its text and photos), while our
+# original Goblet Squat is the dumbbell one: the kettlebell version is its own variant.
+EXTRA_EXERCISES.append(
+    {
+        "name": "Kettlebell Goblet Squat",
+        "muscle_group": "quads",
+        "equipment": "kettlebell",
+        "measurement": "weight_reps",
+        "category": "strength",
+        "is_unilateral": False,
+        "level": "beginner",
+        "mechanic": "compound",
+        "primary_muscles": ["quadriceps"],
+        "secondary_muscles": ["calves", "glutes", "hamstrings", "shoulders"],
+        "aliases": "przysiad goblet z kettlebell, goblet squat kettlebell, przysiad z kettlebell",
+        "images": ["Goblet_Squat/0.jpg", "Goblet_Squat/1.jpg"],
+        "instructions": [
+            "Stand holding a light kettlebell by the horns close to your chest. This will be "
+            "your starting position.",
+            "Squat down between your legs until your hamstrings are on your calves. Keep your "
+            "chest and head up and your back straight.",
+            "At the bottom position, pause and use your elbows to push your knees out. Return "
+            "to the starting position, and repeat for 10-20 repetitions.",
+        ],
+    }
+)
 
 # Levels for originals that free-exercise-db has no counterpart for (the import sets the
 # others' level from their match).

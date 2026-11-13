@@ -276,7 +276,8 @@ def test_decisions_on_the_real_library(library):
         "Barbell Row", "Bent Over Two-Dumbbell Row", "Two-Arm Kettlebell Row",
         "Smith Machine Bent Over Row",
     }  # fmt: skip
-    assert family("Dumbbell Row") == set()  # one-arm row: not with the two-arm ones
+    # One-arm rows: with each other, not with the two-arm ones.
+    assert family("Dumbbell Row") == {"Dumbbell Row", "One-Arm Kettlebell Row"}
     assert family("Kettlebell Windmill") == family("Cable Iron Cross") == set()
     assert family("Dip") == {
         "Dip", "Dip Machine", "Parallel Bar Dip", "Dips - Triceps Version", "Ring Dips"
@@ -289,3 +290,51 @@ def test_decisions_on_the_real_library(library):
     for separate in ("Romanian Deadlift", "Sumo Deadlift", "Deadlift with Bands"):
         assert "Deadlift" not in family(separate), separate
     assert report.pending == []  # every doubtful group decided
+
+    # 2026-11-13: real exercises instead of copies in "⇄ Change variant".
+    assert family("Push-up") == {"Push-up", "Suspended Push-Up"}
+    assert family("Pull-up") == {"Pull-up", "Band Assisted Pull-Up", "Weighted Pull Ups"}
+    assert family("Back Squat") == {"Back Squat", "Smith Machine Squat", "Dumbbell Squat"}
+    assert family("Incline Dumbbell Press") == {
+        "Incline Barbell Bench Press", "Smith Machine Incline Bench Press", "Incline Dumbbell Press"
+    }  # fmt: skip
+    # The two families of the seated press are one.
+    assert family("Machine Shoulder Press") == family("Seated Dumbbell Shoulder Press")
+    assert "Leverage Shoulder Press" in family("Seated Dumbbell Shoulder Press")
+    # The standing press is not the seated one; the bench press is not a seated machine press.
+    assert not family("Overhead Press") & family("Seated Dumbbell Shoulder Press")
+    assert "Machine Chest Press" not in family("Barbell Bench Press")
+    # The dumbbell "stiff-legged" deadlift is an RDL by its instructions.
+    assert family("Romanian Deadlift") == {
+        "Romanian Deadlift", "Smith Machine Romanian Deadlift", "Stiff-Legged Dumbbell Deadlift"
+    }  # fmt: skip
+    assert family("Stiff-Legged Barbell Deadlift") == {
+        "Stiff-Legged Barbell Deadlift", "Smith Machine Stiff-Legged Deadlift"
+    }  # fmt: skip
+    assert family("Goblet Squat") == {"Goblet Squat", "Kettlebell Goblet Squat"}
+
+
+@pytest.mark.django_db
+def test_an_exercise_left_out_of_name_groups_stays_in_its_manual_family(monkeypatch):
+    """Run twice: it must not drift back to the family its name points at."""
+    names = {
+        "Romanian Deadlift": "barbell",
+        "Stiff-Legged Barbell Deadlift": "barbell",
+        "Smith Machine Stiff-Legged Deadlift": "smith",
+        "Stiff-Legged Dumbbell Deadlift": "dumbbell",
+    }
+    for name, equipment in names.items():
+        Exercise.objects.create(name=name, muscle_group="hamstrings", equipment=equipment)
+    monkeypatch.setattr(
+        movements,
+        "MANUAL_GROUPS",
+        {"Romanian Deadlift": ["Romanian Deadlift", "Stiff-Legged Dumbbell Deadlift"]},
+    )
+
+    for _ in range(2):
+        group_movements()
+        rdl = Exercise.objects.get(name="Romanian Deadlift")
+        dumbbell = Exercise.objects.get(name="Stiff-Legged Dumbbell Deadlift")
+        barbell = Exercise.objects.get(name="Stiff-Legged Barbell Deadlift")
+        assert dumbbell.movement_id == rdl.movement_id is not None
+        assert barbell.movement_id not in (None, rdl.movement_id)

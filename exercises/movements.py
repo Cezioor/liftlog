@@ -16,7 +16,7 @@ from dataclasses import dataclass, field
 from django.db import transaction
 
 from .models import Exercise, Movement
-from .movement_groups import CONFIRMED_GROUPS, MANUAL_GROUPS, REJECTED_GROUPS
+from .movement_groups import CONFIRMED_GROUPS, MANUAL_GROUPS, NOT_NAME_GROUPED, REJECTED_GROUPS
 from .services import movement_name, stem
 from .smith_variants import SMITH_VARIANTS
 from .text import normalize
@@ -55,7 +55,9 @@ def _doubts(exercises):
 def name_groups(exercises=None):
     """Groups of 2+ built-ins with the same movement key, each with its doubts."""
     if exercises is None:
-        exercises = Exercise.objects.filter(owner=None).order_by("name")
+        exercises = (
+            Exercise.objects.filter(owner=None).exclude(name__in=NOT_NAME_GROUPED).order_by("name")
+        )
     by_key = defaultdict(list)
     for exercise in exercises:
         by_key[movement_key(exercise.name)].append(exercise)
@@ -105,6 +107,8 @@ def group_movements():
     Families that users already joined (their own variants) are kept and merged, never
     emptied: when two families become one, every member moves to the surviving one.
     """
+    # Out of the family their name gave them; MANUAL_GROUPS puts them where they belong.
+    Exercise.objects.filter(owner=None, name__in=NOT_NAME_GROUPED).update(movement=None)
     builtins = {e.pk: e for e in Exercise.objects.filter(owner=None)}
     by_name = {e.name: e for e in builtins.values()}
     links = _UnionFind()
@@ -119,7 +123,8 @@ def group_movements():
         for pk in found[1:]:
             links.union(found[0], pk)
     manual_names = {frozenset(names): family_name for family_name, names in MANUAL_GROUPS.items()}
-    for group in name_groups(sorted(builtins.values(), key=lambda e: e.name)):
+    by_names = [e for e in builtins.values() if e.name not in NOT_NAME_GROUPED]
+    for group in name_groups(sorted(by_names, key=lambda e: e.name)):
         if group.key in REJECTED_GROUPS:
             continue
         if group.doubts and group.key not in CONFIRMED_GROUPS:

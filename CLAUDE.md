@@ -40,7 +40,10 @@ and keep each change small enough to review.
    `exercises/free_db_polish.py`, for Polish search; names stay English): 622 added in eleven batches reviewed by
    the owner (367 beginner, 211 intermediate, 44 expert). Naming rules for new ones: same instructions → same main
    name, main name ≤ ~45 characters, popular Polish names first, forms as in the file ("na smithie", "na skosie"),
-   checked against the instructions.
+   checked against the instructions. Duplicates: same movement = same path and same body position (lying /
+   seated / standing / bent over). Photos stay with an exercise when the movement is the same and only the
+   equipment or the number of hands differs, with a sentence in the instructions saying what they show
+   (Goblet Squat: kettlebell photos; Kettlebell Swing: one-arm photos).
 4. ~~**Searching by muscle and in everyday words**~~: done on 2026-11-08. More forms of equipment words
    ("na smithie"); filler words ignored; muscle words (formal, colloquial, anatomical, English, body regions,
    several in one query) filter like equipment words, from `exercises/muscle_words.py` (reviewed by the owner;
@@ -66,9 +69,14 @@ and keep each change small enough to review.
    4. Goal tiles on the library: Strength, Warm-up (until item 6: exercises with "rozgrzewka" in their Polish
       names), Stretching, Balance & stability, Cardio.
    5. "Stretches for these muscles" on the exercise page.
-   6. "⇄ Change variant" shows only equipment that fits: a hand-made list for popular movements (approved by
-      the owner, e.g. hip thrust: barbell, Smith, machine; no band), otherwise equipment similar to what the
-      family already has; the rest behind "Show all equipment", "Other…" stays.
+   6. ~~"⇄ Change variant" shows only equipment that fits~~ (2026-11-13), checked against all built-ins:
+      existing exercises of the same movement joined their families instead of being copied (22 MANUAL_GROUPS
+      incl. two pairs of families that duplicated each other; `free_db.SOURCE_CORRECTIONS` fixes their
+      equipment and measurement, checked against production first); `exercises/variant_equipment.py` lists the
+      equipment for NEW variants of the 65 popular movements (e.g. hip thrust: machine), others get equipment
+      similar to the family's; the rest behind "Show all equipment", "Other…" stays. Kettlebell Goblet Squat
+      added; Stiff-Legged Dumbbell Deadlift moved to the RDL family (`NOT_NAME_GROUPED`); Preacher Curl uses
+      a barbell. Reps exercises with added kg and no plan range use 6–10 reps (`DEFAULT_WEIGHTED_REPS_RANGE`).
 6. **Plan sections and missing exercises (B + C)**, before Stage 1.7: `PlanExercise.section` with three fixed
    sections (warm-up / main / cool-down); warm-up and cool-down suggestions from the muscles of the day's main
    part; on the workout screen warm-up and cool-down are a tick-off list with an optional timer (no weights, hints
@@ -185,8 +193,9 @@ Stage 1 items 6 (history list, charts) and 7 (PWA) are not scheduled yet: ask th
    variants. `merge_exercises` (`exercises/merges.py`) folds a user's own copy into the matching built-in: sets, plan
    entries and swaps move to the built-in, the copy is deleted.
    **"⇄ Change variant"** on the plan editor, the workout card and the exercise page: the family's variants first, then
-   equipment without a variant (Smith, dumbbell, barbell, kettlebell, weight plate, pull-up bar, cable, machine, band,
-   landmine, TRX, bodyweight, "Other…" with a typed name), which creates the user's variant in one tap. During a
+   equipment without a variant (the fitting ones first, `exercises/variant_equipment.py`; the rest of Smith, dumbbell,
+   barbell, kettlebell, weight plate, pull-up bar, cable, machine, band, landmine, TRX, bodyweight behind "Show all
+   equipment"; "Other…" with a typed name), which creates the user's variant in one tap. During a
    workout a plan exercise asks **"Only today"** (`WorkoutSwap`, the plan stays) or **"Change in the plan too"**
    (PlanExercise.exercise changes, targets kept). Sets already logged always stay with the variant they were done with.
 
@@ -397,6 +406,10 @@ the same movement, same Polish main name):
 - Linear_Depth_Jump = Depth_Jump_Leap
 - Split_Squats = Scissors_Jump
 - Floor_Glute-Ham_Raise = Natural_Glute_Ham_Raise (Nordic Hamstring Curl)
+- Found 2026-11-13, already in one family each (to be merged with `merge_exercises`-style care):
+  Smith_Single-Leg_Split_Squat = our Smith Machine Bulgarian Split Squat; Smith_Machine_Overhead_Shoulder_Press
+  (seated, by its instructions) = our Smith Machine Seated Shoulder Press; Barbell_Shoulder_Press =
+  Seated_Barbell_Military_Press.
 
 Wrong categories or muscle groups (the ones fixed on 2026-11-13 are in `free_db.SOURCE_CORRECTIONS`):
 - Power_Clean (one of the 65 originals): source category "strength", but it is an Olympic lift; muscle-word
@@ -408,9 +421,8 @@ Wrong equipment (the equipment filter shows them in the wrong place):
 
 Missing instructions (named after the English name): Side_Jackknife, Iron_Cross.
 
-Movement family gaps (for MANUAL_GROUPS, the owner's decision): Back Squat has no family, while Smith Machine
-Squat is in the "Squat" family with Dumbbell Squat. The muscle-word suggestions avoid offering a duplicate by
-comparing movement names (`_similar_name_exists`).
+Movement family gaps: Back Squat joined the "Squat" family on 2026-11-13. The muscle-word suggestions avoid
+offering a duplicate by comparing movement names (`_similar_name_exists`).
 
 ## Technical decisions
 

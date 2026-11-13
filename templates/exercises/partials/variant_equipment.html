@@ -1,0 +1,8 @@
+{# One piece of equipment on "Change variant": POSTs it to the page's action. #}
+<li>
+  <form method="post" action="{{ action }}" data-submit-once>
+    {% csrf_token %}
+    <input type="hidden" name="equipment" value="{{ value }}">
+    <button type="submit" class="picker-item"><span class="list-title">{{ label }}</span></button>
+  </form>
+</li>

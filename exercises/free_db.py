@@ -136,6 +136,41 @@ SOURCE_CORRECTIONS = {
     # Group "forearms", but the instructions describe rotating the shoulder.
     "Dumbbell_Lying_Supination": {"muscle_group": MuscleGroup.SHOULDERS},
     "Dumbbell_Lying_Pronation": {"muscle_group": MuscleGroup.SHOULDERS},
+    # Joined to the families of their movement (2026-11-13); the dataset files them under
+    # "other" and as weight × reps, unlike the rest of the family. Nobody had logged them.
+    "Suspended_Push-Up": {"equipment": Equipment.SUSPENSION, "measurement": Measurement.REPS},
+    "Band_Assisted_Pull-Up": {"equipment": Equipment.BAND, "measurement": Measurement.REPS},
+    "Weighted_Pull_Ups": {"measurement": Measurement.REPS},  # kg stay: optional added weight
+    "Bodyweight_Walking_Lunge": {
+        "equipment": Equipment.BODYWEIGHT,
+        "measurement": Measurement.REPS,
+    },
+    "Suspended_Split_Squat": {"equipment": Equipment.SUSPENSION},
+}
+
+# Our own instructions for originals whose free-exercise-db text doesn't fit them. The
+# photos stay: same movement, only the equipment or the number of hands differs, and the
+# instructions say so.
+ORIGINAL_INSTRUCTIONS = {
+    "Goblet Squat": [
+        "Stand with your feet a little wider than shoulder width and hold one dumbbell "
+        "vertically at your chest, both hands cupping the top end.",
+        "Squat down between your legs, keeping your chest and head up and your back straight, "
+        "until your thighs are at least parallel to the floor.",
+        "At the bottom, use your elbows to push your knees out, then stand back up.",
+        "The photos show the same squat with a kettlebell held by the horns (Kettlebell "
+        "Goblet Squat).",
+    ],
+    "Kettlebell Swing": [
+        "Stand with your feet a little wider than shoulder width, a kettlebell on the floor "
+        "about a foot in front of you.",
+        "Hinge at the hips with a flat back, grab the handle with both hands and hike the "
+        "kettlebell back between your legs.",
+        "Drive your hips forward explosively and stand tall: the kettlebell floats up to about "
+        "chest height with straight arms. The power comes from the hips, not the arms.",
+        "Let it swing back between your legs as you hinge again, and repeat.",
+        "The photos show the one-arm version; the movement of the hips is the same.",
+    ],
 }
 
 
@@ -300,6 +335,8 @@ def import_dataset(records):
             continue
         for attr, value in detail_fields(record).items():
             setattr(exercise, attr, value)
+        if name in ORIGINAL_INSTRUCTIONS:
+            exercise.instructions = ORIGINAL_INSTRUCTIONS[name]
         exercise.source_id = source_id
         exercise.save()
         report.legacy_matched.append(name)
@@ -327,7 +364,7 @@ def import_dataset(records):
 
         corrections = SOURCE_CORRECTIONS.get(source_id, {})
         muscle_group = corrections.get("muscle_group", muscle_group_for(record))
-        equipment = equipment_for(record)
+        equipment = corrections.get("equipment", equipment_for(record))
         _, created = Exercise.objects.update_or_create(
             source_id=source_id,
             defaults={

@@ -21,7 +21,7 @@ CONFIRMED_GROUPS: set[str] = {
     "hang clean",
     "bent arm pullover",
     "hip adduction",
-    "preacher curl",
+    # "preacher curl" is no longer doubtful: Preacher Curl uses a barbell since 2026-11-13.
     "decline press",
     "dip",  # 2026-11-06, with the parallel-bar dips below
     "deadlift",  # 2026-11-06, with the bar/machine versions below
@@ -35,6 +35,73 @@ REJECTED_GROUPS: set[str] = {
 
 # Families by hand: {family name: [built-in exercise names]}.
 MANUAL_GROUPS: dict[str, list[str]] = {
+    # --- Reviewed by the owner on 2026-11-13 ("⇄ Change variant" shows the real exercise
+    # instead of creating a copy). Same movement = same path and the same body position
+    # (lying / seated / standing / bent over); a seated machine press is not a bench press.
+    "Incline Bench Press": [
+        "Incline Barbell Bench Press",
+        "Smith Machine Incline Bench Press",
+        "Incline Dumbbell Press",
+    ],
+    "Squat": ["Back Squat", "Smith Machine Squat", "Dumbbell Squat"],
+    "Chest Press": ["Machine Chest Press", "Leverage Chest Press"],
+    "Fly": ["Dumbbell Fly", "Flat Bench Cable Flyes"],
+    "Cable Crossover": ["Cable Crossover", "Cross Over - With Bands"],
+    "Push-up": ["Push-up", "Suspended Push-Up"],
+    "Pull-up": ["Pull-up", "Band Assisted Pull-Up", "Weighted Pull Ups"],
+    "One-Arm Row": ["Dumbbell Row", "One-Arm Kettlebell Row"],
+    "Seated Row": ["Seated Cable Row", "Leverage Iso Row"],
+    "Overhead Press": [
+        "Overhead Press",
+        "Standing Dumbbell Press",
+        "Two-Arm Kettlebell Military Press",
+        "Shoulder Press - With Bands",
+    ],
+    # Two families that were the same seated press, plus the other seated machines.
+    # Barbell Shoulder Press = Seated Barbell Military Press and Smith Machine Overhead
+    # Shoulder Press = Smith Machine Seated Shoulder Press are duplicates (to be merged).
+    "Seated Shoulder Press": [
+        "Seated Dumbbell Shoulder Press",
+        "Seated Barbell Military Press",
+        "Seated Cable Shoulder Press",
+        "Smith Machine Seated Shoulder Press",
+        "Barbell Shoulder Press",
+        "Machine Shoulder Press",
+        "Cable Shoulder Press",
+        "Leverage Shoulder Press",
+        "Smith Machine Overhead Shoulder Press",
+    ],
+    "Lateral Raise": ["Lateral Raise", "Cable Lateral Raise", "Lateral Raise - With Bands"],
+    "Shrug": ["Barbell Shrug", "Leverage Shrug"],
+    "Hammer Curl": ["Hammer Curl", "Cable Hammer Curls - Rope Attachment"],
+    "Preacher Curl": ["Preacher Curl", "Two-Arm Dumbbell Preacher Curl"],
+    "Wrist Curl": ["Wrist Curl", "Seated Palm-Up Barbell Wrist Curl"],
+    "Lying Triceps Extension": [
+        "Skull Crusher",
+        "Lying Dumbbell Tricep Extension",
+        "Cable Lying Triceps Extension",
+    ],
+    "Overhead Triceps Extension": [
+        "Overhead Cable Triceps Extension",
+        "Overhead Dumbbell Triceps Extension",
+        "Speed Band Overhead Triceps",
+    ],
+    "Front Squat": ["Front Squat", "Front Squats With Two Kettlebells"],
+    # Smith Single-Leg Split Squat = Smith Machine Bulgarian Split Squat (to be merged).
+    "Bulgarian Split Squat": [
+        "Bulgarian Split Squat",
+        "One Leg Barbell Squat",
+        "Suspended Split Squat",
+        "Smith Single-Leg Split Squat",
+    ],
+    "Walking Lunge": ["Walking Lunge", "Bodyweight Walking Lunge"],
+    "Standing Calf Raise": [
+        "Standing Calf Raise",
+        "Smith Machine Calf Raise",
+        "Calf Raises - With Bands",
+    ],
+    # Its instructions are a Romanian deadlift with dumbbells (see NOT_NAME_GROUPED).
+    "Romanian Deadlift": ["Romanian Deadlift", "Stiff-Legged Dumbbell Deadlift"],
     # Single-leg deadlift: bodyweight (a balance exercise) and with a kettlebell (2026-11-13).
     "Single-Leg Deadlift": [
         "Kettlebell One-Legged Deadlift",
@@ -65,4 +132,11 @@ MANUAL_GROUPS: dict[str, list[str]] = {
         "Axle Deadlift",
         "Leverage Deadlift",
     ],
+}
+
+# Built-ins kept out of the automatic grouping by name: their name puts them with one
+# movement, their instructions with another (joined in MANUAL_GROUPS). Taken out of their
+# old family on every run, so the two families never merge.
+NOT_NAME_GROUPED: set[str] = {
+    "Stiff-Legged Dumbbell Deadlift",  # an RDL with dumbbells, not a stiff-legged deadlift
 }

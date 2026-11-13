@@ -652,3 +652,45 @@ def test_first_time_message_fits_the_type(logged_in, user, make_workout, request
     ).content.decode()
 
     assert text in content
+
+
+# --- weighted pull-ups: reps with added kg ---------------------------------------------
+
+
+@pytest.fixture
+def weighted_pull_ups(db):
+    return Exercise.objects.create(
+        name="Weighted Pull Ups", muscle_group="back", equipment="other", measurement="reps",
+        progression_step_kg=Decimal("2.5"),
+    )  # fmt: skip
+
+
+def test_weighted_reps_card_has_a_kg_field():
+    form = WorkoutSetForm(measurement="reps")
+
+    assert form.fields["weight_kg"].label == "Added kg"
+    assert not form.fields["weight_kg"].required
+
+
+def test_weighted_reps_add_kilograms_at_the_top_of_the_plan(weighted_pull_ups):
+    sets = _sets({"weight_kg": Decimal("10"), "reps": 8}, {"weight_kg": Decimal("10"), "reps": 8})
+
+    hint = progression_hint(weighted_pull_ups, sets, rep_min=5, rep_max=8)
+
+    assert (hint.weight_kg, hint.increase) == (Decimal("12.5"), True)
+
+
+def test_weighted_reps_without_a_plan_use_the_default_range(weighted_pull_ups):
+    """6–10 reps, then more kilograms, not more and more reps."""
+    below = _sets({"weight_kg": Decimal("10"), "reps": 8})
+    top = _sets({"weight_kg": Decimal("10"), "reps": 10}, {"weight_kg": Decimal("10"), "reps": 10})
+
+    assert progression_hint(weighted_pull_ups, below).reps == 9
+    hint = progression_hint(weighted_pull_ups, top)
+    assert (hint.weight_kg, hint.increase) == (Decimal("12.5"), True)
+
+
+def test_bodyweight_reps_without_a_plan_still_add_reps(pull_ups):
+    hint = progression_hint(pull_ups, _sets({"reps": 15}))
+
+    assert (hint.reps, hint.weight_kg) == (16, Decimal("0"))

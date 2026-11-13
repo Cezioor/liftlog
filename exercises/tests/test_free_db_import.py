@@ -295,3 +295,26 @@ def test_corrections_name_exercises_of_the_dataset():
     dataset_ids = {r["id"] for r in load_dataset()}
 
     assert set(free_db.SOURCE_CORRECTIONS) <= dataset_ids
+
+
+@pytest.mark.django_db
+def test_corrected_equipment_also_sets_bodyweight():
+    import_dataset(
+        [record("Bodyweight_Walking_Lunge", "Bodyweight Walking Lunge", equipment="other")]
+    )
+
+    lunge = Exercise.objects.get(source_id="Bodyweight_Walking_Lunge")
+    assert (lunge.equipment, lunge.is_bodyweight, lunge.measurement) == ("bodyweight", True, "reps")
+
+
+@pytest.mark.django_db
+def test_originals_get_their_own_instructions_where_the_dataset_does_not_fit(originals):
+    """Goblet Squat is the dumbbell one; free-exercise-db describes a kettlebell."""
+    call_command("seed_exercises")
+    import_dataset(load_dataset())
+
+    goblet = Exercise.objects.get(owner=None, name="Goblet Squat")
+    assert "dumbbell" in goblet.instructions[0] and "kettlebell" in goblet.instructions[-1]
+    assert goblet.images  # same movement: the photos stay, the text says what they show
+    swing = Exercise.objects.get(owner=None, name="Kettlebell Swing")
+    assert swing.instructions and "both hands" in swing.instructions[1]

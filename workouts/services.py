@@ -47,6 +47,9 @@ LOADING_EQUIPMENT = {
 # Time range for a loaded hold done without a plan (or a plan without a hold range), so
 # the progression still knows when to add weight.
 DEFAULT_LOADED_HOLD_RANGE = (20, 40)
+# Rep range for a reps exercise done with added weight (weighted pull-ups, dips with a
+# belt) without a plan range, so the hint still knows when to add kilograms.
+DEFAULT_WEIGHTED_REPS_RANGE = (6, 10)
 # The shortest hold that counts for the "Heaviest hold" record when no plan says otherwise:
 # a 3-second hold of a big weight is not a record.
 MIN_RECORD_HOLD_SECONDS = 10
@@ -300,6 +303,8 @@ def progression_hint(
     if not sets:
         return None
     if measurement == Measurement.REPS:
+        if not rep_max and any(s.weight_kg for s in sets):
+            rep_min, rep_max = DEFAULT_WEIGHTED_REPS_RANGE
         return _reps_hint(exercise, sets, rep_max, rep_min)
     if measurement == Measurement.TIME:
         if is_loaded_hold(exercise):

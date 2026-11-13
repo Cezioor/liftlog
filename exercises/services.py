@@ -11,6 +11,7 @@ from django.utils import translation
 from .models import Category, Equipment, Exercise, Level, Movement, Muscle, MuscleGroup
 from .muscle_words import MUSCLE_NAMES, MUSCLE_WORDS
 from .text import normalize, polish_stem
+from .variant_equipment import SHOWN_EQUIPMENT
 
 LOWER_BODY_GROUPS = {
     MuscleGroup.QUADS,
@@ -740,17 +741,39 @@ VARIANT_EQUIPMENT = [
 class VariantChoices:
     current: Exercise
     variants: list  # the family, current first
-    equipment: list  # [(value, label)] with no variant yet
+    equipment: list  # [(value, label)] with no variant yet that fits, shown straight away
+    more_equipment: list = ()  # the rest, behind "Show all equipment"
+
+
+def shown_equipment(variants):
+    """Equipment without a variant that "Change variant" shows straight away.
+
+    The popular movements have a reviewed list (variant_equipment.SHOWN_EQUIPMENT); the
+    others get equipment similar to what the family already has (barbell -> Smith,
+    dumbbell; cable -> band…), so no bodyweight hammer curl.
+    """
+    names = [v.name for v in variants if v.owner_id is None and v.name in SHOWN_EQUIPMENT]
+    if names:
+        return {equipment for name in names for equipment in SHOWN_EQUIPMENT[name]}
+    taken = {v.equipment for v in variants}
+    return {target for target, sources in SIMILAR_EQUIPMENT.items() if sources & taken}
 
 
 def variant_choices(user, exercise):
-    """What "Change variant" offers: the existing variants, then equipment without one."""
+    """What "Change variant" offers: the existing variants, then equipment without one
+    (the fitting equipment first, the rest behind "Show all equipment")."""
     variants = sorted(
         family(user, exercise), key=lambda e: (e.pk != exercise.pk, e.owner_id is None, e.name)
     )
     taken = {e.equipment for e in variants}
-    equipment = [(e.value, e.label) for e in VARIANT_EQUIPMENT if e not in taken]
-    return VariantChoices(exercise, variants, equipment)
+    free = [e for e in VARIANT_EQUIPMENT if e not in taken]
+    shown = shown_equipment(variants)
+    return VariantChoices(
+        exercise,
+        variants,
+        [(e.value, e.label) for e in free if e in shown],
+        [(e.value, e.label) for e in free if e not in shown],
+    )
 
 
 class InvalidVariantChoice(ValueError):
