@@ -302,6 +302,29 @@ def test_corrections_name_exercises_of_the_dataset():
     assert set(free_db.SOURCE_CORRECTIONS) <= dataset_ids
 
 
+def test_instruction_corrections_still_fit_the_dataset():
+    by_id = {r["id"]: r for r in load_dataset()}
+
+    for source_id in free_db.INSTRUCTION_CORRECTIONS:
+        steps = free_db.detail_fields(by_id[source_id])["instructions"]
+        corrected = free_db.corrected_instructions(source_id, steps)  # raises if a fragment is gone
+        assert len(corrected) == len(steps)
+        assert corrected != steps
+
+
+@pytest.mark.django_db
+def test_corrected_instructions_are_imported():
+    row = record("Decline_Push-Up", "Decline Push-Up")
+    row["instructions"] = ["Lie down and place your hands about 36 inches apart.", "Push up."]
+
+    import_dataset([row])
+
+    assert Exercise.objects.get(source_id="Decline_Push-Up").instructions == [
+        "Lie down and place your hands slightly wider than shoulder width apart.",
+        "Push up.",
+    ]
+
+
 @pytest.mark.django_db
 def test_corrected_equipment_also_sets_bodyweight():
     import_dataset(

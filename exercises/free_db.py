@@ -149,6 +149,35 @@ SOURCE_CORRECTIONS = {
     "Suspended_Split_Squat": {"equipment": Equipment.SUSPENSION},
 }
 
+# Mistakes in the English instructions of built-ins that are not originals, fixed on import
+# so that the Polish translation never differs from the English text:
+# {source_id: [(fragment in the dataset, corrected fragment), ...]}.
+INSTRUCTION_CORRECTIONS = {
+    # Hands "about 36 inches apart", far wider than a push-up (as in "Push-up" below).
+    "Decline_Push-Up": [
+        (
+            "place your hands about 36 inches apart",
+            "place your hands slightly wider than shoulder width apart",
+        )
+    ],
+    # Points to a chapter that isn't there (like the "foot stances" notes).
+    "Calf_Press_On_The_Leg_Press_Machine": [(" as described at the beginning of the chapter", "")],
+    # An exhale on the way down as well as on the way up.
+    "Decline_Dumbbell_Bench_Press": [
+        ("slowly to your side as you breathe out", "slowly to your side as you breathe in")
+    ],
+}
+
+
+def corrected_instructions(source_id, steps):
+    """The dataset's steps with our corrections; fails if a fragment is no longer there."""
+    for wrong, right in INSTRUCTION_CORRECTIONS.get(source_id, []):
+        if not any(wrong in step for step in steps):
+            raise ValueError(f"{source_id}: “{wrong}” is not in the instructions")
+        steps = [step.replace(wrong, right) for step in steps]
+    return steps
+
+
 # Our own instructions for originals whose free-exercise-db text doesn't fit them or is
 # wrong (the Polish translation never differs from the English text, so mistakes are fixed
 # here first), and for originals without a counterpart (set by seed_exercises). The photos
@@ -693,6 +722,8 @@ def import_dataset(records):
             continue
 
         corrections = SOURCE_CORRECTIONS.get(source_id, {})
+        details = detail_fields(record)
+        details["instructions"] = corrected_instructions(source_id, details["instructions"])
         muscle_group = corrections.get("muscle_group", muscle_group_for(record))
         equipment = corrections.get("equipment", equipment_for(record))
         _, created = Exercise.objects.update_or_create(
@@ -705,7 +736,7 @@ def import_dataset(records):
                 "equipment": equipment,
                 "is_bodyweight": equipment == Equipment.BODYWEIGHT,
                 "progression_step_kg": default_progression_step(muscle_group, equipment),
-                **detail_fields(record),
+                **details,
                 **type_fields(record),
                 **corrections,
             },

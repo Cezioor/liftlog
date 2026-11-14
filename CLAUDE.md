@@ -85,8 +85,8 @@ and keep each change small enough to review.
    the tests, and **part (a): 135 exercises** in six batches reviewed by the owner (2026-11-14: the 65
    originals, our 40 own built-ins and the 30 Smith variants). **Left: part (b)**, the other 809 built-ins with
    instructions (4 have none: Iron Cross, Side Jackknife, Push Press, Side Bridge).
-   How a batch goes: a draft with only "PL n:" lines → `polskie_nazwy/zloz_partie.py` builds the review file
-   (English steps and hash from the database) → the owner's review → `polskie_nazwy/zapisz_partie.py` writes the
+   How a batch goes: a draft with only "PL n:" lines → `scripts/zloz_partie.py` builds the review file
+   (English steps and hash from the database) → the owner's review → `scripts/zapisz_partie.py` writes the
    data file (`--auto` for part (b)). A wrong or outdated English original is corrected first in
    `free_db.ORIGINAL_INSTRUCTIONS` (the Polish text never differs from the English one). Scale: 876 free-exercise-db exercises (3738 steps, ~103k words) plus our built-ins
    (40 extras incl. holds and balance, 30 Smith variants, Kettlebell Goblet Squat, the two rewritten originals).
@@ -113,14 +113,21 @@ and keep each change small enough to review.
    - A part (b) session, step by step: read the glossary → list the next ~100 untranslated built-ins of the
      current group (`instructions` not empty, `instructions_pl` empty) → write the draft ("## <nr>. <English
      name>" + "PL n: …" lines) in the scratchpad → build the review file:
-     `manage.py shell -c "import sys; sys.argv=['x','--','<draft>','polskie_nazwy/instrukcje_b_partia_N.txt','<title>']; exec(open('polskie_nazwy/zloz_partie.py', encoding='utf-8').read())"`
+     `manage.py shell -c "import sys; sys.argv=['x','--','<draft>','polskie_nazwy/instrukcje_b_partia_N.txt','<title>']; exec(open('scripts/zloz_partie.py', encoding='utf-8').read())"`
      → append the notes (A doubts and mismatches with the name or photos, B mistakes in the original, C wording
      choices, D units) and 10 random exercises for the owner's spot check → save with `zapisz_partie.py` the same
      way plus `'--auto'` → `load_polish_instructions`, tests, commit; push when asked. Both scripts live in
-     `polskie_nazwy/` (not in the repo; only on the owner's PC). Changes by analogy to earlier decisions are made
+     `scripts/` (in the repo); the batch files stay in `polskie_nazwy/` (only on the owner's PC). Changes by analogy to earlier decisions are made
      without asking and only listed. Check the GitHub API sparingly (60 unauthenticated requests per hour).
-   - Open question for the owner (2026-11-14): two saved sentences still call the exercise "wypychanie bioder"
-     (Barbell Hip Thrust Hold step 3, Smith Machine Single-Leg Hip Thrust step 2); proposed "hip thrust".
+   - Part (b) so far: batch 1 (2026-11-15), the first 100 beginner strength exercises by name (3/4 Sit-Up …
+     Dumbbell Alternate Bicep Curl), saved as automatic; 223 beginner strength exercises left. The owner's
+     review file (10 random exercises, units, open doubts A1–A9) is
+     `polskie_nazwy/instrukcje_b_partia_1_do_przegladu.txt`.
+   - Mistakes in the English text of built-ins that are not originals are fixed on import in
+     `free_db.INSTRUCTION_CORRECTIONS` ({source_id: [(wrong fragment, corrected fragment)]}).
+   - The four built-ins without instructions: our own English and Polish steps wait for the owner's approval
+     in `polskie_nazwy/instrukcje_brakujace_4.txt` (not in the code yet; they go to
+     `free_db.SOURCE_CORRECTIONS` as `{"instructions": [...]}`).
    - Tests: as many steps as the original, no empty steps, no Cyrillic, every key exists, hashes match;
      language choice and both notes; variants with unchanged and with changed instructions.
 7. **Plan sections and missing exercises (B + C)**, before Stage 1.7: `PlanExercise.section` with three fixed

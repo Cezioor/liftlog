@@ -265,3 +265,13 @@ zawsze znaczy „jedna stopa” („place one foot on the box”). „Feet” ja
 - 2026-11-14 (partia 6, koniec części (a)): nazwa ćwiczenia to „hip thrust” („hip thrust ze
   sztangą”, „hip thrust na smithie”); sztanga we wspięciach siedząc leży „na udach tuż nad
   kolanami”; „Chwyć ją wąsko, ręce proste.”
+- 2026-11-15: w zdaniach też „hip thrust” („jak do hip thrusta”, „przy zwykłych hip thrustach”),
+  nie „wypychanie bioder”.
+- 2026-11-15 (część (b), partia 1, automatyczna, nieprzejrzana): „This equals one repetition.” →
+  „To jedno powtórzenie.”; „Continue alternating…” → „Kontynuuj na zmianę, aż wykonasz zaplanowaną
+  liczbę powtórzeń.”; „…and repeat.” na końcu ostatniego kroku → „…i wykonaj zaplanowaną liczbę
+  powtórzeń.”; crunch (ruch) → „spięcie brzucha”; sled → „sanie”; harness → „szelki”; ankle cuff /
+  strap → „opaska na kostkę”; weight stack → „stos”; tower / uprights → „kolumna wyciągu”; Bosu Ball
+  → „bosu”; rear delts → „tylne aktony barków”; rotator cuff → „stożek rotatorów”; „to failure” →
+  „do upadku mięśniowego” (do decyzji właściciela). Błędy angielskiego w ćwiczeniach spoza 65
+  oryginałów poprawiamy w `free_db.INSTRUCTION_CORRECTIONS`.
