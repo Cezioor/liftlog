@@ -51,6 +51,8 @@ z polskich nazw (`exercises/free_db_polish.py`, `seed_data.py`, `holds_balance.p
 | Return to the starting position. | Wróć do pozycji wyjściowej. |
 | Repeat for the recommended / prescribed amount of repetitions. | Wykonaj zaplanowaną liczbę powtórzeń. |
 | Repeat. (samo) | Wykonaj zaplanowaną liczbę powtórzeń. |
+| Set the bar height and the safety stops before you load the bar. (warianty na smithie) | Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar. |
+| bar on your upper back | sztanga na górnej części pleców |
 | … then switch sides / repeat with the other leg | … potem zmień stronę / powtórz drugą nogą |
 | Hold for a second / Pause for a second | Zatrzymaj się na sekundę |
 | at the top / contracted position | w górnej pozycji / w pozycji maksymalnego napięcia |
@@ -257,3 +259,6 @@ zawsze znaczy „jedna stopa” („place one foot on the box”). „Feet” ja
 - 2026-11-14 (partia 4): „żebra ściągnięte w dół”; „poręcze do dipów”; bez angielskich nazw w
   nawiasach („wersja w podkurczu”, nie „tuck sit”); „aż poczujesz opór”; „odepchnij się prostymi
   rękami”; kolano zawsze „w linii z palcami stopy”, nie „nad palcami”.
+- 2026-11-14 (partia 5): stały pierwszy krok wariantów na smithie; „hip thrust” w zdaniach to
+  „wypychanie bioder”; „Licz złapane piłki”; „Opuść biodra w stronę pięt”; sztywna liczba
+  powtórzeń w oryginale („10–20”) → „zaplanowana liczba powtórzeń” w obu wersjach.

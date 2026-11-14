@@ -13,7 +13,7 @@ from exercises.services import (
     stem,
     variant_suggestion,
 )
-from exercises.smith_variants import SMITH_VARIANTS
+from exercises.smith_variants import NO_BASE_PHOTOS, SMITH_VARIANTS
 from workouts.services import personal_records
 
 HTMX_RESULTS = {"HTTP_HX_REQUEST": "true", "HTTP_HX_TARGET": "picker-results"}
@@ -361,7 +361,9 @@ def test_seed_smith_variants_links_them_to_their_bases():
             variant = variants.get(name=name)
             base = Exercise.objects.get(name=base_name, owner=None)
             assert variant.movement_id == base.movement_id is not None, name
-            assert variant.images == base.images, name
+            # The base's photos, unless they show another movement (the hack squat).
+            expected = [] if name in NO_BASE_PHOTOS else base.images
+            assert variant.images == expected, name
     step = Exercise.objects.get(name="Smith Machine Step-up")
     assert step.is_unilateral
     # And "step up smith" now finds it instead of offering a new variant.

@@ -195,6 +195,16 @@
       "Utrzymaj pozycję, oddychając równo. Łatwiej: zostań wyżej albo trzymaj się stojaka. Trudniej: zejdź niżej albo trzymaj ciężar przy klatce piersiowej."
     ]
   },
+  "Bosu Ball Squat": {
+    "name": "Bosu Ball Squat",
+    "en_hash": "5ffeb6bf3d65",
+    "auto": false,
+    "steps": [
+      "Połóż bosu kopułą w dół (trudniej) albo kopułą w górę (łatwiej) i stań na nim w rozkroku na szerokość barków.",
+      "Złap równowagę, a potem powoli zejdź do przysiadu, aż uda będą mniej więcej równoległe do podłogi.",
+      "Wstań w sposób kontrolowany. Na początku ćwicz przy stojaku albo z partnerem obok."
+    ]
+  },
   "Butt_Lift_Bridge": {
     "name": "Glute Bridge",
     "en_hash": "d4f3fb936128",
@@ -553,6 +563,16 @@
       "Utrzymaj górną pozycję ze ściągniętymi łopatkami. Łatwiej: ustaw sztangę wyżej albo ugnij kolana. Trudniej: ustaw sztangę niżej albo oprzyj stopy wyżej."
     ]
   },
+  "Kettlebell Goblet Squat": {
+    "name": "Kettlebell Goblet Squat",
+    "en_hash": "bfe200816434",
+    "auto": false,
+    "steps": [
+      "Stań, trzymając lekki kettlebell za rogi, blisko klatki piersiowej. To pozycja wyjściowa.",
+      "Zejdź do przysiadu między nogi, aż dwugłowe uda oprą się o łydki. Trzymaj klatkę piersiową i głowę uniesione, a plecy proste.",
+      "W dolnej pozycji zatrzymaj się i rozepchnij łokciami kolana na zewnątrz. Wróć do pozycji wyjściowej i wykonaj zaplanowaną liczbę powtórzeń."
+    ]
+  },
   "L-Sit": {
     "name": "L-Sit",
     "en_hash": "7e4abcbad4fc",
@@ -811,6 +831,16 @@
       "Po krótkiej pauzie w górnej pozycji znów zacznij się opuszczać i powtarzaj tyle razy, ile potrzeba."
     ]
   },
+  "Reverse Lunge to Knee Drive Balance": {
+    "name": "Reverse Lunge to Knee Drive Balance",
+    "en_hash": "329e5b9d60d9",
+    "auto": false,
+    "steps": [
+      "Zrób krok w tył do wykroku.",
+      "Odepchnij się przednią stopą i wstań, unosząc tylne kolano na wysokość bioder.",
+      "Zatrzymaj się na dwie sekundy na jednej nodze przed kolejnym powtórzeniem. Trudniej: w górnej pozycji wspnij się na palce stopy podporowej."
+    ]
+  },
   "Reverse Plank": {
     "name": "Reverse Plank",
     "en_hash": "9393c3041b70",
@@ -928,6 +958,26 @@
       "Utrzymaj pozycję, potem zmień nogę. Żeby utrudnić, zamknij oczy albo stań na poduszce balansowej."
     ]
   },
+  "Single-Leg Balance Ball Toss": {
+    "name": "Single-Leg Balance Ball Toss",
+    "en_hash": "9499e119ec95",
+    "auto": false,
+    "steps": [
+      "Stań na jednej nodze przodem do ściany albo partnera, trzymając lekką piłkę.",
+      "Rzucaj piłkę i łap ją, utrzymując równowagę na nodze podporowej.",
+      "Licz złapane piłki, potem zmień nogę. Trudniej: rzucaj na boki albo stań na poduszce balansowej."
+    ]
+  },
+  "Single-Leg Band Kicks": {
+    "name": "Single-Leg Band Kicks",
+    "en_hash": "91620066db7f",
+    "auto": false,
+    "steps": [
+      "Załóż gumę na obie kostki albo zaczep ją i załóż na jedną kostkę.",
+      "Stań na jednej nodze z lekko ugiętym kolanem i poruszaj drugą nogą przeciw oporowi gumy (w bok, w przód albo w tył) małymi, kontrolowanymi kopnięciami.",
+      "Pracę nad równowagą wykonuje noga podporowa: trzymaj jej kolano i biodro stabilnie. Zmień nogę."
+    ]
+  },
   "Single-Leg Calf Raise Hold": {
     "name": "Single-Leg Calf Raise Hold",
     "en_hash": "63d367907fcd",
@@ -946,6 +996,190 @@
       "Połóż się na plecach z ugiętymi kolanami i stopami płasko na podłodze.",
       "Wyprostuj jedną nogę, odepchnij się piętą drugiej i unieś biodra, aż będą na jednym poziomie.",
       "Utrzymaj pozycję, nie pozwalając biodrom opaść ani się obrócić, potem zmień nogę. Łatwiej: zostaw obie stopy na podłodze i tylko przenieś ciężar na jedną."
+    ]
+  },
+  "Single-Leg Hop and Stick": {
+    "name": "Single-Leg Hop and Stick",
+    "en_hash": "5189448b4a36",
+    "auto": false,
+    "steps": [
+      "Ćwiczenie na późniejszy etap: najpierw opanuj schodzenie bokiem ze stopnia i sięganie nogą w trzech kierunkach.",
+      "Stań na jednej nodze.",
+      "Skocz na krótką odległość do przodu (albo w bok) i miękko wyląduj na tej samej nodze.",
+      "Zatrzymaj lądowanie na dwie do trzech sekund, z kolanem w linii z palcami stopy, zanim skoczysz ponownie. Łatwiej: krótsze skoki. Trudniej: dłuższe skoki albo zmiana kierunku."
+    ]
+  },
+  "Smith Machine Box Squat": {
+    "name": "Smith Machine Box Squat",
+    "en_hash": "b0206cf695a6",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Postaw skrzynię za sobą i oprzyj sztangę na górnej części pleców.",
+      "Cofaj biodra i siadaj, aż lekko dotkniesz skrzyni, a potem wstań."
+    ]
+  },
+  "Smith Machine Bulgarian Split Squat": {
+    "name": "Smith Machine Bulgarian Split Squat",
+    "en_hash": "b1b63e71959b",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Oprzyj sztangę na górnej części pleców, a tylną stopę na ławce za sobą.",
+      "Zejdź prosto w dół, aż przednie udo będzie mniej więcej równoległe do podłogi, a potem wypchnij się w górę."
+    ]
+  },
+  "Smith Machine Curtsy Lunge": {
+    "name": "Smith Machine Curtsy Lunge",
+    "en_hash": "c12851ebbf79",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Stań pod sztangą, ze sztangą na górnej części pleców.",
+      "Zrób krok jedną nogą w tył i na skos za drugą nogę, zejdź w dół, aż przednie udo będzie mniej więcej równoległe do podłogi, a potem wróć."
+    ]
+  },
+  "Smith Machine Deadlift": {
+    "name": "Smith Machine Deadlift",
+    "en_hash": "2eb006ad2379",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Ustaw stopy pod sztangą i chwyć ją tuż na zewnątrz kolan, z prostymi plecami.",
+      "Wstań, odpychając się nogami od podłogi; opuść sztangę tą samą drogą."
+    ]
+  },
+  "Smith Machine Front Squat": {
+    "name": "Smith Machine Front Squat",
+    "en_hash": "cdc492faa607",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Oprzyj sztangę na przodzie barków, z wysoko uniesionymi łokciami.",
+      "Zejdź do przysiadu z uniesioną klatką piersiową, a potem wstań."
+    ]
+  },
+  "Smith Machine Glute Bridge": {
+    "name": "Smith Machine Glute Bridge",
+    "en_hash": "ffcc73c71fb3",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Połóż się na podłodze z ugiętymi kolanami, ze sztangą z nakładką na biodrach.",
+      "Wypchnij biodra w górę, aż ciało będzie w jednej linii od kolan do barków, a potem je opuść."
+    ]
+  },
+  "Smith Machine Good Morning": {
+    "name": "Smith Machine Good Morning",
+    "en_hash": "232a64f9027e",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Oprzyj sztangę na górnej części pleców, z lekko ugiętymi kolanami.",
+      "Cofnij biodra i pochyl tułów do przodu z prostymi plecami, a potem wstań."
+    ]
+  },
+  "Smith Machine Hack Squat": {
+    "name": "Smith Machine Hack Squat",
+    "en_hash": "57eafd95854f",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Ustaw stopy nieco przed sztangą i oprzyj sztangę na górnej części pleców.",
+      "Oprzyj się plecami o sztangę, zejdź do przysiadu z kolanami wysuniętymi do przodu, a potem wstań."
+    ]
+  },
+  "Smith Machine Hip Thrust": {
+    "name": "Smith Machine Hip Thrust",
+    "en_hash": "2fb051588c8b",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Usiądź, opierając górną część pleców o ławkę, ze sztangą z nakładką na biodrach.",
+      "Wypchnij biodra w górę, aż ciało będzie w jednej linii od kolan do barków.",
+      "W górnej pozycji napnij pośladki, a potem opuść biodra w sposób kontrolowany."
+    ]
+  },
+  "Smith Machine Kneeling Squat": {
+    "name": "Smith Machine Kneeling Squat",
+    "en_hash": "0f0b493933f6",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Uklęknij na podkładce pod sztangą i oprzyj sztangę na górnej części pleców.",
+      "Opuść biodra w stronę pięt, a potem wypchnij biodra do przodu do wyprostowanego klęku."
+    ]
+  },
+  "Smith Machine Lunge": {
+    "name": "Smith Machine Lunge",
+    "en_hash": "882db87a0117",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Stań pod sztangą w długim wykroku, ze sztangą na górnej części pleców.",
+      "Zejdź prosto w dół, aż tylne kolano prawie dotknie podłogi, a potem wypchnij się w górę."
+    ]
+  },
+  "Smith Machine Rack Pull": {
+    "name": "Smith Machine Rack Pull",
+    "en_hash": "245af95a372f",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Ustaw ograniczniki tuż poniżej kolan i zaczynaj ruch od nich.",
+      "Wstań z prostymi plecami, wyprostuj biodra do końca i opuść sztangę na ograniczniki."
+    ]
+  },
+  "Smith Machine Reverse Lunge": {
+    "name": "Smith Machine Reverse Lunge",
+    "en_hash": "b704ba8019da",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Stań pod sztangą ze złączonymi stopami, ze sztangą na górnej części pleców.",
+      "Zrób krok jedną nogą w tył i zejdź w dół, aż tylne kolano prawie dotknie podłogi.",
+      "Odepchnij się przednią stopą i wróć; wykonaj wszystkie powtórzenia na jedną stronę."
+    ]
+  },
+  "Smith Machine Romanian Deadlift": {
+    "name": "Smith Machine Romanian Deadlift",
+    "en_hash": "9545994008de",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Trzymaj sztangę na wysokości bioder, ze stopami pod sztangą i lekko ugiętymi kolanami.",
+      "Cofnij biodra i opuszczaj sztangę wzdłuż nóg, z prostymi plecami.",
+      "Zatrzymaj się, gdy poczujesz rozciąganie dwugłowych ud, a potem wypchnij biodra do przodu."
+    ]
+  },
+  "Smith Machine Single-Leg Hip Thrust": {
+    "name": "Smith Machine Single-Leg Hip Thrust",
+    "en_hash": "6f1a2293400a",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Ustaw się jak do wypychania bioder, a potem oderwij jedną stopę od podłogi.",
+      "Wypchnij biodra w górę, odpychając się piętą stopy na podłodze; trzymaj biodra na jednym poziomie i opuść je w sposób kontrolowany."
+    ]
+  },
+  "Smith Machine Step-up": {
+    "name": "Smith Machine Step-up",
+    "en_hash": "f3f5971e42dd",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Postaw skrzynię pod sztangą, oprzyj sztangę na górnej części pleców i postaw jedną stopę na skrzyni.",
+      "Odepchnij się piętą przedniej nogi, aż staniesz na skrzyni; zejdź w sposób kontrolowany."
+    ]
+  },
+  "Smith Machine Sumo Squat": {
+    "name": "Smith Machine Sumo Squat",
+    "en_hash": "92c710f31c0d",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Stań szeroko, z palcami stóp na zewnątrz, ze sztangą na górnej części pleców.",
+      "Zejdź do przysiadu, rozpychając kolana na zewnątrz, w linii z palcami stóp, a potem wstań."
     ]
   },
   "Spanish Squat Hold": {
@@ -977,6 +1211,16 @@
       "Trzymaj hantel w każdej ręce, swobodnie opuszczone po bokach. To pozycja wyjściowa.",
       "Zejdź w dół, uginając kolano i biodro. Przez cały ruch utrzymuj dobrą postawę. Przednie kolano prowadź w linii ze stopą.",
       "W dolnej pozycji odepchnij się piętą, prostując kolano i biodro, i wróć do pozycji wyjściowej."
+    ]
+  },
+  "Stability Ball Kneeling Balance": {
+    "name": "Stability Ball Kneeling Balance",
+    "en_hash": "036c26af3f5d",
+    "auto": false,
+    "steps": [
+      "Połóż piłkę gimnastyczną przy ścianie albo stojaku i oprzyj dłonie na jej szczycie.",
+      "Ostrożnie wejdź na piłkę jednym kolanem, potem drugim, a następnie puść ręce.",
+      "Utrzymaj wyprostowany klęk, z wyprostowanymi biodrami. Zadbaj o wolną, bezpieczną przestrzeń wokół siebie. Łatwiej: trzymaj dłonie na piłce."
     ]
   },
   "Standing Knee Raise Hold": {

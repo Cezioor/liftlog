@@ -16,6 +16,11 @@ BASELESS_LEVELS = {
     "Smith Machine Sumo Squat": "beginner",
 }
 
+# Variants whose base's photos show another movement (they still share its family, level
+# and mechanic). Barbell Hack Squat holds the bar behind the legs; on the Smith machine
+# the bar is on the back with the feet in front of it.
+NO_BASE_PHOTOS = {"Smith Machine Hack Squat"}
+
 # Shared first step: the Smith bar runs on rails, so setting the hooks matters most.
 SET_BAR = "Set the bar height and the safety stops before you load the bar."
 
@@ -244,7 +249,7 @@ SMITH_VARIANTS = [
         [
             SET_BAR,
             "Wide stance, toes turned out, bar on your upper back.",
-            "Squat down pushing the knees out over the toes, then stand up.",
+            "Squat down pushing the knees out in line with the toes, then stand up.",
         ],
     ),
     (

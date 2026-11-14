@@ -888,7 +888,7 @@ HOLDS_AND_BALANCE = [
             "Stand on one leg.",
             ("Hop a short distance forward (or to the side) and land softly on the same leg."),
             (
-                "Freeze the landing for two to three seconds with the knee over "
+                "Freeze the landing for two to three seconds with the knee in line with "
                 "the toes before the next hop. Easier: smaller hops. Harder: "
                 "longer hops or changing direction."
             ),
@@ -946,7 +946,10 @@ HOLDS_AND_BALANCE = [
         "instructions": [
             ("Stand on one leg facing a wall or a partner, holding a light ball."),
             ("Throw the ball and catch it while keeping your balance on the standing leg."),
-            ("Count catches, then switch legs. Harder: throw to the sides or stand on a cushion."),
+            (
+                "Count catches, then switch legs. Harder: throw to the sides or "
+                "stand on a balance pad."
+            ),
         ],
     },
     {
