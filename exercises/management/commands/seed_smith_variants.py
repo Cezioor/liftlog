@@ -3,7 +3,13 @@ from django.db import transaction
 
 from exercises.models import Equipment, Exercise
 from exercises.services import default_progression_step
-from exercises.smith_variants import BASELESS_LEVELS, NO_BASE_PHOTOS, SMITH_VARIANTS
+from exercises.smith_variants import (
+    BASELESS_LEVELS,
+    FREE_WEIGHT_PHOTO_NOTE,
+    FREE_WEIGHTS,
+    NO_BASE_PHOTOS,
+    SMITH_VARIANTS,
+)
 
 
 class Command(BaseCommand):
@@ -21,6 +27,8 @@ class Command(BaseCommand):
                 base = Exercise.objects.filter(name=base_name, owner=None).first()
                 if base is None:
                     missing_bases.append(base_name)
+            images = list(base.images) if base and name not in NO_BASE_PHOTOS else []
+            note = FREE_WEIGHT_PHOTO_NOTE if images and base.equipment in FREE_WEIGHTS else ("", "")
             _, created = Exercise.objects.update_or_create(
                 name=name,
                 owner=None,
@@ -36,7 +44,9 @@ class Command(BaseCommand):
                     "secondary_muscles": secondary,
                     "instructions": instructions,
                     # The base's photos (free weights, same movement), as for user variants.
-                    "images": list(base.images) if base and name not in NO_BASE_PHOTOS else [],
+                    "images": images,
+                    "photo_note": note[0],
+                    "photo_note_pl": note[1],
                     "level": base.level if base else BASELESS_LEVELS.get(name, ""),
                     "mechanic": base.mechanic if base else "",
                     "progression_step_kg": default_progression_step(muscle_group, Equipment.SMITH),

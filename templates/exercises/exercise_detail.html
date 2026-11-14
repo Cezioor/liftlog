@@ -46,6 +46,8 @@
         {% endif %}
       </figcaption>
     </figure>
+    {# What the photos show when it is not exactly this exercise (other equipment, one arm). #}
+    {% if photo_note %}<p class="muted small photo-note">{{ photo_note }}</p>{% endif %}
   {% endif %}
 
   <a class="button" href="{{ change_variant_url }}">⇄ {% translate "Change variant" %}</a>

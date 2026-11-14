@@ -14,7 +14,7 @@ from accounts.services import get_user_settings
 from workouts.services import last_sets, personal_records, recently_used_exercises
 
 from .forms import ExerciseForm
-from .instructions_pl import shown_instructions
+from .instructions_pl import shown_instructions, shown_photo_note
 from .models import Equipment, Exercise, Muscle, MuscleGroup
 from .picker import picker_response
 from .services import (
@@ -58,6 +58,7 @@ def exercise_detail(request, pk):
             "primary_labels": [labels[m] for m in primary],
             "secondary_labels": [labels[m] for m in secondary],
             "instructions": shown_instructions(exercise, get_language()),
+            "photo_note": shown_photo_note(exercise, get_language()),
             "last_sets": last_sets(request.user, exercise),
             "records": personal_records(request.user, exercise),
             "can_edit": exercise.owner_id == request.user.pk,

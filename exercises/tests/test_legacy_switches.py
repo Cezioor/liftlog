@@ -115,7 +115,8 @@ def test_walking_lunge_keeps_the_photos_with_its_own_instructions(before_the_swi
     assert lunge.source_id is None  # Dumbbell_Lunges is the built-in "Dumbbell Lunges" now
     assert lunge.images[0] == "Dumbbell_Lunges/0.jpg"
     assert lunge.instructions == ORIGINAL_INSTRUCTIONS["Walking Lunge"]
-    assert "photos show the same lunge done in place" in lunge.instructions[-1]
+    assert "photos show the same lunge done in place" in lunge.photo_note
+    assert not any("photos" in step for step in lunge.instructions)
     assert "wykroki z hantlami" not in lunge.aliases.split(", ")
 
 

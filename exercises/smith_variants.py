@@ -21,6 +21,14 @@ BASELESS_LEVELS = {
 # the bar is on the back with the feet in front of it.
 NO_BASE_PHOTOS = {"Smith Machine Hack Squat"}
 
+# Under the photos of variants whose base is done with free weights (English, Polish).
+# Bases with other equipment (a machine, bodyweight) get no note for now.
+FREE_WEIGHT_PHOTO_NOTE = (
+    "The photos show the same movement with free weights.",
+    "Zdjęcia pokazują ten sam ruch z wolnym ciężarem.",
+)
+FREE_WEIGHTS = {"barbell", "dumbbell", "kettlebell"}
+
 # Shared first step: the Smith bar runs on rails, so setting the hooks matters most.
 SET_BAR = "Set the bar height and the safety stops before you load the bar."
 

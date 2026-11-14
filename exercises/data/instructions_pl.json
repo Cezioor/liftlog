@@ -439,13 +439,12 @@
   },
   "Goblet_Squat": {
     "name": "Goblet Squat",
-    "en_hash": "9e9b9fe1f4d9",
+    "en_hash": "a3ea56457696",
     "auto": false,
     "steps": [
       "Stań w rozkroku nieco szerszym niż barki i trzymaj jeden hantel pionowo przy klatce piersiowej, obejmując dłońmi jego górny koniec.",
       "Zejdź do przysiadu między nogi, z uniesioną klatką piersiową i głową oraz prostymi plecami, aż uda będą co najmniej równoległe do podłogi.",
-      "W dolnej pozycji rozepchnij łokciami kolana na zewnątrz, a potem wstań.",
-      "Zdjęcia pokazują ten sam przysiad z kettlebell trzymanym za rogi (przysiad goblet z kettlebell)."
+      "W dolnej pozycji rozepchnij łokciami kolana na zewnątrz, a potem wstań."
     ]
   },
   "Hack_Squat": {
@@ -693,14 +692,13 @@
   },
   "One-Arm_Kettlebell_Swings": {
     "name": "Kettlebell Swing",
-    "en_hash": "6ab2d96bffae",
+    "en_hash": "14116b91006e",
     "auto": false,
     "steps": [
       "Stań w rozkroku nieco szerszym niż barki, z kettlebell na podłodze ok. 30 cm przed sobą.",
       "Pochyl tułów, zginając się w biodrach, z prostymi plecami, chwyć uchwyt obiema rękami i pociągnij kettlebell dynamicznie do tyłu, między nogi.",
       "Dynamicznie wypchnij biodra do przodu i stań prosto: kettlebell wznosi się na prostych rękach mniej więcej na wysokość klatki piersiowej. Siła pochodzi z bioder, nie z rąk.",
-      "Pozwól, żeby kettlebell opadł z powrotem między nogi, znów zginając się w biodrach, i powtórz.",
-      "Zdjęcia pokazują wersję jednorącz; praca bioder jest taka sama."
+      "Pozwól, żeby kettlebell opadł z powrotem między nogi, znów zginając się w biodrach, i powtórz."
     ]
   },
   "Pallof Press Hold": {
@@ -1318,14 +1316,13 @@
   },
   "Walking Lunge": {
     "name": "Walking Lunge",
-    "en_hash": "feac82d41d79",
+    "en_hash": "161c34de2618",
     "auto": false,
     "steps": [
       "Stań z wyprostowanym tułowiem, z hantlem w każdej ręce przy bokach. To pozycja wyjściowa.",
       "Zrób krok jedną nogą do przodu i opuść ciało, aż oba kolana będą ugięte mniej więcej pod kątem 90 stopni, a tylne kolano tuż nad podłogą. Trzymaj tułów pionowo. Schodząc, weź wdech.",
       "Z wydechem odepchnij się piętą przedniej nogi i przenieś tylną nogę do przodu w kolejny krok, tak żeby zrobić wykrok drugą nogą.",
-      "Idź dalej do przodu, na zmianę nogami, i wykonaj zaplanowaną liczbę powtórzeń.",
-      "Zdjęcia pokazują ten sam wykrok wykonywany w miejscu (wykroki z hantlami)."
+      "Idź dalej do przodu, na zmianę nogami, i wykonaj zaplanowaną liczbę powtórzeń."
     ]
   },
   "Wall Sit": {

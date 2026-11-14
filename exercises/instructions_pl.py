@@ -97,3 +97,24 @@ def shown_instructions(exercise, language):
             if builtin.instructions == exercise.instructions:
                 return _in_language(builtin, language)
     return ShownInstructions(list(exercise.instructions))
+
+
+def shown_photo_note(exercise, language):
+    """The note under the photos ("The photos show…"), in the page's language.
+
+    A user's variant has a copy of a built-in's photos: while they are the same as those
+    of a built-in of its family, that built-in's note is shown.
+    """
+    from .models import Exercise
+
+    source = exercise
+    if exercise.owner_id is not None:
+        source = None
+        if exercise.movement_id and exercise.images:
+            family = Exercise.objects.filter(owner__isnull=True, movement_id=exercise.movement_id)
+            source = next((b for b in family.order_by("pk") if b.images == exercise.images), None)
+    if source is None or not source.images:
+        return ""
+    if (language or "").startswith("pl") and source.photo_note_pl:
+        return source.photo_note_pl
+    return source.photo_note

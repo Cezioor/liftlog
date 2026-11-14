@@ -9,6 +9,7 @@ from exercises.seed_data import (
     EXERCISES,
     EXTRA_EXERCISES,
     ORIGINAL_LEVELS,
+    PHOTO_NOTES,
     PROGRESSION_STEP_OVERRIDES,
 )
 from exercises.services import default_progression_step
@@ -27,6 +28,7 @@ class Command(BaseCommand):
             measurement, category, unilateral = EXERCISE_TYPES.get(
                 name, ("weight_reps", "strength", False)
             )
+            photo_note, photo_note_pl = PHOTO_NOTES.get(name, ("", ""))
             # update_or_create makes the command idempotent: running it again
             # updates existing built-ins instead of creating duplicates.
             _, created = Exercise.objects.update_or_create(
@@ -41,6 +43,8 @@ class Command(BaseCommand):
                     "measurement": measurement,
                     "category": category,
                     "is_unilateral": unilateral,
+                    "photo_note": photo_note,
+                    "photo_note_pl": photo_note_pl,
                     **({"level": ORIGINAL_LEVELS[name]} if name in ORIGINAL_LEVELS else {}),
                     # Our own text (Pendlay Row has no free-exercise-db counterpart); the
                     # import sets the same list again for the matched originals.

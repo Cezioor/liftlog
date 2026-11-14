@@ -319,7 +319,9 @@ def test_originals_get_their_own_instructions_where_the_dataset_does_not_fit(ori
     import_dataset(load_dataset())
 
     goblet = Exercise.objects.get(owner=None, name="Goblet Squat")
-    assert "dumbbell" in goblet.instructions[0] and "kettlebell" in goblet.instructions[-1]
-    assert goblet.images  # same movement: the photos stay, the text says what they show
+    assert "dumbbell" in goblet.instructions[0]
+    assert not any("photos" in step for step in goblet.instructions)
+    # Same movement: the photos stay, the note under them says what they show.
+    assert goblet.images and "kettlebell" in goblet.photo_note
     swing = Exercise.objects.get(owner=None, name="Kettlebell Swing")
     assert swing.instructions and "both hands" in swing.instructions[1]

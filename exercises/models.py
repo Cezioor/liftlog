@@ -178,6 +178,10 @@ class Exercise(models.Model):
     # by load_polish_instructions; "auto" = translated automatically, not reviewed yet.
     instructions_pl = models.JSONField(default=list, blank=True, editable=False)
     instructions_pl_auto = models.BooleanField(default=False, editable=False)
+    # What the photos show when it is not exactly this exercise (other equipment, one arm):
+    # a note under the photos, in English and Polish. Built-ins only.
+    photo_note = models.CharField(max_length=200, blank=True, editable=False)
+    photo_note_pl = models.CharField(max_length=200, blank=True, editable=False)
     images = models.JSONField(default=list, blank=True)  # paths like "Barbell_Squat/0.jpg"
     # The family of variants this exercise belongs to (same movement, other equipment).
     # SET_NULL: removing a family never touches the exercises or their history.

@@ -351,3 +351,22 @@ EXTRA_EXERCISES.append(
 # Levels for originals that free-exercise-db has no counterpart for (the import sets the
 # others' level from their match).
 ORIGINAL_LEVELS = {"Pendlay Row": "intermediate"}
+
+# Notes shown under the photos of originals whose photos are not exactly the exercise
+# (same movement, other equipment or number of hands): name -> (English, Polish).
+PHOTO_NOTES = {
+    "Goblet Squat": (
+        "The photos show the same squat with a kettlebell held by the horns "
+        "(Kettlebell Goblet Squat).",
+        "Zdjęcia pokazują ten sam przysiad z kettlebell trzymanym za rogi "
+        "(przysiad goblet z kettlebell).",
+    ),
+    "Kettlebell Swing": (
+        "The photos show the one-arm version; the movement of the hips is the same.",
+        "Zdjęcia pokazują wersję jednorącz; praca bioder jest taka sama.",
+    ),
+    "Walking Lunge": (
+        "The photos show the same lunge done in place (Dumbbell Lunges).",
+        "Zdjęcia pokazują ten sam wykrok wykonywany w miejscu (wykroki z hantlami).",
+    ),
+}

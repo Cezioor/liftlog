@@ -42,8 +42,10 @@ and keep each change small enough to review.
    name, main name ≤ ~45 characters, popular Polish names first, forms as in the file ("na smithie", "na skosie"),
    checked against the instructions. Duplicates: same movement = same path and same body position (lying /
    seated / standing / bent over). Photos stay with an exercise when the movement is the same and only the
-   equipment or the number of hands differs, with a sentence in the instructions saying what they show
-   (Goblet Squat: kettlebell photos; Kettlebell Swing: one-arm photos).
+   equipment or the number of hands differs, with a note under the photos saying what they show
+   (`photo_note` / `photo_note_pl`, never a step of the instructions; Goblet Squat: kettlebell photos;
+   Kettlebell Swing: one-arm photos; `seed_data.PHOTO_NOTES`). Smith variants with the photos of a free-weight
+   base share "The photos show the same movement with free weights." (`smith_variants.FREE_WEIGHT_PHOTO_NOTE`).
 4. ~~**Searching by muscle and in everyday words**~~: done on 2026-11-08. More forms of equipment words
    ("na smithie"); filler words ignored; muscle words (formal, colloquial, anatomical, English, body regions,
    several in one query) filter like equipment words, from `exercises/muscle_words.py` (reviewed by the owner;
@@ -80,8 +82,9 @@ and keep each change small enough to review.
       a barbell. Reps exercises with added kg and no plan range use 6–10 reps (`DEFAULT_WEIGHTED_REPS_RANGE`).
 6. **Polish exercise instructions** (in progress since 2026-11-14): in Polish, "How to do it" showed the English
    instructions. **Done:** the glossary, the fields, `load_polish_instructions`, the exercise page with both notes,
-   the tests, and batches 1–4 reviewed by the owner (98 exercises: the 65 originals and our built-ins W1–W33).
-   **Left:** our last built-ins (7 balance exercises, Kettlebell Goblet Squat, 30 Smith variants), then part (b).
+   the tests, and batches 1–5 reviewed by the owner (122 exercises: the 65 originals, our 40 own built-ins and
+   17 Smith variants). **Left:** the last 13 Smith variants (batch 6, waiting for the owner's review), then
+   part (b).
    How a batch goes: a draft with only "PL n:" lines → `polskie_nazwy/zloz_partie.py` builds the review file
    (English steps and hash from the database) → the owner's review → `polskie_nazwy/zapisz_partie.py` writes the
    data file (`--auto` for part (b)). A wrong or outdated English original is corrected first in
@@ -465,9 +468,6 @@ fixed on 2026-11-14 in `free_db`: `FOLDED_INTO_ORIGINALS`, `BORROWED_RECORDS`):
   (`ORIGINAL_INSTRUCTIONS`, the Dumbbell_Lunges photos with a note); Dumbbell_Lunges becomes its own
   built-in "wykroki z hantlami" in the "Lunge" family (the alias moves there).
 
-Photo notes in instructions (e.g. Goblet Squat, step 4: "The photos show…") are shown as a numbered step;
-better as a separate note under the photos.
-
 Movement family gaps: Back Squat joined the "Squat" family on 2026-11-13. The muscle-word suggestions avoid
 offering a duplicate by comparing movement names (`_similar_name_exists`).
 
@@ -500,6 +500,7 @@ Exercise(name, aliases, muscle_group, equipment, is_bodyweight, progression_step
          owner: User | null)   # null = built-in; search_text = normalised name + aliases
          # + free-exercise-db data: source_id, source_name, source_category, muscles, level, …
          # + instructions_pl (Polish steps of built-ins), instructions_pl_auto (not reviewed yet)
+         # + photo_note, photo_note_pl (what the photos show when it is not exactly this exercise)
 Movement(name, owner: User | null)   # null = built-in family
 UserSettings(user 1:1, effort_scale: simple | rir | rpe, ios_shortcut_enabled, ios_shortcut_name,
              keep_screen_on, rest_end_sound, language: pl | en | "" = not chosen)

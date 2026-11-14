@@ -152,8 +152,8 @@ SOURCE_CORRECTIONS = {
 # Our own instructions for originals whose free-exercise-db text doesn't fit them or is
 # wrong (the Polish translation never differs from the English text, so mistakes are fixed
 # here first), and for originals without a counterpart (set by seed_exercises). The photos
-# stay: same movement, only the equipment or the number of hands differs, and the
-# instructions say so.
+# stay: same movement, only the equipment or the number of hands differs, and a note
+# under the photos says so (seed_data.PHOTO_NOTES).
 ORIGINAL_INSTRUCTIONS = {
     # Source: hands "about 36 inches apart", far wider than a push-up.
     "Push-up": [
@@ -449,7 +449,6 @@ ORIGINAL_INSTRUCTIONS = {
         "As you exhale, push through the front heel and bring the back leg forward into the "
         "next step, so that you lunge with the other leg.",
         "Keep walking forward, alternating legs, for the recommended amount of repetitions.",
-        "The photos show the same lunge done in place (Dumbbell Lunges).",
     ],
     # No counterpart in free-exercise-db (UNMATCHED_ORIGINALS); written by us.
     "Pendlay Row": [
@@ -469,8 +468,6 @@ ORIGINAL_INSTRUCTIONS = {
         "Squat down between your legs, keeping your chest and head up and your back straight, "
         "until your thighs are at least parallel to the floor.",
         "At the bottom, use your elbows to push your knees out, then stand back up.",
-        "The photos show the same squat with a kettlebell held by the horns (Kettlebell "
-        "Goblet Squat).",
     ],
     "Kettlebell Swing": [
         "Stand with your feet a little wider than shoulder width, a kettlebell on the floor "
@@ -480,7 +477,6 @@ ORIGINAL_INSTRUCTIONS = {
         "Drive your hips forward explosively and stand tall: the kettlebell floats up to about "
         "chest height with straight arms. The power comes from the hips, not the arms.",
         "Let it swing back between your legs as you hinge again, and repeat.",
-        "The photos show the one-arm version; the movement of the hips is the same.",
     ],
 }
 
