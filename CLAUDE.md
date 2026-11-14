@@ -110,6 +110,17 @@ and keep each change small enough to review.
      Order of the part (b) batches: strength exercises for beginners (323), then intermediate strength (238),
      then stretching and mobility (121), plyometrics (61), then the rest (66: expert strength, cardio, a few
      holds and balance exercises).
+   - A part (b) session, step by step: read the glossary → list the next ~100 untranslated built-ins of the
+     current group (`instructions` not empty, `instructions_pl` empty) → write the draft ("## <nr>. <English
+     name>" + "PL n: …" lines) in the scratchpad → build the review file:
+     `manage.py shell -c "import sys; sys.argv=['x','--','<draft>','polskie_nazwy/instrukcje_b_partia_N.txt','<title>']; exec(open('polskie_nazwy/zloz_partie.py', encoding='utf-8').read())"`
+     → append the notes (A doubts and mismatches with the name or photos, B mistakes in the original, C wording
+     choices, D units) and 10 random exercises for the owner's spot check → save with `zapisz_partie.py` the same
+     way plus `'--auto'` → `load_polish_instructions`, tests, commit; push when asked. Both scripts live in
+     `polskie_nazwy/` (not in the repo; only on the owner's PC). Changes by analogy to earlier decisions are made
+     without asking and only listed. Check the GitHub API sparingly (60 unauthenticated requests per hour).
+   - Open question for the owner (2026-11-14): two saved sentences still call the exercise "wypychanie bioder"
+     (Barbell Hip Thrust Hold step 3, Smith Machine Single-Leg Hip Thrust step 2); proposed "hip thrust".
    - Tests: as many steps as the original, no empty steps, no Cyrillic, every key exists, hashes match;
      language choice and both notes; variants with unchanged and with changed instructions.
 7. **Plan sections and missing exercises (B + C)**, before Stage 1.7: `PlanExercise.section` with three fixed
