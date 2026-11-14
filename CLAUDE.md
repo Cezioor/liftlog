@@ -66,7 +66,7 @@ and keep each change small enough to review.
       hold" ("80 kg × 30 s"), counting only holds of at least the plan's minimum (without a plan 10 s).
    3. Rename "Motor control / balance" to "Balance & stability"; "Type" filter chips in the picker (Rehab is
       not shown: rehab comes with Stage 2).
-   4. Goal tiles on the library: Strength, Warm-up (until item 6: exercises with "rozgrzewka" in their Polish
+   4. Goal tiles on the library: Strength, Warm-up (until item 7: exercises with "rozgrzewka" in their Polish
       names), Stretching, Balance & stability, Cardio.
    5. "Stretches for these muscles" on the exercise page.
    6. ~~"⇄ Change variant" shows only equipment that fits~~ (2026-11-13), checked against all built-ins:
@@ -78,16 +78,37 @@ and keep each change small enough to review.
       press offers only "Other…"), "Other…" always stays. Kettlebell Goblet Squat
       added; Stiff-Legged Dumbbell Deadlift moved to the RDL family (`NOT_NAME_GROUPED`); Preacher Curl uses
       a barbell. Reps exercises with added kg and no plan range use 6–10 reps (`DEFAULT_WEIGHTED_REPS_RANGE`).
-6. **Plan sections and missing exercises (B + C)**, before Stage 1.7: `PlanExercise.section` with three fixed
+6. **Polish exercise instructions** (after "Stretches for these muscles"): in Polish, "How to do it" still shows
+   the English instructions. Scale: 876 free-exercise-db exercises (3738 steps, ~103k words) plus our built-ins
+   (40 extras incl. holds and balance, 30 Smith variants, Kettlebell Goblet Squat, the two rewritten originals).
+   - New fields `instructions_pl` (list of steps) and `instructions_pl_auto` (automatic, not reviewed yet);
+     without Polish steps the English ones with "Instructions available in English only". Users' own exercises
+     unchanged. A user's variant gets no copy: at display time, if its English steps are identical to those of a
+     built-in of the same family, that built-in's Polish steps are shown (with the "automatic translation" note
+     while unreviewed); if the user changed the instructions, their own text.
+   - Translations in `exercises/data/instructions_pl.json` keyed by `source_id`, each with a hash of the English
+     steps it was made from (a test fails when the English original changed after translation). Loaded in
+     `build.sh` by `load_polish_instructions` (after `merge_exercises`), which writes only rows that changed.
+   - **Every translation session starts by reading `exercises/data/glossary_pl.md`** (the owner-approved glossary);
+     corrections from reviews go into it. Batch files for review stay in `polskie_nazwy/` (not committed).
+   - Rules: step for step, vocabulary consistent with the Polish names and the glossary, safety cues translated
+     exactly, nothing added or left out; real measures (feet, inches, yards, miles, lb/lbs) as approximate cm, m,
+     km and kg ("feet" as a body part stays a body part).
+   - Order: glossary first; (a) the 65 originals, then our built-ins, in batches of ~25 for the owner's
+     approval; (b) the rest translated in the session (no API script), batches of ~100, each in a fresh
+     session, 10 random exercises per batch for a spot check, marked "automatic translation" until reviewed.
+   - Tests: as many steps as the original, no empty steps, no Cyrillic, every key exists, hashes match;
+     language choice and both notes; variants with unchanged and with changed instructions.
+7. **Plan sections and missing exercises (B + C)**, before Stage 1.7: `PlanExercise.section` with three fixed
    sections (warm-up / main / cool-down); warm-up and cool-down suggestions from the muscles of the day's main
    part; on the workout screen warm-up and cool-down are a tick-off list with an optional timer (no weights, hints
    or records; defaults 1–2 × 30 s, no rest). About 15–20 built-in dynamic warm-up drills (all 123 current
    stretches are static), exercises marked "before" / "after" training (balance exercises came in item 5).
    Lists wait for the owner's approval. Warm-up and stretching never count as hard sets (1.9).
-7. **Stage 1.7** – activities and body weight.
-8. **Checkpoint A**: a test at the gym and by a second (female) user; then `feedback_report`.
-9. **Stages 1.8, 1.9 and 2.**
-10. **Checkpoint B**: a week of training on a plan built by the AI.
+8. **Stage 1.7** – activities and body weight.
+9. **Checkpoint A**: a test at the gym and by a second (female) user; then `feedback_report`.
+10. **Stages 1.8, 1.9 and 2.**
+11. **Checkpoint B**: a week of training on a plan built by the AI.
 
 Stage 1 items 6 (history list, charts) and 7 (PWA) are not scheduled yet: ask the owner where they fit.
 
