@@ -101,7 +101,8 @@ SMITH_VARIANTS = [
         "Smith Machine Bulgarian Split Squat",
         "Bulgarian Split Squat",
         (
-            "bułgarski przysiad na smithie, bułgarski przysiad na suwnicy smitha, "
+            "przysiad bułgarski na smithie, przysiad bułgarski na suwnicy smitha, "
+            "bułgarski przysiad na smithie, "
             "przysiad bułgarski smith, bulgarian smith"
         ),
         "quads",
@@ -270,7 +271,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Hack Squat",
         "Barbell Hack Squat",
-        "hack przysiad na smithie, hack przysiad na suwnicy smitha, hack squat smith",
+        (
+            "przysiad hack na smithie, przysiad hack na suwnicy smitha, hack przysiad na smithie, "
+            "hack squat smith"
+        ),
         "quads",
         ["quadriceps"],
         ["glutes"],
@@ -303,7 +307,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Good Morning",
         "Good Morning",
-        "skłony good morning na smithie, skłony good morning na suwnicy smitha, good morning smith",
+        (
+            "dzień dobry na smithie, dzień dobry na suwnicy smitha, "
+            "skłony good morning na smithie, good morning smith"
+        ),
         "hamstrings",
         ["hamstrings"],
         ["glutes", "lower back"],
