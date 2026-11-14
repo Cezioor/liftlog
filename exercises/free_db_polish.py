@@ -507,10 +507,13 @@ POLISH_NAMES = {
         "wznosy bokiem jednorącz na ławce skośnej, wznosy bokiem leżąc bokiem na skosie, "
         "wznosy jedną ręką"
     ),
-    "Standing_Low-Pulley_Deltoid_Raise": (
-        "wznosy bokiem jednorącz na dolnym wyciągu, wznosy bokiem na wyciągu jedną ręką, "
-        "boczne barki na wyciągu"
+    # Standing_Low-Pulley_Deltoid_Raise is now the original "Cable Lateral Raise" (its
+    # names are in seed_data.ALIASES); these two became built-ins of their own (2026-11-14).
+    "Cable_Seated_Lateral_Raise": (
+        "odwrotne rozpiętki na wyciągu siedząc, wznosy w opadzie na wyciągu siedząc, "
+        "tylne aktony na wyciągu siedząc"
     ),
+    "Dumbbell_Lunges": "wykroki z hantlami, wykroki w miejscu z hantlami",
     "Front_Two-Dumbbell_Raise": (
         "wznosy przodem z hantlami oburącz, wznosy przodem obiema rękami, przednie barki"
     ),

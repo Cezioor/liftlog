@@ -42,5 +42,10 @@ class Command(BaseCommand):
             self.stdout.write(f"Kept without a match: {', '.join(UNMATCHED_ORIGINALS)}.")
         for name in report.legacy_missing:
             self.stdout.write(self.style.WARNING(f"Original exercise not found: {name}"))
+        for r in report.folded:
+            self.stdout.write(
+                f"Folded “{r.source_name}” ({r.source_id}) into “{r.target_name}” "
+                f"({r.target_id}): {r.sets} sets, {r.plan_entries} plan entries, {r.swaps} swaps."
+            )
         for source_id, reason in report.conflicts:
             self.stdout.write(self.style.WARNING(f"Skipped {source_id}: {reason}"))

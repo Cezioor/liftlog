@@ -21,11 +21,21 @@ z polskich nazw (`exercises/free_db_polish.py`, `seed_data.py`, `holds_balance.p
   Łacinę zostawiamy dla nazw mięśni bez potocznego odpowiednika („mięsień czworogłowy” → „czworogłowe”).
 - **Zdania krótkie.** Długie zdanie angielskie można podzielić na dwa zdania w tym samym kroku.
 - **Oddech:** „breathe in / inhale” → „wdech”, „breathe out / exhale” → „wydech”.
-  Na przykład „As you breathe out, press the bar up” → „Z wydechem wypchnij sztangę w górę”.
+  Na przykład „As you breathe out, press the bar up” → „Z wydechem wyciśnij sztangę w górę”.
+- **Szyk przy oddechu:** gdy zdanie zaczyna się od „Z wydechem / Z wdechem”, zaraz po nim idzie
+  czasownik, a pozostałe warunki po czasowniku: „Z wydechem ugnij ręce, nie ruszając ramionami”
+  (nie „Bez ruchu ramion z wydechem ugnij ręce”).
 - **Bez form z rodzajem gramatycznym** („wyprostowany”, „gotowy”, „zmęczony”): instrukcję czyta
   każdy, więc piszemy bezosobowo albo o części ciała: upright / tall → „stań prosto”, „z wyprostowanym
   tułowiem”, „trzymaj tułów pionowo”. Formy opisujące część ciała są w porządku („plecy proste”,
   „ręce wyprostowane”, „kolana lekko ugięte”).
+- **Polska instrukcja nigdy nie różni się treścią od angielskiej.** Gdy oryginał jest błędny
+  (sprzeczny, niebezpieczny, z błędną miarą), najpierw poprawiamy angielski tekst
+  (`free_db.ORIGINAL_INSTRUCTIONS`, po akceptacji właściciela), potem tłumaczymy poprawioną wersję.
+- **Zmiany przez analogię** do decyzji już podjętych (np. usunięcie kolejnego odsyłacza do
+  nieistniejącej części o ustawieniu stóp) robimy bez pytania i tylko wypisujemy je w pliku partii.
+- **Prywatne uwagi autora w pierwszej osobie** („my preference”, „I like to…”) pomijamy w obu
+  wersjach (usuwamy je też z angielskiej przez `ORIGINAL_INSTRUCTIONS`).
 - **Błędy w oryginale** (literówki: „parner”, „hands behind your hand”): tłumaczymy zamierzone
   znaczenie i wypisujemy każde takie miejsce w pliku partii. Gdy treść budzi wątpliwość merytoryczną,
   nie poprawiamy po cichu, tylko oznaczamy do decyzji właściciela.
@@ -40,6 +50,7 @@ z polskich nazw (`exercises/free_db_polish.py`, `seed_data.py`, `holds_balance.p
 | This will be your starting position. | To pozycja wyjściowa. |
 | Return to the starting position. | Wróć do pozycji wyjściowej. |
 | Repeat for the recommended / prescribed amount of repetitions. | Wykonaj zaplanowaną liczbę powtórzeń. |
+| Repeat. (samo) | Wykonaj zaplanowaną liczbę powtórzeń. |
 | … then switch sides / repeat with the other leg | … potem zmień stronę / powtórz drugą nogą |
 | Hold for a second / Pause for a second | Zatrzymaj się na sekundę |
 | at the top / contracted position | w górnej pozycji / w pozycji maksymalnego napięcia |
@@ -55,6 +66,8 @@ z polskich nazw (`exercises/free_db_polish.py`, `seed_data.py`, `holds_balance.p
 | until you feel a stretch | aż poczujesz rozciąganie |
 | the movement should only happen at the elbow | ruch zachodzi tylko w łokciu |
 | without moving the upper arms | bez ruchu ramion |
+| the arms should remain stationary (w rozpiętkach, wznosach: łokcie lekko ugięte) | ugięcie łokci się nie zmienia / nie zmieniając ugięcia łokci |
+| as if pouring water in a glass | jak przy nalewaniu wody do szklanki |
 
 ## 3. Sprzęt
 
@@ -140,7 +153,8 @@ pozycję nie zmieniają znaczenia słów kluczowych w wyszukiwarce (nie dotyczy 
 | neutral spine / back straight | neutralny kręgosłup / proste plecy |
 | chest up / chest out | klatka wypchnięta, unieś klatkę |
 | head up / looking forward | głowa uniesiona / wzrok przed siebie |
-| staggered stance / split stance | ustawienie wykroczne |
+| staggered stance / split stance | w wykroku („Stań w wykroku”) |
+| elbows in | łokcie blisko głowy / tułowia, nie rozchodzą się na boki |
 | plank position | pozycja deski |
 | push-up position | pozycja do pompki (podpór przodem) |
 | hanging (from a bar) | w zwisie |
@@ -180,6 +194,7 @@ pozycję nie zmieniają znaczenia słów kluczowych w wyszukiwarce (nie dotyczy 
 | jump / land | skocz / wyląduj | hold | utrzymaj (pozycję) |
 | brace your core / abs | napnij brzuch | keep … tight | trzymaj … napięte |
 | pause | zatrzymaj się | swing | wymach / wykonaj wymach |
+| hike (the kettlebell) back | pociągnij (kettlebell) dynamicznie do tyłu, między nogi (nie „przerzuć”) |
 | walk | idź | jog / sprint | biegnij truchtem / sprintem |
 
 ## 8. Pozostałe terminy
@@ -226,3 +241,15 @@ zawsze znaczy „jedna stopa” („place one foot on the box”). „Feet” ja
   ściągnij łopatki, napnij pośladki; chwyt małpi; kaptury, najszersze; kettlebell nieodmienny; przednia
   część stóp; bez zamachu; bend at the waist; arch; błędy w oryginale; 25 lbs → ok. 10 kg; jardy do
   okrągłych metrów.
+- 2026-11-14 (partia 1): polska instrukcja nie różni się od angielskiej, błędy najpierw poprawiamy w
+  angielskiej; uwagi autora w 1. osobie pomijamy; „ugięcie łokci się nie zmienia”; „nie bujaj”
+  (nie „nie buj”); „Ustaw sztangę na stojaku”; „wypchnij się z powrotem w górę” (pompki); „łącząc
+  ręce przed sobą”; „Gdy …, jesteś w pozycji wyjściowej.”
+- 2026-11-14 (partia 2): samo „Repeat.” też jako „Wykonaj zaplanowaną liczbę powtórzeń.”; „elbows
+  in”; „Stań w wykroku”; szyk po „Z wydechem / Z wdechem”; w przysiadach „Trzymaj pięty na
+  podłodze, a kolana prowadź w linii z palcami stóp” zamiast dawnej zasady „kolana nie przed
+  palcami”; notki o nieistniejącej części „foot stances” usunięte z obu wersji.
+- 2026-11-14 (partia 3): zmiany przez analogię bez pytania; maszyna do uginania nóg „z ławką
+  ustawioną pod kątem”; „poproś o pomoc partnera”; „prostując ciało do jednej linii”; hike →
+  „pociągnij dynamicznie do tyłu, między nogi”; w zarzucie „nie pochylaj się bardziej do przodu”;
+  balance pad → „poduszka balansowa”.

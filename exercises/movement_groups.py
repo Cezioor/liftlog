@@ -25,6 +25,9 @@ CONFIRMED_GROUPS: set[str] = {
     "decline press",
     "dip",  # 2026-11-06, with the parallel-bar dips below
     "deadlift",  # 2026-11-06, with the bar/machine versions below
+    # 2026-11-14: Cable Lateral Raise is one-arm now (its source is a one-arm raise); the
+    # owner kept it in the "Lateral Raise" family (MANUAL_GROUPS, 2026-11-13).
+    "lateral raise",
 }
 
 REJECTED_GROUPS: set[str] = {
@@ -44,6 +47,9 @@ MANUAL_GROUPS: dict[str, list[str]] = {
         "Incline Dumbbell Press",
     ],
     "Squat": ["Back Squat", "Smith Machine Squat", "Dumbbell Squat"],
+    # 2026-11-14: the seated bent-over cable raise was the source of "Cable Lateral Raise";
+    # same position and path as our Rear Delt Fly (Seated_Bent-Over_Rear_Delt_Raise).
+    "Rear Delt Fly": ["Rear Delt Fly", "Cable Seated Lateral Raise"],
     "Chest Press": ["Machine Chest Press", "Leverage Chest Press"],
     "Fly": ["Dumbbell Fly", "Flat Bench Cable Flyes"],
     "Cable Crossover": ["Cable Crossover", "Cross Over - With Bands"],

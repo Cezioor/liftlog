@@ -36,7 +36,9 @@ class MergeResult:
 
 @transaction.atomic
 def merge_into(source, target):
-    """Move everything that points at `source` (a user's exercise) to `target`."""
+    """Move everything that points at `source` (a user's exercise, or a built-in folded
+    into an original by the import) to `target`; users' variants in the source's family
+    join the target's family."""
     from plans.models import PlanExercise
     from workouts.models import WorkoutSet, WorkoutSwap
 
@@ -45,8 +47,15 @@ def merge_into(source, target):
     swaps = WorkoutSwap.objects.filter(exercise=source).update(exercise=target)
     # A swap that now points at the plan's own exercise means nothing any more.
     WorkoutSwap.objects.filter(exercise=target, plan_exercise__exercise=target).delete()
+    if source.movement_id:
+        from .services import ensure_movement
+
+        family = Exercise.objects.filter(movement_id=source.movement_id).exclude(pk=source.pk)
+        if family.exists():
+            family.update(movement=ensure_movement(target))
+    owner = source.owner.username if source.owner_id else "built-in"
     result = MergeResult(
-        source.pk, source.name, source.owner.username, target.pk, target.name,
+        source.pk, source.name, owner, target.pk, target.name,
         sets, plan_entries, swaps,
     )  # fmt: skip
     source.delete()

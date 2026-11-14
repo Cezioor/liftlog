@@ -102,7 +102,9 @@ def test_equipment_mapping(equipment, expected):
 
 
 @pytest.mark.django_db
-def test_original_exercise_is_enriched_but_keeps_its_own_fields(originals):
+def test_original_exercise_is_enriched_but_keeps_its_own_fields(originals, monkeypatch):
+    # Back Squat has corrected instructions of its own; here the source's are tested.
+    monkeypatch.delitem(free_db.ORIGINAL_INSTRUCTIONS, "Back Squat")
     squat_id = originals["Back Squat"]
 
     import_dataset(SAMPLE)
@@ -252,7 +254,8 @@ def test_reviewed_mapping_matches_the_dataset():
     assert withheld_ids() <= ids
     assert not withheld_ids() & set(LEGACY_MATCHES.values())
     # Polish names only for imported exercises, ~150 of them.
-    assert set(POLISH_NAMES) <= ids - set(LEGACY_MATCHES.values()) - withheld_ids()
+    legacy = {sid for name, sid in LEGACY_MATCHES.items() if name not in free_db.BORROWED_RECORDS}
+    assert set(POLISH_NAMES) <= ids - legacy - withheld_ids()
     assert len(POLISH_NAMES) >= 150
 
 
@@ -266,7 +269,9 @@ def test_full_import_of_the_real_dataset(originals):
     assert len(data) == 876
     assert len(report.legacy_matched) == len(LEGACY_MATCHES)
     assert report.conflicts == [] and report.legacy_missing == []
-    assert report.created + len(LEGACY_MATCHES) + report.withheld == len(data)
+    # A borrowed record is both an original's photos and a built-in of its own.
+    matched = len(LEGACY_MATCHES) - len(free_db.BORROWED_RECORDS)
+    assert report.created + matched + report.withheld == len(data)
     assert len(LEGACY_MATCHES) == 64 and report.withheld == 0
     assert again.created == 0
     # The originals are all still there, with their ids, and nothing is duplicated.

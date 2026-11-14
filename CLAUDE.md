@@ -86,7 +86,8 @@ and keep each change small enough to review.
      unchanged. A user's variant gets no copy: at display time, if its English steps are identical to those of a
      built-in of the same family, that built-in's Polish steps are shown (with the "automatic translation" note
      while unreviewed); if the user changed the instructions, their own text.
-   - Translations in `exercises/data/instructions_pl.json` keyed by `source_id`, each with a hash of the English
+   - Translations in `exercises/data/instructions_pl.json` keyed by `source_id` (or the name for our
+     built-ins without one), each with a hash of the English
      steps it was made from (a test fails when the English original changed after translation). Loaded in
      `build.sh` by `load_polish_instructions` (after `merge_exercises`), which writes only rows that changed.
    - **Every translation session starts by reading `exercises/data/glossary_pl.md`** (the owner-approved glossary);
@@ -122,6 +123,10 @@ Stage 1 items 6 (history list, charts) and 7 (PWA) are not scheduled yet: ask th
 - Every change to users' data goes through `data_fingerprint` (`build.sh` fails the deploy on unexpected changes;
   expected ones are listed explicitly in `--compare`). Uncertain data decisions (matches, groups, merges) wait for
   the owner's approval before they are applied.
+- While the app is not shared with other people (only the owner and a test account use it), changes to built-in
+  data need no manual production check before they are applied: `data_fingerprint` in `build.sh` is enough (if it
+  reports a change on deploy, stop and show it to the owner). The manual check (SELECT-only queries run by the
+  owner) comes back as soon as other users sign up.
 - Commit and push only when asked; commit messages in English, imperative mood. After pushing, check GitHub Actions
   and the Render deployment status (Render reports deployments to the GitHub API: `/repos/Cezioor/liftlog/deployments`).
 
@@ -443,6 +448,19 @@ Wrong equipment (the equipment filter shows them in the wrong place):
 - Lunge_Sprint: machine in free-exercise-db, but the instructions use the Smith machine.
 
 Missing instructions (named after the English name): Side_Jackknife, Iron_Cross.
+
+Originals whose free-exercise-db match was another exercise (found while translating instructions,
+fixed on 2026-11-14 in `free_db`: `FOLDED_INTO_ORIGINALS`, `BORROWED_RECORDS`):
+- Cable Lateral Raise = Cable_Seated_Lateral_Raise (seated bent-over, rear delts) → switch to
+  Standing_Low-Pulley_Deltoid_Raise (the built-in of that source is folded into ours: sets, plan entries,
+  swaps; `is_unilateral` = True); Cable_Seated_Lateral_Raise becomes its own built-in "odwrotne rozpiętki
+  na wyciągu siedząc" in the "Rear Delt Fly" family.
+- Walking Lunge = Dumbbell_Lunges (a stationary lunge) → our own walking-lunge instructions
+  (`ORIGINAL_INSTRUCTIONS`, the Dumbbell_Lunges photos with a note); Dumbbell_Lunges becomes its own
+  built-in "wykroki z hantlami" in the "Lunge" family (the alias moves there).
+
+Photo notes in instructions (e.g. Goblet Squat, step 4: "The photos show…") are shown as a numbered step;
+better as a separate note under the photos.
 
 Movement family gaps: Back Squat joined the "Squat" family on 2026-11-13. The muscle-word suggestions avoid
 offering a duplicate by comparing movement names (`_similar_name_exists`).

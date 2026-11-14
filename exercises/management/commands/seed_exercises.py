@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
+from exercises.free_db import ORIGINAL_INSTRUCTIONS
 from exercises.models import Exercise
 from exercises.seed_data import (
     ALIASES,
@@ -41,6 +42,13 @@ class Command(BaseCommand):
                     "category": category,
                     "is_unilateral": unilateral,
                     **({"level": ORIGINAL_LEVELS[name]} if name in ORIGINAL_LEVELS else {}),
+                    # Our own text (Pendlay Row has no free-exercise-db counterpart); the
+                    # import sets the same list again for the matched originals.
+                    **(
+                        {"instructions": ORIGINAL_INSTRUCTIONS[name]}
+                        if name in ORIGINAL_INSTRUCTIONS
+                        else {}
+                    ),
                 },
             )
             created_count += created

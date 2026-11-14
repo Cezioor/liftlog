@@ -127,7 +127,9 @@ ALIASES = {
     "wyciskanie hantli na barki",
     "Arnold Press": "arnoldki, wyciskanie arnolda",
     "Lateral Raise": "wznosy bokiem z hantlami, unoszenie ramion bokiem",
-    "Cable Lateral Raise": "wznosy bokiem na wyciągu, unoszenie ramienia bokiem na wyciągu",
+    "Cable Lateral Raise": "wznosy bokiem na wyciągu, unoszenie ramienia bokiem na wyciągu, "
+    "wznosy bokiem jednorącz na dolnym wyciągu, wznosy bokiem na wyciągu jedną ręką, "
+    "boczne barki na wyciągu",
     "Rear Delt Fly": "odwrotne rozpiętki, wznosy w opadzie, tylny akton barków",
     "Machine Shoulder Press": "wyciskanie nad głowę na maszynie, maszyna na barki",
     "Barbell Shrug": "szrugsy, wzruszanie ramion ze sztangą, kaptury",
@@ -156,7 +158,8 @@ ALIASES = {
     "Hack Squat": "przysiad hack, przysiad na maszynie",
     "Leg Extension": "prostowanie nóg na maszynie, wyprosty nóg siedząc",
     "Bulgarian Split Squat": "przysiad bułgarski, bułgary",
-    "Walking Lunge": "wykroki chodzone, wykroki z hantlami",
+    # "wykroki z hantlami" moved to Dumbbell Lunges (a lunge in place) on 2026-11-14.
+    "Walking Lunge": "wykroki chodzone, wykroki chodzone z hantlami",
     "Goblet Squat": "przysiad goblet, przysiad z hantlem",
     # Hamstrings
     "Romanian Deadlift": "martwy ciąg rumuński, rdl",
@@ -198,6 +201,8 @@ EXERCISE_TYPES = {
     "Farmer's Walk": ("distance_time", "strength", False),
     "Dumbbell Row": ("weight_reps", "strength", True),
     "Bulgarian Split Squat": ("weight_reps", "strength", True),
+    # One arm at a time since its source is Standing_Low-Pulley_Deltoid_Raise (2026-11-14).
+    "Cable Lateral Raise": ("weight_reps", "strength", True),
 }
 
 # Built-in exercises that free-exercise-db lacks: isometric holds, balance, rehab basics.
@@ -256,7 +261,7 @@ EXTRA_EXERCISES = [
         "instructions": [
             "Stand on one leg with a slightly bent knee, near a wall or rack for safety.",
             "Keep your hips level and your eyes on a fixed point.",
-            "Hold, then switch legs. Close your eyes or stand on a cushion to make it harder.",
+            "Hold, then switch legs. Close your eyes or stand on a balance pad to make it harder.",
         ],
     },
     {
