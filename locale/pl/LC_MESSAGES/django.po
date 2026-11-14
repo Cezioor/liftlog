@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LiftLog\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 11:27+0100\n"
+"POT-Creation-Date: 2026-11-14 19:09+0100\n"
 "PO-Revision-Date: 2026-11-06 22:40+0100\n"
 "Last-Translator: Cezary Muszalski\n"
 "Language-Team: Polish\n"
@@ -479,30 +479,30 @@ msgstr "Główne: %(muscles)s"
 msgid "Helping: %(muscles)s"
 msgstr "Pomocnicze: %(muscles)s"
 
-#: .\exercises\views.py:34 .\templates\base.html:24
+#: .\exercises\views.py:36 .\templates\base.html:24
 msgid "Exercises"
 msgstr "Ćwiczenia"
 
-#: .\exercises\views.py:39 .\templates\plans\plan_detail.html:60
+#: .\exercises\views.py:41 .\templates\plans\plan_detail.html:60
 msgid "Add"
 msgstr "Dodaj"
 
-#: .\exercises\views.py:79
+#: .\exercises\views.py:82
 #, python-format
 msgid "Added “%(name)s”."
 msgstr "Dodano „%(name)s”."
 
-#: .\exercises\views.py:93
+#: .\exercises\views.py:96
 #, python-format
 msgid "Saved “%(name)s”."
 msgstr "Zapisano „%(name)s”."
 
-#: .\exercises\views.py:184
+#: .\exercises\views.py:187
 #, python-format
 msgid "Created “%(name)s”, with its own history and records."
 msgstr "Utworzono „%(name)s”, z własną historią i rekordami."
 
-#: .\exercises\views.py:215
+#: .\exercises\views.py:218
 #, python-format
 msgid "Created “%(name)s”. You can set its details later in Exercises."
 msgstr ""
@@ -1297,38 +1297,46 @@ msgstr "Pomocnicze:"
 msgid "How to do it"
 msgstr "Jak wykonać"
 
-#: .\templates\exercises\exercise_detail.html:84
+#: .\templates\exercises\exercise_detail.html:77
+msgid "Instructions available in English only"
+msgstr "Instrukcja dostępna tylko po angielsku"
+
+#: .\templates\exercises\exercise_detail.html:81
+msgid "Automatic translation"
+msgstr "Tłumaczenie automatyczne"
+
+#: .\templates\exercises\exercise_detail.html:86
 msgid "My history"
 msgstr "Moja historia"
 
-#: .\templates\exercises\exercise_detail.html:88
-#: .\templates\exercises\exercise_detail.html:93
+#: .\templates\exercises\exercise_detail.html:90
+#: .\templates\exercises\exercise_detail.html:95
 #: .\templates\plans\plan_list.html:18
 msgid "j M Y"
 msgstr "j b Y"
 
-#: .\templates\exercises\exercise_detail.html:93
+#: .\templates\exercises\exercise_detail.html:95
 #, python-format
 msgid "Last time (%(date)s):"
 msgstr "Ostatnio (%(date)s):"
 
-#: .\templates\exercises\exercise_detail.html:98
+#: .\templates\exercises\exercise_detail.html:100
 msgid "You haven't logged this exercise yet."
 msgstr "Nie masz jeszcze zapisanego tego ćwiczenia."
 
-#: .\templates\exercises\exercise_detail.html:103
+#: .\templates\exercises\exercise_detail.html:105
 #: .\templates\plans\add_to_plan.html:4
 msgid "Add to plan"
 msgstr "Dodaj do planu"
 
-#: .\templates\exercises\exercise_detail.html:104
+#: .\templates\exercises\exercise_detail.html:106
 #: .\templates\exercises\exercise_form.html:4
 #: .\templates\plans\plan_exercise_form.html:4
 #: .\templates\plans\plan_exercise_form.html:8
 msgid "Edit exercise"
 msgstr "Edytuj ćwiczenie"
 
-#: .\templates\exercises\exercise_detail.html:106
+#: .\templates\exercises\exercise_detail.html:108
 #: .\templates\exercises\partials\picker_results.html:32
 msgid "All exercises"
 msgstr "Wszystkie ćwiczenia"

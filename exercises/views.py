@@ -6,6 +6,7 @@ from django.http import Http404, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
+from django.utils.translation import get_language
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
@@ -13,6 +14,7 @@ from accounts.services import get_user_settings
 from workouts.services import last_sets, personal_records, recently_used_exercises
 
 from .forms import ExerciseForm
+from .instructions_pl import shown_instructions
 from .models import Equipment, Exercise, Muscle, MuscleGroup
 from .picker import picker_response
 from .services import (
@@ -55,6 +57,7 @@ def exercise_detail(request, pk):
             "secondary_muscles": secondary,
             "primary_labels": [labels[m] for m in primary],
             "secondary_labels": [labels[m] for m in secondary],
+            "instructions": shown_instructions(exercise, get_language()),
             "last_sets": last_sets(request.user, exercise),
             "records": personal_records(request.user, exercise),
             "can_edit": exercise.owner_id == request.user.pk,

@@ -174,6 +174,10 @@ class Exercise(models.Model):
     source_category = models.CharField(max_length=30, blank=True, editable=False)
     mechanic = models.CharField(max_length=20, blank=True)  # compound / isolation
     instructions = models.JSONField(default=list, blank=True)  # list of steps
+    # Polish steps of built-in exercises, loaded from exercises/data/instructions_pl.json
+    # by load_polish_instructions; "auto" = translated automatically, not reviewed yet.
+    instructions_pl = models.JSONField(default=list, blank=True, editable=False)
+    instructions_pl_auto = models.BooleanField(default=False, editable=False)
     images = models.JSONField(default=list, blank=True)  # paths like "Barbell_Squat/0.jpg"
     # The family of variants this exercise belongs to (same movement, other equipment).
     # SET_NULL: removing a family never touches the exercises or their history.

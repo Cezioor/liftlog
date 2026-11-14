@@ -78,8 +78,14 @@ and keep each change small enough to review.
       press offers only "Other…"), "Other…" always stays. Kettlebell Goblet Squat
       added; Stiff-Legged Dumbbell Deadlift moved to the RDL family (`NOT_NAME_GROUPED`); Preacher Curl uses
       a barbell. Reps exercises with added kg and no plan range use 6–10 reps (`DEFAULT_WEIGHTED_REPS_RANGE`).
-6. **Polish exercise instructions** (after "Stretches for these muscles"): in Polish, "How to do it" still shows
-   the English instructions. Scale: 876 free-exercise-db exercises (3738 steps, ~103k words) plus our built-ins
+6. **Polish exercise instructions** (in progress since 2026-11-14): in Polish, "How to do it" showed the English
+   instructions. **Done:** the glossary, the fields, `load_polish_instructions`, the exercise page with both notes,
+   the tests, and batches 1–4 reviewed by the owner (98 exercises: the 65 originals and our built-ins W1–W33).
+   **Left:** our last built-ins (7 balance exercises, Kettlebell Goblet Squat, 30 Smith variants), then part (b).
+   How a batch goes: a draft with only "PL n:" lines → `polskie_nazwy/zloz_partie.py` builds the review file
+   (English steps and hash from the database) → the owner's review → `polskie_nazwy/zapisz_partie.py` writes the
+   data file (`--auto` for part (b)). A wrong or outdated English original is corrected first in
+   `free_db.ORIGINAL_INSTRUCTIONS` (the Polish text never differs from the English one). Scale: 876 free-exercise-db exercises (3738 steps, ~103k words) plus our built-ins
    (40 extras incl. holds and balance, 30 Smith variants, Kettlebell Goblet Squat, the two rewritten originals).
    - New fields `instructions_pl` (list of steps) and `instructions_pl_auto` (automatic, not reviewed yet);
      without Polish steps the English ones with "Instructions available in English only". Users' own exercises
@@ -152,7 +158,7 @@ Stage 1 items 6 (history list, charts) and 7 (PWA) are not scheduled yet: ask th
   `DATABASE_URL=sqlite:///<copy>` and run the `build.sh` steps with `data_fingerprint --save/--compare`.
 - After pulling new migrations the local database needs more than `migrate`: also the other `build.sh` steps
   (`createcachetable`, `seed_exercises`, `import_free_exercise_db`, `seed_smith_variants`, `group_movements`,
-  `merge_exercises`). Without `createcachetable` logging in fails with "no such table: django_cache".
+  `merge_exercises`, `load_polish_instructions`). Without `createcachetable` logging in fails with "no such table: django_cache".
 - In the local `.env` set `ACCOUNT_EMAIL_VERIFICATION=optional`: otherwise `mandatory` applies, and local emails
   only go to the runserver console. (Tests ignore it: conftest forces `mandatory`.)
 - gettext (for `makemessages` / `compilemessages`) is in `C:\Users\LT\AppData\Local\Programs\gettext-iconv\bin`;
@@ -483,7 +489,7 @@ offering a duplicate by comparing movement names (`_similar_name_exists`).
   free plan blocks SMTP ports; without the key emails go to the console (local development). Rate limits use the database cache
   (`createcachetable` in `build.sh`), shared by all gunicorn workers.
 - Tests with **pytest + pytest-django**; GitHub Actions runs tests and `ruff` on every push.
-- Deploy: Render free web service (`render.yaml`, `build.sh` runs migrate, createcachetable, collectstatic, seed_exercises, import_free_exercise_db, seed_smith_variants, group_movements and merge_exercises, and fails if `data_fingerprint --compare` finds unexpected changes to users, users' own exercises, workouts, sets or plans; gunicorn + WhiteNoise) with a Neon Postgres database (`DATABASE_URL`). CI runs the tests on Postgres.
+- Deploy: Render free web service (`render.yaml`, `build.sh` runs migrate, createcachetable, collectstatic, seed_exercises, import_free_exercise_db, seed_smith_variants, group_movements, merge_exercises and load_polish_instructions, and fails if `data_fingerprint --compare` finds unexpected changes to users, users' own exercises, workouts, sets or plans; gunicorn + WhiteNoise) with a Neon Postgres database (`DATABASE_URL`). CI runs the tests on Postgres.
 
 ## Data model (Stages 1–1.6)
 
@@ -493,6 +499,7 @@ Exercise(name, aliases, muscle_group, equipment, is_bodyweight, progression_step
          movement: Movement | null,     # family of variants: same movement, other equipment
          owner: User | null)   # null = built-in; search_text = normalised name + aliases
          # + free-exercise-db data: source_id, source_name, source_category, muscles, level, …
+         # + instructions_pl (Polish steps of built-ins), instructions_pl_auto (not reviewed yet)
 Movement(name, owner: User | null)   # null = built-in family
 UserSettings(user 1:1, effort_scale: simple | rir | rpe, ios_shortcut_enabled, ios_shortcut_name,
              keep_screen_on, rest_end_sound, language: pl | en | "" = not chosen)

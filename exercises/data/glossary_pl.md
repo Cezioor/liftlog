@@ -67,6 +67,7 @@ z polskich nazw (`exercises/free_db_polish.py`, `seed_data.py`, `holds_balance.p
 | the movement should only happen at the elbow | ruch zachodzi tylko w łokciu |
 | without moving the upper arms | bez ruchu ramion |
 | the arms should remain stationary (w rozpiętkach, wznosach: łokcie lekko ugięte) | ugięcie łokci się nie zmienia / nie zmieniając ugięcia łokci |
+| ribs down | żebra ściągnięte w dół |
 | as if pouring water in a glass | jak przy nalewaniu wody do szklanki |
 
 ## 3. Sprzęt
@@ -253,3 +254,6 @@ zawsze znaczy „jedna stopa” („place one foot on the box”). „Feet” ja
   ustawioną pod kątem”; „poproś o pomoc partnera”; „prostując ciało do jednej linii”; hike →
   „pociągnij dynamicznie do tyłu, między nogi”; w zarzucie „nie pochylaj się bardziej do przodu”;
   balance pad → „poduszka balansowa”.
+- 2026-11-14 (partia 4): „żebra ściągnięte w dół”; „poręcze do dipów”; bez angielskich nazw w
+  nawiasach („wersja w podkurczu”, nie „tuck sit”); „aż poczujesz opór”; „odepchnij się prostymi
+  rękami”; kolano zawsze „w linii z palcami stopy”, nie „nad palcami”.

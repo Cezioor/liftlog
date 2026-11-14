@@ -71,12 +71,14 @@
     </ul>
   </section>
 
-  {% if exercise.instructions %}
+  {% if instructions.steps %}
     <section class="card">
       <h2>{% translate "How to do it" %}</h2>
+      {% if instructions.english_only %}<p class="muted small">{% translate "Instructions available in English only" %}</p>{% endif %}
       <ol class="steps">
-        {% for step in exercise.instructions %}<li>{{ step }}</li>{% endfor %}
+        {% for step in instructions.steps %}<li>{{ step }}</li>{% endfor %}
       </ol>
+      {% if instructions.automatic %}<p class="muted small">{% translate "Automatic translation" %}</p>{% endif %}
     </section>
   {% endif %}
 

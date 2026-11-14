@@ -26,6 +26,8 @@ python manage.py seed_smith_variants
 python manage.py group_movements
 # Users' own copies of built-in exercises -> the built-in (exercises/merges.py).
 python manage.py merge_exercises
+# Polish "How to do it" steps of the built-ins (exercises/data/instructions_pl.json).
+python manage.py load_polish_instructions
 
 echo "Training data after:"
 python manage.py data_fingerprint --compare "$SNAPSHOT"

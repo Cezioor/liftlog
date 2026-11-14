@@ -766,7 +766,7 @@ HOLDS_AND_BALANCE = [
             ),
             (
                 "One rep = all three directions; keep the standing heel down and"
-                " the knee over the toes. Easier: reach less far."
+                " the knee in line with the toes. Easier: reach less far."
             ),
         ],
     },

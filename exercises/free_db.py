@@ -423,6 +423,22 @@ ORIGINAL_INSTRUCTIONS = {
         "Squat down with the elbows fully extended until the bar touches the floor.",
         "Start over at Phase 1 and repeat for the recommended amount of repetitions.",
     ],
+    # Source: "standing to the right side of a low pulley row" says the opposite of what
+    # the rest describes (the pulley is on the right, the left arm works).
+    "Cable Lateral Raise": [
+        "Stand with a low pulley on your right side. Use your left hand to come across the "
+        "body and grab a single handle attached to the low pulley with a pronated grip (palms "
+        "facing down). Rest your arm in front of you. Your right hand should grab the machine "
+        "for better support and balance.",
+        "Make sure that your back is erect and your feet are shoulder width apart from each "
+        "other. This is the starting position.",
+        "Begin to use the left hand and come across your body out until it is elevated to "
+        "shoulder height while exhaling.",
+        "Feel the contraction at the top for a second and begin to slowly lower the handle "
+        "back down to the original starting position while inhaling.",
+        "Repeat for the recommended amount of repetitions.",
+        "Switch arms and repeat the exercise.",
+    ],
     # Its record (Dumbbell_Lunges) is a lunge in place (BORROWED_RECORDS); written by us.
     "Walking Lunge": [
         "Stand with your torso upright, holding a dumbbell in each hand by your sides. This "
