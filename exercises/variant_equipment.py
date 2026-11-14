@@ -1,10 +1,10 @@
-"""Equipment that "⇄ Change variant" shows straight away for the popular movements.
+"""Equipment that "⇄ Change variant" offers for new variants of the popular movements.
 
 Reviewed by the owner on 2026-11-13 (checked against all built-ins). Each list holds only
 equipment for which a NEW variant would be created: the family's existing variants are
 listed above it anyway, and equipment whose movement already exists as a separate
 built-in (a seated machine press is not a bench press) is left out, so no copy of it is
-made. Everything else sits behind "Show all equipment"; "Other…" is always there.
+made. Other equipment is not offered at all; "Other…" is always there.
 
 A family is found by any of its built-in members' names. Families not listed here show
 the equipment similar to what they already have (services.SIMILAR_EQUIPMENT).

@@ -74,7 +74,8 @@ and keep each change small enough to review.
       incl. two pairs of families that duplicated each other; `free_db.SOURCE_CORRECTIONS` fixes their
       equipment and measurement, checked against production first); `exercises/variant_equipment.py` lists the
       equipment for NEW variants of the 65 popular movements (e.g. hip thrust: machine), others get equipment
-      similar to the family's; the rest behind "Show all equipment", "Other…" stays. Kettlebell Goblet Squat
+      similar to the family's; nothing else is offered (no "Show all equipment" since 2026-11-14: a bench
+      press offers only "Other…"), "Other…" always stays. Kettlebell Goblet Squat
       added; Stiff-Legged Dumbbell Deadlift moved to the RDL family (`NOT_NAME_GROUPED`); Preacher Curl uses
       a barbell. Reps exercises with added kg and no plan range use 6–10 reps (`DEFAULT_WEIGHTED_REPS_RANGE`).
 6. **Plan sections and missing exercises (B + C)**, before Stage 1.7: `PlanExercise.section` with three fixed
@@ -193,9 +194,10 @@ Stage 1 items 6 (history list, charts) and 7 (PWA) are not scheduled yet: ask th
    variants. `merge_exercises` (`exercises/merges.py`) folds a user's own copy into the matching built-in: sets, plan
    entries and swaps move to the built-in, the copy is deleted.
    **"⇄ Change variant"** on the plan editor, the workout card and the exercise page: the family's variants first, then
-   equipment without a variant (the fitting ones first, `exercises/variant_equipment.py`; the rest of Smith, dumbbell,
-   barbell, kettlebell, weight plate, pull-up bar, cable, machine, band, landmine, TRX, bodyweight behind "Show all
-   equipment"; "Other…" with a typed name), which creates the user's variant in one tap. During a
+   only the equipment that fits and has no variant yet (the 65 popular movements: the reviewed list in
+   `exercises/variant_equipment.py`; the others: equipment similar to the family's), plus "Other…" with a typed
+   name, always; one tap creates the user's variant. Equipment that doesn't fit is not offered and
+   `choose_variant` refuses it. During a
    workout a plan exercise asks **"Only today"** (`WorkoutSwap`, the plan stays) or **"Change in the plan too"**
    (PlanExercise.exercise changes, targets kept). Sets already logged always stay with the variant they were done with.
 

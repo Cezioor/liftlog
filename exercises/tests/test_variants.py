@@ -226,14 +226,14 @@ def test_changing_the_variant_again_and_again_never_stacks_names(client, user, s
     """The exercise page's "Change variant", tapped on each new variant in turn."""
     client.force_login(user)
     current = step_up
-    for equipment in ("bodyweight", "kettlebell", "smith"):
+    for equipment in ("kettlebell", "barbell", "smith"):  # each fits the family by then
         response = client.post(
             reverse("exercises:variant_open", args=[current.pk]), {"equipment": equipment}
         )
         current = Exercise.objects.get(pk=response.url.rstrip("/").rsplit("/", 1)[-1])
 
     names = sorted(Exercise.objects.filter(owner=user).values_list("name", flat=True))
-    assert names == ["Step-up (Bodyweight)", "Step-up (Kettlebell)", "Step-up (Smith machine)"]
+    assert names == ["Step-up (Barbell)", "Step-up (Kettlebell)", "Step-up (Smith machine)"]
 
 
 # --- screens ---------------------------------------------------------------------------

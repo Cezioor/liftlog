@@ -741,12 +741,11 @@ VARIANT_EQUIPMENT = [
 class VariantChoices:
     current: Exercise
     variants: list  # the family, current first
-    equipment: list  # [(value, label)] with no variant yet that fits, shown straight away
-    more_equipment: list = ()  # the rest, behind "Show all equipment"
+    equipment: list  # [(value, label)] that fits and has no variant yet ("Other…" aside)
 
 
 def shown_equipment(variants):
-    """Equipment without a variant that "Change variant" shows straight away.
+    """Equipment without a variant that "Change variant" offers (nothing else is offered).
 
     The popular movements have a reviewed list (variant_equipment.SHOWN_EQUIPMENT); the
     others get equipment similar to what the family already has (barbell -> Smith,
@@ -760,20 +759,16 @@ def shown_equipment(variants):
 
 
 def variant_choices(user, exercise):
-    """What "Change variant" offers: the existing variants, then equipment without one
-    (the fitting equipment first, the rest behind "Show all equipment")."""
+    """What "Change variant" offers: the existing variants, then the fitting equipment
+    without one. Equipment that doesn't fit (a pull-up bar for a bench press) is not
+    offered at all; "Other…" with a typed name always is."""
     variants = sorted(
         family(user, exercise), key=lambda e: (e.pk != exercise.pk, e.owner_id is None, e.name)
     )
     taken = {e.equipment for e in variants}
     free = [e for e in VARIANT_EQUIPMENT if e not in taken]
     shown = shown_equipment(variants)
-    return VariantChoices(
-        exercise,
-        variants,
-        [(e.value, e.label) for e in free if e in shown],
-        [(e.value, e.label) for e in free if e not in shown],
-    )
+    return VariantChoices(exercise, variants, [(e.value, e.label) for e in free if e in shown])
 
 
 class InvalidVariantChoice(ValueError):
@@ -799,6 +794,8 @@ def choose_variant(user, exercise, *, exercise_id="", equipment="", other_name="
             raise InvalidVariantChoice("Say what the equipment is.")
         return create_variant(user, exercise, equipment, label=other_name)
     existing = family(user, exercise).filter(equipment=equipment)
+    if not existing.exists() and equipment not in shown_equipment(family(user, exercise)):
+        raise InvalidVariantChoice("This equipment doesn't fit this movement.")
     # A built-in one first (shared, with its own photos), then the user's own.
     chosen = existing.order_by(F("owner").asc(nulls_first=True), "name").first()
     return chosen or create_variant(user, exercise, equipment)

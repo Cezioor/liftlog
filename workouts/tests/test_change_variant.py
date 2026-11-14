@@ -73,10 +73,11 @@ def test_chooser_lists_variants_then_equipment_without_one(logged_in, step_up, s
     assert content.index("Variants of this movement") < content.index("Other equipment")
     assert "Smith Machine Step-up" in content
     equipment = content[content.index("Other equipment") :]
-    for label in ("Barbell", "Kettlebell", "Weight plate", "Pull-up bar", "Cable",
-                  "Machine", "Resistance band", "Landmine", "TRX / suspension",
-                  "Bodyweight", "Other…"):  # fmt: skip
+    # Not in the reviewed list: equipment similar to the family's (dumbbell, Smith).
+    for label in ("Barbell", "Kettlebell", "Cable", "Other…"):
         assert label in equipment, label
+    for label in ("Pull-up bar", "Resistance band", "Landmine", "TRX / suspension", "Bodyweight"):
+        assert label not in equipment, label
     # Smith and dumbbell already exist in the family: not offered again as new.
     assert 'name="equipment" value="smith"' not in content
     assert 'name="equipment" value="dumbbell"' not in content
@@ -108,10 +109,10 @@ def test_exercise_page_button_opens_or_creates_the_variant(logged_in, user, step
     link = page.context["change_variant_url"]
     action = parse_qs(urlsplit(link).query)["action"][0]
 
-    response = logged_in.post(action, {"equipment": "plate"})
+    response = logged_in.post(action, {"equipment": "kettlebell"})
 
-    variant = Exercise.objects.get(owner=user, equipment="plate")
-    assert variant.name == "Step Ups (Weight plate)"
+    variant = Exercise.objects.get(owner=user, equipment="kettlebell")
+    assert variant.name == "Step Ups (Kettlebell)"
     assert variant.movement_id == step_up.movement_id
     assert response.url == reverse("exercises:exercise_detail", args=[variant.pk])
 
@@ -190,15 +191,15 @@ def test_card_has_the_change_variant_button(logged_in, workout, step_up):
 
 
 @pytest.mark.django_db
-def test_picking_smith_asks_only_today_or_in_the_plan(logged_in, workout, step_up):
+def test_picking_new_equipment_asks_only_today_or_in_the_plan(logged_in, workout, step_up):
     WorkoutSet.objects.create(workout=workout, exercise=step_up, order=1, weight_kg=10, reps=12)
 
-    response = _change(logged_in, workout, step_up, {"equipment": "smith"})
+    response = _change(logged_in, workout, step_up, {"equipment": "kettlebell"})
 
     content = response.content.decode()
     assert "Only today" in content and "Change in the plan too" in content
     assert "The 1 set you already logged stays with Dumbbell Step Ups." in content
-    assert Exercise.objects.get(equipment="smith").name == "Step Ups (Smith machine)"
+    assert Exercise.objects.get(equipment="kettlebell").name == "Step Ups (Kettlebell)"
 
 
 @pytest.mark.django_db
@@ -305,25 +306,19 @@ def test_finished_workout_cannot_change(logged_in, user, make_workout, day, item
 # --- which equipment comes first (exercises/variant_equipment.py) -------------------
 
 
-def _shown_and_more(content):
-    """Equipment values before and after "Show all equipment"."""
+def _offered(content):
+    """Equipment values offered for a new variant ("other" is "Other…")."""
     import re
 
-    split = content.index("Show all equipment")
-    values = [
-        (m.start(), m.group(1)) for m in re.finditer(r'name="equipment" value="(\w+)"', content)
-    ]
-    return [v for at, v in values if at < split], [v for at, v in values if at > split]
+    return re.findall(r'name="equipment" value="(\w+)"', content)
 
 
 @pytest.mark.django_db
-def test_fitting_equipment_first_the_rest_behind_show_all(logged_in, step_up, smith_step_up):
+def test_only_fitting_equipment_is_offered(logged_in, step_up, smith_step_up):
     """Not in the reviewed list: equipment similar to the family's (dumbbell, Smith)."""
-    shown, more = _shown_and_more(_chooser(logged_in, step_up, "/x/").content.decode())
+    offered = _offered(_chooser(logged_in, step_up, "/x/").content.decode())
 
-    assert shown == ["barbell", "kettlebell", "cable"]
-    assert "bodyweight" in more and "band" in more
-    assert more[-1] == "other"  # "Other…" stays at the very end
+    assert offered == ["barbell", "kettlebell", "cable", "other"]  # "Other…" always last
 
 
 @pytest.mark.django_db
@@ -338,10 +333,9 @@ def test_popular_movements_use_the_reviewed_list(logged_in):
         movement=hip_thrust.movement,
     )  # fmt: skip
 
-    shown, more = _shown_and_more(_chooser(logged_in, hip_thrust, "/x/").content.decode())
+    offered = _offered(_chooser(logged_in, hip_thrust, "/x/").content.decode())
 
-    assert shown == ["machine"]
-    assert "band" in more and "dumbbell" in more
+    assert offered == ["machine", "other"]
 
 
 @pytest.mark.django_db
@@ -351,10 +345,27 @@ def test_a_users_own_variant_of_a_popular_movement_uses_its_list(logged_in, user
     )
     own = create_variant(user, hammer, "cable")
 
-    shown, more = _shown_and_more(_chooser(logged_in, own, "/x/").content.decode())
+    assert _offered(_chooser(logged_in, own, "/x/").content.decode()) == [
+        "kettlebell", "band", "other",
+    ]  # fmt: skip
 
-    assert shown == ["kettlebell", "band"]
-    assert "bodyweight" in more and "smith" in more
+
+@pytest.mark.django_db
+def test_bench_press_offers_no_odd_equipment(logged_in, user):
+    """All sensible bench press variants exist: only "Other…" is left, and odd equipment
+    can't be chosen by a hand-made request either."""
+    from django.core.management import call_command
+
+    call_command("seed_exercises")
+    bench = Exercise.objects.get(name="Barbell Bench Press", owner=None)
+    content = _chooser(logged_in, bench, "/x/").content.decode()
+
+    assert _offered(content) == ["other"]
+    assert "Show all equipment" not in content
+    action = reverse("exercises:variant_open", args=[bench.pk])
+    for equipment in ("pullup_bar", "kettlebell", "plate", "landmine", "suspension"):
+        assert logged_in.post(action, {"equipment": equipment}).status_code == 404, equipment
+    assert not Exercise.objects.filter(owner=user).exists()
 
 
 def test_reviewed_list_names_the_original_exercises():

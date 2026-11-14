@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LiftLog\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-13 14:35+0100\n"
+"POT-Creation-Date: 2026-11-14 11:27+0100\n"
 "PO-Revision-Date: 2026-11-06 22:40+0100\n"
 "Last-Translator: Cezary Muszalski\n"
 "Language-Team: Polish\n"
@@ -1183,28 +1183,24 @@ msgstr ""
 "Tworzy wariant z własną historią i rekordami. Mięśnie, instrukcje i zdjęcia "
 "zostaną skopiowane."
 
-#: .\templates\exercises\change_variant.html:50
-msgid "Show all equipment"
-msgstr "Pokaż cały sprzęt"
-
-#: .\templates\exercises\change_variant.html:61
+#: .\templates\exercises\change_variant.html:48
 msgctxt "equipment"
 msgid "Other…"
 msgstr "Inny…"
 
-#: .\templates\exercises\change_variant.html:65
+#: .\templates\exercises\change_variant.html:52
 msgid "What do you use?"
 msgstr "Czego używasz?"
 
-#: .\templates\exercises\change_variant.html:66
+#: .\templates\exercises\change_variant.html:53
 msgid "e.g. weighted vest, sandbag"
 msgstr "np. kamizelka obciążeniowa, worek z piaskiem"
 
-#: .\templates\exercises\change_variant.html:67
+#: .\templates\exercises\change_variant.html:54
 msgid "Create variant"
 msgstr "Utwórz wariant"
 
-#: .\templates\exercises\change_variant.html:73
+#: .\templates\exercises\change_variant.html:60
 #: .\templates\exercises\exercise_form.html:14
 #: .\templates\exercises\picker.html:12 .\templates\plans\add_to_plan.html:9
 #: .\templates\plans\day_form.html:20
@@ -2337,6 +2333,9 @@ msgstr "Trening zapisany. Dobra robota!"
 #: .\workouts\views.py:475
 msgid "Workout discarded."
 msgstr "Trening odrzucony."
+
+#~ msgid "Show all equipment"
+#~ msgstr "Pokaż cały sprzęt"
 
 #~ msgid "Motor control / balance"
 #~ msgstr "Kontrola ruchu / równowaga"
