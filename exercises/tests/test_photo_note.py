@@ -10,7 +10,12 @@ from exercises.instructions_pl import shown_photo_note
 from exercises.models import Exercise
 from exercises.seed_data import PHOTO_NOTES
 from exercises.services import create_variant, ensure_movement
-from exercises.smith_variants import FREE_WEIGHT_PHOTO_NOTE, NO_BASE_PHOTOS, SMITH_VARIANTS
+from exercises.smith_variants import (
+    FREE_WEIGHT_PHOTO_NOTE,
+    NO_BASE_PHOTOS,
+    OTHER_BASE_PHOTO_NOTE,
+    SMITH_VARIANTS,
+)
 
 EN, PL = "The photos show the one-arm version.", "Zdjęcia pokazują wersję jednorącz."
 
@@ -91,5 +96,13 @@ def test_the_library_keeps_photo_notes_out_of_the_steps():
         variant = Exercise.objects.get(owner=None, name=name)
         if not base_name or name in NO_BASE_PHOTOS:
             assert (variant.images, variant.photo_note) == ([], ""), name
-    # A base done on a machine or without weights: no "free weights" note.
-    assert Exercise.objects.get(owner=None, name="Smith Machine Incline Push-up").photo_note == ""
+    # A base done on a machine or without weights: another note.
+    others = Exercise.objects.filter(owner=None, photo_note=OTHER_BASE_PHOTO_NOTE[0])
+    assert {e.name for e in others} == {
+        "Smith Machine Donkey Calf Raise",
+        "Smith Machine Incline Push-up",
+        "Smith Machine Inverted Row",
+    }
+    assert {e.photo_note_pl for e in others} == {
+        "Zdjęcia pokazują ten sam ruch bez suwnicy Smitha."
+    }

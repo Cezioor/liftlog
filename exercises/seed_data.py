@@ -167,7 +167,8 @@ ALIASES = {
     "Seated Leg Curl": "uginanie nóg siedząc, zgięcia nóg siedząc",
     "Nordic Hamstring Curl": "uginanie nordyckie, nordic curl",
     # Glutes
-    "Barbell Hip Thrust": "wypychanie bioder ze sztangą, hip thrust, pośladki",
+    "Barbell Hip Thrust": "hip thrust ze sztangą, wypychanie bioder ze sztangą, hip thrust, "
+    "pośladki",
     "Glute Bridge": "mostek biodrowy, unoszenie bioder leżąc",
     "Cable Pull-Through": "przeciąganie linki między nogami, pull through",
     # Calves

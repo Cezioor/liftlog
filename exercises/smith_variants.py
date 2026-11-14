@@ -21,11 +21,15 @@ BASELESS_LEVELS = {
 # the bar is on the back with the feet in front of it.
 NO_BASE_PHOTOS = {"Smith Machine Hack Squat"}
 
-# Under the photos of variants whose base is done with free weights (English, Polish).
-# Bases with other equipment (a machine, bodyweight) get no note for now.
+# Under the photos of variants whose base is done with free weights (English, Polish);
+# bases with other equipment (a machine, bodyweight) get the second note.
 FREE_WEIGHT_PHOTO_NOTE = (
     "The photos show the same movement with free weights.",
     "Zdjęcia pokazują ten sam ruch z wolnym ciężarem.",
+)
+OTHER_BASE_PHOTO_NOTE = (
+    "The photos show the same movement without a Smith machine.",
+    "Zdjęcia pokazują ten sam ruch bez suwnicy Smitha.",
 )
 FREE_WEIGHTS = {"barbell", "dumbbell", "kettlebell"}
 
@@ -214,8 +218,8 @@ SMITH_VARIANTS = [
         "Smith Machine Rack Pull",
         "Rack Pulls",
         (
-            "martwy ciąg z podwyższenia na smithie, martwy ciąg z podwyższenia na suwnicy smitha, "
-            "rack pull smith"
+            "martwy ciąg ze stojaków na smithie, martwy ciąg ze stojaków na suwnicy smitha, "
+            "martwy ciąg z podwyższenia na smithie, rack pull smith"
         ),
         "back",
         ["lower back"],
@@ -264,7 +268,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Box Squat",
         "Box Squat",
-        "przysiad do skrzyni na smithie, przysiad do skrzyni na suwnicy smitha, box squat smith",
+        (
+            "przysiad na skrzynię na smithie, przysiad na skrzynię na suwnicy smitha, "
+            "przysiad do skrzyni na smithie, box squat smith"
+        ),
         "quads",
         ["quadriceps", "glutes"],
         ["hamstrings"],
@@ -344,7 +351,10 @@ SMITH_VARIANTS = [
         False,
         [
             SET_BAR,
-            "Sit on a bench, balls of the feet on a plate, padded bar on your knees.",
+            (
+                "Sit on a bench, balls of the feet on a plate, padded bar across your lower "
+                "thighs, just above the knees."
+            ),
             "Raise your heels as high as you can, pause, lower slowly.",
         ],
     ),
@@ -362,7 +372,11 @@ SMITH_VARIANTS = [
         False,
         [
             SET_BAR,
-            "Bend over with the padded bar on your lower back, balls of the feet on a plate.",
+            (
+                "Bend over with your hands on a bench for support and a flat back, the padded "
+                "bar across the top of your hips, just above the tailbone; balls of the feet on "
+                "a plate."
+            ),
             "Raise your heels as high as you can, pause, lower slowly.",
         ],
     ),
@@ -386,8 +400,8 @@ SMITH_VARIANTS = [
         "Smith Machine Inverted Row",
         "Inverted Row",
         (
-            "wiosłowanie w zwisie pod smithem, wiosłowanie w zwisie pod suwnicą smitha, "
-            "australijskie podciąganie smith"
+            "podciąganie australijskie na smithie, podciąganie australijskie na suwnicy smitha, "
+            "wiosłowanie w zwisie pod smithem, australijskie podciąganie smith"
         ),
         "back",
         ["middle back", "lats"],
@@ -440,7 +454,10 @@ SMITH_VARIANTS = [
     (
         "Smith Machine Incline Push-up",
         "Incline Push-Up",
-        "pompki na drążku smitha, pompki na drążku suwnicy smitha, pompki na podwyższeniu smith",
+        (
+            "pompki na podwyższeniu na smithie, pompki na podwyższeniu na suwnicy smitha, "
+            "pompki na drążku smitha, pompki na podwyższeniu smith"
+        ),
         "chest",
         ["chest"],
         ["triceps", "shoulders"],
@@ -525,8 +542,9 @@ SMITH_VARIANTS = [
         "Smith Machine Skull Crusher",
         "Skull Crusher",
         (
-            "wyciskanie francuskie na smithie, wyciskanie francuskie na suwnicy smitha, "
-            "łamacze czaszki smith"
+            "wyciskanie francuskie leżąc na smithie, "
+            "wyciskanie francuskie leżąc na suwnicy smitha, "
+            "wyciskanie francuskie na smithie, łamacze czaszki smith"
         ),
         "triceps",
         ["triceps"],
@@ -535,7 +553,10 @@ SMITH_VARIANTS = [
         False,
         [
             SET_BAR,
-            "Lie on a flat bench, bar over your forehead, close grip.",
+            (
+                "Lie on a flat bench so that the bar is over your forehead. Take a close grip, "
+                "arms straight."
+            ),
             "Bend only at the elbows to lower the bar towards your forehead, then extend.",
         ],
     ),
@@ -543,8 +564,8 @@ SMITH_VARIANTS = [
         "Smith Machine Drag Curl",
         "Drag Curl",
         (
-            "uginanie ramion drag curl na smithie, uginanie ramion drag curl na suwnicy smitha, "
-            "drag curl smith"
+            "drag curl na smithie, drag curl na suwnicy smitha, "
+            "uginanie ramion drag curl na smithie, drag curl smith"
         ),
         "biceps",
         ["biceps"],

@@ -8,6 +8,7 @@ from exercises.smith_variants import (
     FREE_WEIGHT_PHOTO_NOTE,
     FREE_WEIGHTS,
     NO_BASE_PHOTOS,
+    OTHER_BASE_PHOTO_NOTE,
     SMITH_VARIANTS,
 )
 
@@ -28,7 +29,10 @@ class Command(BaseCommand):
                 if base is None:
                     missing_bases.append(base_name)
             images = list(base.images) if base and name not in NO_BASE_PHOTOS else []
-            note = FREE_WEIGHT_PHOTO_NOTE if images and base.equipment in FREE_WEIGHTS else ("", "")
+            note = ("", "")
+            if images:
+                free = base.equipment in FREE_WEIGHTS
+                note = FREE_WEIGHT_PHOTO_NOTE if free else OTHER_BASE_PHOTO_NOTE
             _, created = Exercise.objects.update_or_create(
                 name=name,
                 owner=None,

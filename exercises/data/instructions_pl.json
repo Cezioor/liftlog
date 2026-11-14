@@ -1047,6 +1047,36 @@
       "Wstań, odpychając się nogami od podłogi; opuść sztangę tą samą drogą."
     ]
   },
+  "Smith Machine Donkey Calf Raise": {
+    "name": "Smith Machine Donkey Calf Raise",
+    "en_hash": "c9fc2b2af56d",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Pochyl się z prostymi plecami, opierając dłonie o ławkę; sztanga z nakładką leży na biodrach, tuż nad kością ogonową, a przednia część stóp na talerzu.",
+      "Unieś pięty jak najwyżej, zatrzymaj się i powoli je opuść."
+    ]
+  },
+  "Smith Machine Drag Curl": {
+    "name": "Smith Machine Drag Curl",
+    "en_hash": "fb9c3c122b61",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Trzymaj sztangę podchwytem przy udach.",
+      "Ugnij ręce, prowadząc sztangę w górę wzdłuż ciała i cofając łokcie; powoli ją opuść."
+    ]
+  },
+  "Smith Machine Floor Press": {
+    "name": "Smith Machine Floor Press",
+    "en_hash": "2cbba2ecac1b",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Połóż się na podłodze pod sztangą.",
+      "Opuszczaj sztangę, aż ramiona dotkną podłogi, zatrzymaj się i wyciśnij ją w górę."
+    ]
+  },
   "Smith Machine Front Squat": {
     "name": "Smith Machine Front Squat",
     "en_hash": "cdc492faa607",
@@ -1098,6 +1128,36 @@
       "W górnej pozycji napnij pośladki, a potem opuść biodra w sposób kontrolowany."
     ]
   },
+  "Smith Machine Incline Push-up": {
+    "name": "Smith Machine Incline Push-up",
+    "en_hash": "48a087ba26c1",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar. Im wyżej sztanga, tym łatwiej.",
+      "Oprzyj dłonie na sztandze, z ciałem w linii prostej i stopami na podłodze.",
+      "Opuść klatkę piersiową do sztangi i wypchnij się z powrotem w górę."
+    ]
+  },
+  "Smith Machine Inverted Row": {
+    "name": "Smith Machine Inverted Row",
+    "en_hash": "358268b391a7",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar. Ustaw sztangę mniej więcej na wysokości pasa.",
+      "Zawiśnij pod sztangą, z ciałem w linii prostej i piętami na podłodze.",
+      "Przyciągnij klatkę piersiową do sztangi i opuść się w sposób kontrolowany."
+    ]
+  },
+  "Smith Machine JM Press": {
+    "name": "Smith Machine JM Press",
+    "en_hash": "1fd60f7a32e5",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Połóż się na ławce płaskiej i chwyć sztangę wąsko.",
+      "Ugnij łokcie i opuść sztangę w stronę brody, z łokciami skierowanymi do przodu; wyciśnij ją w górę."
+    ]
+  },
   "Smith Machine Kneeling Squat": {
     "name": "Smith Machine Kneeling Squat",
     "en_hash": "0f0b493933f6",
@@ -1139,6 +1199,26 @@
       "Odepchnij się przednią stopą i wróć; wykonaj wszystkie powtórzenia na jedną stronę."
     ]
   },
+  "Smith Machine Reverse-Grip Bench Press": {
+    "name": "Smith Machine Reverse-Grip Bench Press",
+    "en_hash": "1fe3c95fef4b",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Połóż się na ławce płaskiej i chwyć sztangę podchwytem na szerokość barków.",
+      "Opuść sztangę do dolnej części klatki piersiowej i wyciśnij ją w górę."
+    ]
+  },
+  "Smith Machine Reverse-Grip Row": {
+    "name": "Smith Machine Reverse-Grip Row",
+    "en_hash": "df263af6a274",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Chwyć sztangę podchwytem i pochyl tułów, zginając się w biodrach, z prostymi plecami.",
+      "Przyciągnij sztangę do dolnej części brzucha i opuść ją w sposób kontrolowany."
+    ]
+  },
   "Smith Machine Romanian Deadlift": {
     "name": "Smith Machine Romanian Deadlift",
     "en_hash": "9545994008de",
@@ -1150,6 +1230,36 @@
       "Zatrzymaj się, gdy poczujesz rozciąganie dwugłowych ud, a potem wypchnij biodra do przodu."
     ]
   },
+  "Smith Machine Seated Calf Raise": {
+    "name": "Smith Machine Seated Calf Raise",
+    "en_hash": "d49fc21d68f2",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Usiądź na ławce, z przednią częścią stóp na talerzu i sztangą z nakładką na udach tuż nad kolanami.",
+      "Unieś pięty jak najwyżej, zatrzymaj się i powoli je opuść."
+    ]
+  },
+  "Smith Machine Seated Shoulder Press": {
+    "name": "Smith Machine Seated Shoulder Press",
+    "en_hash": "6f52b880d552",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Usiądź pod sztangą na ławce z pionowym oparciem, ze sztangą na wysokości brody.",
+      "Wyciśnij sztangę nad głowę i opuść ją do brody."
+    ]
+  },
+  "Smith Machine Shrug": {
+    "name": "Smith Machine Shrug",
+    "en_hash": "91025b47b620",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Trzymaj sztangę przed udami, na prostych rękach.",
+      "Unieś barki w stronę uszu, zatrzymaj się i je opuść."
+    ]
+  },
   "Smith Machine Single-Leg Hip Thrust": {
     "name": "Smith Machine Single-Leg Hip Thrust",
     "en_hash": "6f1a2293400a",
@@ -1158,6 +1268,16 @@
       "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
       "Ustaw się jak do wypychania bioder, a potem oderwij jedną stopę od podłogi.",
       "Wypchnij biodra w górę, odpychając się piętą stopy na podłodze; trzymaj biodra na jednym poziomie i opuść je w sposób kontrolowany."
+    ]
+  },
+  "Smith Machine Skull Crusher": {
+    "name": "Smith Machine Skull Crusher",
+    "en_hash": "42ae15624159",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Połóż się na ławce płaskiej tak, żeby sztanga była nad czołem. Chwyć ją wąsko, ręce proste.",
+      "Opuść sztangę w stronę czoła, uginając ręce tylko w łokciach, a potem je wyprostuj."
     ]
   },
   "Smith Machine Step-up": {
@@ -1178,6 +1298,16 @@
       "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
       "Stań szeroko, z palcami stóp na zewnątrz, ze sztangą na górnej części pleców.",
       "Zejdź do przysiadu, rozpychając kolana na zewnątrz, w linii z palcami stóp, a potem wstań."
+    ]
+  },
+  "Smith Machine Wide-Grip Bench Press": {
+    "name": "Smith Machine Wide-Grip Bench Press",
+    "en_hash": "b9a89c310c10",
+    "auto": false,
+    "steps": [
+      "Ustaw wysokość sztangi i ograniczniki, zanim założysz ciężar.",
+      "Połóż się na ławce płaskiej i chwyć sztangę szerzej niż na szerokość barków.",
+      "Opuść sztangę do środka klatki piersiowej i wyciśnij ją w górę."
     ]
   },
   "Spanish Squat Hold": {

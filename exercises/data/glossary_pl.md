@@ -262,3 +262,6 @@ zawsze znaczy „jedna stopa” („place one foot on the box”). „Feet” ja
 - 2026-11-14 (partia 5): stały pierwszy krok wariantów na smithie; „hip thrust” w zdaniach to
   „wypychanie bioder”; „Licz złapane piłki”; „Opuść biodra w stronę pięt”; sztywna liczba
   powtórzeń w oryginale („10–20”) → „zaplanowana liczba powtórzeń” w obu wersjach.
+- 2026-11-14 (partia 6, koniec części (a)): nazwa ćwiczenia to „hip thrust” („hip thrust ze
+  sztangą”, „hip thrust na smithie”); sztanga we wspięciach siedząc leży „na udach tuż nad
+  kolanami”; „Chwyć ją wąsko, ręce proste.”

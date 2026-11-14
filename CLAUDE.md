@@ -82,9 +82,9 @@ and keep each change small enough to review.
       a barbell. Reps exercises with added kg and no plan range use 6–10 reps (`DEFAULT_WEIGHTED_REPS_RANGE`).
 6. **Polish exercise instructions** (in progress since 2026-11-14): in Polish, "How to do it" showed the English
    instructions. **Done:** the glossary, the fields, `load_polish_instructions`, the exercise page with both notes,
-   the tests, and batches 1–5 reviewed by the owner (122 exercises: the 65 originals, our 40 own built-ins and
-   17 Smith variants). **Left:** the last 13 Smith variants (batch 6, waiting for the owner's review), then
-   part (b).
+   the tests, and **part (a): 135 exercises** in six batches reviewed by the owner (2026-11-14: the 65
+   originals, our 40 own built-ins and the 30 Smith variants). **Left: part (b)**, the other 809 built-ins with
+   instructions (4 have none: Iron Cross, Side Jackknife, Push Press, Side Bridge).
    How a batch goes: a draft with only "PL n:" lines → `polskie_nazwy/zloz_partie.py` builds the review file
    (English steps and hash from the database) → the owner's review → `polskie_nazwy/zapisz_partie.py` writes the
    data file (`--auto` for part (b)). A wrong or outdated English original is corrected first in
@@ -105,8 +105,11 @@ and keep each change small enough to review.
      exactly, nothing added or left out; real measures (feet, inches, yards, miles, lb/lbs) as approximate cm, m,
      km and kg ("feet" as a body part stays a body part).
    - Order: glossary first; (a) the 65 originals, then our built-ins, in batches of ~25 for the owner's
-     approval; (b) the rest translated in the session (no API script), batches of ~100, each in a fresh
+     approval (done); (b) the rest translated in the session (no API script), batches of ~100, each in a fresh
      session, 10 random exercises per batch for a spot check, marked "automatic translation" until reviewed.
+     Order of the part (b) batches: strength exercises for beginners (323), then intermediate strength (238),
+     then stretching and mobility (121), plyometrics (61), then the rest (66: expert strength, cardio, a few
+     holds and balance exercises).
    - Tests: as many steps as the original, no empty steps, no Cyrillic, every key exists, hashes match;
      language choice and both notes; variants with unchanged and with changed instructions.
 7. **Plan sections and missing exercises (B + C)**, before Stage 1.7: `PlanExercise.section` with three fixed
@@ -456,7 +459,7 @@ Wrong equipment (the equipment filter shows them in the wrong place):
 - Incline_Bench_Pull: barbell in free-exercise-db, but the instructions use dumbbells.
 - Lunge_Sprint: machine in free-exercise-db, but the instructions use the Smith machine.
 
-Missing instructions (named after the English name): Side_Jackknife, Iron_Cross.
+Missing instructions (named after the English name): Side_Jackknife, Iron_Cross, Push_Press, Side_Bridge.
 
 Originals whose free-exercise-db match was another exercise (found while translating instructions,
 fixed on 2026-11-14 in `free_db`: `FOLDED_INTO_ORIGINALS`, `BORROWED_RECORDS`):
