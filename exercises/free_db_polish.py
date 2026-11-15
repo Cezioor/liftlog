@@ -939,10 +939,6 @@ POLISH_NAMES = {
     "Barbell_Side_Split_Squat": (
         "przysiad boczny ze sztangą, wykrok w bok ze sztangą, przysiad kozacki ze sztangą"
     ),
-    "Chair_Squat": (
-        "przysiad ze stopami wysuniętymi w przód na smithie, chair squat, "
-        "przysiad na smithie ze stopami z przodu"
-    ),
     "Barbell_Walking_Lunge": "wykroki chodzone ze sztangą, wykroki w marszu ze sztangą",
     "Bodyweight_Walking_Lunge": (
         "wykroki chodzone bez obciążenia, wykroki w marszu, wykroki z rękami na biodrach"

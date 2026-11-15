@@ -16,12 +16,14 @@ BASELESS_LEVELS = {
     "Smith Machine Sumo Squat": "beginner",
 }
 
-# Variants whose base's photos show another movement (they still share its family, level
-# and mechanic): they take the photos of the built-in named here, which is the same
-# exercise, so no note goes under them. Barbell Hack Squat holds the bar behind the legs;
-# on the Smith machine the bar is on the back with the feet in front of it, which is what
-# free-exercise-db's "Chair Squat" shows (owner, 2026-11-15).
-PHOTO_SOURCES = {"Smith Machine Hack Squat": "Chair Squat"}
+# free-exercise-db records that are one of these variants under another name:
+# {variant name: source_id}. The import skips them; `seed_smith_variants` folds a built-in
+# copy left by older imports into the variant (merges.merge_into: sets, plan entries,
+# swaps) and gives the variant the record's photos, with no note (same exercise; they still
+# share the base's family, level and mechanic). Barbell Hack Squat holds the bar behind the
+# legs; on the Smith machine the bar is on the back with the feet in front of it, which is
+# what free-exercise-db's "Chair Squat" is (owner, 2026-11-15: one exercise, not two).
+ABSORBED_SOURCES = {"Smith Machine Hack Squat": "Chair_Squat"}
 
 # Under the photos of variants whose base is done with free weights (English, Polish);
 # bases with other equipment (a machine, bodyweight) get the second note.
@@ -290,7 +292,7 @@ SMITH_VARIANTS = [
         "Barbell Hack Squat",
         (
             "przysiad hack na smithie, przysiad hack na suwnicy smitha, hack przysiad na smithie, "
-            "hack squat smith"
+            "hack squat smith, chair squat, przysiad na smithie ze stopami z przodu"
         ),
         "quads",
         ["quadriceps"],

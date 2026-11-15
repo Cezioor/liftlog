@@ -24,6 +24,7 @@ from .free_db_polish import POLISH_NAMES
 from .merges import merge_into
 from .models import Category, Equipment, Exercise, Measurement, Muscle, MuscleGroup
 from .services import default_progression_step
+from .smith_variants import ABSORBED_SOURCES
 
 FREE_DB_COMMIT = "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5"
 IMAGE_BASE_URL = f"https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@{FREE_DB_COMMIT}/exercises/"
@@ -147,9 +148,6 @@ SOURCE_CORRECTIONS = {
         "measurement": Measurement.REPS,
     },
     "Suspended_Split_Squat": {"equipment": Equipment.SUSPENSION},
-    # Owner, 2026-11-15: the instructions and photos use a Smith machine ("machine" in the
-    # dataset) and a single weight plate ("barbell").
-    "Chair_Squat": {"equipment": Equipment.SMITH},
     "Car_Drivers": {"equipment": Equipment.PLATE},
     # The four exercises the dataset has no instructions for: our own, written from their
     # photos (owner, 2026-11-15).
@@ -764,6 +762,7 @@ class ImportReport:
     legacy_matched: list = field(default_factory=list)
     legacy_missing: list = field(default_factory=list)  # original not in the database
     withheld: int = 0
+    absorbed: int = 0  # records that are one of our Smith variants (ABSORBED_SOURCES)
     conflicts: list = field(default_factory=list)  # (source_id, reason)
     folded: list = field(default_factory=list)  # merges.MergeResult
 
@@ -780,6 +779,7 @@ def import_dataset(records):
     by_id = {record["id"]: record for record in records}
     legacy_ids = {sid for name, sid in LEGACY_MATCHES.items() if name not in BORROWED_RECORDS}
     withheld = withheld_ids()
+    absorbed = set(ABSORBED_SOURCES.values())
 
     # 0. A built-in holding a source an original moves to is folded into that original.
     for source_id, name in FOLDED_INTO_ORIGINALS.items():
@@ -822,6 +822,9 @@ def import_dataset(records):
             continue
         if source_id in withheld:
             report.withheld += 1
+            continue
+        if source_id in absorbed:
+            report.absorbed += 1
             continue
         name = record["name"].strip()[:100]
         holder = builtin_names.get(name.lower(), source_id)

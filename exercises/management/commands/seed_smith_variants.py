@@ -1,14 +1,16 @@
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
+from exercises.free_db import load_dataset
+from exercises.merges import merge_into
 from exercises.models import Equipment, Exercise
 from exercises.services import default_progression_step
 from exercises.smith_variants import (
+    ABSORBED_SOURCES,
     BASELESS_LEVELS,
     FREE_WEIGHT_PHOTO_NOTE,
     FREE_WEIGHTS,
     OTHER_BASE_PHOTO_NOTE,
-    PHOTO_SOURCES,
     SMITH_VARIANTS,
 )
 
@@ -19,6 +21,8 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         created_count, missing_bases = 0, []
+        absorbed_ids = set(ABSORBED_SOURCES.values())
+        absorbed_images = {r["id"]: r["images"] for r in load_dataset() if r["id"] in absorbed_ids}
         for (
             name, base_name, aliases, muscle_group, primary, secondary,
             measurement, unilateral, instructions,
@@ -29,14 +33,13 @@ class Command(BaseCommand):
                 if base is None:
                     missing_bases.append(base_name)
             images, note = list(base.images) if base else [], ("", "")
-            if name in PHOTO_SOURCES:
+            if name in ABSORBED_SOURCES:
                 # Photos of the same exercise under another name: no note needed.
-                source = Exercise.objects.filter(name=PHOTO_SOURCES[name], owner=None).first()
-                images = list(source.images) if source else []
+                images = list(absorbed_images[ABSORBED_SOURCES[name]])
             elif images:
                 free = base.equipment in FREE_WEIGHTS
                 note = FREE_WEIGHT_PHOTO_NOTE if free else OTHER_BASE_PHOTO_NOTE
-            _, created = Exercise.objects.update_or_create(
+            variant, created = Exercise.objects.update_or_create(
                 name=name,
                 owner=None,
                 defaults={
@@ -60,6 +63,15 @@ class Command(BaseCommand):
                 },
             )
             created_count += created
+            if name in ABSORBED_SOURCES:
+                # A built-in copy from older imports: its sets, plan entries and swaps move here.
+                copy = Exercise.objects.filter(owner=None, source_id=ABSORBED_SOURCES[name])
+                for r in [merge_into(c, variant) for c in copy]:
+                    self.stdout.write(
+                        f"Folded “{r.source_name}” ({r.source_id}) into “{r.target_name}” "
+                        f"({r.target_id}): {r.sets} sets, {r.plan_entries} plan entries, "
+                        f"{r.swaps} swaps."
+                    )
         updated = len(SMITH_VARIANTS) - created_count
         self.stdout.write(
             self.style.SUCCESS(

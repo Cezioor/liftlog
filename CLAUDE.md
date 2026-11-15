@@ -93,7 +93,7 @@ and keep each change small enough to review.
 6. **Polish exercise instructions** (in progress since 2026-11-14): in Polish, "How to do it" showed the English
    instructions. **Done:** the glossary, the fields, `load_polish_instructions`, the exercise page with both notes,
    the tests, and **part (a): 135 exercises** in six batches reviewed by the owner (2026-11-14: the 65
-   originals, our 40 own built-ins and the 30 Smith variants). **Left: part (b)**, the other 809 built-ins with
+   originals, our 40 own built-ins and the 30 Smith variants). **Left: part (b)**, the other 808 built-ins with
    instructions. The four the dataset has no instructions for (Iron Cross, Side Jackknife, Push Press, Side
    Bridge) have our own, reviewed (2026-11-15; `free_db.SOURCE_CORRECTIONS`).
    How a batch goes: a draft with only "PL n:" lines → `scripts/zloz_partie.py` builds the review file
@@ -118,7 +118,7 @@ and keep each change small enough to review.
    - Order: glossary first; (a) the 65 originals, then our built-ins, in batches of ~25 for the owner's
      approval (done); (b) the rest translated in the session (no API script), batches of ~100, each in a fresh
      session, 10 random exercises per batch for a spot check, marked "automatic translation" until reviewed.
-     Order of the part (b) batches: strength exercises for beginners (323), then intermediate strength (238),
+     Order of the part (b) batches: strength exercises for beginners (322), then intermediate strength (238),
      then stretching and mobility (121), plyometrics (61), then the rest (66: expert strength, cardio, a few
      holds and balance exercises).
    - A part (b) session, step by step: read the glossary → list the next ~100 untranslated built-ins of the
@@ -132,12 +132,16 @@ and keep each change small enough to review.
      without asking and only listed. **Before handing a batch over**, search all of it (not a sample) for:
      "odwiedź" in any form (banned: it reads as "pay a visit"; use "rozchyl na boki" / "odsuń od ciała" /
      "unieś w bok"); "hyperextend" in the English (fix both versions as in Cable Crunch: the abs stretch, the
-     lower back stays neutral); forms with grammatical gender that describe the person; and English steps or
-     sentences that already have a reviewed translation in `instructions_pl.json` (use it word for word;
-     compare by script, identical English step or sentence → identical Polish). Check the GitHub API sparingly (60 unauthenticated requests per hour).
-   - Part (b) so far: batch 1 (2026-11-15), the first 100 beginner strength exercises by name (3/4 Sit-Up …
-     Dumbbell Alternate Bicep Curl); the 10 exercises of the owner's spot check are reviewed, the other 90
-     are automatic; 223 beginner strength exercises left. Decisions from the review are in the glossary
+     lower back stays neutral); "arch" and "bend at the waist" in the English (glossary wording: "lekkie,
+     naturalne wygięcie w odcinku lędźwiowym", "zginając się w biodrach"); forms with grammatical gender that
+     describe the person; and English steps, sentences and fragments of sentences that already have a reviewed
+     translation in `instructions_pl.json` (use it word for word; compare by script, identical English step or
+     sentence → identical Polish; a recurring fragment → its reviewed wording, e.g. "that best matches your
+     height" → "dopasowanej do twojego wzrostu"). Check the GitHub API sparingly (60 unauthenticated requests
+     per hour).
+   - Part (b) so far: batch 1 (2026-11-15), the first 99 beginner strength exercises by name (3/4 Sit-Up …
+     Dumbbell Alternate Bicep Curl; 100 until Chair Squat was merged into Smith Machine Hack Squat); the 10
+     exercises of the owner's spot check are reviewed, the other 89 are automatic; 223 beginner strength exercises left. Decisions from the review are in the glossary
      (chapter 10) and in `polskie_nazwy/instrukcje_b_partia_1_do_przegladu.txt`.
    - Mistakes in the English text of built-ins that are not originals are fixed on import in
      `free_db.INSTRUCTION_CORRECTIONS` ({source_id: [(wrong fragment, corrected fragment)]}).
@@ -248,7 +252,7 @@ Stage 1 items 6 (history list, charts) and 7 (PWA) are not scheduled yet: ask th
 5. **Search and variants.** Search ignores case, Polish diacritics, hyphens, spaces and English plurals
    ("step up" = "step-up" = "stepup" = "step ups"). Equipment words in the query, Polish or English (smith, suwnica,
    hantle, sztanga, kettlebell, wyciąg, linka, gumy, maszyna…), filter by equipment (or match that word in a name).
-   Equipment includes **Smith machine**: the 20 free-exercise-db Smith exercises (and Chair Squat) use it, plus 30 built-in Smith variants
+   Equipment includes **Smith machine**: the 20 free-exercise-db Smith exercises use it, plus 30 built-in Smith variants
    (`exercises/smith_variants.py`, command `seed_smith_variants`) linked to their free-weight base.
    When the movement exists but not with the typed equipment, the picker shows "+ Add variant: «Step Ups» — Kettlebell"
    on top: one tap creates the user's own exercise in the base's family, copying muscles, measurement, category,
@@ -481,8 +485,10 @@ the same movement, same Polish main name):
   Smith_Single-Leg_Split_Squat = our Smith Machine Bulgarian Split Squat; Smith_Machine_Overhead_Shoulder_Press
   (seated, by its instructions) = our Smith Machine Seated Shoulder Press; Barbell_Shoulder_Press =
   Seated_Barbell_Military_Press.
-- Found 2026-11-15, in the "Hack Squat" family: Chair_Squat (Smith machine, feet in front of the bar) = our
-  Smith Machine Hack Squat, which uses its photos (`smith_variants.PHOTO_SOURCES`).
+- ~~Chair_Squat (Smith machine, feet in front of the bar) = our Smith Machine Hack Squat~~: merged on
+  2026-11-15 (`smith_variants.ABSORBED_SOURCES`): the import skips Chair_Squat, `seed_smith_variants` folds an
+  old built-in copy into the variant (`merge_into`) and gives it the record's photos (no note) and the aliases
+  "chair squat", "przysiad na smithie ze stopami z przodu"; the variant keeps its name, steps and no source_id.
 
 Wrong categories or muscle groups (the ones fixed on 2026-11-13 are in `free_db.SOURCE_CORRECTIONS`):
 - Power_Clean (one of the 65 originals): source category "strength", but it is an Olympic lift; muscle-word

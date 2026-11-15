@@ -31,7 +31,8 @@ class Command(BaseCommand):
             self.style.SUCCESS(
                 f"free-exercise-db: {report.created} created, {report.updated} updated, "
                 f"{len(report.legacy_matched)} original exercises enriched, "
-                f"{report.withheld} withheld until confirmed."
+                f"{report.withheld} withheld until confirmed, "
+                f"{report.absorbed} left to our Smith variants."
             )
         )
         self.stdout.write(f"Workouts unchanged: {after[0]} workouts, {after[1]} sets.")

@@ -20,6 +20,7 @@ from exercises.free_db_polish import POLISH_NAMES
 from exercises.models import Exercise
 from exercises.seed_data import ALIASES, EXERCISES, EXTRA_EXERCISES
 from exercises.services import search_exercises
+from exercises.smith_variants import ABSORBED_SOURCES
 from plans.models import Plan, PlanDay, PlanExercise
 from workouts.models import WorkoutSet
 
@@ -255,7 +256,7 @@ def test_reviewed_mapping_matches_the_dataset():
     assert not withheld_ids() & set(LEGACY_MATCHES.values())
     # Polish names only for imported exercises, ~150 of them.
     legacy = {sid for name, sid in LEGACY_MATCHES.items() if name not in free_db.BORROWED_RECORDS}
-    assert set(POLISH_NAMES) <= ids - legacy - withheld_ids()
+    assert set(POLISH_NAMES) <= ids - legacy - withheld_ids() - set(ABSORBED_SOURCES.values())
     assert len(POLISH_NAMES) >= 150
 
 
@@ -271,7 +272,9 @@ def test_full_import_of_the_real_dataset(originals):
     assert report.conflicts == [] and report.legacy_missing == []
     # A borrowed record is both an original's photos and a built-in of its own.
     matched = len(LEGACY_MATCHES) - len(free_db.BORROWED_RECORDS)
-    assert report.created + matched + report.withheld == len(data)
+    # Chair Squat is our Smith Machine Hack Squat (smith_variants.ABSORBED_SOURCES).
+    assert report.absorbed == 1
+    assert report.created + matched + report.withheld + report.absorbed == len(data)
     assert len(LEGACY_MATCHES) == 64 and report.withheld == 0
     assert again.created == 0
     # The originals are all still there, with their ids, and nothing is duplicated.

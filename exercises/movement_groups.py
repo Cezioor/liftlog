@@ -47,9 +47,9 @@ MANUAL_GROUPS: dict[str, list[str]] = {
         "Incline Dumbbell Press",
     ],
     "Squat": ["Back Squat", "Smith Machine Squat", "Dumbbell Squat"],
-    # 2026-11-15: Chair Squat is a Smith machine squat with the feet in front of the bar,
-    # the same exercise as our Smith Machine Hack Squat (which now uses its photos).
-    "Hack Squat": ["Hack Squat", "Barbell Hack Squat", "Smith Machine Hack Squat", "Chair Squat"],
+    # 2026-11-15 (free-exercise-db's Chair Squat is folded into the Smith variant:
+    # smith_variants.ABSORBED_SOURCES).
+    "Hack Squat": ["Hack Squat", "Barbell Hack Squat", "Smith Machine Hack Squat"],
     # 2026-11-14: the seated bent-over cable raise was the source of "Cable Lateral Raise";
     # same position and path as our Rear Delt Fly (Seated_Bent-Over_Rear_Delt_Raise).
     "Rear Delt Fly": ["Rear Delt Fly", "Cable Seated Lateral Raise"],

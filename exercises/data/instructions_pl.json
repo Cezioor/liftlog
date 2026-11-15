@@ -1080,19 +1080,6 @@
       "Wykonaj zaplanowaną liczbę powtórzeń."
     ]
   },
-  "Chair_Squat": {
-    "name": "Chair Squat",
-    "en_hash": "653f4fe36494",
-    "auto": true,
-    "steps": [
-      "Na początek ustaw sztangę na wysokości dopasowanej do swojego wzrostu. Gdy sztanga jest obciążona, wejdź pod nią i oprzyj ją w poprzek na tylnej części barków.",
-      "Chwyć sztangę dłońmi skierowanymi do przodu, odblokuj ją i zdejmij z haków, prostując nogi.",
-      "Wysuń stopy ok. 45 cm przed sztangę. Stań w rozkroku na szerokość barków, z palcami stóp lekko na zewnątrz. Cały czas patrz przed siebie i trzymaj kręgosłup w pozycji neutralnej albo z lekkim wygięciem. To pozycja wyjściowa.",
-      "Powoli opuszczaj sztangę, uginając kolana, z prostą sylwetką i uniesioną głową. Schodź, aż kąt między udami a łydkami będzie mniejszy niż 90 stopni.",
-      "Z wydechem zacznij unosić sztangę, odpychając się piętami od podłogi i prostując kolana, aż wrócisz do pozycji wyjściowej.",
-      "Wykonaj zaplanowaną liczbę powtórzeń."
-    ]
-  },
   "Chin-Up": {
     "name": "Chin-up",
     "en_hash": "2573c950177d",
