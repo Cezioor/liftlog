@@ -13,7 +13,7 @@ from exercises.services import (
     stem,
     variant_suggestion,
 )
-from exercises.smith_variants import NO_BASE_PHOTOS, SMITH_VARIANTS
+from exercises.smith_variants import PHOTO_SOURCES, SMITH_VARIANTS
 from workouts.services import personal_records
 
 HTMX_RESULTS = {"HTTP_HX_REQUEST": "true", "HTTP_HX_TARGET": "picker-results"}
@@ -338,8 +338,9 @@ def test_import_moves_the_20_smith_exercises_to_smith_machine():
     import_dataset(load_dataset())
 
     smith = Exercise.objects.filter(owner=None, equipment=Equipment.SMITH)
-    assert smith.count() == 20
-    assert all("smith" in e.name.lower() for e in smith)
+    # 20 with "Smith" in their name, and Chair Squat (corrected: its text and photos use one).
+    assert smith.count() == 21
+    assert all("smith" in e.name.lower() for e in smith.exclude(name="Chair Squat"))
     assert not Exercise.objects.filter(name__icontains="smith").exclude(equipment="smith").exists()
 
 
@@ -362,8 +363,8 @@ def test_seed_smith_variants_links_them_to_their_bases():
             base = Exercise.objects.get(name=base_name, owner=None)
             assert variant.movement_id == base.movement_id is not None, name
             # The base's photos, unless they show another movement (the hack squat).
-            expected = [] if name in NO_BASE_PHOTOS else base.images
-            assert variant.images == expected, name
+            source = Exercise.objects.get(name=PHOTO_SOURCES.get(name, base_name), owner=None)
+            assert variant.images == source.images != [], name
     step = Exercise.objects.get(name="Smith Machine Step-up")
     assert step.is_unilateral
     # And "step up smith" now finds it instead of offering a new variant.

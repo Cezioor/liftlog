@@ -84,7 +84,8 @@ and keep each change small enough to review.
    instructions. **Done:** the glossary, the fields, `load_polish_instructions`, the exercise page with both notes,
    the tests, and **part (a): 135 exercises** in six batches reviewed by the owner (2026-11-14: the 65
    originals, our 40 own built-ins and the 30 Smith variants). **Left: part (b)**, the other 809 built-ins with
-   instructions (4 have none: Iron Cross, Side Jackknife, Push Press, Side Bridge).
+   instructions. The four the dataset has no instructions for (Iron Cross, Side Jackknife, Push Press, Side
+   Bridge) have our own, reviewed (2026-11-15; `free_db.SOURCE_CORRECTIONS`).
    How a batch goes: a draft with only "PL n:" lines → `scripts/zloz_partie.py` builds the review file
    (English steps and hash from the database) → the owner's review → `scripts/zapisz_partie.py` writes the
    data file (`--auto` for part (b)). A wrong or outdated English original is corrected first in
@@ -118,16 +119,18 @@ and keep each change small enough to review.
      choices, D units) and 10 random exercises for the owner's spot check → save with `zapisz_partie.py` the same
      way plus `'--auto'` → `load_polish_instructions`, tests, commit; push when asked. Both scripts live in
      `scripts/` (in the repo); the batch files stay in `polskie_nazwy/` (only on the owner's PC). Changes by analogy to earlier decisions are made
-     without asking and only listed. Check the GitHub API sparingly (60 unauthenticated requests per hour).
+     without asking and only listed. **Before handing a batch over**, search all of it (not a sample) for:
+     "odwiedź" in any form (banned: it reads as "pay a visit"; use "rozchyl na boki" / "odsuń od ciała" /
+     "unieś w bok"); "hyperextend" in the English (fix both versions as in Cable Crunch: the abs stretch, the
+     lower back stays neutral); forms with grammatical gender that describe the person; and English steps or
+     sentences that already have a reviewed translation in `instructions_pl.json` (use it word for word;
+     compare by script, identical English step or sentence → identical Polish). Check the GitHub API sparingly (60 unauthenticated requests per hour).
    - Part (b) so far: batch 1 (2026-11-15), the first 100 beginner strength exercises by name (3/4 Sit-Up …
-     Dumbbell Alternate Bicep Curl), saved as automatic; 223 beginner strength exercises left. The owner's
-     review file (10 random exercises, units, open doubts A1–A9) is
-     `polskie_nazwy/instrukcje_b_partia_1_do_przegladu.txt`.
+     Dumbbell Alternate Bicep Curl); the 10 exercises of the owner's spot check are reviewed, the other 90
+     are automatic; 223 beginner strength exercises left. Decisions from the review are in the glossary
+     (chapter 10) and in `polskie_nazwy/instrukcje_b_partia_1_do_przegladu.txt`.
    - Mistakes in the English text of built-ins that are not originals are fixed on import in
      `free_db.INSTRUCTION_CORRECTIONS` ({source_id: [(wrong fragment, corrected fragment)]}).
-   - The four built-ins without instructions: our own English and Polish steps wait for the owner's approval
-     in `polskie_nazwy/instrukcje_brakujace_4.txt` (not in the code yet; they go to
-     `free_db.SOURCE_CORRECTIONS` as `{"instructions": [...]}`).
    - Tests: as many steps as the original, no empty steps, no Cyrillic, every key exists, hashes match;
      language choice and both notes; variants with unchanged and with changed instructions.
 7. **Plan sections and missing exercises (B + C)**, before Stage 1.7: `PlanExercise.section` with three fixed
@@ -235,7 +238,7 @@ Stage 1 items 6 (history list, charts) and 7 (PWA) are not scheduled yet: ask th
 5. **Search and variants.** Search ignores case, Polish diacritics, hyphens, spaces and English plurals
    ("step up" = "step-up" = "stepup" = "step ups"). Equipment words in the query, Polish or English (smith, suwnica,
    hantle, sztanga, kettlebell, wyciąg, linka, gumy, maszyna…), filter by equipment (or match that word in a name).
-   Equipment includes **Smith machine**: the 20 free-exercise-db Smith exercises use it, plus 30 built-in Smith variants
+   Equipment includes **Smith machine**: the 20 free-exercise-db Smith exercises (and Chair Squat) use it, plus 30 built-in Smith variants
    (`exercises/smith_variants.py`, command `seed_smith_variants`) linked to their free-weight base.
    When the movement exists but not with the typed equipment, the picker shows "+ Add variant: «Step Ups» — Kettlebell"
    on top: one tap creates the user's own exercise in the base's family, copying muscles, measurement, category,
@@ -468,6 +471,8 @@ the same movement, same Polish main name):
   Smith_Single-Leg_Split_Squat = our Smith Machine Bulgarian Split Squat; Smith_Machine_Overhead_Shoulder_Press
   (seated, by its instructions) = our Smith Machine Seated Shoulder Press; Barbell_Shoulder_Press =
   Seated_Barbell_Military_Press.
+- Found 2026-11-15, in the "Hack Squat" family: Chair_Squat (Smith machine, feet in front of the bar) = our
+  Smith Machine Hack Squat, which uses its photos (`smith_variants.PHOTO_SOURCES`).
 
 Wrong categories or muscle groups (the ones fixed on 2026-11-13 are in `free_db.SOURCE_CORRECTIONS`):
 - Power_Clean (one of the 65 originals): source category "strength", but it is an Olympic lift; muscle-word
@@ -477,7 +482,8 @@ Wrong equipment (the equipment filter shows them in the wrong place):
 - Incline_Bench_Pull: barbell in free-exercise-db, but the instructions use dumbbells.
 - Lunge_Sprint: machine in free-exercise-db, but the instructions use the Smith machine.
 
-Missing instructions (named after the English name): Side_Jackknife, Iron_Cross, Push_Press, Side_Bridge.
+Missing instructions: none left (Side_Jackknife, Iron_Cross, Push_Press and Side_Bridge got our own on
+2026-11-15).
 
 Originals whose free-exercise-db match was another exercise (found while translating instructions,
 fixed on 2026-11-14 in `free_db`: `FOLDED_INTO_ORIGINALS`, `BORROWED_RECORDS`):

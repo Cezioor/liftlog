@@ -131,7 +131,7 @@ POLISH_NAMES = {
     "Standing_Overhead_Barbell_Triceps_Extension": "wyciskanie francuskie sztangą stojąc",
     "Machine_Triceps_Extension": "prostowanie ramion na maszynie",
     "JM_Press": "jm press",
-    "Close-Grip_Dumbbell_Press": "wyciskanie hantli wąsko",
+    "Close-Grip_Dumbbell_Press": "wyciskanie hantla oburącz w poprzek ławki",
     "Tate_Press": "tate press",
     # --- Legs ---
     "Barbell_Full_Squat": "przysiad pełny ze sztangą, przysiad głęboki",
@@ -940,8 +940,8 @@ POLISH_NAMES = {
         "przysiad boczny ze sztangą, wykrok w bok ze sztangą, przysiad kozacki ze sztangą"
     ),
     "Chair_Squat": (
-        "przysiad ze stopami wysuniętymi w przód, chair squat, "
-        "przysiad na maszynie ze stopami z przodu"
+        "przysiad ze stopami wysuniętymi w przód na smithie, chair squat, "
+        "przysiad na smithie ze stopami z przodu"
     ),
     "Barbell_Walking_Lunge": "wykroki chodzone ze sztangą, wykroki w marszu ze sztangą",
     "Bodyweight_Walking_Lunge": (
@@ -1401,7 +1401,7 @@ POLISH_NAMES = {
         "odwrotne rozpiętki z rotacją zewnętrzną, odwrotne rozpiętki na skosie z rotacją, "
         "tylne aktony"
     ),
-    "Iron_Cross": "iron cross z hantlami, krzyż z hantlami, wznosy przodem i bokiem",
+    "Iron_Cross": "iron cross z hantlami, krzyż z hantlami, przysiad z rozkładaniem rąk",
     "Bench_Press_-_Powerlifting": (
         "wyciskanie sztangi trójbojowe, wyciskanie z mostkiem, powerlifting bench press, "
         "wyciskanie w łuku"

@@ -17,9 +17,11 @@ BASELESS_LEVELS = {
 }
 
 # Variants whose base's photos show another movement (they still share its family, level
-# and mechanic). Barbell Hack Squat holds the bar behind the legs; on the Smith machine
-# the bar is on the back with the feet in front of it.
-NO_BASE_PHOTOS = {"Smith Machine Hack Squat"}
+# and mechanic): they take the photos of the built-in named here, which is the same
+# exercise, so no note goes under them. Barbell Hack Squat holds the bar behind the legs;
+# on the Smith machine the bar is on the back with the feet in front of it, which is what
+# free-exercise-db's "Chair Squat" shows (owner, 2026-11-15).
+PHOTO_SOURCES = {"Smith Machine Hack Squat": "Chair Squat"}
 
 # Under the photos of variants whose base is done with free weights (English, Polish);
 # bases with other equipment (a machine, bodyweight) get the second note.

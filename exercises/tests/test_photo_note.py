@@ -12,8 +12,8 @@ from exercises.seed_data import PHOTO_NOTES
 from exercises.services import create_variant, ensure_movement
 from exercises.smith_variants import (
     FREE_WEIGHT_PHOTO_NOTE,
-    NO_BASE_PHOTOS,
     OTHER_BASE_PHOTO_NOTE,
+    PHOTO_SOURCES,
     SMITH_VARIANTS,
 )
 
@@ -94,8 +94,13 @@ def test_the_library_keeps_photo_notes_out_of_the_steps():
     assert {e.photo_note_pl for e in noted} == {FREE_WEIGHT_PHOTO_NOTE[1]}
     for name, base_name, *_ in SMITH_VARIANTS:
         variant = Exercise.objects.get(owner=None, name=name)
-        if not base_name or name in NO_BASE_PHOTOS:
+        if not base_name:
             assert (variant.images, variant.photo_note) == ([], ""), name
+        if name in PHOTO_SOURCES:
+            # Photos of the same exercise under another name, so nothing to explain.
+            source = Exercise.objects.get(owner=None, name=PHOTO_SOURCES[name])
+            assert (variant.images, variant.photo_note) == (source.images, ""), name
+            assert variant.images, name
     # A base done on a machine or without weights: another note.
     others = Exercise.objects.filter(owner=None, photo_note=OTHER_BASE_PHOTO_NOTE[0])
     assert {e.name for e in others} == {

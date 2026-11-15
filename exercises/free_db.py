@@ -147,6 +147,57 @@ SOURCE_CORRECTIONS = {
         "measurement": Measurement.REPS,
     },
     "Suspended_Split_Squat": {"equipment": Equipment.SUSPENSION},
+    # Owner, 2026-11-15: the instructions and photos use a Smith machine ("machine" in the
+    # dataset) and a single weight plate ("barbell").
+    "Chair_Squat": {"equipment": Equipment.SMITH},
+    "Car_Drivers": {"equipment": Equipment.PLATE},
+    # The four exercises the dataset has no instructions for: our own, written from their
+    # photos (owner, 2026-11-15).
+    "Push_Press": {
+        "instructions": [
+            "Stand with your feet shoulder-width apart and the bar resting on the front of "
+            "your shoulders, hands just wider than shoulder width, elbows slightly in front "
+            "of the bar.",
+            "Keeping your torso upright and your heels on the floor, bend your knees slightly.",
+            "Straighten your legs explosively and use that drive to press the bar overhead "
+            "until your arms are locked out.",
+            "Lower the bar to your shoulders in a controlled manner, bending your knees "
+            "slightly as it lands.",
+            "Repeat for the recommended amount of repetitions.",
+        ]
+    },
+    "Side_Bridge": {
+        "instructions": [
+            "Lie on your side with your legs straight and your forearm on the floor, elbow "
+            "directly under your shoulder.",
+            "Lift your hips until your body forms a straight line from head to feet. Rest "
+            "your other hand on your hip.",
+            "Hold this position with your abs tight. Do not let your hips drop or rotate.",
+            "Lower your hips, then switch sides.",
+        ]
+    },
+    "Iron_Cross": {
+        "instructions": [
+            "Stand with your feet shoulder-width apart, holding a dumbbell in each hand. "
+            "Raise your arms straight out to your sides at shoulder height, palms facing "
+            "forward. This will be your starting position.",
+            "Squat down, and as you go down bring your straight arms together in front of "
+            "you at shoulder height. Keep your heels on the floor and your chest up.",
+            "Stand up, and as you rise open your arms back out to your sides.",
+            "Repeat for the recommended amount of repetitions.",
+        ]
+    },
+    "Side_Jackknife": {
+        "instructions": [
+            "Lie on your side with your legs straight, one on top of the other. Rest your "
+            "bottom arm on the floor in front of you and place your top hand behind your "
+            "head. This will be your starting position.",
+            "As you breathe out, raise your top leg and at the same time lift your torso "
+            "sideways, bringing your top elbow towards the raised leg.",
+            "Slowly return to the starting position as you breathe in.",
+            "Repeat for the recommended amount of repetitions, then switch sides.",
+        ]
+    },
 }
 
 # Mistakes in the English instructions of built-ins that are not originals, fixed on import
@@ -165,6 +216,64 @@ INSTRUCTION_CORRECTIONS = {
     # An exhale on the way down as well as on the way up.
     "Decline_Dumbbell_Bench_Press": [
         ("slowly to your side as you breathe out", "slowly to your side as you breathe in")
+    ],
+    # Owner, 2026-11-15. The text described an abduction with the far leg; the name and
+    # the photos show an adduction with the leg next to the post.
+    "Band_Hip_Adductions": [
+        ("put your right foot through the band", "put your left foot through the band"),
+        (
+            "raise your right legs out to the side as far as you can",
+            "pull your left leg in towards the other leg, as far as you can",
+        ),
+    ],
+    # "Arms ... hanging down in a horizontal line"; the photos: face down, arms vertical.
+    "Barbell_Curls_Lying_Against_An_Incline": [
+        (
+            "Lie against an incline bench, with your arms holding a barbell and hanging "
+            "down in a horizontal line.",
+            "Lie face down on an incline bench, holding a barbell with your arms hanging "
+            "straight down.",
+        )
+    ],
+    # "Starting position" meant the bar overhead here and at the shoulders elsewhere.
+    "Bradford_Rocky_Presses": [
+        (
+            "Lift the bar back up to the starting position as you exhale.",
+            "Lift the bar back up over your head as you exhale.",
+        )
+    ],
+    # As in the reviewed "Cable Crunch": no hyperextending of the lower back.
+    "Cable_Seated_Crunch": [
+        (
+            "Allow the weight to hyperextend the lower back slightly.",
+            "Allow the weight to stretch your abs, keeping your lower back neutral.",
+        )
+    ],
+    # A fixed "to failure" becomes the planned number of repetitions (like "10-20").
+    "Cable_Judo_Flip": [
+        ("repeat until failure", "repeat for the recommended amount of repetitions")
+    ],
+    "Cable_Reverse_Crunch": [
+        (
+            "Repeat the same movement to failure.",
+            "Repeat for the recommended amount of repetitions.",
+        )
+    ],
+    "Cable_Russian_Twists": [
+        (
+            "Repeat the same movement to failure.",
+            "Repeat for the recommended amount of repetitions.",
+        )
+    ],
+    # The general lat pulldown text with a note on three grips; this is the close-grip one.
+    "Close-Grip_Front_Lat_Pulldown": [
+        (
+            "using the prescribed grip. Note on grips: For a wide grip, your hands need to be "
+            "spaced out at a distance wider than your shoulder width. For a medium grip, your "
+            "hands need to be spaced out at a distance equal to your shoulder width and for a "
+            "close grip at a distance smaller than your shoulder width.",
+            "using a close grip (hands closer than shoulder width).",
+        )
     ],
 }
 

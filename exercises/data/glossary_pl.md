@@ -123,7 +123,7 @@ z polskich nazw (`exercises/free_db_polish.py`, `seed_data.py`, `holds_balance.p
 | upper back | górna część pleców | lower back | dolny odcinek pleców / lędźwie |
 | spine | kręgosłup | core / abs | mięśnie brzucha / brzuch |
 | hips | biodra | glutes / butt | pośladki |
-| thigh(s) | udo / uda | hamstrings | dwugłowe uda (tył uda) |
+| thigh(s) | udo / uda | hamstrings | dwugłowe uda (tył uda); kąt w kolanie: „między udami a łydkami” |
 | quads | czworogłowe (przód uda) | calves | łydki |
 | knee(s) | kolano / kolana | shin(s) | piszczel / piszczele |
 | ankle(s) | kostka / kostki | heel(s) | pięta / pięty |
@@ -191,7 +191,7 @@ pozycję nie zmieniają znaczenia słów kluczowych w wyszukiwarce (nie dotyczy 
 | squat down | zejdź do przysiadu | stand up | wstań / wyprostuj się |
 | step forward / back | zrób krok w przód / w tył | lunge | zrób wykrok |
 | hinge at the hips | zegnij się w biodrach (cofając biodra) | drive through the heels | odepchnij się piętami |
-| rotate / twist | obróć / skręć | abduct / adduct | odwiedź / przywiedź |
+| rotate / twist | obróć / skręć | abduct / flare out / adduct | unieś w bok, odsuń od ciała / rozchyl na boki / przywiedź (nigdy „odwiedź”) |
 | shrug | unieś barki | retract the shoulder blades | ściągnij łopatki |
 | lock out | zablokuj (wyprostuj do końca) | do not lock your knees / elbows | nie blokuj kolan / łokci |
 | jump / land | skocz / wyląduj | hold | utrzymaj (pozycję) |
@@ -270,8 +270,15 @@ zawsze znaczy „jedna stopa” („place one foot on the box”). „Feet” ja
 - 2026-11-15 (część (b), partia 1, automatyczna, nieprzejrzana): „This equals one repetition.” →
   „To jedno powtórzenie.”; „Continue alternating…” → „Kontynuuj na zmianę, aż wykonasz zaplanowaną
   liczbę powtórzeń.”; „…and repeat.” na końcu ostatniego kroku → „…i wykonaj zaplanowaną liczbę
-  powtórzeń.”; crunch (ruch) → „spięcie brzucha”; sled → „sanie”; harness → „szelki”; ankle cuff /
-  strap → „opaska na kostkę”; weight stack → „stos”; tower / uprights → „kolumna wyciągu”; Bosu Ball
+  powtórzeń.”; crunch (ruch) → „spięcie brzucha”; sled → „sanie”; harness → „uprząż”; ankle cuff /
+  strap → „opaska na kostkę”; weight stack → „stos ciężarków”; tower / uprights → „kolumna wyciągu”; Bosu Ball
   → „bosu”; rear delts → „tylne aktony barków”; rotator cuff → „stożek rotatorów”; „to failure” →
-  „do upadku mięśniowego” (do decyzji właściciela). Błędy angielskiego w ćwiczeniach spoza 65
+  zaplanowana liczba powtórzeń w obu wersjach, chyba że dalsze kroki opierają się na upadku
+  mięśniowym (wtedy dosłownie: „do upadku mięśniowego”). Błędy angielskiego w ćwiczeniach spoza 65
   oryginałów poprawiamy w `free_db.INSTRUCTION_CORRECTIONS`.
+- 2026-11-15 (przegląd próbki partii (b) 1): forma „odwiedź” zakazana (czyta się jak „złóż wizytę”):
+  „rozchyl na boki”, „odsuń od ciała”, „unieś w bok”; „hyperextend the lower back” poprawiamy w obu
+  wersjach jak w Cable Crunch („pozwól, żeby ciężar rozciągnął brzuch, a dolny odcinek pleców
+  trzymaj w pozycji neutralnej”); kąt w kolanie to „kąt między udami a łydkami”; zdania, które mają
+  przejrzany odpowiednik w pliku tłumaczeń, bierzemy słowo w słowo („nachwytem (dłonie skierowane od
+  ciebie)”); push press: „wykorzystaj ten impet”.

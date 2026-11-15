@@ -7,8 +7,8 @@ from exercises.smith_variants import (
     BASELESS_LEVELS,
     FREE_WEIGHT_PHOTO_NOTE,
     FREE_WEIGHTS,
-    NO_BASE_PHOTOS,
     OTHER_BASE_PHOTO_NOTE,
+    PHOTO_SOURCES,
     SMITH_VARIANTS,
 )
 
@@ -28,9 +28,12 @@ class Command(BaseCommand):
                 base = Exercise.objects.filter(name=base_name, owner=None).first()
                 if base is None:
                     missing_bases.append(base_name)
-            images = list(base.images) if base and name not in NO_BASE_PHOTOS else []
-            note = ("", "")
-            if images:
+            images, note = list(base.images) if base else [], ("", "")
+            if name in PHOTO_SOURCES:
+                # Photos of the same exercise under another name: no note needed.
+                source = Exercise.objects.filter(name=PHOTO_SOURCES[name], owner=None).first()
+                images = list(source.images) if source else []
+            elif images:
                 free = base.equipment in FREE_WEIGHTS
                 note = FREE_WEIGHT_PHOTO_NOTE if free else OTHER_BASE_PHOTO_NOTE
             _, created = Exercise.objects.update_or_create(
@@ -47,7 +50,7 @@ class Command(BaseCommand):
                     "primary_muscles": primary,
                     "secondary_muscles": secondary,
                     "instructions": instructions,
-                    # The base's photos (free weights, same movement), as for user variants.
+                    # The base's photos (same movement, other equipment), as for user variants.
                     "images": images,
                     "photo_note": note[0],
                     "photo_note_pl": note[1],
