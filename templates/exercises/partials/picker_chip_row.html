@@ -1,0 +1,7 @@
+{% load i18n %}{# One row of filter chips (radio buttons): "All …" first, then only the values with results, plus the chosen one. #}
+<div class="chips" role="radiogroup" aria-label="{{ row.label }}" data-chip-row="{{ row.name }}">
+  <label class="chip"><input type="radio" name="{{ row.name }}" value=""{% if not row.chosen %} checked{% endif %}><span>{{ row.all_label }}</span></label>
+  {% for value, label in row.choices %}
+    <label class="chip"><input type="radio" name="{{ row.name }}" value="{{ value }}"{% if row.chosen == value %} checked{% endif %}><span>{{ label }}</span></label>
+  {% endfor %}
+</div>

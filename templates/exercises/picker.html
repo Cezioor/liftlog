@@ -1,7 +1,11 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n static %}
 
 {% block title %}{{ title }}{% endblock %}
+
+{% block extra_head %}
+  <script src="{% static 'js/picker.js' %}" defer></script>
+{% endblock %}
 
 {% block content %}
   <div class="page-header">
@@ -13,7 +17,8 @@
     {% endif %}
   </div>
 
-  {# Every keystroke or filter tap reloads only #picker-results (250 ms after typing stops). #}
+  {# Every keystroke or filter tap reloads #picker-results (250 ms after typing stops); #}
+  {# the chips (#picker-filters) come back with them out of band. #}
   <form method="get" class="picker-form" role="search"
         hx-get="{{ request.path }}" hx-target="#picker-results"
         hx-trigger="input changed delay:250ms, search, submit" hx-sync="this:replace">
@@ -25,30 +30,7 @@
            aria-label="{% translate "Search exercises" %}" autocomplete="off" autocapitalize="off"
            autocorrect="off" spellcheck="false" enterkeyhint="search" autofocus>
 
-    <div class="chips" role="radiogroup" aria-label="{% translate "Muscle group" %}">
-      <label class="chip"><input type="radio" name="muscle" value=""{% if not muscle %} checked{% endif %}><span>{% translate "All muscles" %}</span></label>
-      {% for value, label in muscle_choices %}
-        <label class="chip"><input type="radio" name="muscle" value="{{ value }}"{% if muscle == value %} checked{% endif %}><span>{{ label }}</span></label>
-      {% endfor %}
-    </div>
-    <div class="chips" role="radiogroup" aria-label="{% translate "Equipment" %}">
-      <label class="chip"><input type="radio" name="equipment" value=""{% if not equipment %} checked{% endif %}><span>{% translate "All equipment" %}</span></label>
-      {% for value, label in equipment_choices %}
-        <label class="chip"><input type="radio" name="equipment" value="{{ value }}"{% if equipment == value %} checked{% endif %}><span>{{ label }}</span></label>
-      {% endfor %}
-    </div>
-    <div class="chips" role="radiogroup" aria-label="{% translate "Type" %}">
-      <label class="chip"><input type="radio" name="category" value=""{% if not category %} checked{% endif %}><span>{% translate "All types" %}</span></label>
-      {% for value, label in type_choices %}
-        <label class="chip"><input type="radio" name="category" value="{{ value }}"{% if category == value %} checked{% endif %}><span>{{ label }}</span></label>
-      {% endfor %}
-    </div>
-    <div class="chips" role="radiogroup" aria-label="{% translate "Difficulty" %}">
-      <label class="chip"><input type="radio" name="level" value=""{% if not level %} checked{% endif %}><span>{% translate "Any level" %}</span></label>
-      {% for value, label in level_choices %}
-        <label class="chip"><input type="radio" name="level" value="{{ value }}"{% if level == value %} checked{% endif %}><span>{{ label }}</span></label>
-      {% endfor %}
-    </div>
+    {% include "exercises/partials/picker_filters.html" %}
     <noscript><button type="submit" class="button">{% translate "Search" %}</button></noscript>
   </form>
 

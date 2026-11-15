@@ -80,6 +80,16 @@ and keep each change small enough to review.
       press offers only "Other…"), "Other…" always stays. Kettlebell Goblet Squat
       added; Stiff-Legged Dumbbell Deadlift moved to the RDL family (`NOT_NAME_GROUPED`); Preacher Curl uses
       a barbell. Reps exercises with added kg and no plan range use 6–10 reps (`DEFAULT_WEIGHTED_REPS_RANGE`).
+   7. ~~Easier filters in the exercise search~~ (2026-11-15; library and the same picker in plans and
+      workouts): a chip that would give no results is hidden, counted with the typed text and the chips
+      chosen in the other rows (its own row left out, so a choice can be changed; "All …" and the chosen
+      chip always stay; no numbers on chips), refreshed with the results out of band
+      (`services.filter_options`: one GROUP BY per row, +1 query per refresh, 9–10 in all); a bar of
+      chosen filters ("Biceps ✕", "Clear filters"); an empty result offers each single filter whose
+      removal gives results ("Without “Smith machine”: 8 exercises"; "Clear filters" stays in the bar); Type and
+      Difficulty fold under "More filters", open by themselves when one is chosen and stay open
+      (`static/js/picker.js` keeps each row's scroll and shows the chosen chip). Fitting the filters to
+      warm-up and stretching comes back with item 7.
 6. **Polish exercise instructions** (in progress since 2026-11-14): in Polish, "How to do it" showed the English
    instructions. **Done:** the glossary, the fields, `load_polish_instructions`, the exercise page with both notes,
    the tests, and **part (a): 135 exercises** in six batches reviewed by the owner (2026-11-14: the 65

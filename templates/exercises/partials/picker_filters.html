@@ -1,0 +1,14 @@
+{% load i18n %}{# The filter chips. Re-rendered with every search: on HTMX requests it comes out of band with the results. #}
+<div id="picker-filters" class="picker-filters"{% if oob %} hx-swap-oob="true"{% endif %}>
+  {% for row in main_rows %}
+    {% include "exercises/partials/picker_chip_row.html" %}
+  {% endfor %}
+  {# "More filters": a checkbox sent with the form, so the rows stay open after every refresh. #}
+  <input type="checkbox" id="more-filters" name="more" value="1" class="more-filters-input"{% if more_open %} checked{% endif %}>
+  <label for="more-filters" class="button button-small more-filters-toggle">{% translate "More filters" %}</label>
+  <div class="more-filters">
+    {% for row in more_rows %}
+      {% include "exercises/partials/picker_chip_row.html" %}
+    {% endfor %}
+  </div>
+</div>

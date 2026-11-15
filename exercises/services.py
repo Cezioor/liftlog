@@ -296,26 +296,18 @@ def _compact(text):
     return text.replace(" ", "")
 
 
-# A goal in the "Type" filter that is not a category: until Next up 6 marks exercises
+# A goal in the "Type" filter that is not a category: until Next up 7 marks exercises
 # "before training", warm-ups are the ones with "rozgrzewka" in their Polish names.
 WARMUP = "warmup"
+WARMUP_MATCH = Q(search_text__contains="rozgrzewk")
 
 
-def search_exercises(user, query="", muscle_group="", equipment="", level="", category=""):
-    """Exercises visible to `user` matching the query and filters.
+def _filtered(user, parsed, muscle_group="", equipment="", level="", category=""):
+    """Exercises visible to `user` matching a parsed query and the filter chips, unordered.
 
-    - Case, Polish diacritics, hyphens and spaces don't matter, nor English plurals:
-      "step up" = "step-up" = "stepup" = "step ups".
-    - Every word must appear somewhere in the name or the other names.
-    - A word naming equipment ("smith", "hantle", "wyciąg"…) matches exercises with that
-      equipment, or with that word in a name ("suwnica" also finds the leg press).
-    - A word naming a muscle ("dupa", "klata", "glutes"…) works the same way: exercises
-      for that muscle (group, main or helping muscle), or with that word in a name
-      ("przyciąganie kolan do klatki" is still found by "klatki").
-    - Filler words ("ćwiczenie", "na", "for"…) are ignored.
-    Order: name starts with the query, then (with a muscle word) the muscle as group or
-    main muscle before the muscle as helping one, then exercises with Polish names (the
-    common ones and the user's own), then alphabetical.
+    Shared by search_exercises (which orders them) and filter_options (which counts them),
+    so a count always agrees with the results it stands for. Annotated with `compact`, and
+    with a muscle target also `primary_text` / `secondary_text`, for the ordering.
     """
     results = Exercise.objects.visible_to(user)
     if muscle_group in MuscleGroup.values:
@@ -325,11 +317,10 @@ def search_exercises(user, query="", muscle_group="", equipment="", level="", ca
     if level in Level.values:
         results = results.filter(level=level)
     if category == WARMUP:
-        results = results.filter(search_text__contains="rozgrzewk")
+        results = results.filter(WARMUP_MATCH)
     elif category in Category.values:
         results = results.filter(category=category)
 
-    parsed = parse_query(query)
     # The names without spaces, so "stepup" finds "step up" and the other way round.
     results = results.annotate(
         compact=Replace("search_text", Value(" "), Value(""), output_field=TextField())
@@ -350,7 +341,6 @@ def search_exercises(user, query="", muscle_group="", equipment="", level="", ca
             in_name |= Q(compact__contains=word_key(word))
         results = results.filter(Q(category=parsed.category) | in_name)
 
-    ordering = []
     target = parsed.target
     if target:
         results = results.annotate(
@@ -361,6 +351,34 @@ def search_exercises(user, query="", muscle_group="", equipment="", level="", ca
         in_name = Q(pk__in=[])
         for word in target.words:
             in_name |= Q(compact__contains=word)
+        results = results.filter(
+            keyword_match(target) | muscle_match(target) | helping_muscle_match(target) | in_name
+        )
+    return results
+
+
+def search_exercises(user, query="", muscle_group="", equipment="", level="", category=""):
+    """Exercises visible to `user` matching the query and filters.
+
+    - Case, Polish diacritics, hyphens and spaces don't matter, nor English plurals:
+      "step up" = "step-up" = "stepup" = "step ups".
+    - Every word must appear somewhere in the name or the other names.
+    - A word naming equipment ("smith", "hantle", "wyciąg"…) matches exercises with that
+      equipment, or with that word in a name ("suwnica" also finds the leg press).
+    - A word naming a muscle ("dupa", "klata", "glutes"…) works the same way: exercises
+      for that muscle (group, main or helping muscle), or with that word in a name
+      ("przyciąganie kolan do klatki" is still found by "klatki").
+    - Filler words ("ćwiczenie", "na", "for"…) are ignored.
+    Order: name starts with the query, then (with a muscle word) the muscle as group or
+    main muscle before the muscle as helping one, then exercises with Polish names (the
+    common ones and the user's own), then alphabetical.
+    """
+    parsed = parse_query(query)
+    results = _filtered(user, parsed, muscle_group, equipment, level, category)
+
+    ordering = []
+    target = parsed.target
+    if target:
         keyword = keyword_match(target)
         strong, helping = muscle_match(target), helping_muscle_match(target)
         # A query that also names a movement describes one exercise ("przyciąganie kolan do
@@ -371,7 +389,7 @@ def search_exercises(user, query="", muscle_group="", equipment="", level="", ca
             described = Q()
             for word in target.words:
                 described &= Q(compact__contains=word)
-        results = results.filter(keyword | strong | helping | in_name).annotate(
+        results = results.annotate(
             muscle_rank=Case(
                 When(described, then=Value(0)),
                 When(keyword, then=Value(0)),
@@ -420,6 +438,87 @@ def search_exercises(user, query="", muscle_group="", equipment="", level="", ca
         )
     )
     return results.order_by(*ordering, "familiar_first", "name")
+
+
+# --- filter chips ---------------------------------------------------------------
+
+# The rows of filter chips: request parameter -> Exercise field.
+FILTER_FIELDS = {
+    "muscle": "muscle_group",
+    "equipment": "equipment",
+    "category": "category",
+    "level": "level",
+}
+
+
+@dataclass(frozen=True)
+class FilterOptions:
+    """How many exercises each chip would give, row by row.
+
+    counts[row] maps a value to its number of exercises, counted with the typed text and
+    the chips chosen in the OTHER rows (a row's own choice is left out, so another chip
+    in the same row can still be chosen). Values with no exercise are missing; "" is the
+    group of exercises without a value (e.g. a user's own exercise without a level).
+    The "category" row also has WARMUP, which overlaps the categories.
+    """
+
+    counts: dict
+    chosen: dict
+
+    def has_results(self, row, value):
+        return self.counts[row].get(value, 0) > 0
+
+    def without(self, row):
+        """The number of exercises if this row's chip were taken off."""
+        groups = self.counts[row]
+        return sum(n for value, n in groups.items() if value != WARMUP)
+
+    @property
+    def total(self):
+        """The number of results with every chosen chip (the same for each row)."""
+        value = self.chosen["muscle"]
+        return self.counts["muscle"].get(value, 0) if value else self.without("muscle")
+
+
+def filter_options(user, query="", muscle_group="", equipment="", level="", category=""):
+    """Count, for every row of chips, the exercises each of its values would give.
+
+    One GROUP BY query per row (4 in all); the warm-up goal is counted in the category
+    row's query, since it is a word in the name, not a category.
+    """
+    parsed = parse_query(query)
+    chosen = {
+        "muscle": muscle_group,
+        "equipment": equipment,
+        "category": category,
+        "level": level,
+    }
+    counts = {}
+    for row, field in FILTER_FIELDS.items():
+        others = {name: value for name, value in chosen.items() if name != row}
+        rows = (
+            _filtered(
+                user,
+                parsed,
+                muscle_group=others.get("muscle", ""),
+                equipment=others.get("equipment", ""),
+                level=others.get("level", ""),
+                category=others.get("category", ""),
+            )
+            .order_by()
+            .values(field)
+        )
+        if row == "category":
+            rows = rows.annotate(n=Count("pk"), warmup=Count("pk", filter=WARMUP_MATCH))
+        else:
+            rows = rows.annotate(n=Count("pk"))
+        groups = {}
+        for item in rows:
+            groups[item[field] or ""] = groups.get(item[field] or "", 0) + item["n"]
+            if row == "category" and item["warmup"]:
+                groups[WARMUP] = groups.get(WARMUP, 0) + item["warmup"]
+        counts[row] = groups
+    return FilterOptions(counts=counts, chosen=chosen)
 
 
 # --- variants -----------------------------------------------------------------

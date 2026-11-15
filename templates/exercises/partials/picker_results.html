@@ -1,4 +1,14 @@
 {% load i18n %}{# Results of the exercise picker; re-rendered by HTMX on every search. #}
+{% if chosen_filters %}
+  {# The chosen chips: tap one to take only that filter off. #}
+  <div class="filter-bar" role="group" aria-label="{% translate "Chosen filters" %}">
+    {% for filter in chosen_filters %}
+      <a class="filter-tag" href="{{ filter.remove_url }}" hx-get="{{ filter.remove_url }}" hx-target="#picker-results"
+         aria-label="{% blocktranslate with label=filter.label %}Remove the filter “{{ label }}”{% endblocktranslate %}">{{ filter.label }} <span aria-hidden="true">✕</span></a>
+    {% endfor %}
+    <a class="filter-tag filter-clear" href="{{ clear_url }}" hx-get="{{ clear_url }}" hx-target="#picker-results">{% translate "Clear filters" %}</a>
+  </div>
+{% endif %}
 {% if variant %}
   {# The movement exists, but not with the equipment typed: offer the user's own variant. #}
   {% include "exercises/partials/picker_variant.html" %}
@@ -39,6 +49,14 @@
     <li class="picker-empty muted">{% if query %}{% blocktranslate %}No exercise matches “{{ query }}”.{% endblocktranslate %}{% else %}{% translate "No exercise matches." %}{% endif %}</li>
   {% endfor %}
 </ul>
+{% if way_out %}
+  {# Nothing found: each chip whose removal alone gives results ("Clear filters" is in the bar). #}
+  <div class="picker-way-out">
+    {% for filter in way_out %}
+      <a class="button" href="{{ filter.remove_url }}" hx-get="{{ filter.remove_url }}" hx-target="#picker-results">{% blocktranslate with label=filter.label count counter=filter.without %}Without “{{ label }}”: {{ counter }} exercise{% plural %}Without “{{ label }}”: {{ counter }} exercises{% endblocktranslate %}</a>
+    {% endfor %}
+  </div>
+{% endif %}
 {% if results_count > results|length %}
   <p class="muted small">{% blocktranslate with shown=results|length %}Showing {{ shown }} of {{ results_count }}. Type more to narrow it down.{% endblocktranslate %}</p>
 {% endif %}
@@ -62,4 +80,8 @@
 
 {% if quick_add_name and results_count %}
   {% include "exercises/partials/picker_add_own.html" %}
+{% endif %}
+
+{% if oob %}
+  {% include "exercises/partials/picker_filters.html" %}
 {% endif %}

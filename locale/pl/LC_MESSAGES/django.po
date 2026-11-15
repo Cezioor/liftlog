@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LiftLog\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 19:09+0100\n"
+"POT-Creation-Date: 2026-11-15 15:10+0100\n"
 "PO-Revision-Date: 2026-11-06 22:40+0100\n"
 "Last-Translator: Cezary Muszalski\n"
 "Language-Team: Polish\n"
@@ -335,7 +335,7 @@ msgstr "Plyometryczne"
 msgid "Balance & stability"
 msgstr "Równowaga i stabilizacja"
 
-#: .\exercises\models.py:83 .\exercises\picker.py:57
+#: .\exercises\models.py:83 .\exercises\picker.py:60
 msgid "Cardio"
 msgstr "Cardio"
 
@@ -426,44 +426,76 @@ msgstr "mięśnie pomocnicze"
 msgid "level"
 msgstr "poziom"
 
-#: .\exercises\picker.py:29
+#: .\exercises\picker.py:32
 msgid "You can also do these on the Smith machine"
 msgstr "Możesz zrobić też na smithie"
 
-#: .\exercises\picker.py:30
+#: .\exercises\picker.py:33
 msgid "You can also do these with a barbell"
 msgstr "Możesz zrobić też ze sztangą"
 
-#: .\exercises\picker.py:31
+#: .\exercises\picker.py:34
 msgid "You can also do these with dumbbells"
 msgstr "Możesz zrobić też z hantlami"
 
-#: .\exercises\picker.py:32
+#: .\exercises\picker.py:35
 msgid "You can also do these with a kettlebell"
 msgstr "Możesz zrobić też z kettlebell"
 
-#: .\exercises\picker.py:33
+#: .\exercises\picker.py:36
 msgid "You can also do these on a cable"
 msgstr "Możesz zrobić też na wyciągu"
 
-#: .\exercises\picker.py:34
+#: .\exercises\picker.py:37
 msgid "You can also do these with a resistance band"
 msgstr "Możesz zrobić też z gumą"
 
-#: .\exercises\picker.py:42 .\exercises\picker.py:54
+#: .\exercises\picker.py:45 .\exercises\picker.py:57
 #: .\templates\workouts\partials\exercise_card.html:65
 #: .\templates\workouts\workout_summary.html:21 .\workouts\forms.py:85
 msgid "Warm-up"
 msgstr "Rozgrzewka"
 
-#: .\exercises\picker.py:53
+#: .\exercises\picker.py:56
 msgctxt "goal tile"
 msgid "Strength"
 msgstr "Siła"
 
-#: .\exercises\picker.py:55
+#: .\exercises\picker.py:58
 msgid "Stretching"
 msgstr "Rozciąganie"
+
+#: .\exercises\picker.py:70
+msgid "Muscle group"
+msgstr "Grupa mięśni"
+
+#: .\exercises\picker.py:71
+msgid "All muscles"
+msgstr "Wszystkie mięśnie"
+
+#: .\exercises\picker.py:74
+msgid "Equipment"
+msgstr "Sprzęt"
+
+#: .\exercises\picker.py:74
+msgid "All equipment"
+msgstr "Każdy sprzęt"
+
+#: .\exercises\picker.py:75
+msgid "Type"
+msgstr "Typ"
+
+#: .\exercises\picker.py:75
+msgid "All types"
+msgstr "Wszystkie typy"
+
+#: .\exercises\picker.py:76
+msgid "Difficulty"
+msgstr "Poziom trudności"
+
+#: .\exercises\picker.py:76
+msgid "Any level"
+msgstr "Każdy poziom"
 
 #: .\exercises\templatetags\exercise_tags.py:25
 msgid "none"
@@ -487,22 +519,22 @@ msgstr "Ćwiczenia"
 msgid "Add"
 msgstr "Dodaj"
 
-#: .\exercises\views.py:82
+#: .\exercises\views.py:83
 #, python-format
 msgid "Added “%(name)s”."
 msgstr "Dodano „%(name)s”."
 
-#: .\exercises\views.py:96
+#: .\exercises\views.py:97
 #, python-format
 msgid "Saved “%(name)s”."
 msgstr "Zapisano „%(name)s”."
 
-#: .\exercises\views.py:187
+#: .\exercises\views.py:188
 #, python-format
 msgid "Created “%(name)s”, with its own history and records."
 msgstr "Utworzono „%(name)s”, z własną historią i rekordami."
 
-#: .\exercises\views.py:218
+#: .\exercises\views.py:219
 #, python-format
 msgid "Created “%(name)s”. You can set its details later in Exercises."
 msgstr ""
@@ -1151,7 +1183,7 @@ msgstr ""
 
 #: .\templates\exercises\change_variant.html:4
 #: .\templates\exercises\change_variant.html:10
-#: .\templates\exercises\exercise_detail.html:51
+#: .\templates\exercises\exercise_detail.html:53
 #: .\templates\plans\plan_detail.html:39
 #: .\templates\workouts\change_variant_scope.html:4
 #: .\templates\workouts\partials\exercise_card.html:6
@@ -1167,7 +1199,7 @@ msgid "current"
 msgstr "obecny"
 
 #: .\templates\exercises\change_variant.html:31
-#: .\templates\exercises\exercise_detail.html:59
+#: .\templates\exercises\exercise_detail.html:61
 msgid "mine"
 msgstr "moje"
 
@@ -1202,7 +1234,7 @@ msgstr "Utwórz wariant"
 
 #: .\templates\exercises\change_variant.html:60
 #: .\templates\exercises\exercise_form.html:14
-#: .\templates\exercises\picker.html:12 .\templates\plans\add_to_plan.html:9
+#: .\templates\exercises\picker.html:16 .\templates\plans\add_to_plan.html:9
 #: .\templates\plans\day_form.html:20
 #: .\templates\plans\plan_exercise_form.html:30
 #: .\templates\plans\plan_form.html:14
@@ -1271,73 +1303,73 @@ msgstr "Animuj"
 msgid "Pause"
 msgstr "Pauza"
 
-#: .\templates\exercises\exercise_detail.html:55
+#: .\templates\exercises\exercise_detail.html:57
 msgid "Variants"
 msgstr "Warianty"
 
-#: .\templates\exercises\exercise_detail.html:56
+#: .\templates\exercises\exercise_detail.html:58
 msgid ""
 "The same movement with other equipment. Each has its own history and records."
 msgstr ""
 "Ten sam ruch z innym sprzętem. Każdy wariant ma własną historię i rekordy."
 
-#: .\templates\exercises\exercise_detail.html:66
+#: .\templates\exercises\exercise_detail.html:68
 msgid "Muscles"
 msgstr "Mięśnie"
 
-#: .\templates\exercises\exercise_detail.html:69
+#: .\templates\exercises\exercise_detail.html:71
 msgid "Main:"
 msgstr "Główne:"
 
-#: .\templates\exercises\exercise_detail.html:70
+#: .\templates\exercises\exercise_detail.html:72
 msgid "Helping:"
 msgstr "Pomocnicze:"
 
-#: .\templates\exercises\exercise_detail.html:76
+#: .\templates\exercises\exercise_detail.html:78
 msgid "How to do it"
 msgstr "Jak wykonać"
 
-#: .\templates\exercises\exercise_detail.html:77
+#: .\templates\exercises\exercise_detail.html:79
 msgid "Instructions available in English only"
 msgstr "Instrukcja dostępna tylko po angielsku"
 
-#: .\templates\exercises\exercise_detail.html:81
+#: .\templates\exercises\exercise_detail.html:83
 msgid "Automatic translation"
 msgstr "Tłumaczenie automatyczne"
 
-#: .\templates\exercises\exercise_detail.html:86
+#: .\templates\exercises\exercise_detail.html:88
 msgid "My history"
 msgstr "Moja historia"
 
-#: .\templates\exercises\exercise_detail.html:90
-#: .\templates\exercises\exercise_detail.html:95
+#: .\templates\exercises\exercise_detail.html:92
+#: .\templates\exercises\exercise_detail.html:97
 #: .\templates\plans\plan_list.html:18
 msgid "j M Y"
 msgstr "j b Y"
 
-#: .\templates\exercises\exercise_detail.html:95
+#: .\templates\exercises\exercise_detail.html:97
 #, python-format
 msgid "Last time (%(date)s):"
 msgstr "Ostatnio (%(date)s):"
 
-#: .\templates\exercises\exercise_detail.html:100
+#: .\templates\exercises\exercise_detail.html:102
 msgid "You haven't logged this exercise yet."
 msgstr "Nie masz jeszcze zapisanego tego ćwiczenia."
 
-#: .\templates\exercises\exercise_detail.html:105
+#: .\templates\exercises\exercise_detail.html:107
 #: .\templates\plans\add_to_plan.html:4
 msgid "Add to plan"
 msgstr "Dodaj do planu"
 
-#: .\templates\exercises\exercise_detail.html:106
+#: .\templates\exercises\exercise_detail.html:108
 #: .\templates\exercises\exercise_form.html:4
 #: .\templates\plans\plan_exercise_form.html:4
 #: .\templates\plans\plan_exercise_form.html:8
 msgid "Edit exercise"
 msgstr "Edytuj ćwiczenie"
 
-#: .\templates\exercises\exercise_detail.html:108
-#: .\templates\exercises\partials\picker_results.html:32
+#: .\templates\exercises\exercise_detail.html:110
+#: .\templates\exercises\partials\picker_results.html:42
 msgid "All exercises"
 msgstr "Wszystkie ćwiczenia"
 
@@ -1384,33 +1416,59 @@ msgstr "Dodaj własne ćwiczenie: «%(name)s»"
 msgid "Creates it and picks it right away; add details later"
 msgstr "Utworzy je i od razu wybierze; szczegóły uzupełnisz później"
 
-#: .\templates\exercises\partials\picker_results.html:14
+#: .\templates\exercises\partials\picker_filters.html:8
+msgid "More filters"
+msgstr "Więcej filtrów"
+
+#: .\templates\exercises\partials\picker_results.html:4
+msgid "Chosen filters"
+msgstr "Wybrane filtry"
+
+#: .\templates\exercises\partials\picker_results.html:7
+#, python-format
+msgid "Remove the filter “%(label)s”"
+msgstr "Usuń filtr „%(label)s”"
+
+#: .\templates\exercises\partials\picker_results.html:9
+msgid "Clear filters"
+msgstr "Wyczyść filtry"
+
+#: .\templates\exercises\partials\picker_results.html:24
 msgid "What do you want to do?"
 msgstr "Co chcesz robić?"
 
-#: .\templates\exercises\partials\picker_results.html:23
+#: .\templates\exercises\partials\picker_results.html:33
 msgid "Recently used"
 msgstr "Ostatnio używane"
 
-#: .\templates\exercises\partials\picker_results.html:32
+#: .\templates\exercises\partials\picker_results.html:42
 msgid "Results"
 msgstr "Wyniki"
 
-#: .\templates\exercises\partials\picker_results.html:39
+#: .\templates\exercises\partials\picker_results.html:49
 #, python-format
 msgid "No exercise matches “%(query)s”."
 msgstr "Brak ćwiczeń pasujących do „%(query)s”."
 
-#: .\templates\exercises\partials\picker_results.html:39
+#: .\templates\exercises\partials\picker_results.html:49
 msgid "No exercise matches."
 msgstr "Brak pasujących ćwiczeń."
 
-#: .\templates\exercises\partials\picker_results.html:43
+#: .\templates\exercises\partials\picker_results.html:56
+#, python-format
+msgid "Without “%(label)s”: %(counter)s exercise"
+msgid_plural "Without “%(label)s”: %(counter)s exercises"
+msgstr[0] "Bez filtra «%(label)s»: %(counter)s ćwiczenie"
+msgstr[1] "Bez filtra «%(label)s»: %(counter)s ćwiczenia"
+msgstr[2] "Bez filtra «%(label)s»: %(counter)s ćwiczeń"
+msgstr[3] "Bez filtra «%(label)s»: %(counter)s ćwiczeń"
+
+#: .\templates\exercises\partials\picker_results.html:61
 #, python-format
 msgid "Showing %(shown)s of %(results_count)s. Type more to narrow it down."
 msgstr "Widać %(shown)s z %(results_count)s. Wpisz więcej, żeby zawęzić."
 
-#: .\templates\exercises\partials\picker_results.html:55
+#: .\templates\exercises\partials\picker_results.html:73
 #, python-format
 msgid "Show %(count)s more"
 msgid_plural "Show %(count)s more"
@@ -1428,47 +1486,15 @@ msgstr "Dodaj wariant: «%(movement)s» — %(equipment)s"
 msgid "Same muscles and instructions, its own history and records"
 msgstr "Te same mięśnie i instrukcje, własna historia i rekordy"
 
-#: .\templates\exercises\picker.html:24
+#: .\templates\exercises\picker.html:29
 msgid "Search, e.g. przysiad, bench, wiosłowanie"
 msgstr "Szukaj, np. przysiad, bench, wiosłowanie"
 
-#: .\templates\exercises\picker.html:25
+#: .\templates\exercises\picker.html:30
 msgid "Search exercises"
 msgstr "Szukaj ćwiczeń"
 
-#: .\templates\exercises\picker.html:28
-msgid "Muscle group"
-msgstr "Grupa mięśni"
-
-#: .\templates\exercises\picker.html:29
-msgid "All muscles"
-msgstr "Wszystkie mięśnie"
-
 #: .\templates\exercises\picker.html:34
-msgid "Equipment"
-msgstr "Sprzęt"
-
-#: .\templates\exercises\picker.html:35
-msgid "All equipment"
-msgstr "Każdy sprzęt"
-
-#: .\templates\exercises\picker.html:40
-msgid "Type"
-msgstr "Typ"
-
-#: .\templates\exercises\picker.html:41
-msgid "All types"
-msgstr "Wszystkie typy"
-
-#: .\templates\exercises\picker.html:46
-msgid "Difficulty"
-msgstr "Poziom trudności"
-
-#: .\templates\exercises\picker.html:47
-msgid "Any level"
-msgstr "Każdy poziom"
-
-#: .\templates\exercises\picker.html:52
 msgid "Search"
 msgstr "Szukaj"
 

@@ -5,15 +5,18 @@ chosen exercise's id is appended. Picking is therefore a plain link, which works
 with or without JavaScript.
 """
 
+from urllib.parse import urlencode
+
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
 
-from .models import Category, Equipment, Exercise, Level, MuscleGroup
+from .models import Category, Equipment, Level, MuscleGroup
 from .services import (
     EQUIPMENT_SUGGESTIONS_SHOWN,
     WARMUP,
     equipment_suggestions,
+    filter_options,
     find_by_name,
     parse_query,
     search_exercises,
@@ -58,13 +61,48 @@ GOAL_TILES = [
 ]
 
 
-def _type_choices(user):
-    """The "Type" choices that have exercises (no chip that always shows nothing)."""
-    visible = Exercise.objects.visible_to(user)
-    used = set(visible.values_list("category", flat=True).distinct())
-    if visible.filter(search_text__contains="rozgrzewk").exists():
-        used.add(WARMUP)
-    return [(value, label) for value, label in TYPE_CHOICES if value in used]
+# The rows of chips, in order: (parameter, row label, "all" chip, choices). The last two
+# rows sit under "More filters", open by themselves when one of them is chosen.
+MAIN_ROWS = ("muscle", "equipment")
+FILTER_ROWS = [
+    (
+        "muscle",
+        _("Muscle group"),
+        _("All muscles"),
+        [c for c in MuscleGroup.choices if c[0] != MuscleGroup.OTHER],
+    ),
+    ("equipment", _("Equipment"), _("All equipment"), Equipment.choices),
+    ("category", _("Type"), _("All types"), TYPE_CHOICES),
+    ("level", _("Difficulty"), _("Any level"), Level.choices),
+]
+ALLOWED = {
+    "muscle": set(MuscleGroup.values),
+    "equipment": set(Equipment.values),
+    "category": TYPE_VALUES,
+    "level": set(Level.values),
+}
+
+
+def _chip_rows(options, chosen):
+    """Each row with only the chips that give results, plus the chosen one (even at zero),
+    so a choice can always be seen and changed. No counts on the chips."""
+    rows = []
+    for name, label, all_label, choices in FILTER_ROWS:
+        shown = [
+            (value, text)
+            for value, text in choices
+            if value == chosen[name] or options.has_results(name, value)
+        ]
+        rows.append(
+            {
+                "name": name,
+                "label": label,
+                "all_label": all_label,
+                "choices": shown,
+                "chosen": chosen[name],
+            }
+        )
+    return rows
 
 
 def picker_response(
@@ -85,23 +123,45 @@ def picker_response(
     goal_tiles: show the goal tiles (Strength, Warm-up…) while nothing is chosen yet.
     """
     query = request.GET.get("q", "").strip()[:100]
-    muscle = request.GET.get("muscle", "")
-    equipment = request.GET.get("equipment", "")
-    level = request.GET.get("level", "")
-    muscle = muscle if muscle in MuscleGroup.values else ""
-    equipment = equipment if equipment in Equipment.values else ""
-    level = level if level in Level.values else ""
-    category = request.GET.get("category", "")
-    category = category if category in TYPE_VALUES else ""
+    chosen = {}
+    for name in ALLOWED:
+        value = request.GET.get(name, "")
+        chosen[name] = value if value in ALLOWED[name] else ""
+    muscle, equipment = chosen["muscle"], chosen["equipment"]
+    level, category = chosen["level"], chosen["category"]
 
     results = search_exercises(request.user, query, muscle, equipment, level, category)
-    filtering = bool(normalize(query) or muscle or equipment or level or category)
+    options = filter_options(request.user, query, muscle, equipment, level, category)
+    filtering = bool(normalize(query) or any(chosen.values()))
+    # "More filters" stays open once opened, and opens by itself for a chosen type or level.
+    more_open = request.GET.get("more") == "1" or bool(level or category)
+
+    def url(**changes):
+        """This picker with the same text and chips, except `changes` ("" removes one)."""
+        params = {**(extra_params or {}), "q": query, **chosen, **changes}
+        if more_open:
+            params["more"] = "1"
+        params = {name: value for name, value in params.items() if value}
+        return f"{request.path}?{urlencode(params)}" if params else request.path
+
+    labels = {name: dict(choices) for name, _label, _all, choices in FILTER_ROWS}
+    chosen_filters = [
+        {
+            "label": labels[name][value],
+            "remove_url": url(**{name: ""}),
+            "without": options.without(name),
+        }
+        for name, value in chosen.items()
+        if value
+    ]
     # A muscle and equipment ("na smithie na dupę"): exercises for that muscle that could
     # also be done with it, each one tap from the user's own variant.
     parsed = parse_query(query)
     suggest_with = equipment or parsed.equipment
     also_with = equipment_suggestions(request.user, parsed.target, suggest_with)
-    results_count = results.count()
+    rows = _chip_rows(options, chosen)
+    # Counted with the chips already (the same filter as the results): no extra query.
+    results_count = options.total
     context = {
         "title": title,
         "back_url": back_url,
@@ -112,12 +172,15 @@ def picker_response(
         "query": query,
         "muscle": muscle,
         "equipment": equipment,
-        "muscle_choices": [c for c in MuscleGroup.choices if c[0] != MuscleGroup.OTHER],
-        "equipment_choices": Equipment.choices,
         "level": level,
-        "level_choices": Level.choices,
         "category": category,
-        "type_choices": _type_choices(request.user),
+        "main_rows": [r for r in rows if r["name"] in MAIN_ROWS],
+        "more_rows": [r for r in rows if r["name"] not in MAIN_ROWS],
+        "more_open": more_open,
+        "chosen_filters": chosen_filters,
+        "clear_url": url(muscle="", equipment="", category="", level=""),
+        # Nothing found: each chip whose removal alone gives results, with how many.
+        "way_out": [f for f in chosen_filters if f["without"]] if not results_count else [],
         "goal_tiles": GOAL_TILES if goal_tiles and not filtering else [],
         "results": results[:RESULTS_LIMIT],
         "results_count": results_count,
@@ -135,5 +198,7 @@ def picker_response(
         "also_with_heading": ALSO_WITH.get(suggest_with, "") if also_with else "",
     }
     if request.headers.get("HX-Target") == "picker-results":
+        # The chips come along out of band: chips without results disappear as you type.
+        context["oob"] = True
         return render(request, "exercises/partials/picker_results.html", context)
     return render(request, "exercises/picker.html", context)
