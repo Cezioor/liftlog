@@ -47,13 +47,13 @@
   },
   "Alternate_Hammer_Curl": {
     "name": "Alternate Hammer Curl",
-    "en_hash": "28f1b62847f5",
+    "en_hash": "5542a0e20337",
     "auto": true,
     "steps": [
       "Stań z wyprostowanym tułowiem, z hantlem w każdej ręce, na opuszczonych rękach. Łokcie są blisko tułowia.",
       "Dłonie są zwrócone w stronę tułowia. To pozycja wyjściowa.",
-      "Z wydechem ugnij prawą rękę, unosząc hantel, napinając biceps i nie ruszając ramieniem. Kontynuuj ruch, aż biceps będzie w pełni napięty, a hantel na wysokości barku. Zatrzymaj się na sekundę w górnej pozycji, napinając biceps. Wskazówka: ruszają się tylko przedramiona.",
-      "Z wdechem powoli opuść hantle do pozycji wyjściowej.",
+      "Z wydechem ugnij prawą rękę, unosząc hantel, napinając biceps i nie ruszając ramieniem. Kontynuuj ruch, aż biceps będzie w pełni napięty, a hantel na wysokości barku. Zatrzymaj się na sekundę w górnej pozycji, napinając biceps. Wskazówka: rusza się tylko przedramię.",
+      "Z wdechem powoli opuść hantel do pozycji wyjściowej.",
       "Powtórz ruch lewą ręką. To jedno powtórzenie.",
       "Kontynuuj na zmianę, aż wykonasz zaplanowaną liczbę powtórzeń."
     ]
@@ -72,11 +72,11 @@
   },
   "Alternate_Incline_Dumbbell_Curl": {
     "name": "Alternate Incline Dumbbell Curl",
-    "en_hash": "f07501dd2899",
+    "en_hash": "3a4f5375ba2b",
     "auto": true,
     "steps": [
       "Usiądź na ławce skośnej z hantlem w każdej ręce, na opuszczonych rękach. Wskazówka: trzymaj łokcie blisko tułowia. To pozycja wyjściowa.",
-      "Z wydechem ugnij prawą rękę, unosząc hantel, napinając biceps i nie ruszając ramieniem. Podczas ruchu obracaj dłoń, aż będzie skierowana w górę. Kontynuuj ruch, aż biceps będzie w pełni napięty, a hantel na wysokości barku. Zatrzymaj się na sekundę w górnej pozycji, napinając biceps. Wskazówka: ruszają się tylko przedramiona.",
+      "Z wydechem ugnij prawą rękę, unosząc hantel, napinając biceps i nie ruszając ramieniem. Podczas ruchu obracaj dłoń, aż będzie skierowana w górę. Kontynuuj ruch, aż biceps będzie w pełni napięty, a hantel na wysokości barku. Zatrzymaj się na sekundę w górnej pozycji, napinając biceps. Wskazówka: rusza się tylko przedramię.",
       "Z wdechem powoli opuść hantel do pozycji wyjściowej.",
       "Powtórz ruch lewą ręką. To jedno powtórzenie.",
       "Kontynuuj na zmianę, aż wykonasz zaplanowaną liczbę powtórzeń."
@@ -873,12 +873,12 @@
   },
   "Cable_One_Arm_Tricep_Extension": {
     "name": "Cable One Arm Tricep Extension",
-    "en_hash": "e85c8855b242",
+    "en_hash": "f30119ffb567",
     "auto": true,
     "steps": [
       "Prawą ręką chwyć podchwytem (dłoń skierowana w górę) pojedynczy uchwyt górnego wyciągu. Stań dokładnie przed stosem ciężarków.",
       "Teraz ściągnij uchwyt w dół, tak żeby ramię i łokieć były przyciśnięte do boku. Ramię i przedramię tworzą kąt ostry (mniej niż 90 stopni). Drugą rękę możesz trzymać przy talii, a dla lepszej równowagi wysunąć jedną nogę do przodu, a drugą cofnąć. To pozycja wyjściowa.",
-      "Napinając triceps, ściągnij uchwyt w dół do boku, aż ręka będzie prosta. W tym ruchu zrób wydech. Wskazówka: ruszają się tylko przedramiona. Ramiona cały czas pozostają nieruchome.",
+      "Napinając triceps, ściągnij uchwyt w dół do boku, aż ręka będzie prosta. W tym ruchu zrób wydech. Wskazówka: rusza się tylko przedramię. Ramię cały czas pozostaje nieruchome.",
       "Napnij triceps i zatrzymaj się na sekundę w tej pozycji.",
       "Powoli odprowadź uchwyt do pozycji wyjściowej.",
       "Wykonaj zaplanowaną liczbę powtórzeń, a potem wykonaj ten sam ruch drugą ręką."
@@ -1218,7 +1218,7 @@
   },
   "Concentration_Curls": {
     "name": "Concentration Curls",
-    "en_hash": "97f4d75246fd",
+    "en_hash": "a7706eca6e88",
     "auto": true,
     "steps": [
       "Usiądź na ławce płaskiej, z jednym hantlem przed sobą między nogami. Nogi są rozstawione, kolana ugięte, a stopy na podłodze.",
@@ -1252,7 +1252,7 @@
   },
   "Cross_Body_Hammer_Curl": {
     "name": "Cross Body Hammer Curl",
-    "en_hash": "e0778d9786d3",
+    "en_hash": "cc5fd05ee539",
     "auto": true,
     "steps": [
       "Stań prosto z hantlem w każdej ręce. Ręce są opuszczone przy bokach, dłońmi zwróconymi do środka.",
@@ -1503,11 +1503,11 @@
   },
   "Dumbbell_Alternate_Bicep_Curl": {
     "name": "Dumbbell Alternate Bicep Curl",
-    "en_hash": "5f51f3c0f4f7",
+    "en_hash": "b755fa5a4b30",
     "auto": true,
     "steps": [
       "Stań z wyprostowanym tułowiem, z hantlem w każdej ręce, na opuszczonych rękach. Łokcie są blisko tułowia, a dłonie zwrócone w stronę ud.",
-      "Nie ruszając ramieniem, ugnij prawą rękę, obracając dłoń, aż będzie skierowana do przodu. Następnie z wydechem dalej napinaj biceps, aż będzie w pełni napięty, a hantel na wysokości barku. Zatrzymaj się na sekundę w górnej pozycji, napinając biceps. Wskazówka: ruszają się tylko przedramiona.",
+      "Nie ruszając ramieniem, ugnij prawą rękę, obracając dłoń, aż będzie skierowana do przodu. Następnie z wydechem dalej napinaj biceps, aż będzie w pełni napięty, a hantel na wysokości barku. Zatrzymaj się na sekundę w górnej pozycji, napinając biceps. Wskazówka: rusza się tylko przedramię.",
       "Z wdechem powoli opuść hantel do pozycji wyjściowej. Wskazówka: opuszczając hantel, pamiętaj, żeby obrócić dłoń z powrotem do pozycji wyjściowej (w stronę uda).",
       "Powtórz ruch lewą ręką. To jedno powtórzenie.",
       "Kontynuuj na zmianę, aż wykonasz zaplanowaną liczbę powtórzeń."
@@ -1584,11 +1584,11 @@
   },
   "Dumbbell_Lunges": {
     "name": "Dumbbell Lunges",
-    "en_hash": "7fedb27e71ea",
-    "auto": true,
+    "en_hash": "3ad309b9de83",
+    "auto": false,
     "steps": [
       "Stań z wyprostowanym tułowiem, z hantlem w każdej ręce przy bokach. To pozycja wyjściowa.",
-      "Zrób krok prawą nogą do przodu, ok. 60 cm od stopy, która zostaje z tyłu, i opuść tułów, trzymając go pionowo i zachowując równowagę. Schodząc, weź wdech. Uwaga: jak w innych ćwiczeniach, przy schodzeniu nie pozwól, żeby kolano wysunęło się przed palce stóp, bo to nadmiernie obciąża staw kolanowy. Pilnuj, żeby piszczel przedniej nogi była prostopadle do podłogi.",
+      "Zrób krok prawą nogą do przodu, ok. 60 cm od stopy, która zostaje z tyłu, i opuść tułów, trzymając go pionowo i zachowując równowagę. Schodząc, weź wdech. Wskazówka: trzymaj piętę przedniej nogi na podłodze, a przednie kolano prowadź w linii z palcami stopy.",
       "Z wydechem odepchnij się głównie piętą i wróć do pozycji wyjściowej.",
       "Wykonaj zaplanowaną liczbę powtórzeń, potem powtórz lewą nogą."
     ]
@@ -1653,7 +1653,7 @@
   },
   "Dumbbell_Side_Bend": {
     "name": "Dumbbell Side Bend",
-    "en_hash": "a6ff3a38e12e",
+    "en_hash": "2634e17e1aec",
     "auto": true,
     "steps": [
       "Stań prosto, trzymając hantel w lewej ręce (dłoń zwrócona w stronę tułowia), a prawą dłoń połóż na talii. Stopy rozstaw na szerokość barków. To pozycja wyjściowa.",
@@ -1753,7 +1753,7 @@
   },
   "External_Rotation": {
     "name": "External Rotation",
-    "en_hash": "40e6542ea44d",
+    "en_hash": "334bdb246c67",
     "auto": true,
     "steps": [
       "Połóż się bokiem na ławce płaskiej, z hantlem w jednej ręce; drugą rękę złóż na ławce, tak żeby oprzeć na niej głowę.",
@@ -1819,7 +1819,7 @@
   "Flat_Bench_Leg_Pull-In": {
     "name": "Flat Bench Leg Pull-In",
     "en_hash": "970b8a70039b",
-    "auto": true,
+    "auto": false,
     "steps": [
       "Połóż się na macie albo na ławce płaskiej, z nogami poza jej końcem.",
       "Dłonie połóż pod pośladkami, skierowane w dół, albo po bokach, trzymając się ławki (na macie: dłonie skierowane w dół, po bokach). Wyprostuj też nogi. To pozycja wyjściowa.",
@@ -1879,7 +1879,7 @@
   },
   "Front_Cable_Raise": {
     "name": "Front Cable Raise",
-    "en_hash": "f34834ddd900",
+    "en_hash": "1fa2bf92f149",
     "auto": true,
     "steps": [
       "Ustaw ciężar na dolnym wyciągu i lewą ręką chwyć pojedynczy uchwyt zaczepiony do dolnego wyciągu.",
@@ -1891,7 +1891,7 @@
   },
   "Front_Dumbbell_Raise": {
     "name": "Front Dumbbell Raise",
-    "en_hash": "264511060bb0",
+    "en_hash": "e9851a0c0fb9",
     "auto": true,
     "steps": [
       "Weź dwa hantle i stań z wyprostowanym tułowiem, z hantlami przed udami na opuszczonych rękach, dłońmi zwróconymi do ud. To pozycja wyjściowa.",
@@ -2144,26 +2144,25 @@
   },
   "Incline_Dumbbell_Flyes": {
     "name": "Incline Dumbbell Flyes",
-    "en_hash": "bb3e187f022f",
+    "en_hash": "6d08f374e4e6",
     "auto": true,
     "steps": [
-      "Weź hantel w każdą rękę i połóż się na ławce skośnej ustawionej pod kątem nie większym niż 30 stopni.",
-      "Wyprostuj ręce nad sobą, z lekko ugiętymi łokciami.",
-      "Teraz obróć nadgarstki tak, żeby dłonie były zwrócone w twoją stronę. Wskazówka: małe palce są obok siebie. To pozycja wyjściowa.",
-      "Z wdechem zacznij powoli opuszczać ręce na boki, trzymając je wyprostowane i obracając nadgarstki, aż dłonie będą zwrócone ku sobie nawzajem. Wskazówka: na końcu ruchu ręce są po bokach, a dłonie skierowane w sufit.",
-      "Z wydechem zacznij unosić hantle z powrotem do pozycji wyjściowej, odwracając ruch i obracając dłonie tak, żeby małe palce znów były obok siebie. Wskazówka: pamiętaj, że ruch zachodzi tylko w stawie barkowym i w nadgarstkach. W stawie łokciowym nie ma żadnego ruchu.",
-      "Wykonaj zaplanowaną liczbę powtórzeń."
+      "Połóż się na ławce skośnej ustawionej pod kątem nie większym niż 30 stopni, z hantlem w każdej ręce, opartym na udach. Dłonie są zwrócone ku sobie nawzajem.",
+      "Pomagając sobie udami, unieś hantle po kolei, tak żeby trzymać je przed sobą na szerokość barków, dłońmi zwróconymi ku sobie nawzajem. Unieś hantle w górę jak przy wyciskaniu, ale zatrzymaj się tuż przed pełnym wyprostem łokci. To pozycja wyjściowa.",
+      "Z lekko ugiętymi łokciami (żeby nie obciążać ścięgna bicepsa) opuszczaj ręce na boki szerokim łukiem, aż poczujesz rozciąganie w klatce piersiowej. W tej części ruchu weź wdech. Wskazówka: przez cały ruch ugięcie łokci się nie zmienia; ruch zachodzi tylko w stawie barkowym.",
+      "Z wydechem wróć rękami do pozycji wyjściowej, napinając mięśnie klatki piersiowej. Wskazówka: prowadź hantle tym samym łukiem co przy opuszczaniu.",
+      "Zatrzymaj się na sekundę w górnej pozycji. Wykonaj zaplanowaną liczbę powtórzeń."
     ]
   },
   "Incline_Dumbbell_Flyes_-_With_A_Twist": {
     "name": "Incline Dumbbell Flyes - With A Twist",
-    "en_hash": "d887c93f8cfb",
-    "auto": true,
+    "en_hash": "a2b37998a0df",
+    "auto": false,
     "steps": [
       "Weź hantel w każdą rękę i połóż się na ławce skośnej ustawionej pod kątem nie większym niż 30 stopni.",
       "Wyprostuj ręce nad sobą, z lekko ugiętymi łokciami.",
       "Teraz obróć nadgarstki tak, żeby dłonie były zwrócone w twoją stronę. Wskazówka: małe palce są obok siebie. To pozycja wyjściowa.",
-      "Z wdechem zacznij powoli opuszczać ręce na boki, trzymając je wyprostowane i obracając nadgarstki, aż dłonie będą zwrócone ku sobie nawzajem. Wskazówka: na końcu ruchu ręce są po bokach, a dłonie skierowane w sufit.",
+      "Z wdechem zacznij powoli opuszczać ręce na boki, trzymając je wyprostowane i obracając nadgarstki, aż dłonie będą skierowane w sufit. Wskazówka: na końcu ruchu ręce są po bokach, a dłonie skierowane w sufit.",
       "Z wydechem zacznij unosić hantle z powrotem do pozycji wyjściowej, odwracając ruch i obracając dłonie tak, żeby małe palce znów były obok siebie. Wskazówka: pamiętaj, że ruch zachodzi tylko w stawie barkowym i w nadgarstkach. W stawie łokciowym nie ma żadnego ruchu.",
       "Wykonaj zaplanowaną liczbę powtórzeń."
     ]
@@ -2253,7 +2252,7 @@
   "Incline_Push-Up_Wide": {
     "name": "Incline Push-Up Wide",
     "en_hash": "b5068ff2ca4c",
-    "auto": true,
+    "auto": false,
     "steps": [
       "Stań przodem do sztangi na suwnicy Smitha albo stabilnego podwyższenia na odpowiedniej wysokości.",
       "Połóż dłonie na sztandze, szerzej niż na szerokość barków.",
@@ -2470,7 +2469,7 @@
   "Landmine_180s": {
     "name": "Landmine 180's",
     "en_hash": "ea5c47f27637",
-    "auto": true,
+    "auto": false,
     "steps": [
       "Włóż sztangę w landmine albo pewnie zaprzyj jej koniec w rogu. Załóż odpowiedni ciężar.",
       "Unieś sztangę z podłogi na wysokość barków, trzymając ją obiema rękami, z rękami wyprostowanymi przed sobą. Stań w szerokim rozkroku. To pozycja wyjściowa.",
@@ -2559,11 +2558,11 @@
   },
   "Leverage_Deadlift": {
     "name": "Leverage Deadlift",
-    "en_hash": "4e72a9951756",
+    "en_hash": "0af84b94e2d9",
     "auto": true,
     "steps": [
       "Załóż odpowiedni ciężar na trzpienie. Stań dokładnie między uchwytami. Chwyć dolne uchwyty wygodnym chwytem, a potem z wdechem obniż biodra. Patrz przed siebie i trzymaj klatkę piersiową uniesioną. To pozycja wyjściowa.",
-      "Wróć z ciężarem do pozycji wyjściowej."
+      "Odepchnij się piętami od podłogi, prostując biodra i kolana, aż staniesz prosto. Przez cały ruch trzymaj ręce proste. Potem wróć z ciężarem do pozycji wyjściowej."
     ]
   },
   "Leverage_Decline_Chest_Press": {
@@ -2704,11 +2703,11 @@
   "Lying_Supine_Dumbbell_Curl": {
     "name": "Lying Supine Dumbbell Curl",
     "en_hash": "cc09559c81f4",
-    "auto": true,
+    "auto": false,
     "steps": [
       "Połóż się na plecach na ławce płaskiej, z hantlem w każdej ręce, opartym na udach.",
       "Przenieś hantle na boki, z wyprostowanymi rękami i dłońmi zwróconymi do ud (chwyt neutralny).",
-      "Trzymając ręce blisko tułowia, a łokcie przy bokach, powoli opuść ręce (wyprostowane, z lekko ugiętymi łokciami) jak najniżej w stronę podłogi. Gdy nie da się zejść niżej, zablokuj ramiona w tej pozycji. To pozycja wyjściowa.",
+      "Trzymając ręce i łokcie blisko tułowia, powoli opuść ręce (wyprostowane, z lekko ugiętymi łokciami) jak najniżej w stronę podłogi. Gdy nie da się zejść niżej, zablokuj ramiona w tej pozycji. To pozycja wyjściowa.",
       "Z wydechem zacznij powoli uginać ręce, jednocześnie obracając nadgarstki tak, żeby dłonie były skierowane w górę. Uginaj, aż bicepsy będą w pełni napięte, i mocno napnij je w górnej pozycji przez sekundę. Wskazówka: ruszają się tylko przedramiona. Ramiona pozostają nieruchome, a łokcie przez cały ruch przy tułowiu.",
       "Bardzo powoli wróć do pozycji wyjściowej."
     ]
@@ -2849,13 +2848,13 @@
   },
   "One-Arm_Flat_Bench_Dumbbell_Flye": {
     "name": "One-Arm Flat Bench Dumbbell Flye",
-    "en_hash": "1da37de6944a",
-    "auto": true,
+    "en_hash": "5783718a66c9",
+    "auto": false,
     "steps": [
       "Połóż się na ławce płaskiej z hantlem w jednej ręce, opartym na udzie. Dłoń trzymająca hantel jest w chwycie neutralnym.",
-      "Pomagając sobie udami, unieś hantel, tak żeby trzymać go przed sobą na w pełni wyprostowanej ręce. Pamiętaj, żeby w tym ćwiczeniu utrzymać chwyt neutralny. Drugą ręką trzymaj się z boku ławki dla lepszego podparcia. To pozycja wyjściowa.",
+      "Pomagając sobie udem, unieś hantel, tak żeby trzymać go przed sobą na w pełni wyprostowanej ręce. Pamiętaj, żeby w tym ćwiczeniu utrzymać chwyt neutralny. Drugą ręką trzymaj się z boku ławki dla lepszego podparcia. To pozycja wyjściowa.",
       "Łokieć ręki z ciężarem jest lekko ugięty, żeby nie obciążać ścięgna bicepsa. Zacznij opuszczać rękę z ciężarem na bok szerokim łukiem, aż poczujesz rozciąganie w klatce piersiowej. W tej części ruchu weź wdech. Wskazówka: przez cały ruch ugięcie łokcia się nie zmienia; ruch zachodzi tylko w stawie barkowym.",
-      "Z wydechem wróć ręką do pozycji wyjściowej, napinając mięśnie klatki piersiowej. Wskazówka: prowadź hantle tym samym łukiem co przy opuszczaniu.",
+      "Z wydechem wróć ręką do pozycji wyjściowej, napinając mięśnie klatki piersiowej. Wskazówka: prowadź hantel tym samym łukiem co przy opuszczaniu.",
       "Zatrzymaj się na sekundę w górnej pozycji. Wykonaj zaplanowaną liczbę powtórzeń.",
       "Zmień rękę i powtórz ćwiczenie."
     ]
@@ -2877,8 +2876,8 @@
   },
   "One-Arm_Incline_Lateral_Raise": {
     "name": "One-Arm Incline Lateral Raise",
-    "en_hash": "392a39ba8a32",
-    "auto": true,
+    "en_hash": "38c578298429",
+    "auto": false,
     "steps": [
       "Połóż się bokiem na ławce skośnej, z hantlem w dłoni. Bark jest dociśnięty do ławki, a ręka leży w poprzek ciała, z dłonią w okolicy pępka.",
       "Trzymaj hantel w ręce, która jest wyżej, wyprostowanej przed sobą, równolegle do podłogi. To pozycja wyjściowa.",
@@ -2937,14 +2936,14 @@
   },
   "One_Arm_Dumbbell_Bench_Press": {
     "name": "One Arm Dumbbell Bench Press",
-    "en_hash": "c210c6a7659e",
-    "auto": true,
+    "en_hash": "c9520e23932b",
+    "auto": false,
     "steps": [
       "Połóż się na ławce płaskiej z hantlem w jednej ręce, opartym na udzie.",
       "Pomagając sobie udem, unieś hantel, tak żeby trzymać go przed sobą na szerokość barków. Ręką, którą nie ćwiczysz, pomóż ustawić hantel prawidłowo nad sobą.",
       "Gdy hantel jest na szerokość barków, obróć nadgarstek do przodu, tak żeby dłoń była skierowana od ciebie. To pozycja wyjściowa.",
-      "Z wdechem powoli opuść hantle do boków. Cały czas w pełni panuj nad hantlem. Wskazówka: ręką, którą nie ćwiczysz, pomagaj utrzymać hantel w równowadze, bo na początku może to sprawiać trudność. Używaj jej tylko wtedy, gdy to potrzebne. W przeciwnym razie trzymaj ją swobodnie z boku.",
-      "Z wydechem wyciśnij hantle w górę, pracując klatką piersiową. W górnej pozycji zablokuj ręce i napnij klatkę, zatrzymaj się na sekundę, a potem zacznij powoli opuszczać hantle. Wskazówka: opuszczanie powinno trwać co najmniej dwa razy dłużej niż unoszenie.",
+      "Z wdechem powoli opuść hantel do boku. Cały czas w pełni panuj nad hantlem. Wskazówka: ręką, którą nie ćwiczysz, pomagaj utrzymać hantel w równowadze, bo na początku może to sprawiać trudność. Używaj jej tylko wtedy, gdy to potrzebne. W przeciwnym razie trzymaj ją swobodnie z boku.",
+      "Z wydechem wyciśnij hantel w górę, pracując klatką piersiową. W górnej pozycji zablokuj rękę i napnij klatkę, zatrzymaj się na sekundę, a potem zacznij powoli opuszczać hantel. Wskazówka: opuszczanie powinno trwać co najmniej dwa razy dłużej niż unoszenie.",
       "Wykonaj zaplanowaną liczbę powtórzeń.",
       "Zmień rękę i powtórz ćwiczenie."
     ]
@@ -3066,7 +3065,7 @@
   "Palms-Down_Wrist_Curl_Over_A_Bench": {
     "name": "Palms-Down Wrist Curl Over A Bench",
     "en_hash": "cedb71ddcba8",
-    "auto": true,
+    "auto": false,
     "steps": [
       "Na początek połóż sztangę po jednej stronie ławki płaskiej.",
       "Uklęknij na obu kolanach przodem do ławki.",

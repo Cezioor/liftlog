@@ -34,6 +34,12 @@ z polskich nazw (`exercises/free_db_polish.py`, `seed_data.py`, `holds_balance.p
   (`free_db.ORIGINAL_INSTRUCTIONS`, po akceptacji właściciela), potem tłumaczymy poprawioną wersję.
 - **Zmiany przez analogię** do decyzji już podjętych (np. usunięcie kolejnego odsyłacza do
   nieistniejącej części o ustawieniu stóp) robimy bez pytania i tylko wypisujemy je w pliku partii.
+- **Zdanie z przejrzanego tłumaczenia bierzemy słowo w słowo, ale liczbę dopasowujemy do
+  ćwiczenia.** W ćwiczeniach jednorącz i jednonóż (i w krokach ćwiczeń naprzemiennych, w których
+  pracuje jedna ręka) piszemy „hantel”, „ręka”, „ciężar”, „przedramię” w liczbie pojedynczej,
+  także gdy oryginał ma liczbę mnogą skopiowaną z wersji oburącz („opuść hantel do boku”,
+  „wyciśnij hantel”, „zablokuj rękę”). Angielski poprawiamy tak samo
+  (`free_db.INSTRUCTION_CORRECTIONS`: „the weight”, „the dumbbell”, „your arm”).
 - **Prywatne uwagi autora w pierwszej osobie** („my preference”, „I like to…”) pomijamy w obu
   wersjach (usuwamy je też z angielskiej przez `ORIGINAL_INSTRUCTIONS`).
 - **Błędy w oryginale** (literówki: „parner”, „hands behind your hand”): tłumaczymy zamierzone
@@ -149,6 +155,7 @@ pozycję nie zmieniają znaczenia słów kluczowych w wyszukiwarce (nie dotyczy 
 | bend at the waist | pochyl tułów, zginając się w biodrach (nie „zegnij się w pasie”) |
 | upright / tall | stań prosto / z wyprostowanym tułowiem / trzymaj tułów pionowo |
 | arch (your back) / natural arch | lekkie, naturalne wygięcie w odcinku lędźwiowym (nie „wygnij plecy w łuk”, chyba że oryginał wyraźnie tego chce, np. mostek w wyciskaniu) |
+| arch jako błąd („avoid arching your lower back”, „if your lower back arches”) | „nie wyginaj dolnego odcinka pleców w łuk” / „dolny odcinek pleców wygina się w łuk” |
 | parallel to the floor | równolegle do podłogi |
 | perpendicular to the floor | prostopadle do podłogi |
 | at a 45-degree angle | pod kątem 45 stopni |
@@ -289,3 +296,12 @@ zawsze znaczy „jedna stopa” („place one foot on the box”). „Feet” ja
   forhendzie”; cambered bar → „sztanga z wygiętym gryfem”; ankle weight → „obciążnik na kostce”;
   „the bell” (kettlebell) → samo „kettlebell”; arch jako błąd („If your lower back arches”) →
   „dolny odcinek pleców wygina się w łuk”; skłon w bok „bend at the waist” → „zginając się w talii”.
+- 2026-11-15 (przegląd próbki partii (b) 2): w wykrokach zamiast dawnej notki „kolano nie przed
+  palcami” („do not allow your knee to go forward beyond your toes… keep your front shin
+  perpendicular to the ground”) w obu wersjach: „Tip: Keep your front heel on the floor and your
+  front knee in line with your toes.” / „Wskazówka: trzymaj piętę przedniej nogi na podłodze, a
+  przednie kolano prowadź w linii z palcami stopy.” Tę samą notkę w kolejnych wykrokach (Barbell
+  Lunge, Dumbbell Rear Lunge i inne) zmieniamy przez analogię, bez pytania. Arch jako błąd: „nie
+  wyginaj … w łuk” (rozdział 5). Liczba pojedyncza w ćwiczeniach jednorącz i jednonóż (rozdział 1);
+  „elbows in” to zawsze „łokcie blisko tułowia” (nie „przy bokach”); C9: „curling your wrist
+  upwards” przy nachwycie zostaje „ugnij nadgarstki w górę”, jak w przejrzanym Wrist Curl.

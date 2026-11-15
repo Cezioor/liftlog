@@ -133,19 +133,26 @@ and keep each change small enough to review.
      "odwiedź" in any form (banned: it reads as "pay a visit"; use "rozchyl na boki" / "odsuń od ciała" /
      "unieś w bok"); "hyperextend" in the English (fix both versions as in Cable Crunch: the abs stretch, the
      lower back stays neutral); "arch" and "bend at the waist" in the English (glossary wording: "lekkie,
-     naturalne wygięcie w odcinku lędźwiowym", "zginając się w biodrach"); forms with grammatical gender that
-     describe the person; and English steps, sentences and fragments of sentences that already have a reviewed
+     naturalne wygięcie w odcinku lędźwiowym", "zginając się w biodrach"; arch as a fault: "nie wyginaj … w
+     łuk"); forms with grammatical gender that describe the person; plurals ("hantle", "ręce", "ciężary",
+     "przedramiona"; "the dumbbells", "the weights", "your arms" in the English) in one-arm and one-leg
+     exercises and in the one-arm steps of alternating ones (read every step of those exercises, fix both
+     versions to the singular in `INSTRUCTION_CORRECTIONS`); the old "knee not past the toes" note in lunges
+     (glossary chapter 10: front heel down, front knee in line with the toes); and English steps, sentences and fragments of sentences that already have a reviewed
      translation in `instructions_pl.json` (use it word for word; compare by script, identical English step or
      sentence → identical Polish; a recurring fragment → its reviewed wording, e.g. "that best matches your
-     height" → "dopasowanej do twojego wzrostu"). Check the GitHub API sparingly (60 unauthenticated requests
+     height" → "dopasowanej do twojego wzrostu"; word for word, but the number fits the exercise). Check the GitHub API sparingly (60 unauthenticated requests
      per hour).
    - Part (b) so far: batch 1 (2026-11-15), the first 99 beginner strength exercises by name (3/4 Sit-Up …
      Dumbbell Alternate Bicep Curl; 100 until Chair Squat was merged into Smith Machine Hack Squat); the 10
      exercises of the owner's spot check are reviewed, the other 89 are automatic. Batch 2 (2026-11-15), the next
-     100 (Dumbbell Bench Press with Neutral Grip … Palms-Up Barbell Wrist Curl Over A Bench), all automatic;
-     its spot check and questions are in `polskie_nazwy/instrukcje_b_partia_2_do_przegladu.txt`. 123 beginner
-     strength exercises left. Decisions from the review are in the glossary
-     (chapter 10) and in `polskie_nazwy/instrukcje_b_partia_1_do_przegladu.txt`.
+     100 (Dumbbell Bench Press with Neutral Grip … Palms-Up Barbell Wrist Curl Over A Bench); the 10 exercises
+     of the owner's spot check are reviewed, the other 90 are automatic (review applied 2026-11-15: lunge
+     note, Leverage Deadlift's missing lift, Incline Dumbbell Flyes rewritten after Dumbbell Fly, Incline Bench
+     Pull → dumbbells, singular in one-arm exercises of both batches). 123 beginner strength exercises left.
+     Decisions from the reviews are in the glossary (chapter 10) and in
+     `polskie_nazwy/instrukcje_b_partia_1_do_przegladu.txt` / `instrukcje_b_partia_2_do_przegladu.txt`
+     (section 4).
    - Mistakes in the English text of built-ins that are not originals are fixed on import in
      `free_db.INSTRUCTION_CORRECTIONS` ({source_id: [(wrong fragment, corrected fragment)]}).
    - Tests: as many steps as the original, no empty steps, no Cyrillic, every key exists, hashes match;
@@ -498,7 +505,6 @@ Wrong categories or muscle groups (the ones fixed on 2026-11-13 are in `free_db.
   suggestions skip it because its group is full body.
 
 Wrong equipment (the equipment filter shows them in the wrong place):
-- Incline_Bench_Pull: barbell in free-exercise-db, but the instructions use dumbbells.
 - Lunge_Sprint: machine in free-exercise-db, but the instructions use the Smith machine.
 
 Missing instructions: none left (Side_Jackknife, Iron_Cross, Push_Press and Side_Bridge got our own on

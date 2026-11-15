@@ -11,7 +11,7 @@ from decimal import Decimal
 import pytest
 from django.core.management import call_command
 
-from exercises.free_db import ORIGINAL_INSTRUCTIONS, import_dataset
+from exercises.free_db import ORIGINAL_INSTRUCTIONS, import_dataset, load_dataset
 from exercises.models import Exercise
 from exercises.services import create_variant, ensure_movement
 from plans.models import Plan, PlanDay, PlanExercise
@@ -20,12 +20,15 @@ from workouts.services import progression_hint
 
 from .test_free_db_import import record
 
+# Its real steps: INSTRUCTION_CORRECTIONS fixes a fragment of them on import.
+LUNGE_STEPS = next(r for r in load_dataset() if r["id"] == "Dumbbell_Lunges")["instructions"]
+
 RECORDS = [
     record("Standing_Low-Pulley_Deltoid_Raise", "Standing Low-Pulley Deltoid Raise",
            equipment="cable", primaryMuscles=["shoulders"]),
     record("Cable_Seated_Lateral_Raise", "Cable Seated Lateral Raise",
            equipment="cable", primaryMuscles=["shoulders"]),
-    record("Dumbbell_Lunges", "Dumbbell Lunges", equipment="dumbbell"),
+    record("Dumbbell_Lunges", "Dumbbell Lunges", equipment="dumbbell", instructions=LUNGE_STEPS),
     record("Barbell_Lunge", "Barbell Lunge"),
     record("Seated_Bent-Over_Rear_Delt_Raise", "Seated Bent-Over Rear Delt Raise",
            equipment="dumbbell", primaryMuscles=["shoulders"]),

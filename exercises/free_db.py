@@ -196,6 +196,32 @@ SOURCE_CORRECTIONS = {
             "Repeat for the recommended amount of repetitions, then switch sides.",
         ]
     },
+    # Owner, 2026-11-15 (part (b), batch 2). "Barbell" in the dataset; the instructions and
+    # the Polish name use dumbbells.
+    "Incline_Bench_Pull": {"equipment": Equipment.DUMBBELL},
+    # The dataset's text was the "With A Twist" one (wrists rotating); the plain incline
+    # flye now follows the reviewed "Dumbbell Fly", on an incline of up to 30 degrees.
+    "Incline_Dumbbell_Flyes": {
+        "instructions": [
+            "Lie down on an incline bench set to an incline angle of no more than 30 degrees, "
+            "with a dumbbell on each hand resting on top of your thighs. The palms of your "
+            "hand will be facing each other.",
+            "Then using your thighs to help raise the dumbbells, lift the dumbbells one at a "
+            "time so you can hold them in front of you at shoulder width with the palms of "
+            "your hands facing each other. Raise the dumbbells up like you're pressing them, "
+            "but stop and hold just before you lock out. This will be your starting position.",
+            "With a slight bend on your elbows in order to prevent stress at the biceps "
+            "tendon, lower your arms out at both sides in a wide arc until you feel a stretch "
+            "on your chest. Breathe in as you perform this portion of the movement. Tip: Keep "
+            "in mind that throughout the movement, the arms should remain stationary; the "
+            "movement should only occur at the shoulder joint.",
+            "Return your arms back to the starting position as you squeeze your chest muscles "
+            "and breathe out. Tip: Make sure to use the same arc of motion used to lower the "
+            "weights.",
+            "Hold for a second at the contracted position and repeat the movement for the "
+            "prescribed amount of repetitions.",
+        ]
+    },
 }
 
 # Mistakes in the English instructions of built-ins that are not originals, fixed on import
@@ -295,7 +321,10 @@ INSTRUCTION_CORRECTIONS = {
         (
             "perpendicular to the floor and the torso pointing towards the ceiling",
             "perpendicular to the floor, pointing towards the ceiling",
-        )
+        ),
+        # One arm works (see "one arm, one dumbbell" below).
+        ("Bend the elbows of the arm", "Bend the elbow of the arm"),
+        ("between the upper arms and the forearm", "between the upper arm and the forearm"),
     ],
     # The cable version still said "band" (copied from External Rotation with Band).
     "External_Rotation_with_Cable": [
@@ -314,6 +343,92 @@ INSTRUCTION_CORRECTIONS = {
     ],
     "Pallof_Press_With_Rotation": [
         ("Repeat to failure.", "Repeat for the recommended amount of repetitions.")
+    ],
+    # Owner's review of part (b), batch 2 (2026-11-15).
+    # As in squats: heel down and knee in line with the toes, not "knee not past the toes".
+    "Dumbbell_Lunges": [
+        (
+            "Note: As in the other exercises, do not allow your knee to go forward beyond your "
+            "toes as you come down, as this will put undue stress on the knee joint. Make sure "
+            "that you keep your front shin perpendicular to the ground.",
+            "Tip: Keep your front heel on the floor and your front knee in line with your toes.",
+        )
+    ],
+    # The step with the lift itself was missing (as in Leverage Shrug).
+    "Leverage_Deadlift": [
+        (
+            "Return the weight to the starting position.",
+            "Drive through the floor with your heels, extending your hips and knees as you rise "
+            "to a standing position. Keep your arms straight throughout the movement. Then "
+            "return the weight to the starting position.",
+        )
+    ],
+    # The wrists turned "until the palms are facing each other", the tip said the ceiling.
+    "Incline_Dumbbell_Flyes_-_With_A_Twist": [
+        (
+            "until the palms of the hand are facing each other",
+            "until the palms of your hands are facing the ceiling",
+        )
+    ],
+    # One arm, one dumbbell (or one arm at a time): the dataset says "the dumbbells",
+    # "the weights", "your arms", "the forearms".
+    "One_Arm_Dumbbell_Bench_Press": [
+        ("Bring down the weights slowly to your side", "Bring down the weight slowly to your side"),
+        (
+            "push the dumbbells up using your pectoral muscles. Lock your arms",
+            "push the dumbbell up using your pectoral muscles. Lock your arm",
+        ),
+    ],
+    "One-Arm_Flat_Bench_Dumbbell_Flye": [
+        ("By using your thighs to help", "By using your thigh to help"),
+        ("used to lower the weights.", "used to lower the weight."),
+    ],
+    "Cable_One_Arm_Tricep_Extension": [
+        (
+            "Tip: Only the forearms should move. Your upper arms should remain stationary",
+            "Tip: Only the forearm should move. Your upper arm should remain stationary",
+        )
+    ],
+    "Concentration_Curls": [
+        ("curl the weights forward", "curl the weight forward"),
+        ("Only the forearms should move.", "Only the forearm should move."),
+        ("the dumbbells are at shoulder level", "the dumbbell is at shoulder level"),
+        ("bring the dumbbells back", "bring the dumbbell back"),
+    ],
+    "One-Arm_Incline_Lateral_Raise": [
+        ("the contraction in the shoulders", "the contraction in the shoulder")
+    ],
+    "Dumbbell_Side_Bend": [("(palms facing the torso)", "(palm facing the torso)")],
+    "Front_Cable_Raise": [
+        ("with the palms of the hand facing", "with the palm of the hand facing"),
+        ("the palms of the hand always faces down", "the palm of the hand always facing down"),
+    ],
+    "Front_Dumbbell_Raise": [
+        ("the palms of the hands always facing down", "the palm of the hand always facing down")
+    ],
+    "Cross_Body_Hammer_Curl": [
+        ("While keeping your palms facing in", "While keeping your palm facing in")
+    ],
+    "Alternate_Hammer_Curl": [
+        ("the dumbbells are at shoulder level", "the dumbbell is at shoulder level"),
+        ("Tip: Only the forearms should move.", "Tip: Only the forearm should move."),
+        ("bring the dumbbells back", "bring the dumbbell back"),
+    ],
+    "Alternate_Incline_Dumbbell_Curl": [
+        ("the dumbbells are at shoulder level", "the dumbbell is at shoulder level"),
+        ("Tip: Only the forearms should move.", "Tip: Only the forearm should move."),
+    ],
+    "Dumbbell_Alternate_Bicep_Curl": [
+        (
+            "rotate the palm of the hands until they are facing forward",
+            "rotate the palm of the hand until it is facing forward",
+        ),
+        ("the dumbbells are at shoulder level", "the dumbbell is at shoulder level"),
+        ("Tip: Only the forearms should move.", "Tip: Only the forearm should move."),
+        (
+            "twist the palms back to the starting position (facing your thighs)",
+            "twist the palm back to the starting position (facing your thigh)",
+        ),
     ],
 }
 
