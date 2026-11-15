@@ -141,7 +141,10 @@ and keep each change small enough to review.
      per hour).
    - Part (b) so far: batch 1 (2026-11-15), the first 99 beginner strength exercises by name (3/4 Sit-Up …
      Dumbbell Alternate Bicep Curl; 100 until Chair Squat was merged into Smith Machine Hack Squat); the 10
-     exercises of the owner's spot check are reviewed, the other 89 are automatic; 223 beginner strength exercises left. Decisions from the review are in the glossary
+     exercises of the owner's spot check are reviewed, the other 89 are automatic. Batch 2 (2026-11-15), the next
+     100 (Dumbbell Bench Press with Neutral Grip … Palms-Up Barbell Wrist Curl Over A Bench), all automatic;
+     its spot check and questions are in `polskie_nazwy/instrukcje_b_partia_2_do_przegladu.txt`. 123 beginner
+     strength exercises left. Decisions from the review are in the glossary
      (chapter 10) and in `polskie_nazwy/instrukcje_b_partia_1_do_przegladu.txt`.
    - Mistakes in the English text of built-ins that are not originals are fixed on import in
      `free_db.INSTRUCTION_CORRECTIONS` ({source_id: [(wrong fragment, corrected fragment)]}).

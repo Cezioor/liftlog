@@ -282,3 +282,10 @@ zawsze znaczy „jedna stopa” („place one foot on the box”). „Feet” ja
   trzymaj w pozycji neutralnej”); kąt w kolanie to „kąt między udami a łydkami”; zdania, które mają
   przejrzany odpowiednik w pliku tłumaczeń, bierzemy słowo w słowo („nachwytem (dłonie skierowane od
   ciebie)”); push press: „wykorzystaj ten impet”.
+- 2026-11-15 (część (b), partia 2, automatyczna, nieprzejrzana): side delts → „boczne aktony
+  barków”; pins (maszyny dźwigniowe) → „trzpienie”; „adjust the seat for your height” → „ustaw
+  siedzisko pod swój wzrost”; knee pad → „wałek na uda”; stops → „ograniczniki” („nie odkładaj
+  ciężaru na ograniczniki, dopóki nie skończysz serii”); backhand / forehand → „jak przy bekhendzie /
+  forhendzie”; cambered bar → „sztanga z wygiętym gryfem”; ankle weight → „obciążnik na kostce”;
+  „the bell” (kettlebell) → samo „kettlebell”; arch jako błąd („If your lower back arches”) →
+  „dolny odcinek pleców wygina się w łuk”; skłon w bok „bend at the waist” → „zginając się w talii”.

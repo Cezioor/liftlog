@@ -273,6 +273,48 @@ INSTRUCTION_CORRECTIONS = {
             "using a close grip (hands closer than shoulder width).",
         )
     ],
+    # Part (b), batch 2 (2026-11-15), by analogy to earlier decisions.
+    # As Back Squat: no "foot stances" note, heels down and knees in line with the toes.
+    "Dumbbell_Squat": [
+        (
+            " Note: For the purposes of this discussion we will use the medium stance described "
+            "above which targets overall development; however you can choose any of the three "
+            "stances discussed in the foot stances section.",
+            "",
+        ),
+        (
+            "Tip: If you performed the exercise correctly, the front of the knees should make an "
+            "imaginary straight line with the toes that is perpendicular to the front. If your "
+            "knees are past that imaginary line (if they are past your toes) then you are placing "
+            "undue stress on the knee and the exercise has been performed incorrectly.",
+            "Tip: Keep your heels on the floor and your knees in line with your toes.",
+        ),
+    ],
+    # Lying on the side, the forearm ends up vertical; the torso doesn't point anywhere.
+    "External_Rotation": [
+        (
+            "perpendicular to the floor and the torso pointing towards the ceiling",
+            "perpendicular to the floor, pointing towards the ceiling",
+        )
+    ],
+    # The cable version still said "band" (copied from External Rotation with Band).
+    "External_Rotation_with_Cable": [
+        ("Stand with your left side to the band", "Stand with your left side to the cable")
+    ],
+    # A private note of the author in the first person.
+    "Leg_Pull-In": [(" Tip: My preference is with the hands next to me.", "")],
+    "Kneeling_Cable_Crunch_With_Alternating_Oblique_Twists": [
+        (
+            "Continue this series of movements to failure.",
+            "Continue this series of movements for the recommended amount of repetitions.",
+        )
+    ],
+    "One-Arm_High-Pulley_Cable_Side_Bends": [
+        ("Repeat to failure.", "Repeat for the recommended amount of repetitions.")
+    ],
+    "Pallof_Press_With_Rotation": [
+        ("Repeat to failure.", "Repeat for the recommended amount of repetitions.")
+    ],
 }
 
 
